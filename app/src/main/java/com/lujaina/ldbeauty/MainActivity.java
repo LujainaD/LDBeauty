@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.SP.AddInfoFragment;
+import com.lujaina.ldbeauty.SP.SPSignUpFragment;
 
 public class MainActivity extends AppCompatActivity implements MediatorInterface {
 
@@ -16,7 +17,7 @@ public class MainActivity extends AppCompatActivity implements MediatorInterface
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        changeFragmentTo(new AddInfoFragment(), AddInfoFragment.class.getSimpleName());
+        changeFragmentTo(new SPSignUpFragment(), SPSignUpFragment.class.getSimpleName());
 
     }
 
