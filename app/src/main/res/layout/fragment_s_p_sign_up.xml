@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context=".SP.SPSignUpFragment">
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/camera" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            tools:layout_editor_absoluteX="134dp"
+            tools:layout_editor_absoluteY="25dp">
+
+        </TextView>
+
+
+
+</ScrollView>
