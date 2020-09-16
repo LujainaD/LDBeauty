@@ -13,10 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.R;
 
@@ -64,6 +67,11 @@ private Context mContext;
         // Inflate the layout for this fragment
         View parentView= inflater.inflate(R.layout.fragment_add_info_dialog, container, false);
         final Spinner spinner = parentView.findViewById(R.id.colorSpinner);
+        final TextInputEditText etTitle = parentView.findViewById(R.id.title);
+        final TextInputEditText etBody = parentView.findViewById(R.id.body);
+
+        Button btnAdd = parentView.findViewById(R.id.btn_add);
+        Button btnCancel = parentView.findViewById(R.id.btn_cancel);
 
         spinner.setBackgroundColor(getContext().getResources().getColor(R.color.white));
 
@@ -127,6 +135,19 @@ private Context mContext;
 
             }
         });*/
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String title = etTitle.getText().toString();
+                String body = etBody.getText().toString();
+                if (title.isEmpty()) {
+                    etTitle.setError("Please write Info Title");
+                } else if (body.isEmpty()) {
+                    etBody.setError("Please write Information describe the title");
+                }
+            }
+        });
 
 
         return parentView;
