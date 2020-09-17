@@ -104,6 +104,8 @@
     <Spinner
         android:id="@+id/colorSpinner"
         android:layout_width="100dp"
+        android:background="@color/white"
+
         android:layout_height="25dp"
         android:layout_marginStart="155dp"
         android:layout_marginTop="10dp"

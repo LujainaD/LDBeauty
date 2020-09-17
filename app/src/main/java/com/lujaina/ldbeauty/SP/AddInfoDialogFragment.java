@@ -20,18 +20,18 @@ import android.widget.Spinner;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.lujaina.ldbeauty.Adapters.ColorAdapter;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.R;
 
 import java.util.ArrayList;
 
 
-public class AddInfoDialogFragment extends DialogFragment {
+public class AddInfoDialogFragment extends DialogFragment implements AdapterView.OnItemSelectedListener{
 
 private MediatorInterface mMediatorInterface;
 private Context mContext;
-    private String mColor;
-    private ColorSpinnerFragment.BackgroundListener mListener;
+    int colors[] = {R.color.white, R.color.beige, R.color.lightOrange,R.color.lightGray,R.color.lightPink};
 
     public AddInfoDialogFragment() {
         // Required empty public constructor
@@ -64,6 +64,7 @@ private Context mContext;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View parentView= inflater.inflate(R.layout.fragment_add_info_dialog, container, false);
         final Spinner spinner = parentView.findViewById(R.id.colorSpinner);
@@ -72,10 +73,10 @@ private Context mContext;
 
         Button btnAdd = parentView.findViewById(R.id.btn_add);
         Button btnCancel = parentView.findViewById(R.id.btn_cancel);
+        spinner.setOnItemSelectedListener(this);
 
         spinner.setBackgroundColor(getContext().getResources().getColor(R.color.white));
-
-        ArrayList<String> backgroundArrayList = new ArrayList<>();
+      /*  ArrayList<String> backgroundArrayList = new ArrayList<>();
         backgroundArrayList.add("color");
         backgroundArrayList.add("white");
         backgroundArrayList.add("#FDF8F8");
@@ -83,39 +84,61 @@ private Context mContext;
         backgroundArrayList.add("#E6E7E8");
         backgroundArrayList.add("#FFCCEC");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_dropdown_item, backgroundArrayList);
-        spinner.setAdapter(adapter);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_dropdown_item, backgroundArrayList);*/
+        ColorAdapter colorAdapter = new ColorAdapter(mContext, colors);
+        spinner.setAdapter(colorAdapter);
+/*
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
                     case 1:
                         spinner.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+*/
+/*
                         mColor = "#FFFFFF";
+*//*
+
                         break;
 
                     case 2:
                         spinner.setBackgroundColor(mContext.getResources().getColor(R.color.beige));
 
+*/
+/*
                         mColor = "#FDF8F8";
+*//*
+
                         break;
 
                     case 3:
                         spinner.setBackgroundColor(mContext.getResources().getColor(R.color.lightOrange));
 
+*/
+/*
                         mColor = "#FFC5CB";
+*//*
+
                         break;
 
                     case 4:
                         spinner.setBackgroundColor(mContext.getResources().getColor(R.color.lightGray));
 
+*/
+/*
                         mColor = "#E6E7E8";
+*//*
+
                         break;
 
                     case 5:
                         spinner.setBackgroundColor(mContext.getResources().getColor(R.color.lightPink));
 
+*/
+/*
                         mColor = "#FFCCEC";
+*//*
+
                         break;
                 }
             }
@@ -125,6 +148,7 @@ private Context mContext;
 
             }
         });
+*/
 
 
         /*colorBox.setOnClickListener(new View.OnClickListener() {
@@ -153,4 +177,13 @@ private Context mContext;
         return parentView;
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }
