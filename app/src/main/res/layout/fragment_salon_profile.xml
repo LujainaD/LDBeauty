@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:background="#B14F8D"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="User Name"
+        android:textColor="#F8F8F8"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/view"
+        app:layout_constraintStart_toStartOf="@id/view"
+        app:layout_constraintTop_toTopOf="@+id/view" />
+
+    <ImageButton
+        android:id="@+id/ib_back"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="41dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="352dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_arrow_left" />
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+    android:id="@+id/civ_profile"
+    android:layout_width="104dp"
+    android:layout_height="104dp"
+    android:layout_marginTop="10dp"
+    android:src="@drawable/profile"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.498"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+
+    <TextView
+        android:id="@+id/tv_AboutPage"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="#FFFFFF"
+        android:drawableEnd="@drawable/ic_arrow"
+        android:paddingStart="35dp"
+        android:paddingTop="15dp"
+
+        android:text="About Salon"
+        android:textAlignment="textStart"
+        android:textColor="@color/pink_text"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/civ_profile" />
+
+    <TextView
+        android:id="@+id/tv_services"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="14dp"
+        android:background="#91FFFFFF"
+        android:paddingStart="35dp"
+        android:paddingTop="15dp"
+        android:text="Salon's Services Catogery"
+        android:clickable="true"
+        android:drawableEnd="@drawable/ic_arrow"
+
+        android:textAlignment="textStart"
+        android:textColor="@color/pink_text"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_salonGallery" />
+
+
+    <TextView
+        android:id="@+id/tv_salonGallery"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="#91FFFFFF"
+        android:paddingStart="35dp"
+        android:paddingTop="15dp"
+        android:text="Salon's Gallery"
+        android:textAlignment="textStart"
+        android:textColor="@color/pink_text"
+        android:textSize="20sp"
+        android:drawableEnd="@drawable/ic_arrow"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_AboutPage" />
+
+
+    <TextView
+        android:id="@+id/tv_location"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="#FFFFFF"
+        android:drawableEnd="@drawable/ic_arrow"
+
+        android:paddingStart="35dp"
+        android:paddingTop="15dp"
+        android:text="Salon's Location"
+        android:textAlignment="textStart"
+        android:textColor="@color/pink_text"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_services" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

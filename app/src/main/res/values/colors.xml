@@ -8,8 +8,9 @@
     <color name="lightOrange">#FFC5CB</color>
     <color name="lightGray">#E6E7E8</color>
     <color name="lightPink">#FFCCEC</color>
+    <color name="pink_text">#FF0094</color>
 
-	<color name="edittext_text_color">#95989A</color>
+    <color name="edittext_text_color">#95989A</color>
 
 
 </resources>

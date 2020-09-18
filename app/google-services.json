@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "931751725160",
+    "firebase_url": "https://ldbeauty-f7b75.firebaseio.com",
+    "project_id": "ldbeauty-f7b75",
+    "storage_bucket": "ldbeauty-f7b75.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:931751725160:android:4eedb0cf82c5d5abb913dd",
+        "android_client_info": {
+          "package_name": "com.lujaina.ldbeauty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "931751725160-ua134uc37p1d0d0ppfdd81icga1834k1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lujaina.ldbeauty",
+            "certificate_hash": "3f598432e4ef781ef4a9b663615b98c75e257fc4"
+          }
+        },
+        {
+          "client_id": "931751725160-kc3bpjg2jdqr4v46s7po0d9tdsdvmk7l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFm4du-mZKQmomp8p9fMqF5xA_joNoBcE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "931751725160-kc3bpjg2jdqr4v46s7po0d9tdsdvmk7l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
