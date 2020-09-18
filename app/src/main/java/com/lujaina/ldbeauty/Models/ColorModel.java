@@ -1,13 +1,19 @@
 package com.lujaina.ldbeauty.Models;
 
 public class ColorModel {
-    public int color;
+    private String colorValue;
+    private String colorName;
 
-    public int getColor() {
-        return color;
-    }
+	public ColorModel(String colorName, String colorValue) {
+		this.colorName = colorName;
+		this.colorValue = colorValue;
+	}
 
-    public void setColor(int color) {
-        this.color = color;
-    }
+	public String getColorValue() {
+		return colorValue;
+	}
+
+	public String getColorName() {
+		return colorName;
+	}
 }

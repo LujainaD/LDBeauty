@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/view_color"
-        android:layout_width="100dp"
-        android:layout_height="25dp"
-        style="@style/Widget.AppCompat.DropDownItem.Spinner"
-        android:background="@color/lightOrange"
-        >
-
-    </Button>
+	<TextView
+		android:id="@+id/btn_color_view"
+		android:layout_width="match_parent"
+		android:textSize="@dimen/dialogu_inout_size"
+		android:textAlignment="center"
+		android:gravity="center"
+		android:layout_height="48dp">
+	</TextView>
 
 </LinearLayout>

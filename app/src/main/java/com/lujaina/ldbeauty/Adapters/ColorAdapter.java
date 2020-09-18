@@ -1,58 +1,48 @@
 package com.lujaina.ldbeauty.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.lujaina.ldbeauty.Models.ColorModel;
 import com.lujaina.ldbeauty.R;
 
-public class ColorAdapter extends BaseAdapter {
+import java.util.ArrayList;
 
-private Context mContext;
-int [] colors;
-LayoutInflater inflater;
+public class ColorAdapter extends ArrayAdapter<ColorModel> {
 
-    public ColorAdapter(@NonNull Context context, int[] colors) {
-         mContext = context;
-         this.colors = colors;
-         inflater = (LayoutInflater.from(context));
+	public ColorAdapter(Context context, ArrayList<ColorModel> colorList) {
+		super(context, 0, colorList);
+	}
 
-    }
-
-
-    @Override
-    public int getCount() {
-        return colors.length;
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-/*
-          convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cutome_spinner_item,parent,false);
-*/
-
-        convertView = inflater.inflate(R.layout.cutome_spinner_item,null);
-        Button color = convertView.findViewById(R.id.view_color);
-
-        color.setBackgroundColor(colors[position]);
-        return convertView;
-    }
+	@NonNull
+	@Override
+	public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+		return initView(position, convertView, parent);
+	}
+	@Override
+	public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+		return initView(position, convertView, parent);
+	}
+	private View initView(int position, View convertView, ViewGroup parent) {
+		if (convertView == null) {
+			convertView = LayoutInflater.from(getContext()).inflate(
+					R.layout.cutome_spinner_item, parent, false
+			);
+		}
+		TextView colorView = convertView.findViewById(R.id.btn_color_view);
+		ColorModel colorValue = getItem(position);
+		if (colorValue != null) {
+			colorView.setText(colorValue.getColorName());
+			colorView.setBackgroundColor(Color.parseColor(colorValue.getColorValue()));
+		}
+		return convertView;
+	}
 }
-
-
-
