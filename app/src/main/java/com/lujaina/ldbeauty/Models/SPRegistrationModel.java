@@ -9,6 +9,9 @@ public class SPRegistrationModel {
     private String salonName;
     private String salonCity;
     private String salonPhoneNumber;
+    private String ownerImageURL;
+    private String salonImageURL;
+
     private String userType;
     private String registrationDate;
     private String updatedDate;
@@ -75,6 +78,22 @@ public class SPRegistrationModel {
 
     public void setSalonPhoneNumber(String salonPhoneNumber) {
         this.salonPhoneNumber = salonPhoneNumber;
+    }
+
+    public String getOwnerImageURL() {
+        return ownerImageURL;
+    }
+
+    public void setOwnerImageURL(String ownerImageURL) {
+        this.ownerImageURL = ownerImageURL;
+    }
+
+    public String getSalonImageURL() {
+        return salonImageURL;
+    }
+
+    public void setSalonImageURL(String salonImageURL) {
+        this.salonImageURL = salonImageURL;
     }
 
     public String getUserType() {
