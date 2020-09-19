@@ -432,18 +432,14 @@ public class SPSignUpFragment extends Fragment implements ImageDialogFragment.Ch
                 if(ownerImg.isClickable()) {
                     Uri ownerImgUri = data.getData();//1
                     InputStream imageStream = mContext.getContentResolver().openInputStream(ownerImgUri);//2
-/*
                     Bitmap selectedImageBitmap = BitmapFactory.decodeStream(imageStream);//3}
-*/
                     userImageUri = ownerImgUri;
                     ownerImg.setImageURI(ownerImgUri);
                 }else{
 
                 Uri salonImgUri = data.getData();//1
                 InputStream imageSalonStream = mContext.getContentResolver().openInputStream(salonImgUri);//2
-/*
                 Bitmap selectedSalonImageBitmap = BitmapFactory.decodeStream(imageSalonStream);//3}
-*/
                 salonImageUri = salonImgUri;
                 salonImg.setImageURI(salonImgUri);
 
