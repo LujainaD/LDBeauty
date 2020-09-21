@@ -7,6 +7,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
+import com.lujaina.ldbeauty.AppOwner.AppOwnerProfileFragment;
+import com.lujaina.ldbeauty.Dialogs.SalonConfirmDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.SP.AddInfoFragment;
 import com.lujaina.ldbeauty.SP.SPSignUpFragment;
@@ -17,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements MediatorInterface
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        changeFragmentTo(new SPSignUpFragment(), SPSignUpFragment.class.getSimpleName());
+        changeFragmentTo(new AppOwnerProfileFragment(), AppOwnerProfileFragment.class.getSimpleName());
 
     }
 

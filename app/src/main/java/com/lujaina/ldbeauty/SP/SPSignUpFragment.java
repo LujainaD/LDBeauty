@@ -1,15 +1,17 @@
 package com.lujaina.ldbeauty.SP;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -36,13 +38,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.HomeActivity;
-import com.lujaina.ldbeauty.Dialogs.ImageDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -53,7 +52,11 @@ import java.util.regex.Pattern;
 import static android.content.ContentValues.TAG;
 
 
-public class SPSignUpFragment extends Fragment implements ImageDialogFragment.ChooseDialogInterface {
+public class SPSignUpFragment extends Fragment {
+    private static final int PICK_OWNER_IMAGE = 1001;
+    private static final int PICK_SALON_IMAGE = 1002;
+    private static final int STORAGE_PERMISSION_REQUEST = 300;
+
     public static final Pattern EMAIL_ADDRESS_PATTERN = Pattern.compile(
             "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
                     "\\@" +
@@ -63,21 +66,12 @@ public class SPSignUpFragment extends Fragment implements ImageDialogFragment.Ch
                     "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
                     ")+"
     );
-    private static final int PICK_IMAGE = 100;
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^" + "(?=.*[A-Z])" + ".{6,20}");
     private static final Pattern PHONENUMBER_PATTERN = Pattern.compile("^" + ".{8,20}");
     ImageView ownerImg;
     ImageView salonImg;
     FirebaseUser mFirebaseUser;
-    FirebaseUser user;
-    TextInputEditText userName;
-    TextInputEditText userEmail;
-    TextInputEditText userPass;
-    TextInputEditText userVerify;
-    TextInputEditText userPhone;
-    TextInputEditText salonName;
-    TextInputEditText salonCity;
-    TextInputEditText salonPhone;
+
     private Uri userImageUri;
     private Uri salonImageUri;
     private FirebaseAuth mAuth;
@@ -98,7 +92,6 @@ public class SPSignUpFragment extends Fragment implements ImageDialogFragment.Ch
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
         }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -137,9 +130,7 @@ public class SPSignUpFragment extends Fragment implements ImageDialogFragment.Ch
                     final String salonname = salonName.getText().toString();
                     final String city = salonCity.getText().toString();
                     final String phoneSalon = salonPhone.getText().toString();
-
                     String userType = "Salon Owner";
-
 
                     if (name.isEmpty()) {
                         userName.setError("Enter User Name");
@@ -182,8 +173,6 @@ public class SPSignUpFragment extends Fragment implements ImageDialogFragment.Ch
                             registration.setSalonPhoneNumber(phoneSalon);
                             registration.setUserType(userType);
                             registerToFirebase(email, password, name, phoneNumber, salonname, city, phoneSalon, userType);
-
-
                         } else {
                             userVerify.setError("verify password must be the same as your entered password ");
 
@@ -196,30 +185,57 @@ public class SPSignUpFragment extends Fragment implements ImageDialogFragment.Ch
         ownerImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface != null) {
-                    ImageDialogFragment dialogFragment = new ImageDialogFragment();
-                    dialogFragment.setChooseDialogListener(SPSignUpFragment.this);
-                    dialogFragment.show(getChildFragmentManager(), ImageDialogFragment.class.getSimpleName());
+                if (isPermissionGranted()){
+                    openGallery(PICK_OWNER_IMAGE);
+                }else {
+                    showRunTimePermission();
+
                 }
+
             }
         });
 
         salonImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface != null) {
-                    ImageDialogFragment dialogFragment = new ImageDialogFragment();
-                    dialogFragment.setChooseDialogListener(SPSignUpFragment.this);
-                    dialogFragment.show(getChildFragmentManager(), ImageDialogFragment.class.getSimpleName());
-                }
-            }
+                if (isPermissionGranted()){
+                    openGallery(PICK_SALON_IMAGE);
+                }else {
+                    showRunTimePermission();
+                }        }
         });
         return parentView;
     }
 
+    private boolean isPermissionGranted() {
+        return ActivityCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public void showRunTimePermission() {
+        // Permission is not Granted !
+        // we should Request the Permission!
+        // put all permissions you need in this Screen into string array
+        String[] permissionsArray = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        //here we requet the permission
+        requestPermissions(permissionsArray, STORAGE_PERMISSION_REQUEST);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // user grants the Permission!
+            // you can call the function to write/read to storage here!
+        } else {
+            // user didn't grant the Permission we need
+            Toast.makeText(mContext, "didn't grant the Permission", Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void registerToFirebase(final String email, final String password, final String name, final String phoneNumber, final String salonname, final String city, final String phoneSalon, final String userType) {
+       Activity currentActivity = getActivity();
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(Objects.requireNonNull(getActivity()), new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(currentActivity, new OnCompleteListener<AuthResult>() {
 
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -240,26 +256,25 @@ public class SPSignUpFragment extends Fragment implements ImageDialogFragment.Ch
                             registration.setRegistrationDate(getCurrentDate());
                             uploadUserImageToStorage(registration);
 
-
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(mContext, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-
                         }
-
-                        // ...
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, "onFailure: "+e.getLocalizedMessage());
+                }
+        });
 
     }
 
     private void uploadUserImageToStorage(final SPRegistrationModel registration) {
         StorageReference mStorageRef;
         mStorageRef = FirebaseStorage.getInstance().getReference();
-
-
         //generate unique id for the image
         String imageId = UUID.randomUUID().toString();
         String imageId2 = UUID.randomUUID().toString();
@@ -278,10 +293,7 @@ public class SPSignUpFragment extends Fragment implements ImageDialogFragment.Ch
                             public void onSuccess(Uri firebaseImageUri) {
 
                                 registration.setOwnerImageURL(firebaseImageUri.toString());
-/*
-                                uploadSalonImageToStorage(registration);
-*/
-                                //  saveImageUrlToFirebaseDatabase(firebaseImageUri);
+
                             }
                         });
                         salonImageRef.putFile(salonImageUri)
@@ -295,8 +307,7 @@ public class SPSignUpFragment extends Fragment implements ImageDialogFragment.Ch
                                             public void onSuccess(Uri firebaseImageUri) {
 
                                                 registration.setSalonImageURL(firebaseImageUri.toString());
-                                                AddToDB(registration);
-                                                //  saveImageUrlToFirebaseDatabase(firebaseImageUri);
+                                                addToDB(registration);
                                             }
                                         });
 
@@ -305,56 +316,14 @@ public class SPSignUpFragment extends Fragment implements ImageDialogFragment.Ch
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception exception) {
-                                        // Handle unsuccessful uploads
-                                        // ...
+                                        Log.d(TAG, "onFailure: "+exception.getLocalizedMessage());
                                     }
                                 });
                     }
                 });
     }
 
-/*
-    private void uploadSalonImageToStorage(final SPRegistrationModel registration) {
-        StorageReference mStorageRef;
-        mStorageRef = FirebaseStorage.getInstance().getReference();
-
-
-        //generate unique id for the image
-        String imageId = UUID.randomUUID().toString();
-
-        final StorageReference imageRef = mStorageRef.child("images/" + imageId + ".jpg");
-        imageRef.putFile(salonImageUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                        // inorder to get image url, we can use getDownloadUrl function
-                        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri firebaseImageUri) {
-
-                                registration.setSalonImageURL(firebaseImageUri.toString());
-                                AddToDB(registration);
-                                //  saveImageUrlToFirebaseDatabase(firebaseImageUri);
-                            }
-                        });
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                        // ...
-                    }
-                });
-    }
-*/
-
-
-
-
-    private void AddToDB(SPRegistrationModel registration) {
+    private void addToDB(SPRegistrationModel registration) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner);
         final ProgressDialog progressDialog = new ProgressDialog(mContext);
@@ -380,90 +349,39 @@ public class SPSignUpFragment extends Fragment implements ImageDialogFragment.Ch
 
     private String getCurrentDate() {
         Date c = Calendar.getInstance().getTime();
-
         SimpleDateFormat df = new SimpleDateFormat("dd/MMM/yyyy");
-
         return df.format(c);
     }
 
-    @Override
-    public void openGallery() {
-        Intent i = new Intent();
-        i.setType("image/*"); // specify the type of data you expect
-        i.setAction(Intent.ACTION_GET_CONTENT); // we need to get content from another act.
-        startActivityForResult(Intent.createChooser(i, "choose App"), PICK_IMAGE);
+    public void openGallery(int requestCode ) {
+    Intent i = new Intent();
+    i.setType("image/*"); // specify the type of data you expect
+    i.setAction(Intent.ACTION_GET_CONTENT); // we need to get content from another act.
+    startActivityForResult(Intent.createChooser(i, "choose a Picture"),requestCode);
     }
-
-    @Override
-    public void onCameraButtonClick() {
-
-                    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        //if image from Camera
-/*
-        if (requestCode == CAPTURE_IMAGE) {
+        if (requestCode == PICK_OWNER_IMAGE) {
             if (data == null) {
-                Toast.makeText(mContext, "Unexpected Error Happened while capturing the picture!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Unexpected Error Happened while selecting  picture!", Toast.LENGTH_SHORT).show();
             } else {
-
-                Bundle extras = data.getExtras();
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
-                salonImage.setImageBitmap(imageBitmap);
-
-                userImageUri = data.getParcelableExtra("info"); //uri
-                salonImage.setImageBitmap(imageBitmap);
-                Log.d("img-uri", userImageUri.toString());
-
+                        Uri ownerImgUri = data.getData();//1
+                        userImageUri = ownerImgUri;
+                        ownerImg.setImageURI(ownerImgUri);
             }
-
-        } else if (requestCode == PICK_IMAGE) {
-*/
-
-        if (data == null) {
-            Toast.makeText(mContext, "Unexpected Error Happened while selecting  picture!", Toast.LENGTH_SHORT).show();
-
-        } else {
-
-            try {
-                if(ownerImg.isClickable()) {
-                    Uri ownerImgUri = data.getData();//1
-                    InputStream imageStream = mContext.getContentResolver().openInputStream(ownerImgUri);//2
-                    Bitmap selectedImageBitmap = BitmapFactory.decodeStream(imageStream);//3}
-                    userImageUri = ownerImgUri;
-                    ownerImg.setImageURI(ownerImgUri);
-                }else{
-
+        }
+        else if (requestCode == PICK_SALON_IMAGE){
+            if (data == null) {
+                Toast.makeText(mContext, "Unexpected Error Happened while selecting  picture!", Toast.LENGTH_SHORT).show();
+            }
                 Uri salonImgUri = data.getData();//1
-                InputStream imageSalonStream = mContext.getContentResolver().openInputStream(salonImgUri);//2
-                Bitmap selectedSalonImageBitmap = BitmapFactory.decodeStream(imageSalonStream);//3}
                 salonImageUri = salonImgUri;
                 salonImg.setImageURI(salonImgUri);
-
-                }
-
-
-
-
-
-
-
-/*
-                    uploadImage();
-*/
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-
-            }
-        }
-
-
         }
     }
+}
 
 
 

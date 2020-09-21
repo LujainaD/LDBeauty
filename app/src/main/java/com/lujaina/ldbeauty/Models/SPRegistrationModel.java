@@ -11,9 +11,9 @@ public class SPRegistrationModel {
     private String salonPhoneNumber;
     private String ownerImageURL;
     private String salonImageURL;
-
     private String userType;
     private String registrationDate;
+    private int status;
     private String updatedDate;
 
     public String getOwnerId() {
@@ -110,6 +110,14 @@ public class SPRegistrationModel {
 
     public void setRegistrationDate(String registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public String getUpdatedDate() {
