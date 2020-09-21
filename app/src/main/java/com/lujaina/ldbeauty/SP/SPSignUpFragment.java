@@ -270,60 +270,89 @@ public class SPSignUpFragment extends Fragment {
                 }
         });
 
+//		FirebaseUser user = mAuth.getCurrentUser();
+//		SPRegistrationModel registration = new SPRegistrationModel();
+//		registration.setOwnerId(user.getUid());
+//		registration.setOwnerName(name);
+//		registration.setOwnerEmail(email);
+//		registration.setPhoneNumber(phoneNumber);
+//		registration.setSalonName(salonname);
+//		registration.setSalonCity(city);
+//		registration.setSalonPhoneNumber(phoneSalon);
+//		registration.setUserType(userType);
+//		registration.setRegistrationDate(getCurrentDate());
+//		uploadUserImageToStorage(registration);
+
     }
 
     private void uploadUserImageToStorage(final SPRegistrationModel registration) {
-        StorageReference mStorageRef;
-        mStorageRef = FirebaseStorage.getInstance().getReference();
-        //generate unique id for the image
-        String imageId = UUID.randomUUID().toString();
-        String imageId2 = UUID.randomUUID().toString();
+		StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+		//generate unique id for the image
+		String imageId = UUID.randomUUID().toString();
 
-        final StorageReference ownerImageRef = mStorageRef.child("images/" + imageId + ".jpg");
-        final StorageReference salonImageRef = mStorageRef.child("images/" + imageId2 + ".jpg");
+		final StorageReference ownerImageRef = mStorageRef.child("images/" + imageId + ".jpg");
 
-        ownerImageRef.putFile(userImageUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+		ownerImageRef.putFile(userImageUri)
+				.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+					@Override
+					public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+						ownerImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+							@Override
+							public void onSuccess(Uri firebaseImageUri) {
+								registration.setOwnerImageURL(firebaseImageUri.toString());
+								uploadAndGetSaloonImageURL(registration);
+							}
+						}).addOnFailureListener(new OnFailureListener() {
+							@Override
+							public void onFailure(@NonNull Exception e) {
+								Log.e(TAG, "onFailure: :" + e.getLocalizedMessage());
+							}
+						});
 
-                        // inorder to get image url, we can use getDownloadUrl function
-                        ownerImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri firebaseImageUri) {
+					}
+				}).addOnFailureListener(new OnFailureListener() {
+			@Override
+			public void onFailure(@NonNull Exception e) {
+				Log.e(TAG, "onFailure: Uploading image Failed"+e.getLocalizedMessage());
+			}
+		});
+	}
 
-                                registration.setOwnerImageURL(firebaseImageUri.toString());
+	private void uploadAndGetSaloonImageURL(final SPRegistrationModel registration) {
+		StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+		String imageId2 = UUID.randomUUID().toString();
+		final StorageReference salonImageRef = mStorageRef.child("images/" + imageId2 + ".jpg");
 
-                            }
-                        });
-                        salonImageRef.putFile(salonImageUri)
-                                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+		salonImageRef.putFile(salonImageUri)
+				.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+					@Override
+					public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+						salonImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+							@Override
+							public void onSuccess(Uri firebaseImageUri) {
+								registration.setSalonImageURL(firebaseImageUri.toString());
+								addToDB(registration);
+							}
+						}).addOnFailureListener(new OnFailureListener() {
+							@Override
+							public void onFailure(@NonNull Exception e) {
+								Log.e(TAG, "onFailure in 2nd Image: "+e.getLocalizedMessage() );
+							}
+						});
 
-                                        // inorder to get image url, we can use getDownloadUrl function
-                                        salonImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                            @Override
-                                            public void onSuccess(Uri firebaseImageUri) {
+					}
+				})
+				.addOnFailureListener(new OnFailureListener() {
+					@Override
+					public void onFailure(@NonNull Exception exception) {
+						Log.e(TAG, "onFailure: "+exception.getLocalizedMessage());
+					}
+				});
+	}
 
-                                                registration.setSalonImageURL(firebaseImageUri.toString());
-                                                addToDB(registration);
-                                            }
-                                        });
 
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception exception) {
-                                        Log.d(TAG, "onFailure: "+exception.getLocalizedMessage());
-                                    }
-                                });
-                    }
-                });
-    }
 
-    private void addToDB(SPRegistrationModel registration) {
+	private void addToDB(SPRegistrationModel registration) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner);
         final ProgressDialog progressDialog = new ProgressDialog(mContext);
@@ -382,6 +411,8 @@ public class SPSignUpFragment extends Fragment {
         }
     }
 }
+
+
 
 
 
