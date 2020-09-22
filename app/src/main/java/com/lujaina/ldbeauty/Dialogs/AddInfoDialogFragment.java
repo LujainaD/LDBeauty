@@ -16,9 +16,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.lujaina.ldbeauty.Adapters.ColorAdapter;
+import com.lujaina.ldbeauty.Adapters.InfoAdapter;
+import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
+import com.lujaina.ldbeauty.Models.AddInfoModel;
 import com.lujaina.ldbeauty.Models.ColorModel;
 import com.lujaina.ldbeauty.R;
 
@@ -28,11 +36,15 @@ import java.util.ArrayList;
 public class AddInfoDialogFragment extends DialogFragment implements AdapterView.OnItemSelectedListener {
 
 	private static final String TAG = "AddInforFrag";
-
+	FirebaseAuth mAuth;
+	FirebaseUser mFirebaseUser;
+	private FirebaseDatabase mDatabase;
+	private DatabaseReference myRef;
 	private MediatorInterface mMediatorInterface;
 	private Context mContext;
 	private ArrayList<ColorModel> colorList;
-
+	private ArrayList<AddInfoModel> mUpdate;
+private InfoAdapter mAdapter;
 	public AddInfoDialogFragment() {
 		// Required empty public constructor
 	}
@@ -65,10 +77,11 @@ public class AddInfoDialogFragment extends DialogFragment implements AdapterView
 
 		// Inflate the layout for this fragment
 		View parentView = inflater.inflate(R.layout.fragment_add_info_dialog, container, false);
+		mAuth = FirebaseAuth.getInstance();
+		mFirebaseUser = mAuth.getCurrentUser();
+		mDatabase = FirebaseDatabase.getInstance();
 		getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 		getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-
 		final TextInputEditText etTitle = parentView.findViewById(R.id.title);
 		final TextInputEditText etBody = parentView.findViewById(R.id.body);
 
@@ -76,6 +89,8 @@ public class AddInfoDialogFragment extends DialogFragment implements AdapterView
 		Button btnCancel = parentView.findViewById(R.id.btn_cancel);
 
 		createColorList();
+		mUpdate = new ArrayList<>();
+		mAdapter = new InfoAdapter(mContext);
 
 		Spinner colorSpinner = parentView.findViewById(R.id.colorSpinner);
 		colorSpinner.setOnItemSelectedListener(this);
@@ -91,20 +106,55 @@ public class AddInfoDialogFragment extends DialogFragment implements AdapterView
 					etTitle.setError(getString(R.string.erro_missin_title));
 				} else if (body.isEmpty()) {
 					etBody.setError(getString(R.string.erro_missin_info));
+				}else{
+					addInfoToDB(title, body);
 				}
+			}
+		});
+
+		btnCancel.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dismiss();
 			}
 		});
 		return parentView;
 	}
 
+	private void addInfoToDB(String title, String body) {
+		FirebaseDatabase database = FirebaseDatabase.getInstance();
+		DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Info);
+
+
+		String Id = myRef.push().getKey();
+
+		AddInfoModel about = new AddInfoModel();
+		about.setInfoId(Id);
+		about.setTitle(title);
+		about.setBody(body);
+/*
+		about.setBackgroundColor(background);
+*/
+		about.setSalonOwnerId(mFirebaseUser.getUid());
+		mUpdate.add(about);
+		mAdapter.update(mUpdate.indexOf(about), about);
+		myRef.child(Id).setValue(about).addOnSuccessListener(new OnSuccessListener<Void>() {
+			@Override
+			public void onSuccess(Void aVoid) {
+				dismiss();
+			}
+		});
+
+	}
+
 	private void createColorList() {
 		if (colorList == null) {
 			colorList = new ArrayList<>();
-			colorList.add(new ColorModel("White", "#FFFFFF"));
-			colorList.add(new ColorModel("Beige", "#FDF8F8"));
-			colorList.add(new ColorModel("Light Orange", "#FFC5CB"));
-			colorList.add(new ColorModel("Light Gray", "#E6E7E8"));
-			colorList.add(new ColorModel("Light Pink", "#FFCCEC"));
+			colorList.add(new ColorModel( "#FFFFFF"));
+			colorList.add(new ColorModel( "#FDF8F8"));
+			colorList.add(new ColorModel("#FFC5CB"));
+			colorList.add(new ColorModel( "#E6E7E8"));
+			colorList.add(new ColorModel( "#FFCCEC"));
 		}
 	}
 

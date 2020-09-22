@@ -39,6 +39,7 @@ import com.google.firebase.storage.UploadTask;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.HomeActivity;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
+import com.lujaina.ldbeauty.LoginChoicesFragment;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 
@@ -115,6 +116,15 @@ public class SPSignUpFragment extends Fragment {
         final TextInputEditText salonPhone = parentView.findViewById(R.id.ti_salonNumber);
         Button signUp = parentView.findViewById(R.id.btn_signUp);
         TextView login = parentView.findViewById(R.id.tv_login);
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mMediatorInterface != null){
+                    mMediatorInterface.changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
+                }
+            }
+        });
 
 
         signUp.setOnClickListener(new View.OnClickListener() {
@@ -263,11 +273,11 @@ public class SPSignUpFragment extends Fragment {
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
-                }).addOnFailureListener(new OnFailureListener() {
+              /*  }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Log.d(TAG, "onFailure: "+e.getLocalizedMessage());
-                }
+                }*/
         });
 
 //		FirebaseUser user = mAuth.getCurrentUser();
@@ -411,8 +421,3 @@ public class SPSignUpFragment extends Fragment {
         }
     }
 }
-
-
-
-
-

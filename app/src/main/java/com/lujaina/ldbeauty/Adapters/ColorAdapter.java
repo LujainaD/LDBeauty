@@ -40,7 +40,6 @@ public class ColorAdapter extends ArrayAdapter<ColorModel> {
 		TextView colorView = convertView.findViewById(R.id.btn_color_view);
 		ColorModel colorValue = getItem(position);
 		if (colorValue != null) {
-			colorView.setText(colorValue.getColorName());
 			colorView.setBackgroundColor(Color.parseColor(colorValue.getColorValue()));
 		}
 		return convertView;

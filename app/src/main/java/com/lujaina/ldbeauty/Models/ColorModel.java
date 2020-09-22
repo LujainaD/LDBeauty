@@ -4,7 +4,7 @@ public class ColorModel {
     private String colorValue;
     private String colorName;
 
-	public ColorModel(String colorName, String colorValue) {
+	public ColorModel( String colorValue) {
 		this.colorName = colorName;
 		this.colorValue = colorValue;
 	}
