@@ -14,6 +14,7 @@ public class SPRegistrationModel {
     private String userType;
     private String registrationDate;
     private int status;
+    private String statusType;
     private String updatedDate;
 
     public String getOwnerId() {
@@ -126,5 +127,13 @@ public class SPRegistrationModel {
 
     public void setUpdatedDate(String updatedDate) {
         this.updatedDate = updatedDate;
+    }
+
+    public String getStatusType() {
+        return statusType;
+    }
+
+    public void setStatusType(String statusType) {
+        this.statusType = statusType;
     }
 }

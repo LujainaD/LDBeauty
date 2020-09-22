@@ -25,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Adapters.ConfirmAdapter;
 import com.lujaina.ldbeauty.Constants;
+import com.lujaina.ldbeauty.Dialogs.AddInfoDialogFragment;
+import com.lujaina.ldbeauty.Dialogs.SalonConfirmDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
@@ -76,6 +78,15 @@ public class AoConfirmSalonsFragment extends Fragment {
         mAdapter.setupOnItemClickListener(new ConfirmAdapter.onItemClickListener() {
             @Override
             public void onItemClick(SPRegistrationModel salonsDetails) {
+                if (mMediatorInterface != null) {
+
+
+                    SalonConfirmDialogFragment details = new SalonConfirmDialogFragment();
+                    Log.d("serviceId", "onItemClick-SalonNamesFragment : " + salonsDetails.getOwnerId());
+                    details.setSalonObj(salonsDetails);
+                    details.show(getChildFragmentManager(), SalonConfirmDialogFragment.class.getSimpleName());
+
+                }
 
             }
         });
@@ -97,6 +108,10 @@ public class AoConfirmSalonsFragment extends Fragment {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     SPRegistrationModel salon = d.getValue(SPRegistrationModel.class);
                     salonNamesArray.add(salon);
+                   /* assert salon != null;
+                    if(salon.getStatusType().equals("Confirm")){
+
+                    }*/
 
                 }
                 progressDialog.dismiss();

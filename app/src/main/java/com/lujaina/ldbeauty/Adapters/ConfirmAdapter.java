@@ -50,7 +50,7 @@ public class ConfirmAdapter extends RecyclerView.Adapter<ConfirmAdapter.MyViewHo
 
         Glide.with(mContext).load(names.getSalonImageURL()).into(holder.salonImg);
         holder.name.setText(names.getSalonName());
-        holder.status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.confirm));
+        holder.status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.grayconfirm));
         holder.salonDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
