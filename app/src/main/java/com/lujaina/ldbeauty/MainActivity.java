@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements MediatorInterface
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        changeFragmentTo(new AppOwnerProfileFragment(), AppOwnerProfileFragment.class.getSimpleName());
+        changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
 
     }
 

@@ -1,11 +1,11 @@
-package com.lujaina.ldbeauty.SP;
+package com.lujaina.ldbeauty.AppOwner;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,23 +26,21 @@ import com.lujaina.ldbeauty.Dialogs.ResetPasswordDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
+import com.lujaina.ldbeauty.SP.SPProfileFragment;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class SPLoginFragment extends Fragment {
-
+public class AOLoginFragment extends Fragment {
     private Context mContext;
     private MediatorInterface mMediatorInterface;
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;
     private static final String KEY_TAG = "login";
-
-    public SPLoginFragment() {
+    public AOLoginFragment() {
         // Required empty public constructor
     }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -55,15 +52,17 @@ public class SPLoginFragment extends Fragment {
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View parentView = inflater.inflate(R.layout.fragment_s_p_login, container, false);
+        View parentView = inflater.inflate(R.layout.fragment_a_o_login, container, false);
         final TextInputEditText ti_email = parentView.findViewById(R.id.ti_userEmail);
         final TextInputEditText ti_password = parentView.findViewById(R.id.ti_password);
         Button login = parentView.findViewById(R.id.btn_login);
         TextView forget = parentView.findViewById(R.id.tv_forget);
+
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
 
@@ -82,17 +81,22 @@ public class SPLoginFragment extends Fragment {
                     } else if (password.isEmpty()) {
                         ti_password.setError("please write your password");
                     }else {
+                        if(email.equals("Lujaina.me@hotmail.com") && password.equals("Lujaina95")) {
 
-                        SPRegistrationModel salonOwner = new SPRegistrationModel();
-                        salonOwner.setOwnerEmail(email);
-                        salonOwner.setPassWord(password);
-                        loginUsingFirebaseAuth(email, password);
+                            SPRegistrationModel salonOwner = new SPRegistrationModel();
+                            salonOwner.setOwnerEmail(email);
+                            salonOwner.setPassWord(password);
+                            loginUsingFirebaseAuth(email, password);
+                        }else{
+                            Toast.makeText(mContext, "Sorry your are not the App Owner", Toast.LENGTH_SHORT).show();
+                        }
+
                     }
                 }
-
-
             }
         });
+
+
         forget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,8 +109,6 @@ public class SPLoginFragment extends Fragment {
 
 
 
-
-
         return parentView;
     }
 
@@ -116,34 +118,32 @@ public class SPLoginFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         final ProgressDialog progressDialog = new ProgressDialog(mContext);
-                        SPRegistrationModel user = new SPRegistrationModel();
-                        /*progressDialog.setTitle("Welcome Back"+ user.getOwnerName() );
-                        progressDialog.show();*/
+                        progressDialog.setTitle("Uploading");
+                        progressDialog.show();
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(KEY_TAG, "signInWithEmail:success");
 
                             mFirebaseUser = mAuth.getCurrentUser();
-/*
                             progressDialog.dismiss();
-*/
 
+                            Toast.makeText(mContext, "Welcome to LD beauty App", Toast.LENGTH_SHORT).show();
                             if(mMediatorInterface != null){
-                                SPProfileFragment profile = new SPProfileFragment();
-                                profile.setOwnerName(user);
-                                mMediatorInterface.changeFragmentTo(profile, SPProfileFragment.class.getSimpleName());
+                                mMediatorInterface.changeFragmentTo(new AppOwnerProfileFragment(), AppOwnerProfileFragment.class.getSimpleName());
                             }
+
+
 
                         } else {
                             // If sign in fails, display a message to the user.
-/*
                             progressDialog.dismiss();
-*/
+
                             Log.w(KEY_TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(mContext,"incorrect email or password",
                                     Toast.LENGTH_SHORT).show();
                         }
 
+                        // ...
                     }
                 });
 
@@ -155,5 +155,6 @@ public class SPLoginFragment extends Fragment {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+
 
 }

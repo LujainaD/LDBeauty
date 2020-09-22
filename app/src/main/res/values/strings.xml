@@ -10,5 +10,7 @@
     <string name="erro_missin_title">Please write Info Title</string>
     <string name="erro_missin_info">Please write Information describe the title</string>
     <string name="salon_details"><u>Salon Details</u></string>
+    <string name="app_owner"><u>App Owner</u></string>
+    <string name="sign_up"><u>Sign up</u></string>
 
 </resources>
