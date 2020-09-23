@@ -83,16 +83,13 @@ public class AddInfoFragment extends Fragment implements InfoAdapter.infoListene
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                AddInfoModel aboutModel = new AddInfoModel();
                 int position = viewHolder.getAdapterPosition();
                 mUpdate.remove(position);
                 mAdapter.notifyDataSetChanged();
-                deleteInfo(aboutModel );
-
-
+                deleteInfo(position );
             }
         });
-              helper.attachToRecyclerView(recyclerView);
+        helper.attachToRecyclerView(recyclerView);
 
 
 
@@ -141,11 +138,12 @@ public class AddInfoFragment extends Fragment implements InfoAdapter.infoListene
     }
 
     @Override
-    public void deleteInfo(AddInfoModel infoId) {
+    public void deleteInfo(int postion) {
+    	String infoID = mUpdate.get(postion).getInfoId();
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid())
                 .child(Constants.Salon_Info)
-                .child(infoId.getInfoId());
+                .child(infoID);
         myRef.removeValue();
     }
 }

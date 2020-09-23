@@ -23,137 +23,135 @@ import java.util.ArrayList;
 
 public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> {
 
-    public Context mContext;
-    public MediatorInterface mMidiatorCallback;
-    private ArrayList<AddInfoModel> mUpdate;
-    private infoListener mListener;
+	public Context mContext;
+	public MediatorInterface mMidiatorCallback;
+	private ArrayList<AddInfoModel> mUpdate;
+	private infoListener mListener;
 
-    public InfoAdapter(Context mContext) {
-        mUpdate = new ArrayList<>();
-        this.mContext = mContext;
-        mMidiatorCallback = (MediatorInterface) mContext;
-    }
+	public InfoAdapter(Context mContext) {
+		mUpdate = new ArrayList<>();
+		this.mContext = mContext;
+		mMidiatorCallback = (MediatorInterface) mContext;
+	}
 
-        public void update ( int position, AddInfoModel aboutSalon){
-            mUpdate.add(position, aboutSalon);
-            notifyItemChanged(position);
-        }
+	public void update(int position, AddInfoModel aboutSalon) {
+		mUpdate.add(position, aboutSalon);
+		notifyItemChanged(position);
+	}
 
-        public void update (ArrayList < AddInfoModel > aboutSalon) {
-            mUpdate = aboutSalon;
-            notifyDataSetChanged();
-        }
+	public void update(ArrayList<AddInfoModel> aboutSalon) {
+		mUpdate = aboutSalon;
+		notifyDataSetChanged();
+	}
 
 
-        @NonNull
-        @Override
-        public InfoAdapter.MyViewHolder onCreateViewHolder (@NonNull ViewGroup parent, int viewType){
-            View listItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_view_add, parent, false);
+	@NonNull
+	@Override
+	public InfoAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		View listItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_view_add, parent, false);
 
-            return new InfoAdapter.MyViewHolder(listItemView);
-        }
+		return new InfoAdapter.MyViewHolder(listItemView);
+	}
 
-        @Override
-        public void onBindViewHolder ( @NonNull final MyViewHolder holder, int position){
-            final AddInfoModel aboutSalon = mUpdate.get(position);
+	@Override
+	public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
+		final AddInfoModel aboutSalon = mUpdate.get(position);
 
-            holder.tvTitle.setText(aboutSalon.getTitle());
-            if (aboutSalon.getBody().length() <= 100) {
+		holder.tvTitle.setText(aboutSalon.getTitle());
+		if (aboutSalon.getBody().length() <= 100) {
 
-                holder.tvBody.setText(aboutSalon.getBody());
-                holder.tvExpandable.setVisibility(View.GONE);
-            } else {
-                holder.tvBody.setText(aboutSalon.getBody().substring(0, 100) + " . . . ");
-            }
+			holder.tvBody.setText(aboutSalon.getBody());
+			holder.tvExpandable.setVisibility(View.GONE);
+		} else {
+			holder.tvBody.setText(aboutSalon.getBody().substring(0, 100) + " . . . ");
+		}
 
 /*
             holder.cvAboutSalon.setCardBackgroundColor(Color.parseColor(aboutSalon.getBackgroundColor()));
 */
 
-holder.cvAboutSalon.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        if(mListener != null){
-            mListener.deleteInfo(aboutSalon);
-        }
-    }
-});
+		holder.cvAboutSalon.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (mListener != null) {
+					mListener.deleteInfo(position);
+				}
+			}
+		});
 
-            final boolean[] isCollapse = {true};
+		final boolean[] isCollapse = {true};
 
-            holder.tvExpandable.setOnClickListener(new View.OnClickListener() {
-                @SuppressLint("SetTextI18n")
-                @Override
-                public void onClick(View view) {
+		holder.tvExpandable.setOnClickListener(new View.OnClickListener() {
+			@SuppressLint("SetTextI18n")
+			@Override
+			public void onClick(View view) {
 
-                    if (isCollapse[0]) {
+				if (isCollapse[0]) {
 
-                        if (aboutSalon.getBody().length() <= 100) {
-                            holder.tvBody.setText(aboutSalon.getBody());
-                            holder.tvExpandable.setVisibility(View.GONE);
-                        } else {
-                            holder.tvBody.setText(aboutSalon.getBody());
-                            holder.tvExpandable.setText("Show less");
-                        }
-
-
-                    } else {
-
-                        if (aboutSalon.getBody().length() <= 100) {
-                            holder.tvBody.setText(aboutSalon.getBody());
-                            holder.tvExpandable.setVisibility(View.GONE);
-                        } else {
-                            holder.tvBody.setText(aboutSalon.getBody().substring(0, 100) + " . . . ");
-                            holder.tvExpandable.setText("Show more");
-                        }
+					if (aboutSalon.getBody().length() <= 100) {
+						holder.tvBody.setText(aboutSalon.getBody());
+						holder.tvExpandable.setVisibility(View.GONE);
+					} else {
+						holder.tvBody.setText(aboutSalon.getBody());
+						holder.tvExpandable.setText("Show less");
+					}
 
 
-                    }
-                    isCollapse[0] = !isCollapse[0];
+				} else {
+
+					if (aboutSalon.getBody().length() <= 100) {
+						holder.tvBody.setText(aboutSalon.getBody());
+						holder.tvExpandable.setVisibility(View.GONE);
+					} else {
+						holder.tvBody.setText(aboutSalon.getBody().substring(0, 100) + " . . . ");
+						holder.tvExpandable.setText("Show more");
+					}
 
 
-                }
-            });
+				}
+				isCollapse[0] = !isCollapse[0];
 
 
-        }
+			}
+		});
 
 
+	}
 
 
-    @Override
-    public int getItemCount() {
-        return mUpdate.size();
-    }
+	@Override
+	public int getItemCount() {
+		return mUpdate.size();
+	}
 
-    public void setRemoveListener(infoListener listener) {
+	public void setRemoveListener(infoListener listener) {
 
-        mListener = listener;
-    }
+		mListener = listener;
+	}
 
-    public interface infoListener {
+	public interface infoListener {
 
-        void deleteInfo(AddInfoModel infoId);
-    }
+		void deleteInfo(int position);
+	}
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+	public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvTitle;
-        final TextView tvBody;
-        final TextView tvExpandable;
-        CardView cvAboutSalon;
+		final TextView tvBody;
+		final TextView tvExpandable;
+		TextView tvTitle;
+		CardView cvAboutSalon;
 
-        public MyViewHolder(@NonNull View itemView) {
-            super(itemView);
+		public MyViewHolder(@NonNull View itemView) {
+			super(itemView);
 
-            cvAboutSalon = itemView.findViewById(R.id.cv_info);
-            tvTitle = itemView.findViewById(R.id.title_tv);
-            tvBody = itemView.findViewById(R.id.body_tv);
-            tvExpandable = itemView.findViewById(R.id.tv_expandable);
+			cvAboutSalon = itemView.findViewById(R.id.cv_info);
+			tvTitle = itemView.findViewById(R.id.title_tv);
+			tvBody = itemView.findViewById(R.id.body_tv);
+			tvExpandable = itemView.findViewById(R.id.tv_expandable);
 
-        }
+		}
 
 
-    }
+	}
 
 }
