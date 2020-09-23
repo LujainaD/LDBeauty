@@ -10,10 +10,10 @@
 
 	<androidx.cardview.widget.CardView
 		android:id="@+id/cardView_spinner"
-		android:layout_width="match_parent"
+		android:layout_width="150dp"
 		android:layout_height="wrap_content"
 		android:layout_marginStart="16dp"
-		android:layout_marginTop="40dp"
+		android:layout_marginTop="20dp"
 		android:layout_marginEnd="16dp"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
@@ -23,8 +23,8 @@
 			android:id="@+id/colorSpinner"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:spinnerMode="dropdown"
 			android:descendantFocusability="blocksDescendants"
+			android:spinnerMode="dropdown"
 			android:theme="@style/ThemeOverlay.AppCompat.Light" />
 	</androidx.cardview.widget.CardView>
 
@@ -33,7 +33,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginStart="16dp"
-		android:layout_marginTop="16dp"
+		android:layout_marginTop="40dp"
 		android:layout_marginEnd="16dp"
 		android:background="@drawable/rounded_rectangle_for_card"
 		android:hint="@string/Title"
@@ -47,9 +47,9 @@
 			android:layout_height="match_parent"
 			android:layout_marginTop="16dp"
 			android:ems="10"
-			android:textSize="@dimen/dialogu_inout_size"
 			android:inputType="textPersonName"
 			android:textColor="@color/edittext_text_color"
+			android:textSize="@dimen/dialogu_inout_size"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toStartOf="parent" />
 
@@ -59,7 +59,7 @@
 	<com.google.android.material.textfield.TextInputLayout
 		android:id="@+id/textField2"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
+		android:layout_height="150dp"
 		android:layout_marginStart="16dp"
 		android:layout_marginTop="16dp"
 		android:layout_marginEnd="16dp"
@@ -72,7 +72,7 @@
 		<com.google.android.material.textfield.TextInputEditText
 			android:id="@+id/body"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
+			android:layout_height="wrap_content"
 			android:layout_marginTop="16dp"
 			android:ems="10"
 			android:textSize="@dimen/dialogu_inout_size"
@@ -89,9 +89,8 @@
 		style="@style/Widget.AppCompat.Button.Borderless"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="32dp"
-		android:layout_marginEnd="32dp"
-		android:layout_marginBottom="32dp"
+		android:layout_marginTop="40dp"
+		android:layout_marginEnd="10dp"
 		android:text="@string/add"
 		android:textAllCaps="false"
 		android:textColor="#FFFFFF"
@@ -104,7 +103,7 @@
 		style="@style/Widget.AppCompat.Button.Borderless"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginEnd="32dp"
+		android:layout_marginEnd="10dp"
 		android:text="@string/cancel"
 		android:textAllCaps="false"
 		android:textColor="#FFFFFF"
