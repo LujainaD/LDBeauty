@@ -125,7 +125,6 @@ private InfoAdapter mAdapter;
 		FirebaseDatabase database = FirebaseDatabase.getInstance();
 		DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Info);
 
-
 		String Id = myRef.push().getKey();
 
 		AddInfoModel about = new AddInfoModel();
@@ -133,7 +132,7 @@ private InfoAdapter mAdapter;
 		about.setTitle(title);
 		about.setBody(body);
 /*
-		about.setBackgroundColor(background);
+		about.setBackgroundColor();
 */
 		about.setSalonOwnerId(mFirebaseUser.getUid());
 		mUpdate.add(about);
