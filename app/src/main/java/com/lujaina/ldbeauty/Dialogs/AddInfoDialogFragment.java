@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +45,10 @@ public class AddInfoDialogFragment extends DialogFragment implements AdapterView
 	private Context mContext;
 	private ArrayList<ColorModel> colorList;
 	private ArrayList<AddInfoModel> mUpdate;
-private InfoAdapter mAdapter;
+	private InfoAdapter mAdapter;
+
+	private AddInfoModel about;
+
 	public AddInfoDialogFragment() {
 		// Required empty public constructor
 	}
@@ -92,6 +96,8 @@ private InfoAdapter mAdapter;
 		mUpdate = new ArrayList<>();
 		mAdapter = new InfoAdapter(mContext);
 
+		about = new AddInfoModel();
+
 		Spinner colorSpinner = parentView.findViewById(R.id.colorSpinner);
 		colorSpinner.setOnItemSelectedListener(this);
 		ColorAdapter mAdapter = new ColorAdapter(mContext, colorList);
@@ -124,19 +130,16 @@ private InfoAdapter mAdapter;
 	private void addInfoToDB(String title, String body) {
 		FirebaseDatabase database = FirebaseDatabase.getInstance();
 		DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Info);
-
 		String Id = myRef.push().getKey();
 
-		AddInfoModel about = new AddInfoModel();
 		about.setInfoId(Id);
 		about.setTitle(title);
 		about.setBody(body);
-/*
-		about.setBackgroundColor();
-*/
+
 		about.setSalonOwnerId(mFirebaseUser.getUid());
 		mUpdate.add(about);
 		mAdapter.update(mUpdate.indexOf(about), about);
+
 		myRef.child(Id).setValue(about).addOnSuccessListener(new OnSuccessListener<Void>() {
 			@Override
 			public void onSuccess(Void aVoid) {
@@ -160,6 +163,8 @@ private InfoAdapter mAdapter;
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		Toast.makeText(mContext, "Selected is:" + position, Toast.LENGTH_SHORT).show();
+
+		about.setBackgroundColor(colorList.get(position).toString());
 	}
 
 	@Override
