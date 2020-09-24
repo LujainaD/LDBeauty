@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.lujaina.ldbeauty.AppOwner.AppOwnerProfileFragment;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
@@ -36,6 +34,8 @@ public class SalonConfirmDialogFragment extends DialogFragment {
     private SPRegistrationModel mDetails;
     private Context mContext;
     private MediatorInterface mMediatorInterface;
+    private SalonConfirmDialogFragment.status mListener;
+
     public SalonConfirmDialogFragment() {
         // Required empty public constructor
     }
@@ -81,7 +81,6 @@ public class SalonConfirmDialogFragment extends DialogFragment {
 
 
         if (mDetails != null) {
-
             ownerName.setText(mDetails.getOwnerName());
             ownerPhone.setText(mDetails.getPhoneNumber());
             salonName.setText(mDetails.getSalonName());
@@ -93,9 +92,11 @@ public class SalonConfirmDialogFragment extends DialogFragment {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String word = "Confirm";
+
+               String word = "Confirm";
                 SPRegistrationModel confirm = new SPRegistrationModel();
                 confirm.setStatusType(word);
+
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mDetails.getOwnerId());
 
@@ -109,10 +110,11 @@ public class SalonConfirmDialogFragment extends DialogFragment {
                         } else {
                             Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
                         }
-
-
                     }
                 });
+                if(mListener != null){
+                    mListener.confirm(confirm);
+                }
 
 
             }
@@ -141,13 +143,25 @@ public class SalonConfirmDialogFragment extends DialogFragment {
                     }
                 });
 
+                if(mListener != null){
+                    mListener.decline(confirm);
+                }
+
 
             }
         });
 
         return parentView;
     }
+    
+    public void setStatusListener(status statusListener){
+        mListener = statusListener;
+    }
 
+    public interface status {
+        void confirm (SPRegistrationModel confirmStatus);
+        void decline(SPRegistrationModel confirmStatus);
+    }
 
     public void setSalonObj(SPRegistrationModel salonsDetails) {
         mDetails = salonsDetails;

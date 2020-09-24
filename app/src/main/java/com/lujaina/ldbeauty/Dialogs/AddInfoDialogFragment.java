@@ -48,6 +48,9 @@ public class AddInfoDialogFragment extends DialogFragment implements AdapterView
 	private InfoAdapter mAdapter;
 
 	private AddInfoModel about;
+/*
+	private color mListener;
+*/
 
 	public AddInfoDialogFragment() {
 		// Required empty public constructor
@@ -135,7 +138,6 @@ public class AddInfoDialogFragment extends DialogFragment implements AdapterView
 		about.setInfoId(Id);
 		about.setTitle(title);
 		about.setBody(body);
-
 		about.setSalonOwnerId(mFirebaseUser.getUid());
 		mUpdate.add(about);
 		mAdapter.update(mUpdate.indexOf(about), about);
@@ -164,11 +166,25 @@ public class AddInfoDialogFragment extends DialogFragment implements AdapterView
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		Toast.makeText(mContext, "Selected is:" + position, Toast.LENGTH_SHORT).show();
 
-		about.setBackgroundColor(colorList.get(position).toString());
+		about.setBackgroundColor(colorList.get(position).getColorValue());
+		/*if(mListener != null){
+
+			mListener.choosingColor(position);
+		}*/
 	}
 
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
 
 	}
+
+
+	/*public void setColorListener(color listener){
+		mListener = listener;
+	}
+	public interface color {
+		void choosingColor(int position);
+	}*/
 }
+
+

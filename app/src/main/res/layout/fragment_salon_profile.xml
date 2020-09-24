@@ -69,7 +69,7 @@
         android:text="About Salon"
         android:textAlignment="textStart"
         android:textColor="@color/pink_text"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +89,7 @@
 
         android:textAlignment="textStart"
         android:textColor="@color/pink_text"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -106,7 +106,7 @@
         android:text="Salon's Gallery"
         android:textAlignment="textStart"
         android:textColor="@color/pink_text"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:drawableEnd="@drawable/ic_arrow"
 
         app:layout_constraintEnd_toEndOf="parent"
@@ -127,10 +127,32 @@
         android:text="Salon's Location"
         android:textAlignment="textStart"
         android:textColor="@color/pink_text"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_services" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="476dp"
+        android:layout_marginEnd="160dp"
+        android:src="@drawable/boquet"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="200dp"
+        android:layout_marginBottom="314dp"
+        android:src="@drawable/flowers"
+        app:layout_constraintBottom_toTopOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

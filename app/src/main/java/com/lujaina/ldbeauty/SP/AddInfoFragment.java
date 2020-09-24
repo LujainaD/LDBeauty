@@ -1,9 +1,15 @@
 package com.lujaina.ldbeauty.SP;
 
+import android.content.ClipData;
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -15,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,8 +32,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Adapters.InfoAdapter;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Dialogs.AddInfoDialogFragment;
+import com.lujaina.ldbeauty.Dialogs.SalonConfirmDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.AddInfoModel;
+import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 
 import java.util.ArrayList;
@@ -41,6 +50,8 @@ public class AddInfoFragment extends Fragment implements InfoAdapter.infoListene
     private DatabaseReference myRef;
     private ArrayList<AddInfoModel> mUpdate;
     private InfoAdapter mAdapter;
+    private Drawable icon;
+    private ColorDrawable background;
     public AddInfoFragment() {
         // Required empty public constructor
     }
@@ -73,9 +84,16 @@ public class AddInfoFragment extends Fragment implements InfoAdapter.infoListene
         readSalonInfoFromFirebaseDB();
 
         mAdapter.setRemoveListener(AddInfoFragment.this);
+      /*  mAdapter.setColorListener(new AddInfoDialogFragment.color() {
+            @Override
+            public void choosingColor(int position) {
+
+            }
+
+        });*/
 
 
-        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
@@ -88,10 +106,10 @@ public class AddInfoFragment extends Fragment implements InfoAdapter.infoListene
                 mAdapter.notifyDataSetChanged();
                 deleteInfo(position );
             }
+
         });
+
         helper.attachToRecyclerView(recyclerView);
-
-
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,12 +120,11 @@ public class AddInfoFragment extends Fragment implements InfoAdapter.infoListene
         });
         return parentView;
     }
+
     private void setupRecyclerView(RecyclerView recyclerView) {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
-//      DividerItemDecoration divider = new DividerItemDecoration(mContext, layoutManager.getOrientation());
         recyclerView.setLayoutManager(layoutManager);
-        // recyclerView.addItemDecoration(divider);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
     }
@@ -120,9 +137,6 @@ public class AddInfoFragment extends Fragment implements InfoAdapter.infoListene
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mUpdate.clear();
-
-                //  String currentUserId = mFirebaseUser.getUid();
-                //base on reference  dataSnapshot holdes array of notes
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     AddInfoModel aboutModel = d.getValue(AddInfoModel.class);
                     mUpdate.add(aboutModel);
@@ -146,4 +160,6 @@ public class AddInfoFragment extends Fragment implements InfoAdapter.infoListene
                 .child(infoID);
         myRef.removeValue();
     }
+
+
 }

@@ -15,6 +15,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lujaina.ldbeauty.Dialogs.AddInfoDialogFragment;
+import com.lujaina.ldbeauty.Dialogs.SalonConfirmDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.AddInfoModel;
 import com.lujaina.ldbeauty.R;
@@ -27,6 +29,9 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 	public MediatorInterface mMidiatorCallback;
 	private ArrayList<AddInfoModel> mUpdate;
 	private infoListener mListener;
+/*
+	private AddInfoDialogFragment.color mColor;
+*/
 
 	public InfoAdapter(Context mContext) {
 		mUpdate = new ArrayList<>();
@@ -66,9 +71,7 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 			holder.tvBody.setText(aboutSalon.getBody().substring(0, 100) + " . . . ");
 		}
 
-/*
-            holder.cvAboutSalon.setCardBackgroundColor(Color.parseColor(aboutSalon.getBackgroundColor()));
-*/
+		holder.cvAboutSalon.setCardBackgroundColor(Color.parseColor(aboutSalon.getBackgroundColor()));
 
 		holder.cvAboutSalon.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -88,7 +91,7 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 
 				if (isCollapse[0]) {
 
-					if (aboutSalon.getBody().length() <= 100) {
+					if (aboutSalon.getBody().length() <= 100 ) {
 						holder.tvBody.setText(aboutSalon.getBody());
 						holder.tvExpandable.setVisibility(View.GONE);
 					} else {

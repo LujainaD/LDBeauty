@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.lujaina.ldbeauty.Dialogs.SalonConfirmDialogFragment;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 
@@ -50,7 +51,17 @@ public class ConfirmAdapter extends RecyclerView.Adapter<ConfirmAdapter.MyViewHo
 
         Glide.with(mContext).load(names.getSalonImageURL()).into(holder.salonImg);
         holder.name.setText(names.getSalonName());
-        holder.status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.grayconfirm));
+        if(mNames.get(position).getStatusType()=="Confrim") {
+            holder.status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.confirm));
+
+        }else if (mNames.get(position).getStatusType()=="Cancel"){
+            holder.status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.cancel));
+
+        }else {
+            holder.status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.grayconfirm));
+
+        }
+
         holder.salonDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +76,10 @@ public class ConfirmAdapter extends RecyclerView.Adapter<ConfirmAdapter.MyViewHo
     public int getItemCount() {
         return mNames.size();
     }
+
+    public void setStatusListener(SalonConfirmDialogFragment.status status) {
+    }
+
 
     public interface onItemClickListener {
         void onItemClick(SPRegistrationModel salonsDetails);
@@ -90,6 +105,4 @@ public class ConfirmAdapter extends RecyclerView.Adapter<ConfirmAdapter.MyViewHo
             status = itemView.findViewById(R.id.iv_status);
         }
     }
-
-
 }
