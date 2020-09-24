@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.lujaina.ldbeauty.AppOwner.AoConfirmSalonsFragment;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
@@ -34,11 +35,15 @@ public class SalonConfirmDialogFragment extends DialogFragment {
     private SPRegistrationModel mDetails;
     private Context mContext;
     private MediatorInterface mMediatorInterface;
-    private SalonConfirmDialogFragment.status mListener;
+    private SalonConfirmDialogFragment.statusConfirmed mListener;
+    private SPRegistrationModel sprModelObj;
 
-    public SalonConfirmDialogFragment() {
-        // Required empty public constructor
+    public SalonConfirmDialogFragment(AoConfirmSalonsFragment aoConfirmContext, SPRegistrationModel salonsDetails) {
+        mListener = (statusConfirmed) aoConfirmContext;
+		sprModelObj = salonsDetails;
     }
+
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -104,16 +109,15 @@ public class SalonConfirmDialogFragment extends DialogFragment {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-
-                            Toast.makeText(getContext(), "success", Toast.LENGTH_SHORT).show();
+                        	Toast.makeText(mContext, "success", Toast.LENGTH_SHORT).show();
                             dismiss();
                         } else {
-                            Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "Error", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
                 if(mListener != null){
-                    mListener.confirm(confirm);
+                    mListener.onStatusSelected(1,sprModelObj);
                 }
 
 
@@ -133,10 +137,10 @@ public class SalonConfirmDialogFragment extends DialogFragment {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
 
-                            Toast.makeText(getContext(), "success", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "success", Toast.LENGTH_SHORT).show();
                             dismiss();
                         } else {
-                            Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "Error", Toast.LENGTH_SHORT).show();
                         }
 
 
@@ -144,7 +148,7 @@ public class SalonConfirmDialogFragment extends DialogFragment {
                 });
 
                 if(mListener != null){
-                    mListener.decline(confirm);
+                    mListener.onStatusSelected(2,sprModelObj);
                 }
 
 
@@ -153,14 +157,13 @@ public class SalonConfirmDialogFragment extends DialogFragment {
 
         return parentView;
     }
-    
-    public void setStatusListener(status statusListener){
-        mListener = statusListener;
-    }
 
-    public interface status {
-        void confirm (SPRegistrationModel confirmStatus);
-        void decline(SPRegistrationModel confirmStatus);
+//    public void setStatusListener(status statusListener){
+//        mListener = statusListener;
+//    }
+
+    public interface statusConfirmed {
+        void onStatusSelected(int confirmOrDecline , SPRegistrationModel sprObj);
     }
 
     public void setSalonObj(SPRegistrationModel salonsDetails) {

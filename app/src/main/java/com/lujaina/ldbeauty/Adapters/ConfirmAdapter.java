@@ -77,8 +77,9 @@ public class ConfirmAdapter extends RecyclerView.Adapter<ConfirmAdapter.MyViewHo
         return mNames.size();
     }
 
-    public void setStatusListener(SalonConfirmDialogFragment.status status) {
-    }
+//    public void setStatusListener(SalonConfirmDialogFragment.status status) {
+//
+//    }
 
 
     public interface onItemClickListener {

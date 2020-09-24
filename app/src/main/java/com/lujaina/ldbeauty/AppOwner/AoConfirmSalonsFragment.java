@@ -33,7 +33,8 @@ import com.lujaina.ldbeauty.R;
 import java.util.ArrayList;
 
 
-public class AoConfirmSalonsFragment extends Fragment {
+public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDialogFragment.statusConfirmed {
+	private static final String TAG = "AoConfirmSalonsFragment";
     private Context mContext;
     private MediatorInterface mMediatorInterface;
     FirebaseAuth mAuth;
@@ -79,7 +80,7 @@ public class AoConfirmSalonsFragment extends Fragment {
                 if (mMediatorInterface != null) {
 
 
-                    SalonConfirmDialogFragment details = new SalonConfirmDialogFragment();
+                    SalonConfirmDialogFragment details = new SalonConfirmDialogFragment(AoConfirmSalonsFragment.this ,salonsDetails);
                     Log.d("serviceId", "onItemClick-SalonNamesFragment : " + salonsDetails.getOwnerId());
                     details.setSalonObj(salonsDetails);
                     details.show(getChildFragmentManager(), SalonConfirmDialogFragment.class.getSimpleName());
@@ -89,17 +90,21 @@ public class AoConfirmSalonsFragment extends Fragment {
             }
         });
 
-        mAdapter.setStatusListener(new SalonConfirmDialogFragment.status() {
-            @Override
-            public void confirm(SPRegistrationModel confirmStatus) {
 
-            }
 
-            @Override
-            public void decline(SPRegistrationModel confirmStatus) {
 
-            }
-        });
+
+//        mAdapter.setStatusListener(new SalonConfirmDialogFragment.status() {
+//            @Override
+//            public void confirm(SPRegistrationModel confirmStatus) {
+//				Log.d(TAG, "confirm: ");
+//            }
+//
+//            @Override
+//            public void decline(SPRegistrationModel confirmStatus) {
+//				Log.d(TAG, "decline: ");
+//            }
+//        });
         return parentView;
     }
 
@@ -141,4 +146,18 @@ public class AoConfirmSalonsFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
     }
+
+	@Override
+	public void onStatusSelected(int confirmOrDecline, SPRegistrationModel sprObj) {
+
+		int itemPos = salonNamesArray.indexOf(sprObj);
+		if(confirmOrDecline==1) {
+			salonNamesArray.get(itemPos).setStatusType("Confrim");
+		}else{
+			salonNamesArray.get(itemPos).setStatusType("Cancel");
+		}
+
+		mAdapter.update(salonNamesArray);
+
+	}
 }
