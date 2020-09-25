@@ -1,7 +1,6 @@
 package com.lujaina.ldbeauty.SP;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -22,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +28,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -49,11 +46,8 @@ import com.lujaina.ldbeauty.R;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Pattern;
-
-import dmax.dialog.SpotsDialog;
 
 import static android.content.ContentValues.TAG;
 
@@ -236,7 +230,13 @@ public class SPSignUpFragment extends Fragment {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog = new ProgressDialog(mContext);
+                TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
+                progressText.setText("Welcome Back..");
+                progressDialog.setCancelable(false);
                 progressDialog.show();
+                progressDialog.setContentView(R.layout.custom_progress_dialog);
+                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
                 if (mMediatorInterface != null) {
                     String name = userName.getText().toString();
@@ -283,7 +283,7 @@ public class SPSignUpFragment extends Fragment {
                             progressDialog.setTitle("Welcome To LD Beauty");
                             progressDialog.setCancelable(false);
                             progressDialog.show();
-                            progressDialog.setContentView(R.layout.fragment_progress_dialog);
+                            progressDialog.setContentView(R.layout.custom_progress_dialog);
                             progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
                             SPRegistrationModel registration = new SPRegistrationModel();

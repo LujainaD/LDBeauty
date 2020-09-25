@@ -1,5 +1,6 @@
 package com.lujaina.ldbeauty.SP;
 
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -20,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.behavior.SwipeDismissBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,11 +39,13 @@ import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.AddInfoModel;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
+import com.lujaina.ldbeauty.RecyclerItemTouchHelper;
+import com.lujaina.ldbeauty.RecyclerItemTouchHelperListener;
 
 import java.util.ArrayList;
 
 
-public class AddInfoFragment extends Fragment implements InfoAdapter.infoListener{
+public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelperListener {
     private MediatorInterface mMediatorInterface;
     private Context mContext;
     FirebaseAuth mAuth;
@@ -50,8 +54,7 @@ public class AddInfoFragment extends Fragment implements InfoAdapter.infoListene
     private DatabaseReference myRef;
     private ArrayList<AddInfoModel> mUpdate;
     private InfoAdapter mAdapter;
-    private Drawable icon;
-    private ColorDrawable background;
+    ProgressDialog progressDialog;
 
     public AddInfoFragment() {
         // Required empty public constructor
@@ -84,10 +87,11 @@ public class AddInfoFragment extends Fragment implements InfoAdapter.infoListene
         setupRecyclerView(recyclerView);
         readSalonInfoFromFirebaseDB();
 
+/*
         mAdapter.setRemoveListener(AddInfoFragment.this);
+*/
 
-
-        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        /*ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
@@ -95,16 +99,30 @@ public class AddInfoFragment extends Fragment implements InfoAdapter.infoListene
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                 ColorDrawable background = new ColorDrawable(Color.RED);
+                 Drawable icon =  ContextCompat.getDrawable(mContext,R.drawable.delete);
+
                 int position = viewHolder.getAdapterPosition();
-                mUpdate.remove(position);
-                mAdapter.notifyDataSetChanged();
-                deleteInfo(position );
+                    mUpdate.remove(position);
+                    mAdapter.notifyDataSetChanged();
+                    deleteInfo(position );
+
 
             }
 
+
         });
 
-        helper.attachToRecyclerView(recyclerView);
+        helper.attachToRecyclerView(recyclerView);*/
+
+
+        ItemTouchHelper.SimpleCallback item = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this) {
+
+        };
+
+        new ItemTouchHelper(item).attachToRecyclerView(recyclerView);
+
+
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +146,11 @@ public class AddInfoFragment extends Fragment implements InfoAdapter.infoListene
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Info);
         // Read from the mDatabase
+        progressDialog = new ProgressDialog(mContext);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.progress_bar);
+        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -135,6 +158,7 @@ public class AddInfoFragment extends Fragment implements InfoAdapter.infoListene
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     AddInfoModel aboutModel = d.getValue(AddInfoModel.class);
                     mUpdate.add(aboutModel);
+                    progressDialog.dismiss();
                     mAdapter.update(mUpdate);
                 }
             }
@@ -142,11 +166,12 @@ public class AddInfoFragment extends Fragment implements InfoAdapter.infoListene
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
+                progressDialog.dismiss();
             }
         });
     }
 
-    @Override
+  /*  @Override
     public void deleteInfo(int postion) {
     	String infoID = mUpdate.get(postion).getInfoId();
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
@@ -155,6 +180,20 @@ public class AddInfoFragment extends Fragment implements InfoAdapter.infoListene
                 .child(infoID);
         myRef.removeValue();
     }
+*/
 
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        if(viewHolder instanceof InfoAdapter.MyViewHolder){
+            String infoID = mUpdate.get(position).getInfoId();
+            int position1 = viewHolder.getAdapterPosition();
+            mAdapter.removeItem(position1);
+            FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+            myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid())
+                    .child(Constants.Salon_Info)
+                    .child(infoID);
+            myRef.removeValue();
 
+        }
+    }
 }

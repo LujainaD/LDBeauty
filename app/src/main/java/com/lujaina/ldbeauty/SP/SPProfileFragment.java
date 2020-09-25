@@ -35,6 +35,7 @@ public class SPProfileFragment extends Fragment {
     public FirebaseAuth mAuth;
     public FirebaseUser mFirebaseUser;
     DatabaseReference myRef;
+    ProgressDialog progressDialog;
     private SPRegistrationModel mCurrentUser;
 
 
@@ -78,9 +79,11 @@ public class SPProfileFragment extends Fragment {
         });
 
 
-            final ProgressDialog progressDialog = new ProgressDialog(mContext);
-        progressDialog.setTitle("Welcome Back ");
+        progressDialog = new ProgressDialog(mContext);
+        progressDialog.setCancelable(false);
         progressDialog.show();
+        progressDialog.setContentView(R.layout.progress_bar);
+        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -94,8 +97,9 @@ public class SPProfileFragment extends Fragment {
 
                 } else {
                     progressDialog.dismiss();
-                    Intent intent = new Intent(getActivity(), LoginChoicesFragment.class);
-                    startActivity(intent);
+                    if (mMediatorInterface !=null){
+                        mMediatorInterface.changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
+                    }
                 }
             }
 
@@ -104,6 +108,7 @@ public class SPProfileFragment extends Fragment {
                 progressDialog.dismiss();
             }
         });
+
         return parentView;
     }
 

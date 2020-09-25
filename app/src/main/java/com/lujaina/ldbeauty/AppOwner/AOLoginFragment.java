@@ -1,12 +1,10 @@
 package com.lujaina.ldbeauty.AppOwner;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -15,23 +13,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.lujaina.ldbeauty.Dialogs.AddInfoDialogFragment;
 import com.lujaina.ldbeauty.Dialogs.ResetPasswordDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
-import com.lujaina.ldbeauty.ProgressDialogFragment;
 import com.lujaina.ldbeauty.R;
-import com.lujaina.ldbeauty.SP.SPProfileFragment;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -107,7 +100,7 @@ public class AOLoginFragment extends Fragment {
                 progressDialog = new ProgressDialog(mContext);
                 progressDialog.setCancelable(false);
                 progressDialog.show();
-                progressDialog.setContentView(R.layout.fragment_progress_dialog);
+                progressDialog.setContentView(R.layout.custom_progress_dialog);
                 TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
                 progressText.setText("Welcome Back..");
                 progressText.setVisibility(View.VISIBLE);

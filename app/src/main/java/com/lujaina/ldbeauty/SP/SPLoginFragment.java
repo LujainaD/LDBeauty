@@ -40,6 +40,7 @@ public class SPLoginFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;
     private static final String KEY_TAG = "login";
+    ProgressDialog progressDialog;
 
     public SPLoginFragment() {
         // Required empty public constructor
@@ -98,7 +99,14 @@ public class SPLoginFragment extends Fragment {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                progressDialog = new ProgressDialog(mContext);
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+                progressDialog.setContentView(R.layout.custom_progress_dialog);
+                TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
+                progressText.setText("Welcome Back..");
+                progressText.setVisibility(View.VISIBLE);
+                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                 if (mMediatorInterface != null) {
                     final String email = ti_email.getText().toString();
                     final String password = ti_password.getText().toString();
@@ -143,7 +151,6 @@ public class SPLoginFragment extends Fragment {
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        final ProgressDialog progressDialog = new ProgressDialog(mContext);
                         SPRegistrationModel user = new SPRegistrationModel();
                         /*progressDialog.setTitle("Welcome Back"+ user.getOwnerName() );
                         progressDialog.show();*/
@@ -152,9 +159,7 @@ public class SPLoginFragment extends Fragment {
                             Log.d(KEY_TAG, "signInWithEmail:success");
 
                             mFirebaseUser = mAuth.getCurrentUser();
-/*
                             progressDialog.dismiss();
-*/
 
                             if(mMediatorInterface != null){
                                 SPProfileFragment profile = new SPProfileFragment();
@@ -164,9 +169,7 @@ public class SPLoginFragment extends Fragment {
 
                         } else {
                             // If sign in fails, display a message to the user.
-/*
                             progressDialog.dismiss();
-*/
                             Log.w(KEY_TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(mContext,"incorrect email or password",
                                     Toast.LENGTH_SHORT).show();

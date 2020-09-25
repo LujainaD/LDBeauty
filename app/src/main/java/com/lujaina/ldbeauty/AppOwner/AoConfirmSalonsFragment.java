@@ -43,7 +43,7 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
     RecyclerView recyclerView;
     private ConfirmAdapter mAdapter;
     ArrayList<SPRegistrationModel> salonNamesArray;
-
+   ProgressDialog progressDialog;
     public AoConfirmSalonsFragment() {
         // Required empty public constructor
     }
@@ -111,9 +111,11 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
     private void readSalonNamesFromFireBaseDB() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner);
-        final ProgressDialog progressDialog = new ProgressDialog(mContext);
-        progressDialog.setTitle("Uploading Registered Salons");
+        progressDialog = new ProgressDialog(mContext);
+        progressDialog.setCancelable(false);
         progressDialog.show();
+        progressDialog.setContentView(R.layout.progress_bar);
+        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

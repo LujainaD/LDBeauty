@@ -3,17 +3,21 @@ package com.lujaina.ldbeauty.Adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.telecom.Call;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.lujaina.ldbeauty.Dialogs.AddInfoDialogFragment;
 import com.lujaina.ldbeauty.Dialogs.SalonConfirmDialogFragment;
@@ -28,7 +32,9 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 	public Context mContext;
 	public MediatorInterface mMidiatorCallback;
 	private ArrayList<AddInfoModel> mUpdate;
+/*
 	private infoListener mListener;
+*/
 /*
 	private AddInfoDialogFragment.color mColor;
 */
@@ -49,7 +55,15 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 		notifyDataSetChanged();
 	}
 
+	public void removeItem(int position){
+		mUpdate.remove(position);
+		notifyItemRemoved(position);
+	}
+	public void restoreItem(AddInfoModel item ,int position) {
+		mUpdate.add(position,item);
+		notifyItemInserted(position);
 
+	}
 	@NonNull
 	@Override
 	public InfoAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -58,6 +72,7 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 		return new InfoAdapter.MyViewHolder(listItemView);
 	}
 
+	@SuppressLint({"SetTextI18n", "ClickableViewAccessibility"})
 	@Override
 	public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
 		final AddInfoModel aboutSalon = mUpdate.get(position);
@@ -73,15 +88,16 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 
 		holder.cvAboutSalon.setCardBackgroundColor(Color.parseColor(aboutSalon.getBackgroundColor()));
 
-		holder.cvAboutSalon.setOnClickListener(new View.OnClickListener() {
+		/*holder.cvAboutSalon.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+
 				if (mListener != null) {
 					mListener.deleteInfo(position);
 				}
 			}
 		});
-
+*/
 		final boolean[] isCollapse = {true};
 
 		holder.tvExpandable.setOnClickListener(new View.OnClickListener() {
@@ -124,26 +140,29 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 		return mUpdate.size();
 	}
 
-	public void setRemoveListener(infoListener listener) {
+	/*public void setRemoveListener(infoListener listener) {
 
 		mListener = listener;
 	}
+
+
 
 	public interface infoListener {
 
 		void deleteInfo(int position);
 	}
-
+*/
 	public class MyViewHolder extends RecyclerView.ViewHolder {
 
 		final TextView tvBody;
 		final TextView tvExpandable;
 		TextView tvTitle;
 		CardView cvAboutSalon;
-
+        public RelativeLayout viewForground, viewBackground;
 		public MyViewHolder(@NonNull View itemView) {
 			super(itemView);
-
+			viewForground = itemView.findViewById(R.id.view_forground);
+			viewBackground =itemView.findViewById(R.id.view_background);
 			cvAboutSalon = itemView.findViewById(R.id.cv_info);
 			tvTitle = itemView.findViewById(R.id.title_tv);
 			tvBody = itemView.findViewById(R.id.body_tv);

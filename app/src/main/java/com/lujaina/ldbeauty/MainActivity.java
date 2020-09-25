@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements MediatorInterface
             finish();
         } else {
             super.onBackPressed();
+
         }
     }
 }
