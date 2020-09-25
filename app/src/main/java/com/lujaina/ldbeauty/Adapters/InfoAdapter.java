@@ -117,10 +117,7 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 
 			}
 		});
-
-
 	}
-
 
 	@Override
 	public int getItemCount() {

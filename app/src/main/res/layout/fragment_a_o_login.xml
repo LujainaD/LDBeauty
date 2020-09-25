@@ -5,127 +5,156 @@
     android:id="@+id/frameLayout5"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".SP.SPLoginFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/ld"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
         android:fontFamily="cursive"
-        android:gravity="center"
-        android:text="Hello gorgeous"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@+id/cv_email"
+        android:text="LD"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/beauty"
+        app:layout_constraintEnd_toStartOf="@+id/beauty"
+        app:layout_constraintStart_toStartOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/beauty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="108dp"
+        android:fontFamily="cursive"
+        android:text="Beauty"
+        android:textColor="#B61F7F"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="120dp"
+        android:layout_height="134dp"
+        android:layout_marginTop="64dp"
+        android:src="@drawable/logpict"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:fontFamily="cursive"
+        android:gravity="center"
+        android:text="Hello gorgeous"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toTopOf="@+id/cv_email"
+        app:layout_constraintEnd_toEndOf="@+id/beauty"
+        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintStart_toStartOf="@+id/ld"
+        app:layout_constraintTop_toBottomOf="@+id/beauty" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_email"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="226dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="17dp"
+
         android:backgroundTint="@color/lightGray"
-        app:cardCornerRadius="14dp"
+        app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView14">
 
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
+            android:id="@+id/ti_userEmail"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/ti_userEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="User Email"
-                android:text="Lujaina.me@hotmail.com"
-                android:inputType="textEmailAddress"
-                android:textColor="#000000"
-                android:textSize="16sp" />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:hint="User Email"
+            android:inputType="textEmailAddress"
+            android:text=""
+            android:textColor="#000000"
+            android:textSize="16sp" />
     </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_password"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="@color/lightGray"
-        app:cardCornerRadius="14dp"
-        app:layout_constraintEnd_toEndOf="@id/cv_email"
-        app:layout_constraintStart_toStartOf="@id/cv_email"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_password"
+            android:layout_width="226dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/lightGray"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintEnd_toEndOf="@id/cv_email"
+            app:layout_constraintStart_toStartOf="@id/cv_email"
+            app:layout_constraintTop_toBottomOf="@id/cv_email">
 
-        app:layout_constraintTop_toBottomOf="@id/cv_email">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.google.android.material.textfield.TextInputEditText
+            <EditText
                 android:id="@+id/ti_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="PassWord"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:hint="Password"
                 android:inputType="textPassword"
-                android:text="Lujaina95"
                 android:textColor="#000000"
                 android:textSize="16sp" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="127dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="#DA6EA4"
-        android:gravity="center"
-        android:text="Login"
-        android:background="@drawable/btn_rectangle"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="@id/cv_email"
-        app:layout_constraintStart_toStartOf="@id/cv_email"
-        app:layout_constraintTop_toBottomOf="@+id/cv_password">
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="127dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="#DA6EA4"
+            android:gravity="center"
+            android:text="Login"
+            android:background="@drawable/btn_rectangle"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@id/cv_email"
+            app:layout_constraintStart_toStartOf="@id/cv_email"
+            app:layout_constraintTop_toBottomOf="@+id/cv_password">
 
-    </Button>
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        </Button>
 
-        android:layout_marginTop="476dp"
-        android:layout_marginEnd="160dp"
-        android:src="@drawable/boquet"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
 
-        android:layout_marginStart="200dp"
-        android:layout_marginBottom="314dp"
-        android:src="@drawable/flowers"
-        app:layout_constraintBottom_toTopOf="@+id/imageView3"
-        app:layout_constraintStart_toStartOf="parent" />
+            android:src="@drawable/rose1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/rose2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
         android:id="@+id/tv_dont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="93dp"
-        android:layout_marginTop="152dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="10dp"
         android:text="Don't have an account?"
         android:textColor="#000000"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_forget">
 
@@ -135,12 +164,12 @@
         android:id="@+id/tv_SignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="4dp"
         android:clickable="true"
+        android:gravity="center"
         android:text="Sign Up"
         android:textColor="@color/colorAccent"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/tv_dont"
         app:layout_constraintTop_toTopOf="@+id/tv_dont">
 
@@ -150,14 +179,16 @@
         android:id="@+id/tv_forget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:layout_marginTop="98dp"
+        android:clickable="true"
+        android:gravity="center"
         android:text="Forget PassWord?"
         android:textColor="#000000"
-        android:clickable="true"
-        android:textSize="16sp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/btn_login"
-        app:layout_constraintStart_toStartOf="@+id/btn_login"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_dont"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login">
 
     </TextView>

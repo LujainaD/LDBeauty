@@ -57,10 +57,8 @@ public class ConfirmAdapter extends RecyclerView.Adapter<ConfirmAdapter.MyViewHo
         }else if (mNames.get(position).getStatusType()=="Cancel"){
             holder.status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.cancel));
 
-        }else {
-            holder.status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.grayconfirm));
-
         }
+
 
         holder.salonDetails.setOnClickListener(new View.OnClickListener() {
             @Override

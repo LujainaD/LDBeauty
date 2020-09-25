@@ -153,9 +153,12 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
 		int itemPos = salonNamesArray.indexOf(sprObj);
 		if(confirmOrDecline==1) {
 			salonNamesArray.get(itemPos).setStatusType("Confrim");
+			salonNamesArray.get(itemPos).setStatus(R.drawable.confirm);
 		}else{
 			salonNamesArray.get(itemPos).setStatusType("Cancel");
-		}
+            salonNamesArray.get(itemPos).setStatus(R.drawable.cancel);
+
+        }
 
 		mAdapter.update(salonNamesArray);
 

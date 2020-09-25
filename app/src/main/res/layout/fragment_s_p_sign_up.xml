@@ -8,400 +8,378 @@
     tools:context=".SP.SPSignUpFragment">
 
 
-        <ScrollView
-            android:layout_width="0dp"
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:background="@color/white"
+            android:orientation="vertical">
 
-                <LinearLayout
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="86dp"
+                android:text="1. Add Salon Owner Info"
+                android:textColor="#000000"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_addSalonInfo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView3"
+                            android:layout_width="226dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="10dp"
+                            android:backgroundTint="@color/lightGray"
+                            app:cardCornerRadius="20dp"
+                            app:layout_constraintEnd_toEndOf="@+id/cv_name"
+                            app:layout_constraintStart_toStartOf="@+id/cv_name"
+                            app:layout_constraintTop_toBottomOf="@+id/cv_name">
+
+                            <EditText
+                                android:id="@+id/ti_userEmail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:gravity="center"
+                                android:hint="User Email"
+                                android:text="Lujaina.me345@hotmail.com"
+                                android:inputType="textEmailAddress"
+                                android:textColor="#000000"
+                                android:textSize="16sp"
+                                 />
+
+                        </androidx.cardview.widget.CardView>
+
+                        <ImageView
+                            android:id="@+id/iv_user"
+                            android:layout_width="80dp"
+                            android:layout_height="67dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/camera"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cv_name"
+                            android:layout_width="226dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="17dp"
+
+                            android:backgroundTint="@color/lightGray"
+                            app:cardCornerRadius="20dp"
+                            app:layout_constraintEnd_toEndOf="@+id/iv_user"
+                            app:layout_constraintStart_toStartOf="@+id/iv_user"
+                            app:layout_constraintTop_toBottomOf="@+id/iv_user">
+                                <EditText
+                                    android:id="@+id/ti_userName"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:background="@android:color/transparent"
+                                    android:gravity="center"
+                                    android:hint="User Name"
+                                    android:text="Lujaina"
+                                    android:inputType="textPersonName"
+                                    android:textColor="#000000"
+                                    android:textSize="16sp" />
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView4"
+                            android:layout_width="226dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="10dp"
+
+                            android:backgroundTint="@color/lightGray"
+                            app:cardCornerRadius="20dp"
+                            app:layout_constraintEnd_toEndOf="@+id/cardView3"
+                            app:layout_constraintStart_toStartOf="@+id/cardView3"
+                            app:layout_constraintTop_toBottomOf="@+id/cardView3">
+
+                            <EditText
+                                android:id="@+id/ti_phone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:gravity="center"
+                                android:hint="Phone Number"
+                                android:text="23456789"
+                                android:inputType="phone"
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView5"
+                            android:layout_width="226dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="10dp"
+
+                            android:backgroundTint="@color/lightGray"
+                            app:cardCornerRadius="20dp"
+                            app:layout_constraintEnd_toEndOf="@+id/cardView4"
+                            app:layout_constraintStart_toStartOf="@+id/cardView4"
+                            app:layout_constraintTop_toBottomOf="@+id/cardView4">
+
+
+                            <EditText
+                                android:id="@+id/ti_password"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:gravity="center"
+                                android:hint="Password"
+                                android:inputType="textPassword"
+                                android:text="Lujaina95"
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="226dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="10dp"
+                            android:backgroundTint="@color/lightGray"
+                            app:cardCornerRadius="20dp"
+                            app:layout_constraintEnd_toEndOf="@+id/cardView5"
+                            app:layout_constraintHorizontal_bias="0.4"
+                            app:layout_constraintStart_toStartOf="@+id/cardView5"
+                            app:layout_constraintTop_toBottomOf="@+id/cardView5">
+
+                            <EditText
+                                android:id="@+id/ti_verify"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:gravity="center"
+                                android:hint="Verify Password"
+                                android:inputType="textVisiblePassword"
+                                android:text="Lujaina95"
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
+
+                        </androidx.cardview.widget.CardView>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_addSalonInfo"
+
+
+                    >
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+                        <ImageView
+                            android:id="@+id/iv_salon"
+                            android:layout_width="80dp"
+                            android:layout_height="67dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/camera"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView8"
+                            android:layout_width="226dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="17dp"
+                            android:backgroundTint="@color/lightGray"
+                            app:cardCornerRadius="14dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/iv_salon">
+
+                           <EditText
+                            android:id="@+id/ti_salonName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:hint="Salon Name"
+                               android:text="Lujaina95"
+                               android:textColor="#000000"
+                            android:textSize="16sp"  />
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView6"
+                            android:layout_width="226dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="10dp"
+                            android:backgroundTint="@color/lightGray"
+                            app:cardCornerRadius="14dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/cardView8">
+
+                            <EditText
+                                    android:id="@+id/ti_city"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:background="@android:color/transparent"
+                                    android:gravity="center"
+                                    android:hint="City"
+                                android:text="Lujaina95"
+
+                                android:inputType="text"
+                                    android:textColor="#000000"
+                                    android:textSize="16sp"  />
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView7"
+                            android:layout_width="226dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:backgroundTint="@color/lightGray"
+                            app:cardCornerRadius="14dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/cardView6">
+
+                            <EditText
+                                    android:id="@+id/ti_salonNumber"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:background="@android:color/transparent"
+                                    android:gravity="center"
+                                    android:hint="Salon Phone Number"
+                                android:text="Lujaina95"
+                                android:inputType="phone"
+                                    android:textColor="#000000"
+                                    android:textSize="16sp" />
+
+                        </androidx.cardview.widget.CardView>
+
+                        <Button
+                            android:id="@+id/btn_signUp"
+                            android:layout_width="127dp"
+                            android:layout_height="32dp"
+                            android:layout_marginTop="20dp"
+                            android:backgroundTint="#DA6EA4"
+                            android:gravity="center"
+                            android:background="@drawable/btn_rectangle"
+                            android:text="Sign Up"
+                            android:textColor="@color/white"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/cardView7">
+
+                        </Button>
 
                         <TextView
-                            android:id="@+id/textView"
+                            android:id="@+id/tv_dont"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="86dp"
-                            android:layout_marginStart="10dp"
-                            android:text="1. Add Salon Owner Info"
-                            android:textStyle="bold"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="Don't have an account?"
                             android:textColor="#000000"
-                            android:textSize="16dp" />
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-
-
-                                <androidx.cardview.widget.CardView
-                                    android:id="@+id/card1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:backgroundTint="@color/white"
-                                    app:layout_constraintBottom_toTopOf="@+id/tv_addSalonInfo"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent">
-
-
-                                        <androidx.constraintlayout.widget.ConstraintLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent">
-
-                                                <androidx.cardview.widget.CardView
-                                                    android:id="@+id/cardView3"
-                                                    android:layout_width="300dp"
-                                                    android:layout_height="60dp"
-                                                    android:layout_marginTop="10dp"
-                                                    android:backgroundTint="@color/lightGray"
-                                                    app:cardCornerRadius="14dp"
-                                                    app:layout_constraintEnd_toEndOf="@+id/cv_name"
-                                                    app:layout_constraintStart_toStartOf="@+id/cv_name"
-                                                    app:layout_constraintTop_toBottomOf="@+id/cv_name">
-
-                                                        <com.google.android.material.textfield.TextInputLayout
-                                                            android:layout_width="match_parent"
-                                                            android:layout_height="match_parent">
-
-                                                                <com.google.android.material.textfield.TextInputEditText
-                                                                    android:id="@+id/ti_userEmail"
-                                                                    android:layout_width="match_parent"
-                                                                    android:layout_height="wrap_content"
-                                                                    android:hint="user Email"
-                                                                    android:inputType="textEmailAddress"
-                                                                    android:text="Lujaina.me@hotmail.com"
-                                                                    android:textColor="#000000"
-                                                                    android:textSize="16sp" />
-                                                        </com.google.android.material.textfield.TextInputLayout>
-
-                                                </androidx.cardview.widget.CardView>
-
-                                                <ImageView
-                                                    android:id="@+id/iv_user"
-                                                    android:layout_width="150dp"
-                                                    android:layout_height="100dp"
-                                                    android:layout_gravity="center"
-                                                    android:layout_marginTop="10dp"
-                                                    android:src="@drawable/camera"
-                                                    app:layout_constraintEnd_toEndOf="parent"
-                                                    app:layout_constraintStart_toStartOf="parent"
-                                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                                <androidx.cardview.widget.CardView
-                                                    android:id="@+id/cv_name"
-                                                    android:layout_width="300dp"
-                                                    android:layout_height="60dp"
-                                                    android:layout_marginTop="10dp"
-                                                    android:backgroundTint="@color/lightGray"
-                                                    app:cardCornerRadius="14dp"
-                                                    app:layout_constraintEnd_toEndOf="@+id/iv_user"
-                                                    app:layout_constraintStart_toStartOf="@+id/iv_user"
-                                                    app:layout_constraintTop_toBottomOf="@+id/iv_user">
-
-                                                        <com.google.android.material.textfield.TextInputLayout
-                                                            android:layout_width="match_parent"
-                                                            android:layout_height="match_parent">
-
-                                                                <com.google.android.material.textfield.TextInputEditText
-                                                                    android:id="@+id/ti_userName"
-                                                                    android:layout_width="match_parent"
-                                                                    android:layout_height="wrap_content"
-                                                                    android:hint="user name"
-                                                                    android:text="Lujaina"
-                                                                    android:inputType="text"
-                                                                    android:textColor="#000000"
-                                                                    android:textSize="16sp" />
-                                                        </com.google.android.material.textfield.TextInputLayout>
-                                                </androidx.cardview.widget.CardView>
-
-                                                <androidx.cardview.widget.CardView
-                                                    android:id="@+id/cardView4"
-                                                    android:layout_width="300dp"
-                                                    android:layout_height="60dp"
-                                                    android:layout_marginTop="10dp"
-                                                    android:backgroundTint="@color/lightGray"
-                                                    app:cardCornerRadius="14dp"
-                                                    app:layout_constraintEnd_toEndOf="@+id/cardView3"
-                                                    app:layout_constraintStart_toStartOf="@+id/cardView3"
-                                                    app:layout_constraintTop_toBottomOf="@+id/cardView3">
-
-                                                        <com.google.android.material.textfield.TextInputLayout
-                                                            android:layout_width="match_parent"
-                                                            android:layout_height="match_parent">
-
-                                                                <com.google.android.material.textfield.TextInputEditText
-                                                                    android:id="@+id/ti_phone"
-                                                                    android:layout_width="match_parent"
-                                                                    android:layout_height="wrap_content"
-                                                                    android:hint="Phone Number"
-                                                                    android:text="79179671"
-                                                                    android:inputType="phone"
-                                                                    android:textColor="#000000"
-                                                                    android:textSize="16sp" />
-                                                        </com.google.android.material.textfield.TextInputLayout>
-
-                                                </androidx.cardview.widget.CardView>
-
-                                                <androidx.cardview.widget.CardView
-                                                    android:id="@+id/cardView5"
-                                                    android:layout_width="300dp"
-                                                    android:layout_height="60dp"
-                                                    android:layout_marginTop="10dp"
-                                                    android:backgroundTint="@color/lightGray"
-                                                    app:cardCornerRadius="14dp"
-                                                    app:layout_constraintEnd_toEndOf="@+id/cardView4"
-                                                    app:layout_constraintStart_toStartOf="@+id/cardView4"
-                                                    app:layout_constraintTop_toBottomOf="@+id/cardView4">
-
-                                                        <com.google.android.material.textfield.TextInputLayout
-                                                            android:layout_width="match_parent"
-                                                            android:layout_height="match_parent">
-
-                                                                <com.google.android.material.textfield.TextInputEditText
-                                                                    android:id="@+id/ti_password"
-                                                                    android:layout_width="match_parent"
-                                                                    android:layout_height="wrap_content"
-                                                                    android:hint="PassWord"
-                                                                    android:text="Lujaina95"
-                                                                    android:inputType="textPassword"
-                                                                    android:textColor="#000000"
-                                                                    android:textSize="16sp" />
-                                                        </com.google.android.material.textfield.TextInputLayout>
-
-                                                </androidx.cardview.widget.CardView>
-
-                                                <androidx.cardview.widget.CardView
-                                                    android:layout_width="300dp"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_marginTop="10dp"
-                                                    android:layout_marginBottom="10dp"
-                                                    android:backgroundTint="@color/lightGray"
-                                                    app:cardCornerRadius="14dp"
-                                                    app:layout_constraintEnd_toEndOf="@+id/cardView5"
-                                                    app:layout_constraintHorizontal_bias="0.4"
-                                                    app:layout_constraintStart_toStartOf="@+id/cardView5"
-                                                    app:layout_constraintTop_toBottomOf="@+id/cardView5">
-
-                                                        <com.google.android.material.textfield.TextInputLayout
-                                                            android:layout_width="match_parent"
-                                                            android:layout_height="match_parent">
-
-                                                                <com.google.android.material.textfield.TextInputEditText
-                                                                    android:id="@+id/ti_verify"
-                                                                    android:layout_width="match_parent"
-                                                                    android:layout_height="wrap_content"
-                                                                    android:hint="Verify PassWord"
-                                                                    android:text="Lujaina95"
-                                                                    android:inputType="textPassword"
-                                                                    android:textColor="#000000"
-                                                                    android:textSize="16sp" />
-                                                        </com.google.android.material.textfield.TextInputLayout>
-
-                                                </androidx.cardview.widget.CardView>
-
-                                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                                </androidx.cardview.widget.CardView>
-
-
-                                <androidx.cardview.widget.CardView
-                                    android:id="@+id/card2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:backgroundTint="@color/white"
-                                    app:layout_constraintTop_toBottomOf="@+id/tv_addSalonInfo"
-
-
-                                    >
-
-                                        <androidx.constraintlayout.widget.ConstraintLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent">
-
-
-                                                <ImageView
-                                                    android:id="@+id/iv_salon"
-                                                    android:layout_width="150dp"
-                                                    android:layout_height="100dp"
-                                                    android:layout_gravity="center"
-                                                    android:layout_marginTop="10dp"
-                                                    android:src="@drawable/camera"
-                                                    app:layout_constraintEnd_toEndOf="parent"
-                                                    app:layout_constraintStart_toStartOf="parent"
-                                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                                <androidx.cardview.widget.CardView
-                                                    android:id="@+id/cardView8"
-                                                    android:layout_width="300dp"
-                                                    android:layout_height="60dp"
-                                                    android:layout_marginTop="10dp"
-                                                    android:backgroundTint="@color/lightGray"
-                                                    app:cardCornerRadius="14dp"
-                                                    app:layout_constraintEnd_toEndOf="parent"
-                                                    app:layout_constraintStart_toStartOf="parent"
-                                                    app:layout_constraintTop_toBottomOf="@+id/iv_salon">
-
-                                                        <com.google.android.material.textfield.TextInputLayout
-                                                            android:layout_width="match_parent"
-                                                            android:layout_height="match_parent">
-
-                                                                <com.google.android.material.textfield.TextInputEditText
-                                                                    android:id="@+id/ti_salonName"
-                                                                    android:layout_width="match_parent"
-                                                                    android:layout_height="wrap_content"
-                                                                    android:hint="Salon Name"
-                                                                    android:text="LujainaSalon"
-                                                                    android:inputType="text"
-                                                                    android:textColor="#000000"
-                                                                    android:textSize="16sp" />
-                                                        </com.google.android.material.textfield.TextInputLayout>
-                                                </androidx.cardview.widget.CardView>
-
-                                                <androidx.cardview.widget.CardView
-                                                    android:id="@+id/cardView6"
-                                                    android:layout_width="300dp"
-                                                    android:layout_height="60dp"
-                                                    android:layout_marginTop="10dp"
-                                                    android:backgroundTint="@color/lightGray"
-                                                    app:cardCornerRadius="14dp"
-                                                    app:layout_constraintEnd_toEndOf="parent"
-                                                    app:layout_constraintStart_toStartOf="parent"
-                                                    app:layout_constraintTop_toBottomOf="@+id/cardView8">
-
-                                                        <com.google.android.material.textfield.TextInputLayout
-                                                            android:layout_width="match_parent"
-                                                            android:layout_height="match_parent">
-
-                                                                <com.google.android.material.textfield.TextInputEditText
-                                                                    android:id="@+id/ti_city"
-                                                                    android:layout_width="match_parent"
-                                                                    android:layout_height="wrap_content"
-                                                                    android:hint="Salon City"
-                                                                    android:text="Izki"
-                                                                    android:inputType="text"
-                                                                    android:textColor="#000000"
-                                                                    android:textSize="16sp" />
-
-
-                                                        </com.google.android.material.textfield.TextInputLayout>
-                                                </androidx.cardview.widget.CardView>
-
-                                                <androidx.cardview.widget.CardView
-                                                    android:id="@+id/cardView7"
-                                                    android:layout_width="300dp"
-                                                    android:layout_height="60dp"
-                                                    android:layout_marginTop="10dp"
-                                                    android:layout_marginBottom="10dp"
-                                                    android:backgroundTint="@color/lightGray"
-                                                    app:cardCornerRadius="14dp"
-                                                    app:layout_constraintEnd_toEndOf="parent"
-                                                    app:layout_constraintStart_toStartOf="parent"
-                                                    app:layout_constraintTop_toBottomOf="@+id/cardView6">
-
-                                                        <com.google.android.material.textfield.TextInputLayout
-                                                            android:layout_width="match_parent"
-                                                            android:layout_height="match_parent">
-
-                                                                <com.google.android.material.textfield.TextInputEditText
-                                                                    android:id="@+id/ti_salonNumber"
-                                                                    android:layout_width="match_parent"
-                                                                    android:layout_height="wrap_content"
-                                                                    android:hint="Salon Phone Number"
-                                                                    android:text="79179671"
-                                                                    android:inputType="phone"
-                                                                    android:textColor="#000000"
-                                                                    android:textSize="16sp" />
-
-
-                                                        </com.google.android.material.textfield.TextInputLayout>
-
-                                                </androidx.cardview.widget.CardView>
-
-                                                <Button
-                                                    android:id="@+id/btn_signUp"
-                                                    android:layout_width="127dp"
-                                                    android:layout_height="40dp"
-                                                    android:layout_marginTop="20dp"
-                                                    android:background="@drawable/btn_rectangle"
-                                                    android:backgroundTint="#DA6EA4"
-                                                    android:gravity="center"
-                                                    android:text="Sign Up"
-                                                    android:textColor="@color/white"
-                                                    app:layout_constraintEnd_toEndOf="parent"
-                                                    app:layout_constraintStart_toStartOf="parent"
-                                                    app:layout_constraintTop_toBottomOf="@+id/cardView7">
-
-                                                </Button>
-
-                                                <TextView
-                                                    android:id="@+id/tv_dont"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_marginTop="20dp"
-                                                    android:layout_marginBottom="10dp"
-                                                    android:text="Don't have an account?"
-                                                    android:textColor="#000000"
-                                                    android:textSize="16sp"
-                                                    app:layout_constraintBottom_toBottomOf="parent"
-                                                    app:layout_constraintEnd_toStartOf="@+id/tv_login"
-                                                    app:layout_constraintStart_toStartOf="@+id/btn_signUp"
-                                                    app:layout_constraintTop_toBottomOf="@+id/btn_signUp">
-
-                                                </TextView>
-
-                                                <TextView
-                                                    android:id="@+id/tv_login"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_marginStart="10dp"
-                                                    android:clickable="true"
-
-                                                    android:text="Login"
-                                                    android:textColor="@color/colorAccent"
-                                                    android:textSize="16sp"
-                                                    app:layout_constraintEnd_toEndOf="@+id/btn_signUp"
-                                                    app:layout_constraintStart_toEndOf="@+id/tv_dont"
-                                                    app:layout_constraintTop_toTopOf="@+id/tv_dont">
-
-                                                </TextView>
-
-                                        </androidx.constraintlayout.widget.ConstraintLayout>
-                                </androidx.cardview.widget.CardView>
-
-                                <TextView
-                                    android:id="@+id/tv_addSalonInfo"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginTop="10dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:text="2. Add Salon Info"
-                                    android:textStyle="bold"
-                                    android:textColor="#000000"
-                                    android:textSize="16dp"
-                                    app:layout_constraintBottom_toTopOf="@+id/card2"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@+id/card1" />
-
-
-
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-                </LinearLayout>
-
-
-        </ScrollView>
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/tv_login"
+                            app:layout_constraintStart_toStartOf="@+id/btn_signUp"
+                            app:layout_constraintTop_toBottomOf="@+id/btn_signUp">
+
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/tv_login"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:clickable="true"
+
+                            android:text="Login"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toEndOf="@+id/btn_signUp"
+                            app:layout_constraintStart_toEndOf="@+id/tv_dont"
+                            app:layout_constraintTop_toTopOf="@+id/tv_dont">
+
+                        </TextView>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/tv_addSalonInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="2. Add Salon Info"
+                    android:textColor="#000000"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/card2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/card1" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
 
         <ImageView
             android:id="@+id/imageView3"

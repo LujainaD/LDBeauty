@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -50,11 +51,22 @@ public class ResetPasswordDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_reset_password_dialog, container, false);
-        final TextInputEditText tv_email = parentView.findViewById(R.id.til_email);
+        final EditText tv_email = parentView.findViewById(R.id.ti_userEmail);
         Button cancel = parentView.findViewById(R.id.btn_cancel);
         Button reset = parentView.findViewById(R.id.btn_rest);
         mAuth = FirebaseAuth.getInstance();
+        tv_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    tv_email.setHint("");
+                }else{
+                    tv_email.setHint(R.string.userEmail);
+                }
+
+            }
+        });
 
         reset.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -52,6 +52,7 @@ public class AddInfoFragment extends Fragment implements InfoAdapter.infoListene
     private InfoAdapter mAdapter;
     private Drawable icon;
     private ColorDrawable background;
+
     public AddInfoFragment() {
         // Required empty public constructor
     }
@@ -84,13 +85,6 @@ public class AddInfoFragment extends Fragment implements InfoAdapter.infoListene
         readSalonInfoFromFirebaseDB();
 
         mAdapter.setRemoveListener(AddInfoFragment.this);
-      /*  mAdapter.setColorListener(new AddInfoDialogFragment.color() {
-            @Override
-            public void choosingColor(int position) {
-
-            }
-
-        });*/
 
 
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -105,6 +99,7 @@ public class AddInfoFragment extends Fragment implements InfoAdapter.infoListene
                 mUpdate.remove(position);
                 mAdapter.notifyDataSetChanged();
                 deleteInfo(position );
+
             }
 
         });

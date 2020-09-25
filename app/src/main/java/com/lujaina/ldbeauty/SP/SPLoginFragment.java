@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,12 +61,39 @@ public class SPLoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_s_p_login, container, false);
-        final TextInputEditText ti_email = parentView.findViewById(R.id.ti_userEmail);
-        final TextInputEditText ti_password = parentView.findViewById(R.id.ti_password);
+        final EditText ti_email = parentView.findViewById(R.id.ti_userEmail);
+        final EditText ti_password = parentView.findViewById(R.id.ti_password);
         Button login = parentView.findViewById(R.id.btn_login);
         TextView forget = parentView.findViewById(R.id.tv_forget);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
+
+        ti_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    ti_email.setHint("");
+                }else{
+                    ti_email.setHint(R.string.userEmail);
+                }
+
+            }
+        });
+
+        ti_password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    ti_password.setHint("");
+                }else{
+                    ti_password.setHint(R.string.password);
+                }
+
+            }
+        });
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override

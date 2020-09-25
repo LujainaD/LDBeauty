@@ -1,6 +1,7 @@
 package com.lujaina.ldbeauty.SP;
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -19,7 +20,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +53,8 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import dmax.dialog.SpotsDialog;
+
 import static android.content.ContentValues.TAG;
 
 
@@ -78,7 +83,7 @@ public class SPSignUpFragment extends Fragment {
     private FirebaseAuth mAuth;
     private Context mContext;
     private MediatorInterface mMediatorInterface;
-
+    ProgressDialog progressDialog;
     public SPSignUpFragment() {
         // Required empty public constructor
     }
@@ -99,6 +104,8 @@ public class SPSignUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_s_p_sign_up, container, false);
+
+        progressDialog = new ProgressDialog(mContext);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
 
@@ -106,16 +113,115 @@ public class SPSignUpFragment extends Fragment {
         salonImg = parentView.findViewById(R.id.iv_salon);
 
         final ImageView salonImg = parentView.findViewById(R.id.iv_salon);
-        final TextInputEditText userName = parentView.findViewById(R.id.ti_userName);
-        final TextInputEditText userEmail = parentView.findViewById(R.id.ti_userEmail);
-        final TextInputEditText userPass = parentView.findViewById(R.id.ti_password);
-        final TextInputEditText userVerify = parentView.findViewById(R.id.ti_verify);
-        final TextInputEditText userPhone = parentView.findViewById(R.id.ti_phone);
-        final TextInputEditText salonName = parentView.findViewById(R.id.ti_salonName);
-        final TextInputEditText salonCity = parentView.findViewById(R.id.ti_city);
-        final TextInputEditText salonPhone = parentView.findViewById(R.id.ti_salonNumber);
+        final EditText userName = parentView.findViewById(R.id.ti_userName);
+        final EditText userEmail = parentView.findViewById(R.id.ti_userEmail);
+        final EditText userPass = parentView.findViewById(R.id.ti_password);
+        final EditText userVerify = parentView.findViewById(R.id.ti_verify);
+        final EditText userPhone = parentView.findViewById(R.id.ti_phone);
+        final EditText salonName = parentView.findViewById(R.id.ti_salonName);
+        final EditText salonCity = parentView.findViewById(R.id.ti_city);
+        final EditText salonPhone = parentView.findViewById(R.id.ti_salonNumber);
         Button signUp = parentView.findViewById(R.id.btn_signUp);
         TextView login = parentView.findViewById(R.id.tv_login);
+
+        userName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    userName.setHint("");
+                }else{
+                    userName.setHint(R.string.username);
+                }
+
+            }
+        });
+        userEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    userEmail.setHint("");
+                }else{
+                    userEmail.setHint(R.string.userEmail);
+                }
+
+            }
+        });
+        userPass.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    userPass.setHint("");
+                }else{
+                    userPass.setHint(R.string.password);
+                }
+
+            }
+        });
+        userVerify.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    userVerify.setHint("");
+                }else{
+                    userVerify.setHint(R.string.verify);
+                }
+
+            }
+        });
+        userPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    userPhone.setHint("");
+                }else{
+                    userPhone.setHint(R.string.userPhone);
+                }
+
+            }
+        });
+        salonName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    salonName.setHint("");
+                }else{
+                    salonName.setHint(R.string.salonName);
+                }
+
+            }
+        });
+        salonCity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    salonCity.setHint("");
+                }else{
+                    salonCity.setHint(R.string.salonCity);
+                }
+
+            }
+        });
+        salonPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    salonPhone.setHint("");
+                }else{
+                    salonPhone.setHint(R.string.salonPhone);
+                }
+
+            }
+        });
+
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +236,7 @@ public class SPSignUpFragment extends Fragment {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.show();
 
                 if (mMediatorInterface != null) {
                     String name = userName.getText().toString();
@@ -172,6 +279,12 @@ public class SPSignUpFragment extends Fragment {
                         Toast.makeText(mContext, "please add salon logo", Toast.LENGTH_SHORT).show();
                     } else {
                         if (password.equals(verifyPassword)) {
+                            progressDialog = new ProgressDialog(mContext);
+                            progressDialog.setTitle("Welcome To LD Beauty");
+                            progressDialog.setCancelable(false);
+                            progressDialog.show();
+                            progressDialog.setContentView(R.layout.fragment_progress_dialog);
+                            progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
                             SPRegistrationModel registration = new SPRegistrationModel();
                             registration.setOwnerName(name);
@@ -183,8 +296,12 @@ public class SPSignUpFragment extends Fragment {
                             registration.setSalonPhoneNumber(phoneSalon);
                             registration.setUserType(userType);
                             registerToFirebase(email, password, name, phoneNumber, salonname, city, phoneSalon, userType);
+                            progressDialog.dismiss();
+
                         } else {
                             userVerify.setError("verify password must be the same as your entered password ");
+                            progressDialog.dismiss();
+
 
                         }
                     }
@@ -216,6 +333,7 @@ public class SPSignUpFragment extends Fragment {
         });
         return parentView;
     }
+
 
     private boolean isPermissionGranted() {
         return ActivityCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
@@ -250,6 +368,7 @@ public class SPSignUpFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
@@ -279,19 +398,6 @@ public class SPSignUpFragment extends Fragment {
                     Log.d(TAG, "onFailure: "+e.getLocalizedMessage());
                 }*/
         });
-
-//		FirebaseUser user = mAuth.getCurrentUser();
-//		SPRegistrationModel registration = new SPRegistrationModel();
-//		registration.setOwnerId(user.getUid());
-//		registration.setOwnerName(name);
-//		registration.setOwnerEmail(email);
-//		registration.setPhoneNumber(phoneNumber);
-//		registration.setSalonName(salonname);
-//		registration.setSalonCity(city);
-//		registration.setSalonPhoneNumber(phoneSalon);
-//		registration.setUserType(userType);
-//		registration.setRegistrationDate(getCurrentDate());
-//		uploadUserImageToStorage(registration);
 
     }
 
@@ -365,9 +471,7 @@ public class SPSignUpFragment extends Fragment {
 	private void addToDB(SPRegistrationModel registration) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner);
-        final ProgressDialog progressDialog = new ProgressDialog(mContext);
-        progressDialog.setTitle("Welcome To LD Beauty");
-        progressDialog.show();
+
         myRef.child(registration.getOwnerId()).setValue(registration).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -376,6 +480,7 @@ public class SPSignUpFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), HomeActivity.class);
                     startActivity(intent);
                     progressDialog.dismiss();
+
 
                 } else {
                     Toast.makeText(mContext, "failed ", Toast.LENGTH_SHORT).show();

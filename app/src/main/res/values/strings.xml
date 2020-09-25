@@ -12,5 +12,14 @@
     <string name="salon_details"><u>Salon Details</u></string>
     <string name="app_owner"><u>App Owner</u></string>
     <string name="sign_up"><u>Sign up</u></string>
+    <string name="userEmail">User Email</string>
+    <string name="password">Password</string>
+    <string name="username">User Name</string>
+    <string name="verify">Verify Password</string>
+    <string name="userPhone">User Phone Number</string>
+    <string name="salonName">Salon Name</string>
+    <string name="salonCity">Salon City</string>
+    <string name="salonPhone">Salon Phone Number</string>
+
 
 </resources>
