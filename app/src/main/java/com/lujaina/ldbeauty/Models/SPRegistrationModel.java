@@ -13,7 +13,7 @@ public class SPRegistrationModel {
     private String salonImageURL;
     private String userType;
     private String registrationDate;
-    private int status;
+    private String status;
     private String statusType;
     private String updatedDate;
 
@@ -113,11 +113,11 @@ public class SPRegistrationModel {
         this.registrationDate = registrationDate;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

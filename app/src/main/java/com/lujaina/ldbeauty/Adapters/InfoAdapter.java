@@ -76,16 +76,15 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 	@Override
 	public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
 		final AddInfoModel aboutSalon = mUpdate.get(position);
-
 		holder.tvTitle.setText(aboutSalon.getTitle());
-		if (aboutSalon.getBody().length() <= 100) {
 
+		if (aboutSalon.getBody().length() <= 100 ) {
 			holder.tvBody.setText(aboutSalon.getBody());
 			holder.tvExpandable.setVisibility(View.GONE);
-		} else {
+		}else {
 			holder.tvBody.setText(aboutSalon.getBody().substring(0, 100) + " . . . ");
-		}
 
+		}
 		holder.cvAboutSalon.setCardBackgroundColor(Color.parseColor(aboutSalon.getBackgroundColor()));
 
 		/*holder.cvAboutSalon.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +117,7 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 
 				} else {
 
-					if (aboutSalon.getBody().length() <= 100) {
+					if (aboutSalon.getBody().length() <= 100 ) {
 						holder.tvBody.setText(aboutSalon.getBody());
 						holder.tvExpandable.setVisibility(View.GONE);
 					} else {

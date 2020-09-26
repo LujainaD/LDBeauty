@@ -62,6 +62,7 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        mContext = context;
         if (context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         } else {
@@ -76,6 +77,7 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_info, container, false);
+
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();

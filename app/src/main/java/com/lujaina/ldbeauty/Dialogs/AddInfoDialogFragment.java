@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -89,9 +90,34 @@ public class AddInfoDialogFragment extends DialogFragment implements AdapterView
 		mDatabase = FirebaseDatabase.getInstance();
 		getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 		getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-		final TextInputEditText etTitle = parentView.findViewById(R.id.title);
-		final TextInputEditText etBody = parentView.findViewById(R.id.body);
+		final EditText etTitle = parentView.findViewById(R.id.ti_title);
+		final EditText etBody = parentView.findViewById(R.id.ti_info);
 
+		etTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus){
+					etTitle.setHint("");
+				}else{
+					etTitle.setHint(R.string.title);
+				}
+
+			}
+		});
+
+		etBody.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus){
+					etBody.setHint("");
+				}else{
+					etBody.setHint(R.string.addInfo);
+				}
+
+			}
+		});
 		Button btnAdd = parentView.findViewById(R.id.btn_add);
 		Button btnCancel = parentView.findViewById(R.id.btn_cancel);
 
@@ -164,8 +190,6 @@ public class AddInfoDialogFragment extends DialogFragment implements AdapterView
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-		Toast.makeText(mContext, "Selected is:" + position, Toast.LENGTH_SHORT).show();
-
 		about.setBackgroundColor(colorList.get(position).getColorValue());
 		/*if(mListener != null){
 

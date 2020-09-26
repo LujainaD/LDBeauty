@@ -20,6 +20,8 @@
     <string name="salonName">Salon Name</string>
     <string name="salonCity">Salon City</string>
     <string name="salonPhone">Salon Phone Number</string>
+    <string name="title">Title</string>
+    <string name="addInfo">Add Info</string>
 
 
 </resources>

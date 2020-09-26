@@ -24,11 +24,16 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.lujaina.ldbeauty.AppOwner.AoConfirmSalonsFragment;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
@@ -41,9 +46,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
+
+import static android.content.ContentValues.TAG;
 
 public class SalonConfirmDialogFragment extends DialogFragment {
     private static final int CAPTURE_IMAGE = 1;
+    private static final String TAG = "icon";
     private FirebaseAuth mAuth;
     FirebaseUser mFirebaseUser;
     private FirebaseDatabase mDatabase;
@@ -141,15 +150,15 @@ String mImagePath;
 
             }
         });
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String word = "Cancel";
-                SPRegistrationModel confirm = new SPRegistrationModel();
+                final SPRegistrationModel confirm = new SPRegistrationModel();
                 confirm.setStatusType(word);
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mDetails.getOwnerId());
-                Bitmap bm = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.confirm);
 
                 myRef.child("statusType").setValue(confirm.getStatusType())
                         .addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
@@ -158,7 +167,8 @@ String mImagePath;
                         if (task.isSuccessful()) {
 
                             Toast.makeText(mContext, "success", Toast.LENGTH_SHORT).show();
-                            dismiss();
+                            uploadIcon(confirm);
+
                         } else {
                             Toast.makeText(mContext, "Error", Toast.LENGTH_SHORT).show();
                         }
@@ -177,6 +187,41 @@ String mImagePath;
         });
 
         return parentView;
+    }
+
+    private void uploadIcon(final SPRegistrationModel confirm) {
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        String imageId = UUID.randomUUID().toString();
+
+        final StorageReference icon = storageRef.child("/icon/" + imageId +"/confirm");
+        Uri imageUri = Uri.parse("android.resource://" + mContext.getPackageName() +
+                R.drawable.cancel);
+        final UploadTask uploadTask;
+
+        uploadTask = (UploadTask) icon.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        icon.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri firebaseImageUri) {
+                                confirm.setStatus(firebaseImageUri.toString());
+                                dismiss();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e(TAG, "onFailure: :" + e.getLocalizedMessage());
+                            }
+                        });
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "onFailure: Uploading image Failed"+e.getLocalizedMessage());
+                    }
+                });
     }
 
 //    public void setStatusListener(status statusListener){
