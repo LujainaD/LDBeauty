@@ -51,10 +51,10 @@ public class ConfirmAdapter extends RecyclerView.Adapter<ConfirmAdapter.MyViewHo
 
         Glide.with(mContext).load(names.getSalonImageURL()).into(holder.salonImg);
         holder.name.setText(names.getSalonName());
-        if(mNames.get(position).getStatusType()=="Confrim") {
+        if(mNames.get(position).getStatusType().equalsIgnoreCase("Confirm")) {
             holder.status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.confirm));
 
-        }else if (mNames.get(position).getStatusType()=="Cancel"){
+        }else if (mNames.get(position).getStatusType().equalsIgnoreCase("Cancel")){
             holder.status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.cancel));
 
         }

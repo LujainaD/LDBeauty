@@ -15,7 +15,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -76,35 +79,18 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
         recyclerView.setAdapter(mAdapter);
         mAdapter.setupOnItemClickListener(new ConfirmAdapter.onItemClickListener() {
             @Override
-            public void onItemClick(SPRegistrationModel salonsDetails) {
+            public void onItemClick(SPRegistrationModel
+                                            salonsDetails) {
                 if (mMediatorInterface != null) {
-
-
                     SalonConfirmDialogFragment details = new SalonConfirmDialogFragment(AoConfirmSalonsFragment.this ,salonsDetails);
                     Log.d("serviceId", "onItemClick-SalonNamesFragment : " + salonsDetails.getOwnerId());
                     details.setSalonObj(salonsDetails);
                     details.show(getChildFragmentManager(), SalonConfirmDialogFragment.class.getSimpleName());
-
                 }
 
             }
         });
 
-
-
-
-
-//        mAdapter.setStatusListener(new SalonConfirmDialogFragment.status() {
-//            @Override
-//            public void confirm(SPRegistrationModel confirmStatus) {
-//				Log.d(TAG, "confirm: ");
-//            }
-//
-//            @Override
-//            public void decline(SPRegistrationModel confirmStatus) {
-//				Log.d(TAG, "decline: ");
-//            }
-//        });
         return parentView;
     }
 
@@ -141,10 +127,7 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
 
     private void setupRecyclerView(RecyclerView recyclerView) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
-        DividerItemDecoration divider = new DividerItemDecoration(mContext, layoutManager.getOrientation());
-
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(divider);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
     }
@@ -153,14 +136,34 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
 	public void onStatusSelected(int confirmOrDecline, SPRegistrationModel sprObj) {
 
 		int itemPos = salonNamesArray.indexOf(sprObj);
+		String id = sprObj.getOwnerId();
+		sprObj.setOwnerId(id);
 		if(confirmOrDecline==1) {
-			salonNamesArray.get(itemPos).setStatusType("Confrim");
+			salonNamesArray.get(itemPos).setStatusType("Confirm");
+            uploadIcon(sprObj);
 		}else{
 			salonNamesArray.get(itemPos).setStatusType("Cancel");
-
+            uploadIcon(sprObj);
         }
-
 		mAdapter.update(salonNamesArray);
-
 	}
+    private void uploadIcon(SPRegistrationModel sprObj) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(sprObj.getOwnerId());
+        myRef.child("statusType").setValue(sprObj.getStatusType())
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+
+                            Toast.makeText(mContext, "success", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(mContext, "Error", Toast.LENGTH_SHORT).show();
+                        }
+
+
+                    }
+                });
+    }
 }

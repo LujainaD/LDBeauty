@@ -126,23 +126,8 @@ String mImagePath;
             public void onClick(View v) {
 
                String word = "Confirm";
-                SPRegistrationModel confirm = new SPRegistrationModel();
-                confirm.setStatusType(word);
-
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mDetails.getOwnerId());
-
-                myRef.child("statusType").setValue(confirm.getStatusType()).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                        	Toast.makeText(mContext, "success", Toast.LENGTH_SHORT).show();
-                            dismiss();
-                        } else {
-                            Toast.makeText(mContext, "Error", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                sprModelObj.setStatusType(word);
+              dismiss();
                 if(mListener != null){
                     mListener.onStatusSelected(1,sprModelObj);
                 }
@@ -155,78 +140,16 @@ String mImagePath;
             @Override
             public void onClick(View v) {
                 String word = "Cancel";
-                final SPRegistrationModel confirm = new SPRegistrationModel();
-                confirm.setStatusType(word);
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mDetails.getOwnerId());
-
-                myRef.child("statusType").setValue(confirm.getStatusType())
-                        .addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-
-                            Toast.makeText(mContext, "success", Toast.LENGTH_SHORT).show();
-                            uploadIcon(confirm);
-
-                        } else {
-                            Toast.makeText(mContext, "Error", Toast.LENGTH_SHORT).show();
-                        }
-
-
-                    }
-                });
-
+                sprModelObj.setStatusType(word);
+                dismiss();
                 if(mListener != null){
                     mListener.onStatusSelected(2,sprModelObj);
-
                 }
-
-
             }
         });
 
         return parentView;
     }
-
-    private void uploadIcon(final SPRegistrationModel confirm) {
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        String imageId = UUID.randomUUID().toString();
-
-        final StorageReference icon = storageRef.child("/icon/" + imageId +"/confirm");
-        Uri imageUri = Uri.parse("android.resource://" + mContext.getPackageName() +
-                R.drawable.cancel);
-        final UploadTask uploadTask;
-
-        uploadTask = (UploadTask) icon.putFile(imageUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        icon.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri firebaseImageUri) {
-                                confirm.setStatus(firebaseImageUri.toString());
-                                dismiss();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.e(TAG, "onFailure: :" + e.getLocalizedMessage());
-                            }
-                        });
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "onFailure: Uploading image Failed"+e.getLocalizedMessage());
-                    }
-                });
-    }
-
-//    public void setStatusListener(status statusListener){
-//        mListener = statusListener;
-//    }
 
     public interface statusConfirmed {
         void onStatusSelected(int confirmOrDecline , SPRegistrationModel sprObj);
