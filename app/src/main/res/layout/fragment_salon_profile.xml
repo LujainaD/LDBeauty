@@ -36,7 +36,8 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="41dp"
         android:layout_height="30dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_arrow_left" />
@@ -60,8 +61,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:background="#FFFFFF"
-        android:drawableEnd="@drawable/ic_arrow"
-        android:paddingStart="35dp"
+        android:paddingStart="40dp"
         android:paddingTop="15dp"
 
         android:text="Salon Info"
@@ -79,11 +79,10 @@
         android:layout_height="50dp"
         android:layout_marginTop="14dp"
         android:background="#91FFFFFF"
-        android:paddingStart="35dp"
+        android:paddingStart="40dp"
         android:paddingTop="15dp"
         android:text="Salon's Services Catogery"
         android:clickable="true"
-        android:drawableEnd="@drawable/ic_arrow"
 
         android:textAlignment="textStart"
         android:textColor="@color/pink_text"
@@ -99,13 +98,12 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="#91FFFFFF"
-        android:paddingStart="35dp"
+        android:paddingStart="40dp"
         android:paddingTop="15dp"
         android:text="Salon's Gallery"
         android:textAlignment="textStart"
         android:textColor="@color/pink_text"
         android:textSize="16sp"
-        android:drawableEnd="@drawable/ic_arrow"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -118,9 +116,8 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="#FFFFFF"
-        android:drawableEnd="@drawable/ic_arrow"
 
-        android:paddingStart="35dp"
+        android:paddingStart="40dp"
         android:paddingTop="15dp"
         android:text="Salon's Location"
         android:textAlignment="textStart"
@@ -152,5 +149,83 @@
         app:layout_constraintBottom_toTopOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_AboutPage"
+        app:srcCompat="@drawable/ic_arrow" />
 
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_AboutPage"
+        app:srcCompat="@drawable/ic_arrow" />
+
+    <ImageView
+        android:id="@+id/imageView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_location"
+        app:srcCompat="@drawable/ic_arrow" />
+
+    <ImageView
+        android:id="@+id/imageView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_services"
+        app:srcCompat="@drawable/ic_arrow" />
+
+    <ImageView
+        android:id="@+id/imageView14"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toStartOf="@+id/tv_salonGallery"
+        app:layout_constraintTop_toBottomOf="@+id/tv_AboutPage"
+        app:srcCompat="@drawable/gallery" />
+
+    <ImageView
+        android:id="@+id/imageView15"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_services"
+        app:srcCompat="@drawable/location" />
+
+    <ImageView
+        android:id="@+id/imageView16"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_services"
+        app:srcCompat="@drawable/service" />
+
+    <ImageView
+        android:id="@+id/imageView17"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_AboutPage"
+        app:srcCompat="@drawable/info" />
 </androidx.constraintlayout.widget.ConstraintLayout>
