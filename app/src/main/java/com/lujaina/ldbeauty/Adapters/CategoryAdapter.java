@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.lujaina.ldbeauty.Models.AddInfoModel;
 import com.lujaina.ldbeauty.Models.CategoryModel;
 import com.lujaina.ldbeauty.R;
 
@@ -35,6 +37,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
         notifyDataSetChanged();
 
     }
+    public void update(int position, CategoryModel categoryModel) {
+        mCategory.add(position, categoryModel);
+        notifyItemChanged(position);
+    }
+    public void removeItem(int position){
+        mCategory.remove(position);
+        notifyItemRemoved(position);
+    }
 
     @NonNull
     @Override
@@ -50,12 +60,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
         final CategoryModel category = mCategory.get(position);
         holder.title.setText(category.getCategoryTitle());
         Glide.with(mContext).load(category.getCategoryURL()).into(holder.picture);
-        holder.card.setOnClickListener(new View.OnClickListener() {
+      /*  holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
-        });
+        });*/
         
     }
 
@@ -69,13 +79,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
         Button title;
         ImageView picture;
         CardView card;
+        public RelativeLayout viewForground, viewBackground;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            title = itemView.findViewById(R.id.civ_profile);
+            viewForground = itemView.findViewById(R.id.view_forground);
+            viewBackground =itemView.findViewById(R.id.view_background);
+            title = itemView.findViewById(R.id.btn_category);
             picture = itemView.findViewById(R.id.iv_category);
-            card = itemView.findViewById(R.id.btn_category);
+            card = itemView.findViewById(R.id.cv_category);
         }
     }
 }

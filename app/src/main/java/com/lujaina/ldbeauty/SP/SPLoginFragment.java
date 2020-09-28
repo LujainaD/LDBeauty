@@ -28,6 +28,7 @@ import com.lujaina.ldbeauty.Dialogs.ResetPasswordDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
+import com.lujaina.ldbeauty.SignUpFragment;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -65,9 +66,19 @@ public class SPLoginFragment extends Fragment {
         final EditText ti_email = parentView.findViewById(R.id.ti_userEmail);
         final EditText ti_password = parentView.findViewById(R.id.ti_password);
         Button login = parentView.findViewById(R.id.btn_login);
+        TextView signup = parentView.findViewById(R.id.tv_SignUp);
         TextView forget = parentView.findViewById(R.id.tv_forget);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
+
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mMediatorInterface != null){
+                    mMediatorInterface.changeFragmentTo(new SignUpFragment(), SignUpFragment.class.getSimpleName());
+                }
+            }
+        });
 
         ti_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
@@ -99,14 +110,7 @@ public class SPLoginFragment extends Fragment {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog = new ProgressDialog(mContext);
-                progressDialog.setCancelable(false);
-                progressDialog.show();
-                progressDialog.setContentView(R.layout.custom_progress_dialog);
-                TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
-                progressText.setText("Welcome Back..");
-                progressText.setVisibility(View.VISIBLE);
-                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
                 if (mMediatorInterface != null) {
                     final String email = ti_email.getText().toString();
                     final String password = ti_password.getText().toString();
@@ -115,9 +119,19 @@ public class SPLoginFragment extends Fragment {
                         ti_email.setError("Please write your email");
                     } else if (!isEmailValid(email)) {
                         ti_email.setError("invalid email");
+
                     } else if (password.isEmpty()) {
                         ti_password.setError("please write your password");
+
                     }else {
+                        progressDialog = new ProgressDialog(mContext);
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
+                        progressDialog.setContentView(R.layout.custom_progress_dialog);
+                        TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
+                        progressText.setText("Welcome Back..");
+                        progressText.setVisibility(View.VISIBLE);
+                        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
                         SPRegistrationModel salonOwner = new SPRegistrationModel();
                         salonOwner.setOwnerEmail(email);

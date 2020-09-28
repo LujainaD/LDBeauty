@@ -40,7 +40,7 @@
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_arrow_left" />
+        app:srcCompat="@drawable/ic_back_arrow" />
 
 
     <de.hdodenhof.circleimageview.CircleImageView

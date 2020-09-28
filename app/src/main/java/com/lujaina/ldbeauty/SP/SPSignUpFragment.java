@@ -102,10 +102,6 @@ public class SPSignUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_s_p_sign_up, container, false);
-        Toolbar toolbar = parentView.findViewById(R.id.toolbar);
-        TextView toolbarTitle = parentView.findViewById(R.id.tv_toolbar);
-
-
 
         progressDialog = new ProgressDialog(mContext);
         mAuth = FirebaseAuth.getInstance();

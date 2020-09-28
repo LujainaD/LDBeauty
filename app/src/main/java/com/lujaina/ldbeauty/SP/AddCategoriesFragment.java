@@ -7,13 +7,16 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,11 +34,13 @@ import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.AddInfoModel;
 import com.lujaina.ldbeauty.Models.CategoryModel;
 import com.lujaina.ldbeauty.R;
+import com.lujaina.ldbeauty.RecyclerItemTouchHelper;
+import com.lujaina.ldbeauty.RecyclerItemTouchHelperListener;
 
 import java.util.ArrayList;
 
 
-public class AddCategoriesFragment extends Fragment {
+public class AddCategoriesFragment extends Fragment implements RecyclerItemTouchHelperListener {
     FirebaseAuth mAuth;
     FirebaseUser mFirebaseUser;
     private FirebaseDatabase mDatabase;
@@ -64,10 +69,11 @@ public class AddCategoriesFragment extends Fragment {
         // Inflate the layout for this fragment
         View  parentView = inflater.inflate(R.layout.fragment_add_categories, container, false);
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
+        ImageButton back = parentView.findViewById(R.id.ib_back);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
-        RecyclerView recyclerView = parentView.findViewById(R.id.add_rv);
+        RecyclerView recyclerView = parentView.findViewById(R.id.rv_categories);
         categoryList = new ArrayList<>();
         mAdapter = new CategoryAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
@@ -78,6 +84,21 @@ public class AddCategoriesFragment extends Fragment {
             public void onClick(View v) {
                 AddCategoriesDialogFragment dialogFragment = new AddCategoriesDialogFragment();
                 dialogFragment.show(getChildFragmentManager(), AddCategoriesDialogFragment.class.getSimpleName());
+            }
+        });
+
+        ItemTouchHelper.SimpleCallback item = new RecyclerItemTouchHelperCategories(0, ItemTouchHelper.LEFT, this) {
+
+        };
+
+        new ItemTouchHelper(item).attachToRecyclerView(recyclerView);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mMediatorInterface != null){
+                    mMediatorInterface.onBackPressed();
+                }
             }
         });
 
@@ -121,4 +142,18 @@ public class AddCategoriesFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        if(viewHolder instanceof CategoryAdapter.MyViewHolder){
+            String categoryID = categoryList.get(position).getCategoryId();
+            int position1 = viewHolder.getAdapterPosition();
+            mAdapter.removeItem(position1);
+            FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+            myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid())
+                    .child(Constants.Salon_Category)
+                    .child(categoryID);
+            myRef.removeValue();
+
+        }
+    }
 }

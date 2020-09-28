@@ -108,8 +108,6 @@ public class AddCategoriesDialogFragment extends DialogFragment {
                         Toast.makeText(mContext, "please add salon logo", Toast.LENGTH_SHORT).show();
                 }else {
                     progressDialog = new ProgressDialog(mContext);
-               /* TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
-                progressText.setText("Uploading..");*/
                     progressDialog.setCancelable(false);
                     progressDialog.show();
                     progressDialog.setContentView(R.layout.custom_progress_dialog);

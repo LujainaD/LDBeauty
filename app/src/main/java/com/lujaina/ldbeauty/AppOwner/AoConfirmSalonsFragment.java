@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -67,6 +69,7 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView= inflater.inflate(R.layout.fragment_ao_confirm_salons, container, false);
+        ImageButton back = parentView.findViewById(R.id.ib_back);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
@@ -88,6 +91,15 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
                     details.show(getChildFragmentManager(), SalonConfirmDialogFragment.class.getSimpleName());
                 }
 
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mMediatorInterface != null){
+                    mMediatorInterface.onBackPressed();
+                }
             }
         });
 

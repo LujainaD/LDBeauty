@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.android.material.behavior.SwipeDismissBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -77,7 +79,7 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_info, container, false);
-
+        ImageButton back = parentView.findViewById(R.id.ib_back);
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
@@ -94,7 +96,14 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
 
         new ItemTouchHelper(item).attachToRecyclerView(recyclerView);
 
-
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mMediatorInterface != null){
+                    mMediatorInterface.onBackPressed();
+                }
+            }
+        });
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -63,12 +65,21 @@ public class SalonProfileFragment extends Fragment {
         View parentView = inflater.inflate(R.layout.fragment_salon_profile, container, false);
         TextView aboutPage = parentView.findViewById(R.id.tv_AboutPage);
         final ImageView profileImag = parentView.findViewById(R.id.civ_profile);
+        ImageButton back = parentView.findViewById(R.id.ib_back);
         final TextView salonName = parentView.findViewById(R.id.tv_title);
         TextView categoryPage = parentView.findViewById(R.id.tv_services);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         myRef = FirebaseDatabase.getInstance().getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid());
 
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mMediatorInterface != null){
+                    mMediatorInterface.onBackPressed();
+                }
+            }
+        });
 
     categoryPage.setOnClickListener(new View.OnClickListener() {
         @Override

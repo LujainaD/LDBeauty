@@ -43,6 +43,17 @@ public class LoginChoicesFragment extends Fragment {
         Button client = parentView.findViewById(R.id.btn_client);
         Button salonOwner = parentView.findViewById(R.id.btn_salonOwner);
         TextView appOwner = parentView.findViewById(R.id.tv_appOwner);
+        TextView signup = parentView.findViewById(R.id.tv_SignUp);
+
+
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mMediatorInterface != null){
+                    mMediatorInterface.changeFragmentTo(new SignUpFragment(), SignUpFragment.class.getSimpleName());
+                }
+            }
+        });
 
 
         salonOwner.setOnClickListener(new View.OnClickListener() {
