@@ -22,6 +22,7 @@
     <string name="salonPhone">Salon Phone Number</string>
     <string name="title">Title</string>
     <string name="addInfo">Add Info</string>
+    <string name="sign_up_underline"><u>Sign Up</u></string>
 
 
 </resources>

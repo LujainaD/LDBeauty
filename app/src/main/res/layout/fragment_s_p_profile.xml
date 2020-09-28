@@ -138,9 +138,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="476dp"
-        android:layout_marginEnd="160dp"
-        android:src="@drawable/boquet"
+        android:layout_marginTop="612dp"
+        android:layout_marginEnd="316dp"
+        android:src="@drawable/halfrose"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -148,12 +148,9 @@
         android:id="@+id/imageView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_marginStart="200dp"
-        android:layout_marginBottom="314dp"
-        android:src="@drawable/flowers"
-        app:layout_constraintBottom_toTopOf="@+id/imageView3"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:src="@drawable/upcorener"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView2"

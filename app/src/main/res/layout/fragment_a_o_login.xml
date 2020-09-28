@@ -84,81 +84,68 @@
             android:text=""
             android:textColor="#000000"
             android:textSize="16sp" />
+
     </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_password"
-            android:layout_width="226dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="@color/lightGray"
-            app:cardCornerRadius="20dp"
-            app:layout_constraintEnd_toEndOf="@id/cv_email"
-            app:layout_constraintStart_toStartOf="@id/cv_email"
-            app:layout_constraintTop_toBottomOf="@id/cv_email">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_password"
+        android:layout_width="226dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/lightGray"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="@id/cv_email"
+        app:layout_constraintStart_toStartOf="@id/cv_email"
+        app:layout_constraintTop_toBottomOf="@id/cv_email">
 
-            <EditText
-                android:id="@+id/ti_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@android:color/transparent"
-                android:gravity="center"
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:textColor="#000000"
-                android:textSize="16sp" />
-        </androidx.cardview.widget.CardView>
-
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_width="127dp"
-            android:layout_height="32dp"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="#DA6EA4"
+        <EditText
+            android:id="@+id/ti_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
             android:gravity="center"
-            android:text="Login"
-            android:background="@drawable/btn_rectangle"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@id/cv_email"
-            app:layout_constraintStart_toStartOf="@id/cv_email"
-            app:layout_constraintTop_toBottomOf="@+id/cv_password">
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+    </androidx.cardview.widget.CardView>
 
-        </Button>
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="127dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#DA6EA4"
+        android:gravity="center"
+        android:text="Login"
+        android:background="@drawable/btn_rectangle"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@id/cv_email"
+        app:layout_constraintStart_toStartOf="@id/cv_email"
+        app:layout_constraintTop_toBottomOf="@+id/cv_password">
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+    </Button>
 
-
-            android:src="@drawable/rose1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:src="@drawable/rose2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
-        android:id="@+id/tv_dont"
+    <ImageView
+        android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="10dp"
-        android:text="Don't have an account?"
-        android:textColor="#000000"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_forget">
 
-    </TextView>
+
+        android:src="@drawable/rose1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:src="@drawable/rose2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/tv_SignUp"
@@ -167,7 +154,7 @@
         android:layout_marginStart="4dp"
         android:clickable="true"
         android:gravity="center"
-        android:text="Sign Up"
+        android:text="@string/sign_up_underline"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/tv_dont"
@@ -179,17 +166,30 @@
         android:id="@+id/tv_forget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="98dp"
+        android:layout_marginBottom="18dp"
         android:clickable="true"
         android:gravity="center"
-        android:text="Forget PassWord?"
+        android:text="Forget Password?"
         android:textColor="#000000"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/tv_dont"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login">
+        app:layout_constraintHorizontal_bias="0.519"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_dont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="92dp"
+        android:layout_marginBottom="25dp"
+        android:text="Don't have an account?"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
     </TextView>
 

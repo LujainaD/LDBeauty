@@ -49,18 +49,37 @@
         android:layout_height="50dp"
         android:background="#FFFFFF"
         android:drawablePadding="5dp"
-        android:paddingStart="10dp"
+        android:paddingStart="40dp"
         android:paddingTop="15dp"
         android:text="Confirm Salons"
         android:textAlignment="textStart"
         android:textColor="@color/pink_text"
         android:textSize="16sp"
-        app:drawableEndCompat="@drawable/ic_arrow"
-        app:drawableStartCompat="@drawable/ic_profile"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_edit" />
+
+    <ImageView
+        android:id="@+id/iv_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_confirm"
+        app:layout_constraintTop_toTopOf="@+id/tv_confirm"
+        app:srcCompat="@drawable/ic_arrow" />
+    <ImageView
+        android:id="@+id/iv_confirm2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toStartOf="@+id/tv_confirm"
+        app:layout_constraintTop_toTopOf="@+id/tv_confirm"
+        app:srcCompat="@drawable/ic_settings" />
+
 
     <TextView
         android:id="@+id/tv_edit"
@@ -69,17 +88,33 @@
         android:layout_marginTop="10dp"
         android:background="#FFFFFF"
         android:drawablePadding="5dp"
-        android:paddingStart="10dp"
+        android:paddingStart="40dp"
         android:paddingTop="15dp"
         android:text="Edit My Profile"
         android:textAlignment="textStart"
         android:textColor="@color/pink_text"
         android:textSize="16sp"
-        app:drawableEndCompat="@drawable/ic_arrow"
-        app:drawableStartCompat="@drawable/ic_profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/civ_profile" />
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_edit"
+        app:layout_constraintTop_toTopOf="@+id/tv_edit"
+        app:srcCompat="@drawable/ic_arrow" />
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toStartOf="@+id/tv_edit"
+        app:layout_constraintTop_toTopOf="@+id/tv_edit"
+        app:srcCompat="@drawable/ic_profile" />
 
     <TextView
         android:id="@+id/tv_list"
@@ -91,24 +126,40 @@
         android:drawablePadding="5dp"
         android:textAlignment="textStart"
         android:textColor="@color/pink_text"
-        android:paddingStart="10dp"
+        android:paddingStart="40dp"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_confirm"
-        app:drawableStartCompat="@drawable/ic_settings"
-        app:drawableEndCompat="@drawable/ic_arrow" />
+       />
 
-
+    <ImageView
+        android:id="@+id/iv_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_list"
+        app:layout_constraintTop_toTopOf="@+id/tv_list"
+        app:srcCompat="@drawable/ic_arrow" />
+    <ImageView
+        android:id="@+id/iv_list2"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toStartOf="@+id/tv_list"
+        app:layout_constraintTop_toTopOf="@+id/tv_list"
+        app:srcCompat="@drawable/service" />
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="476dp"
-        android:layout_marginEnd="160dp"
-        android:src="@drawable/boquet"
+        android:layout_marginTop="612dp"
+        android:layout_marginEnd="316dp"
+        android:src="@drawable/halfrose"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -116,10 +167,7 @@
         android:id="@+id/imageView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_marginStart="200dp"
-        android:layout_marginBottom="314dp"
-        android:src="@drawable/flowers"
-        app:layout_constraintBottom_toTopOf="@+id/imageView3"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:src="@drawable/upcorener"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

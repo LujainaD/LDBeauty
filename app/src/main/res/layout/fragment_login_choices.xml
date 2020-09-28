@@ -101,37 +101,6 @@
         app:layout_constraintStart_toStartOf="@+id/btn_salonOwner"
         app:layout_constraintTop_toBottomOf="@+id/btn_salonOwner"
         android:layout_width="wrap_content" />
-
-    <TextView
-        android:id="@+id/tv_dont"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="128dp"
-        android:text="Don't have an account?"
-        android:textColor="#000000"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_appOwner">
-
-    </TextView>
-
-    <TextView
-        android:id="@+id/tv_SignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:clickable="true"
-        android:gravity="center"
-        android:text="Sign Up"
-        android:textColor="@color/colorAccent"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/tv_dont"
-        app:layout_constraintTop_toTopOf="@+id/tv_dont">
-
-    </TextView>
-
-
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
@@ -151,5 +120,34 @@
         android:src="@drawable/rose2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_dont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="92dp"
+        android:layout_marginBottom="25dp"
+        android:text="Don't have an account?"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_SignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="Sign Up"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_dont"
+        app:layout_constraintTop_toTopOf="@+id/tv_dont">
+
+    </TextView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
