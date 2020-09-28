@@ -7,14 +7,50 @@
     android:layout_height="match_parent"
     tools:context=".SP.SPSignUpFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#B14F8D"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/white"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/tv_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="73dp"
+        android:layout_marginTop="16dp"
+        android:gravity="start"
+        android:text="Sign up"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/ib_back"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="41dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_back_arrow" />
 
     <ScrollView
+        android:id="@+id/scrollView3"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -73,11 +109,10 @@
                                 android:background="@android:color/transparent"
                                 android:gravity="center"
                                 android:hint="User Email"
-                                android:text="Lujaina.me345@hotmail.com"
                                 android:inputType="textEmailAddress"
+                                android:text="Lujaina.me345@hotmail.com"
                                 android:textColor="#000000"
-                                android:textSize="16sp"
-                                 />
+                                android:textSize="16sp" />
 
                         </androidx.cardview.widget.CardView>
 
@@ -103,18 +138,19 @@
                             app:layout_constraintEnd_toEndOf="@+id/iv_user"
                             app:layout_constraintStart_toStartOf="@+id/iv_user"
                             app:layout_constraintTop_toBottomOf="@+id/iv_user">
-                                <EditText
-                                    android:id="@+id/ti_userName"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:background="@android:color/transparent"
-                                    android:gravity="center"
-                                    android:hint="User Name"
-                                    android:text="Lujaina"
-                                    android:inputType="textPersonName"
-                                    android:textColor="#000000"
-                                    android:textSize="16sp" />
+
+                            <EditText
+                                android:id="@+id/ti_userName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:gravity="center"
+                                android:hint="User Name"
+                                android:inputType="textPersonName"
+                                android:text="Lujaina"
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
@@ -137,8 +173,8 @@
                                 android:background="@android:color/transparent"
                                 android:gravity="center"
                                 android:hint="Phone Number"
-                                android:text="23456789"
                                 android:inputType="phone"
+                                android:text="23456789"
                                 android:textColor="#000000"
                                 android:textSize="16sp" />
 
@@ -240,17 +276,18 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/iv_salon">
 
-                           <EditText
-                            android:id="@+id/ti_salonName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="@android:color/transparent"
-                            android:gravity="center"
-                            android:hint="Salon Name"
-                               android:text="Lujaina95"
-                               android:textColor="#000000"
-                            android:textSize="16sp"  />
+                            <EditText
+                                android:id="@+id/ti_salonName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:gravity="center"
+                                android:hint="Salon Name"
+                                android:text="Lujaina95"
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
+
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
@@ -265,18 +302,20 @@
                             app:layout_constraintTop_toBottomOf="@+id/cardView8">
 
                             <EditText
-                                    android:id="@+id/ti_city"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:background="@android:color/transparent"
-                                    android:gravity="center"
-                                    android:hint="City"
-                                android:text="Lujaina95"
-
+                                android:id="@+id/ti_city"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:gravity="center"
+                                android:hint="City"
                                 android:inputType="text"
-                                    android:textColor="#000000"
-                                    android:textSize="16sp"  />
+
+                                android:text="Lujaina95"
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
+
+
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
@@ -292,17 +331,17 @@
                             app:layout_constraintTop_toBottomOf="@+id/cardView6">
 
                             <EditText
-                                    android:id="@+id/ti_salonNumber"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:background="@android:color/transparent"
-                                    android:gravity="center"
-                                    android:hint="Salon Phone Number"
-                                android:text="Lujaina95"
+                                android:id="@+id/ti_salonNumber"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:gravity="center"
+                                android:hint="Salon Phone Number"
                                 android:inputType="phone"
-                                    android:textColor="#000000"
-                                    android:textSize="16sp" />
+                                android:text="Lujaina95"
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
 
                         </androidx.cardview.widget.CardView>
 
@@ -311,9 +350,9 @@
                             android:layout_width="127dp"
                             android:layout_height="32dp"
                             android:layout_marginTop="20dp"
+                            android:background="@drawable/btn_rectangle"
                             android:backgroundTint="#DA6EA4"
                             android:gravity="center"
-                            android:background="@drawable/btn_rectangle"
                             android:text="Sign Up"
                             android:textColor="@color/white"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -381,27 +420,29 @@
 
     </ScrollView>
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
-            android:layout_marginTop="476dp"
-            android:layout_marginEnd="160dp"
-            android:src="@drawable/boquet"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginStart="236dp"
+        android:layout_marginBottom="508dp"
+        android:src="@drawable/flowers"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.111"
+        app:layout_constraintStart_toStartOf="@+id/toolbar" />
 
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
-            android:layout_marginStart="200dp"
-            android:layout_marginBottom="314dp"
-            android:src="@drawable/flowers"
-            app:layout_constraintBottom_toTopOf="@+id/imageView3"
-            app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginTop="560dp"
+        android:layout_marginEnd="317dp"
+        android:src="@drawable/onerose"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -13,13 +13,15 @@ import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.SP.AddInfoFragment;
 import com.lujaina.ldbeauty.SP.SPSignUpFragment;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity implements MediatorInterface {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
+        changeFragmentTo(new SPSignUpFragment(), SPSignUpFragment.class.getSimpleName());
 
     }
 
@@ -45,4 +47,5 @@ public class MainActivity extends AppCompatActivity implements MediatorInterface
 
         }
     }
+
 }

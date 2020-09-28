@@ -29,8 +29,12 @@
                 android:resource="@xml/img_file_path" />
         </provider>
 
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".HomeActivity"
+            />
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

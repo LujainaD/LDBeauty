@@ -11,6 +11,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -40,12 +42,14 @@ import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.HomeActivity;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.LoginChoicesFragment;
+import com.lujaina.ldbeauty.MainActivity;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -98,6 +102,10 @@ public class SPSignUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_s_p_sign_up, container, false);
+        Toolbar toolbar = parentView.findViewById(R.id.toolbar);
+        TextView toolbarTitle = parentView.findViewById(R.id.tv_toolbar);
+
+
 
         progressDialog = new ProgressDialog(mContext);
         mAuth = FirebaseAuth.getInstance();
@@ -525,4 +533,5 @@ public class SPSignUpFragment extends Fragment {
                 salonImg.setImageURI(salonImgUri);
         }
     }
+
 }
