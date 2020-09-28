@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Constants;
+import com.lujaina.ldbeauty.Dialogs.AddCategoriesDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.LoginChoicesFragment;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
@@ -63,13 +64,20 @@ public class SalonProfileFragment extends Fragment {
         TextView aboutPage = parentView.findViewById(R.id.tv_AboutPage);
         final ImageView profileImag = parentView.findViewById(R.id.civ_profile);
         final TextView salonName = parentView.findViewById(R.id.tv_title);
-
+        TextView categoryPage = parentView.findViewById(R.id.tv_services);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         myRef = FirebaseDatabase.getInstance().getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid());
 
 
-
+    categoryPage.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (mMediatorInterface !=null){
+                mMediatorInterface.changeFragmentTo(new AddCategoriesFragment(), AddCategoriesFragment.class.getSimpleName());
+            }
+        }
+    });
         aboutPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

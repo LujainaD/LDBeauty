@@ -88,36 +88,6 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
         readSalonInfoFromFirebaseDB();
-
-/*
-        mAdapter.setRemoveListener(AddInfoFragment.this);
-*/
-
-        /*ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                 ColorDrawable background = new ColorDrawable(Color.RED);
-                 Drawable icon =  ContextCompat.getDrawable(mContext,R.drawable.delete);
-
-                int position = viewHolder.getAdapterPosition();
-                    mUpdate.remove(position);
-                    mAdapter.notifyDataSetChanged();
-                    deleteInfo(position );
-
-
-            }
-
-
-        });
-
-        helper.attachToRecyclerView(recyclerView);*/
-
-
         ItemTouchHelper.SimpleCallback item = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this) {
 
         };
