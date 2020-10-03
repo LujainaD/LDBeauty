@@ -26,6 +26,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyViewHolder>{
     private final Context mContext;
     private ArrayList<CategoryModel> mCategory;
+    private onClickListener mListener;
 
     public CategoryAdapter(Context mContext) {
         this.mContext = mContext;
@@ -59,19 +60,31 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     public void onBindViewHolder(@NonNull CategoryAdapter.MyViewHolder holder, int position) {
         final CategoryModel category = mCategory.get(position);
         holder.title.setText(category.getCategoryTitle());
-        Glide.with(mContext).load(category.getCategoryURL()).into(holder.picture);
-      /*  holder.card.setOnClickListener(new View.OnClickListener() {
+        Glide.with(mContext).load(category.getCategoryURL()).centerCrop().
+                into(holder.picture);
+        holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mListener != null){
+                    mListener.onClick(category);
+                }
 
             }
-        });*/
+        });
         
     }
 
     @Override
     public int getItemCount() {
         return mCategory.size();
+    }
+
+    public void setonClickListener(onClickListener listener){
+        mListener = listener;
+    }
+
+    public interface onClickListener {
+        void onClick(CategoryModel category);
     }
 
 

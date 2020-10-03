@@ -22,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,30 +36,32 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.lujaina.ldbeauty.Constants;
-import com.lujaina.ldbeauty.HomeActivity;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.CategoryModel;
+import com.lujaina.ldbeauty.Models.ServiceModel;
 import com.lujaina.ldbeauty.R;
 
 import java.util.UUID;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 import static android.content.ContentValues.TAG;
 
-public class AddCategoriesDialogFragment extends DialogFragment {
+
+public class AddServiceDialogFragment extends DialogFragment {
     ImageView picture;
     private Context mContext;
     private MediatorInterface mMediatorInterface;
     private static final int PICK_IMAGE = 1002;
     private static final int STORAGE_PERMISSION_REQUEST = 300;
-    private static final ImageView.ScaleType SCALE_TYPE = ImageView.ScaleType.CENTER_CROP;
     private Uri cateImageUri;
     ProgressDialog progressDialog;
     FirebaseUser mFirebaseUser;
     private FirebaseAuth mAuth;
     String title;
-    public AddCategoriesDialogFragment() {
+    String specialist;
+    String price;
+    private CategoryModel mCategory;
+
+    public AddServiceDialogFragment() {
         // Required empty public constructor
     }
     @Override
@@ -73,8 +74,6 @@ public class AddCategoriesDialogFragment extends DialogFragment {
             dialog.getWindow().setLayout(width, height);
         }
     }
-
-    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
@@ -85,49 +84,53 @@ public class AddCategoriesDialogFragment extends DialogFragment {
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View parentView = inflater.inflate(R.layout.fragment_add_categories_dialog, container, false);
+        View parentView = inflater.inflate(R.layout.fragment_add_service_dialog, container, false);
         progressDialog = new ProgressDialog(mContext);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         final EditText et_title = parentView.findViewById(R.id.ti_title);
-       picture = parentView.findViewById(R.id.iv_picture);
-        picture.setScaleType(SCALE_TYPE);
+        final EditText et_name = parentView.findViewById(R.id.ti_name);
+        final EditText et_price = parentView.findViewById(R.id.ti_price);
+        picture = parentView.findViewById(R.id.iv_picture);
         Button btnAdd = parentView.findViewById(R.id.btn_add);
         Button btnCancel = parentView.findViewById(R.id.btn_cancel);
-
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
-                 title = et_title.getText().toString();
+                title = et_title.getText().toString();
+                specialist = et_name.getText().toString();
+                price = et_price.getText().toString();
+
                 if(title.isEmpty()) {
-                    et_title.setError("you should write category name ex.(Hair, spa))");
+                    et_title.setError("you should write service name ex.(Hair cut, hair coloring))");
+                }else if (specialist.isEmpty()) {
+                    et_title.setError("you should write specialist name)");
+                }else if (price.isEmpty()) {
+                    et_title.setError("you should write the price)");
                 }else if (cateImageUri == null) {
-                        Toast.makeText(mContext, "please add salon logo", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "please add service picture", Toast.LENGTH_SHORT).show();
                 }else {
                     progressDialog = new ProgressDialog(mContext);
                     progressDialog.setCancelable(false);
                     progressDialog.show();
                     progressDialog.setContentView(R.layout.custom_progress_dialog);
                     progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                    CategoryModel category = new CategoryModel();
-                    category.setCategoryTitle(title);
-                    UploadToFirebaseStorage(category);
+                    ServiceModel service = new ServiceModel();
+                    service.setServiceTitle(title);
+                    service.setServicePrice(price);
+                    service.setServiceSpecialist(specialist);
+                    uploadToStorage(service);
+
                 }
             }
         });
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-
         picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,43 +142,7 @@ public class AddCategoriesDialogFragment extends DialogFragment {
             }
         });
 
-
         return parentView;
-    }
-
-    private void UploadToFirebaseStorage(final CategoryModel category) {
-        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
-        //generate unique id for the image
-        String imageId = UUID.randomUUID().toString();
-
-        final StorageReference ownerImageRef = mStorageRef.child("images/" + imageId + ".jpg");
-
-        ownerImageRef.putFile(cateImageUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        ownerImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri firebaseImageUri) {
-                                category.setCategoryURL(firebaseImageUri.toString());
-
-                                addToFirebase(category);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.e(TAG, "onFailure: :" + e.getLocalizedMessage());
-                            }
-                        });
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e(TAG, "onFailure: Uploading image Failed"+e.getLocalizedMessage());
-            }
-        });
-
     }
 
     private void openGallery(int requestCode) {
@@ -225,19 +192,56 @@ public class AddCategoriesDialogFragment extends DialogFragment {
         }
     }
 
-    private void addToFirebase(CategoryModel category) {
+    private void uploadToStorage(final ServiceModel service) {
+        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+        //generate unique id for the image
+        String imageId = UUID.randomUUID().toString();
+
+        final StorageReference ownerImageRef = mStorageRef.child("images/" + imageId + ".jpg");
+
+        ownerImageRef.putFile(cateImageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        ownerImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri firebaseImageUri) {
+                                service.setServiceURL(firebaseImageUri.toString());
+
+                                addToFirebase(service);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e(TAG, "onFailure: :" + e.getLocalizedMessage());
+                            }
+                        });
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "onFailure: Uploading image Failed"+e.getLocalizedMessage());
+            }
+        });
+    }
+
+    private void addToFirebase(ServiceModel service) {
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category);
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category).child(mCategory.getCategoryId()).child(Constants.Salon_Service);
         String id = myRef.push().getKey();
-        category.setCategoryId(id);
-        category.setCategoryTitle(title);
-        category.setOwnerId(mFirebaseUser.getUid());
-        myRef.child(category.categoryId).setValue(category).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
+        service.setServiceId(id);
+        service.setServiceTitle(title);
+        service.setServiceSpecialist(specialist);
+        service.setServicePrice(price);
+        service.setOwnerId(mFirebaseUser.getUid());
+        myRef.child(service.serviceId).setValue(service).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                    Toast.makeText(mContext, "Your service category is added successfully ", Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
-                    dismiss();
+                Toast.makeText(mContext, "Your service service is added successfully ", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+                dismiss();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -250,5 +254,7 @@ public class AddCategoriesDialogFragment extends DialogFragment {
 
     }
 
-
+    public void setService(CategoryModel category) {
+        mCategory = category;
+    }
 }

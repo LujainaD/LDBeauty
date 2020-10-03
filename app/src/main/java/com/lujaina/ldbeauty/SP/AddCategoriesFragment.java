@@ -79,6 +79,18 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
         readSalonInfoFromFirebaseDB();
+
+        mAdapter.setonClickListener(new CategoryAdapter.onClickListener() {
+            @Override
+            public void onClick(CategoryModel category) {
+                if(mMediatorInterface != null){
+                    AddServicesFragment service = new AddServicesFragment();
+                    service.setService(category);
+                    mMediatorInterface.changeFragmentTo(service, AddServicesFragment.class.getSimpleName());
+
+                }
+            }
+        });
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

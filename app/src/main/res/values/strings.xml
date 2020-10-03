@@ -23,6 +23,7 @@
     <string name="title">Title</string>
     <string name="addInfo">Add Info</string>
     <string name="sign_up_underline"><u>Sign Up</u></string>
+    <string name="login_underline"><u>Login</u></string>
 
 
 </resources>

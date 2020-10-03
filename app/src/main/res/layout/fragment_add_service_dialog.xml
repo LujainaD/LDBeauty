@@ -2,15 +2,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:background="@drawable/inset_rectangle_bg">
+    android:background="@drawable/inset_rectangle_bg"
+    tools:context=".Dialogs.AddInfoDialogFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_title"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
@@ -32,6 +33,56 @@
             android:textSize="16sp" />
     </androidx.cardview.widget.CardView>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="14dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cv_title">
+
+        <EditText
+            android:id="@+id/ti_name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@android:color/transparent"
+            android:hint="Specialist"
+            android:paddingStart="20dp"
+            android:text=""
+            android:textColor="#000000"
+            android:textColorHint="@color/edittext_text_color"
+            android:textSize="16sp" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="14dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cv_name">
+
+        <EditText
+            android:id="@+id/ti_price"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@android:color/transparent"
+            android:hint="Price"
+            android:paddingStart="20dp"
+            android:text=""
+            android:inputType="number"
+            android:textColor="#000000"
+            android:textColorHint="@color/edittext_text_color"
+            android:textSize="16sp" />
+    </androidx.cardview.widget.CardView>
     <Button
         android:id="@+id/btn_add"
         style="@style/Widget.AppCompat.Button.Borderless"
@@ -57,76 +108,17 @@
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/btn_add"
-        app:layout_constraintTop_toBottomOf="@+id/cv_title" />
-<!--
-    <androidx.cardview.widget.CardView
-        android:id="@+id/iv_picture"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="70dp"
-        app:cardCornerRadius="250dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        app:layout_constraintBottom_toTopOf="@+id/cv_title"
-        app:cardBackgroundColor="@android:color/transparent"
-        src
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-      &lt;!&ndash;  <ImageView
-            android:id="@+id/picture"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"
-            android:src="@drawable/whitecamera"
-            app:layout_constraintBottom_toTopOf="@+id/cv_title" />&ndash;&gt;
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/civ_profile"
-            android:layout_width="96dp"
-            android:layout_height="81dp"
-            android:layout_gravity="center"
-            android:src="@drawable/whitecamera"
-             />
-
-    </androidx.cardview.widget.CardView>
--->
-
-
-
-   <!-- <androidx.cardview.widget.CardView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:elevation="12dp"
-        android:id="@+id/view2"
-        app:cardCornerRadius="40dp"
-        android:layout_centerHorizontal="true"
-        android:innerRadius="0dp"
-        android:shape="ring"
-        android:thicknessRatio="1.9">
-        <ImageView
-            android:id="@+id/iv_picture"
-            android:layout_width="96dp"
-            android:layout_height="81dp"
-            android:layout_marginTop="70dp"
-            android:src="@drawable/whitecamera"
-            app:layout_constraintBottom_toTopOf="@+id/cv_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.cardview.widget.CardView>
--->
-
+        app:layout_constraintTop_toBottomOf="@+id/cv_price" />
     <ImageView
         android:id="@+id/iv_picture"
         android:layout_width="96dp"
         android:layout_height="81dp"
         android:layout_marginTop="70dp"
-        android:background="@drawable/whitecamera"
+        android:src="@drawable/whitecamera"
         app:layout_constraintBottom_toTopOf="@+id/cv_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

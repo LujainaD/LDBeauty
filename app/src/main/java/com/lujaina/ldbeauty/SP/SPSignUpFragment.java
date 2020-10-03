@@ -234,14 +234,6 @@ public class SPSignUpFragment extends Fragment {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog = new ProgressDialog(mContext);
-                TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
-                progressText.setText("Welcome Back..");
-                progressDialog.setCancelable(false);
-                progressDialog.show();
-                progressDialog.setContentView(R.layout.custom_progress_dialog);
-                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
                 if (mMediatorInterface != null) {
                     String name = userName.getText().toString();
                     final String email = userEmail.getText().toString().trim();

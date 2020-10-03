@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout5"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#FFF"
     tools:context=".SP.SPLoginFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -65,8 +65,8 @@
         android:layout_width="226dp"
         android:layout_height="40dp"
         android:layout_marginTop="17dp"
+        android:backgroundTint="#F3F3F3"
 
-        android:backgroundTint="@color/lightGray"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,8 +80,9 @@
             android:background="@android:color/transparent"
             android:gravity="center"
             android:hint="User Email"
+            android:textColorHint="#000000"
             android:inputType="textEmailAddress"
-            android:text=""
+            android:text="Lujaina.me12@hotmail.com"
             android:textColor="#000000"
             android:textSize="16sp" />
 
@@ -91,7 +92,7 @@
         android:layout_width="226dp"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
-        android:backgroundTint="@color/lightGray"
+        android:backgroundTint="#F3F3F3"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="@id/cv_email"
         app:layout_constraintStart_toStartOf="@id/cv_email"
@@ -105,7 +106,9 @@
             android:background="@android:color/transparent"
             android:gravity="center"
             android:hint="Password"
+            android:textColorHint="#000000"
             android:inputType="textPassword"
+            android:text="Lujaina95"
             android:textColor="#000000"
             android:textSize="16sp" />
     </androidx.cardview.widget.CardView>

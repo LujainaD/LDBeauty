@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout2"
+    android:background="#FFF"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SP.SPSignUpFragment">
@@ -60,7 +61,7 @@
                             android:layout_width="226dp"
                             android:layout_height="40dp"
                             android:layout_marginTop="10dp"
-                            android:backgroundTint="@color/lightGray"
+                            android:backgroundTint="#F3F3F3"
                             app:cardCornerRadius="20dp"
                             app:layout_constraintEnd_toEndOf="@+id/cv_name"
                             app:layout_constraintStart_toStartOf="@+id/cv_name"
@@ -74,6 +75,8 @@
                                 android:background="@android:color/transparent"
                                 android:gravity="center"
                                 android:hint="User Email"
+                                android:textColorHint="#000000"
+
                                 android:inputType="textEmailAddress"
                                 android:textColor="#000000"
                                 android:textSize="16sp" />
@@ -97,7 +100,7 @@
                             android:layout_height="40dp"
                             android:layout_marginTop="17dp"
 
-                            android:backgroundTint="@color/lightGray"
+                            android:backgroundTint="#F3F3F3"
                             app:cardCornerRadius="20dp"
                             app:layout_constraintEnd_toEndOf="@+id/iv_user"
                             app:layout_constraintStart_toStartOf="@+id/iv_user"
@@ -111,6 +114,7 @@
                                 android:background="@android:color/transparent"
                                 android:gravity="center"
                                 android:hint="User Name"
+                                android:textColorHint="#000000"
                                 android:inputType="textPersonName"
                                 android:textColor="#000000"
                                 android:textSize="16sp" />
@@ -122,7 +126,7 @@
                             android:layout_height="40dp"
                             android:layout_marginTop="10dp"
 
-                            android:backgroundTint="@color/lightGray"
+                            android:backgroundTint="#F3F3F3"
                             app:cardCornerRadius="20dp"
                             app:layout_constraintEnd_toEndOf="@+id/cardView3"
                             app:layout_constraintStart_toStartOf="@+id/cardView3"
@@ -136,6 +140,7 @@
                                 android:background="@android:color/transparent"
                                 android:gravity="center"
                                 android:hint="Phone Number"
+                                android:textColorHint="#000000"
                                 android:inputType="phone"
                                 android:textColor="#000000"
                                 android:textSize="16sp" />
@@ -148,7 +153,7 @@
                             android:layout_height="40dp"
                             android:layout_marginTop="10dp"
 
-                            android:backgroundTint="@color/lightGray"
+                            android:backgroundTint="#F3F3F3"
                             app:cardCornerRadius="20dp"
                             app:layout_constraintEnd_toEndOf="@+id/cardView4"
                             app:layout_constraintStart_toStartOf="@+id/cardView4"
@@ -163,6 +168,7 @@
                                 android:background="@android:color/transparent"
                                 android:gravity="center"
                                 android:hint="Password"
+                                android:textColorHint="#000000"
                                 android:inputType="textPassword"
                                 android:textColor="#000000"
                                 android:textSize="16sp" />
@@ -173,8 +179,10 @@
                             android:layout_width="226dp"
                             android:layout_height="40dp"
                             android:layout_marginTop="10dp"
-                            android:backgroundTint="@color/lightGray"
+                            android:layout_marginBottom="10dp"
+                            android:backgroundTint="#F3F3F3"
                             app:cardCornerRadius="20dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="@+id/cardView5"
                             app:layout_constraintHorizontal_bias="0.4"
                             app:layout_constraintStart_toStartOf="@+id/cardView5"
@@ -188,6 +196,7 @@
                                 android:background="@android:color/transparent"
                                 android:gravity="center"
                                 android:hint="Verify Password"
+                                android:textColorHint="#000000"
                                 android:inputType="textVisiblePassword"
                                 android:textColor="#000000"
                                 android:textSize="16sp" />
@@ -230,7 +239,7 @@
                             android:layout_width="226dp"
                             android:layout_height="40dp"
                             android:layout_marginTop="17dp"
-                            android:backgroundTint="@color/lightGray"
+                            android:backgroundTint="#F3F3F3"
                             app:cardCornerRadius="14dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -244,6 +253,7 @@
                                 android:background="@android:color/transparent"
                                 android:gravity="center"
                                 android:hint="Salon Name"
+                                android:textColorHint="#000000"
                                 android:textColor="#000000"
                                 android:textSize="16sp" />
 
@@ -254,7 +264,7 @@
                             android:layout_width="226dp"
                             android:layout_height="40dp"
                             android:layout_marginTop="10dp"
-                            android:backgroundTint="@color/lightGray"
+                            android:backgroundTint="#F3F3F3"
                             app:cardCornerRadius="14dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -268,6 +278,7 @@
                                 android:background="@android:color/transparent"
                                 android:gravity="center"
                                 android:hint="City"
+                                android:textColorHint="#000000"
                                 android:inputType="text"
                                 android:textColor="#000000"
                                 android:textSize="16sp" />
@@ -281,7 +292,7 @@
                             android:layout_height="40dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
-                            android:backgroundTint="@color/lightGray"
+                            android:backgroundTint="#F3F3F3"
                             app:cardCornerRadius="14dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -295,6 +306,7 @@
                                 android:background="@android:color/transparent"
                                 android:gravity="center"
                                 android:hint="Salon Phone Number"
+                                android:textColorHint="#000000"
                                 android:inputType="phone"
                                 android:textColor="#000000"
                                 android:textSize="16sp" />
@@ -322,7 +334,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginBottom="40dp"
                             android:text="Already have an account?"
                             android:textColor="#000000"
                             android:textSize="16sp"
@@ -339,7 +351,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:clickable="true"
-                            android:text="Login"
+                            android:text="@string/login_underline"
                             android:textColor="@color/colorAccent"
                             android:textSize="16sp"
                             app:layout_constraintEnd_toEndOf="@+id/btn_signUp"
@@ -384,13 +396,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/upcorener"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

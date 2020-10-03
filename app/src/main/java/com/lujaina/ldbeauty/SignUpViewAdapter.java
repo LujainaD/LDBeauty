@@ -13,7 +13,7 @@ public class SignUpViewAdapter extends FragmentPagerAdapter {
 
 
 
-    private CharSequence [] tabTitles = {"Client ", "Service Provider"};
+    private CharSequence [] tabTitles = {"Client ", "Salon Owner"};
     public SignUpViewAdapter(@NonNull FragmentManager fm ) {
         super(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 
