@@ -58,7 +58,7 @@
                         android:layout_alignStart="@+id/tv_appointment"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/event"
+                        android:src="@drawable/outline_event"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/tv_appointment"
                         app:layout_constraintTop_toBottomOf="@+id/tv_appointment"
@@ -106,7 +106,7 @@
                         android:layout_alignStart="@+id/tv_delete"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/delete"
+                        android:src="@drawable/outline_delete"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/tv_delete"
                         app:layout_constraintTop_toBottomOf="@+id/tv_delete">

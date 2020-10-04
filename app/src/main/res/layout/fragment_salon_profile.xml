@@ -194,7 +194,7 @@
         android:layout_marginTop="14dp"
         app:layout_constraintStart_toStartOf="@+id/tv_salonGallery"
         app:layout_constraintTop_toBottomOf="@+id/tv_AboutPage"
-        app:srcCompat="@drawable/gallery" />
+        app:srcCompat="@drawable/photo" />
 
     <ImageView
         android:id="@+id/imageView15"
@@ -208,13 +208,13 @@
 
     <ImageView
         android:id="@+id/imageView16"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="14dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_services"
-        app:srcCompat="@drawable/service" />
+        app:srcCompat="@drawable/outline_toc" />
 
     <ImageView
         android:id="@+id/imageView17"

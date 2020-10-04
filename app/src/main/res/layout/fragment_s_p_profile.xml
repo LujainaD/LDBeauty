@@ -158,7 +158,7 @@
         android:layout_marginTop="14dp"
         app:layout_constraintStart_toStartOf="@+id/tv_editSPFile"
         app:layout_constraintTop_toTopOf="@+id/tv_editSPFile"
-        app:srcCompat="@drawable/ic_profile" />
+        app:srcCompat="@drawable/outline_person" />
 
     <ImageView
         android:id="@+id/imageView5"
@@ -168,7 +168,7 @@
         android:layout_marginTop="14dp"
         app:layout_constraintStart_toStartOf="@+id/tv_editSalonFile"
         app:layout_constraintTop_toBottomOf="@+id/tv_editSPFile"
-        app:srcCompat="@drawable/ic_settings" />
+        app:srcCompat="@drawable/outline_settings" />
 
     <ImageView
         android:id="@+id/imageView6"
@@ -178,17 +178,17 @@
         android:layout_marginTop="14dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_appointment"
-        app:srcCompat="@drawable/ic_event" />
+        app:srcCompat="@drawable/outline_event" />
 
     <ImageView
         android:id="@+id/imageView7"
-        android:layout_width="17dp"
-        android:layout_height="17dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="14dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_appointment"
-        app:srcCompat="@drawable/ic_feedback" />
+        app:srcCompat="@drawable/outline_feedback" />
 
     <ImageView
         android:id="@+id/imageView8"
@@ -198,7 +198,7 @@
         android:layout_marginTop="14dp"
         app:layout_constraintStart_toStartOf="@+id/tv_salonPages"
         app:layout_constraintTop_toTopOf="@+id/tv_salonPages"
-        app:srcCompat="@drawable/icadd_page" />
+        app:srcCompat="@drawable/list" />
 
     <ImageView
         android:id="@+id/imageView9"

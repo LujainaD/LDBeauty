@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.core.SnapshotHolder;
 import com.google.firebase.storage.FirebaseStorage;
 import com.lujaina.ldbeauty.Models.ServiceModel;
 import com.lujaina.ldbeauty.R;
@@ -90,8 +91,8 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
         void onClick(ServiceModel category);
     }
 
-/*interface serviceListener{
-        public void handleDeleteItem(DocumentSnapshot snapshot);
+/*interface ServiceListener{
+        public void handleDeleteItem(SnapshotHolder snapshot);
 }*/
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
