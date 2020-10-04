@@ -175,7 +175,7 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
                     }).show();
                     break;
                 case ItemTouchHelper.RIGHT:
-                        mMediatorInterface.changeFragmentTo(new AddAppointmentFragment(), AddAppointmentFragment.class.getSimpleName());
+                        mMediatorInterface.changeFragmentTo(new CustomizeCalendar(), CustomizeCalendar.class.getSimpleName());
                    mAdapter.notifyDataSetChanged();
                     break;
 
