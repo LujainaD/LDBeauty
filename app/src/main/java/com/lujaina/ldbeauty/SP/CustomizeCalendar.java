@@ -18,7 +18,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.lujaina.ldbeauty.Adapters.CategoryAdapter;
+import com.lujaina.ldbeauty.Adapters.DateAdapter;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.R;
 
@@ -34,9 +41,13 @@ public class CustomizeCalendar extends Fragment {
     private Context mContext;
     ImageButton PreviouseButton,NextButton;
     ImageButton PreviouseDate,NextDate;
-
+    private DateAdapter dateAdapter;
+    private int weeksInView = 1; //will need to make this update dynamicallly based on when a user toggles the view
+    private ArrayList<Calendar> calendarArrayList = new ArrayList<>();
     TextView CurrentDate;
+/*
     GridView gridView;
+*/
     private static final int MAX_CALENDAR_Days = 42;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
@@ -69,14 +80,23 @@ public class CustomizeCalendar extends Fragment {
         EditText time =parentView.findViewById(R.id.tv_time);
         EditText timeType =parentView.findViewById(R.id.tv_timeType);
         Button add = parentView.findViewById(R.id.btn_addTime);
-
         ImageButton back = parentView.findViewById(R.id.ib_back);
         PreviouseButton = parentView.findViewById(R.id.previousBtn);
         NextButton = parentView.findViewById(R.id.nextBtn);
         PreviouseDate = parentView.findViewById(R.id.btn_prevDate);
         NextDate = parentView.findViewById(R.id.btn_nextDate);
         CurrentDate = parentView.findViewById(R.id.current_Date);
+        ArrayList<Calendar> weekView = getCalendarArrayList();
+
+/*
         gridView = parentView.findViewById(R.id.gridview);
+*/
+        RecyclerView rvDate = parentView.findViewById(R.id.rv_day);
+        dateAdapter = new DateAdapter(mContext,weeksInView);
+        rvDate.setAdapter(dateAdapter);
+        setupRecyclerView(rvDate);
+
+
 
         SetupCalendar();
         PreviouseButton.setOnClickListener(new View.OnClickListener() {
@@ -97,14 +117,21 @@ public class CustomizeCalendar extends Fragment {
         });
 
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 final String date = dateFormat.format(dateList.get(position));
 
             }
-            });
+            });*/
         return parentView;
+    }
+
+    private void setupRecyclerView(RecyclerView rvDate) {
+        GridLayoutManager gridLayout= new GridLayoutManager(mContext,7);
+        rvDate.setLayoutManager(gridLayout);
+        rvDate.setItemAnimator(new DefaultItemAnimator());
+
     }
 
     private void SetupCalendar(){
@@ -127,6 +154,8 @@ public class CustomizeCalendar extends Fragment {
         gridView.setAdapter(adapter);*/
 
     }
-
+    private ArrayList<Calendar> getCalendarArrayList(){
+        return this.calendarArrayList;
+    }
 
 }

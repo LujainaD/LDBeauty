@@ -56,10 +56,10 @@
 
             <ImageButton
                 android:id="@+id/button"
-                android:layout_width="0dp"
-                android:layout_height="19dp"
-                android:layout_marginStart="7dp"
-                android:background="@drawable/arrow_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:background="@drawable/arrow_left"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -67,10 +67,10 @@
             <ImageButton
                 android:id="@+id/button2"
 
-                android:layout_width="0dp"
-                android:layout_height="19dp"
-                android:layout_marginEnd="5dp"
-                android:background="@drawable/arrow_forward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="0dp"
+                android:background="@drawable/arrow_right"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -178,9 +178,9 @@
                         android:id="@+id/previousBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="1dp"
                         android:layout_marginTop="19dp"
-                        android:background="@drawable/arrow_back" />
+                        android:background="@drawable/arrow_left" />
 
                     <TextView
                         android:id="@+id/current_Date"
@@ -199,8 +199,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="19dp"
-                        android:layout_marginEnd="10dp"
-                        android:background="@drawable/arrow_forward" />
+                        android:layout_marginEnd="0dp"
+                        android:background="@drawable/arrow_right" />
                 </LinearLayout>
 
 
@@ -211,10 +211,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:paddingStart="25dp"
                 android:paddingTop="4dp"
                 android:paddingEnd="25dp"
-                android:paddingStart="25dp"
                 android:paddingBottom="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cv_date">
 
                 <TextView
@@ -300,39 +302,41 @@
 
                 <ImageButton
                     android:id="@+id/btn_nextDate"
-                    android:layout_width="0dp"
-                    android:layout_height="19dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_marginEnd="5dp"
+                    android:layout_marginEnd="0dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/arrow_forward"
+                    android:background="@drawable/arrow_right"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
                     android:id="@+id/btn_prevDate"
-                    android:layout_width="0dp"
-                    android:layout_height="19dp"
-                    android:layout_marginStart="9dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="1dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/arrow_back"
+                    android:background="@drawable/arrow_left"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <GridView
-                    android:id="@+id/gridview"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_day"
                     android:layout_width="0dp"
-                    android:layout_height="70dp"
-                    android:numColumns="7"
+                    android:layout_height="50dp"
+                    tools:listitem="@layout/single_cell_layout"
+                    android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/btn_nextDate"
                     app:layout_constraintStart_toEndOf="@+id/btn_prevDate"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toBottomOf="@id/day"
+                    tools:ignore="NotSibling">
 
-                </GridView>
+                </androidx.recyclerview.widget.RecyclerView>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
