@@ -3,5 +3,8 @@
 	 android:padding="15dp">
 	<solid android:color="#DA6EA4"/>
 	<corners android:radius="22dp"/>
-
+	<gradient
+		android:startColor="#D86BA2"
+		android:endColor="#B2287F"
+		android:angle="-270" />
 </shape>

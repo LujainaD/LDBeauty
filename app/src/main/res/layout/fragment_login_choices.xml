@@ -50,9 +50,8 @@
         android:layout_marginTop="33dp"
         android:text="Log in as: "
         android:gravity="center"
-        android:textColor="#000000"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="@+id/beauty"
         app:layout_constraintStart_toStartOf="@+id/ld"
         app:layout_constraintTop_toBottomOf="@+id/beauty"
@@ -89,19 +88,22 @@
         app:layout_constraintStart_toStartOf="@+id/btn_client"
         app:layout_constraintTop_toBottomOf="@+id/btn_client" />
 
-    <TextView
+    <Button
         android:id="@+id/tv_appOwner"
-        android:layout_height="wrap_content"
+
+        android:layout_width="127dp"
+        android:layout_height="32dp"
         android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:background="@drawable/btn_rectangle"
+        android:backgroundTint="#DA6EA4"
         android:text="@string/app_owner"
         android:textAllCaps="false"
-        android:textColor="#DA6EA4"
-        android:textSize="14sp"
-        android:textAlignment="center"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/btn_salonOwner"
         app:layout_constraintStart_toStartOf="@+id/btn_salonOwner"
         app:layout_constraintTop_toBottomOf="@+id/btn_salonOwner"
-        android:layout_width="wrap_content" />
+         />
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"

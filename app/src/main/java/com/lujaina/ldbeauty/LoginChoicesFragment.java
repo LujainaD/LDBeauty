@@ -42,7 +42,7 @@ public class LoginChoicesFragment extends Fragment {
         View parentView = inflater.inflate(R.layout.fragment_login_choices, container, false);
         Button client = parentView.findViewById(R.id.btn_client);
         Button salonOwner = parentView.findViewById(R.id.btn_salonOwner);
-        TextView appOwner = parentView.findViewById(R.id.tv_appOwner);
+        Button appOwner = parentView.findViewById(R.id.tv_appOwner);
         TextView signup = parentView.findViewById(R.id.tv_SignUp);
 
 
