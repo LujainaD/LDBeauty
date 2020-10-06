@@ -1,6 +1,8 @@
 package com.lujaina.ldbeauty.Dialogs;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -54,6 +56,7 @@ public class ResetPasswordDialogFragment extends DialogFragment {
         final EditText tv_email = parentView.findViewById(R.id.ti_userEmail);
         Button cancel = parentView.findViewById(R.id.btn_cancel);
         Button reset = parentView.findViewById(R.id.btn_reset);
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mAuth = FirebaseAuth.getInstance();
         tv_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 

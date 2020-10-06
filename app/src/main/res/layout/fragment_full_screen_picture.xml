@@ -2,24 +2,42 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".SP.FullScreenPictureFragment">
 
-    <!-- TODO: Update blank fragment layout -->
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-       >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_height="wrap_content">
 
-        <ImageView
+            <ImageButton
+                android:id="@+id/ib_menu"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/dots"
+                android:clickable="true"
+                app:layout_constraintEnd_toEndOf="@id/img"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </ImageButton>
+            <ImageView
             android:id="@+id/img"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxHeight="400dp"
-            />
-    </androidx.cardview.widget.CardView>
+            app:layout_constraintTop_toBottomOf="@+id/ib_menu"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:maxHeight="400dp">
+
+        </ImageView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
 

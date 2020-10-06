@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="dialogu_inout_size">16sp</dimen>
+    <dimen name="design_fab_size" tools:override="true">70dp</dimen>
+    <dimen name="design_fab_content_size" tools:override="true">60dp</dimen>
+    <dimen name="design_fab_image_size" tools:override="true">56dp</dimen>
 </resources>

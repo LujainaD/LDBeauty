@@ -37,12 +37,12 @@ import com.lujaina.ldbeauty.R;
 import java.util.ArrayList;
 
 
-public class AddGalleryFragment extends Fragment {
+public class AddGalleryFragment extends Fragment  {
     FirebaseAuth mAuth;
     FirebaseUser mFirebaseUser;
     private FirebaseDatabase mDatabase;
     private DatabaseReference myRef;
-    private ArrayList<GalleryModel> categoryList;
+    private ArrayList<GalleryModel> galleryList;
     private GalleryAdapter mAdapter;
     private MediatorInterface mMediatorInterface;
     private Context mContext;
@@ -74,10 +74,11 @@ public class AddGalleryFragment extends Fragment {
         mFirebaseUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
         RecyclerView recyclerView = parentView.findViewById(R.id.rv_categories);
-        categoryList = new ArrayList<>();
+        galleryList = new ArrayList<>();
         mAdapter = new GalleryAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
+
         mAdapter.setonClickListener(new GalleryAdapter.onClickListener() {
             @Override
             public void onClick(GalleryModel category) {
@@ -128,12 +129,12 @@ public class AddGalleryFragment extends Fragment {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                categoryList.clear();
+                galleryList.clear();
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     GalleryModel category = d.getValue(GalleryModel.class);
-                    categoryList.add(category);
+                    galleryList.add(category);
                     progressDialog.dismiss();
-                    mAdapter.update(categoryList);
+                    mAdapter.update(galleryList);
                 }
             }
 
@@ -144,4 +145,14 @@ public class AddGalleryFragment extends Fragment {
             }
         });
     }
+
+  /*  @Override
+    public void onDelete(int img, GalleryModel picture) {
+        String galleryID = galleryList.get(img).getPictureId();
+        mAdapter.removeItem(img);
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+        myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Gallery).child(galleryID);
+        myRef.removeValue();
+
+    }*/
 }

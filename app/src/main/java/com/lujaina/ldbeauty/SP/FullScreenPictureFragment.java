@@ -1,31 +1,44 @@
 package com.lujaina.ldbeauty.SP;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.lujaina.ldbeauty.Constants;
+import com.lujaina.ldbeauty.Dialogs.DeleteDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.GalleryModel;
 import com.lujaina.ldbeauty.R;
 
 
-public class FullScreenPictureFragment extends DialogFragment {
+public class FullScreenPictureFragment extends DialogFragment implements DeleteDialogFragment.deletePicture{
     private MediatorInterface mMediatorInterface;
     private Context mContext;
-    private GalleryModel mCategory;
-
+    private GalleryModel mGallery;
+    FirebaseAuth mAuth;
+    FirebaseUser mFirebaseUser;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference myRef;
+    public FullScreenPictureFragment.deletePicture mListener;
     public FullScreenPictureFragment() {
         // Required empty public constructor
     }
@@ -46,6 +59,7 @@ public class FullScreenPictureFragment extends DialogFragment {
         if (dialog != null) {
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
             int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             dialog.getWindow().setLayout(width, height);
         }
     }
@@ -56,14 +70,102 @@ public class FullScreenPictureFragment extends DialogFragment {
         // Inflate the layout for this fragment
         View parentView= inflater.inflate(R.layout.fragment_full_screen_picture, container, false);
         ImageView picture = parentView.findViewById(R.id.img);
+        ImageButton menuButton = parentView.findViewById(R.id.ib_menu);
+        mDatabase = FirebaseDatabase.getInstance();
+        myRef = mDatabase.getReference(Constants.Users);
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mAuth.getCurrentUser();
 
-        if(mCategory != null){
-            Glide.with(mContext).load(mCategory.getPictureURL()).fitCenter().into(picture);
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                PopupMenu popup = new PopupMenu(mContext, v);
+                popup.getMenuInflater().inflate(R.menu.picture_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()){
+
+                            case R.id.delete:{
+                              /*  DeleteDialogFragment dialog = new DeleteDialogFragment();
+                                dialog.setPictureId(mGallery);
+                                dialog.show(getChildFragmentManager(), DeleteDialogFragment.class.getSimpleName());
+*/
+                              showDeleteDialog();
+
+                            }
+                        }
+
+
+                        return false;
+                    }
+                });
+                popup.show();
+        }
+    });
+
+        if(mGallery != null){
+            Glide.with(mContext).load(mGallery.getPictureURL()).fitCenter().into(picture);
         }
         return parentView;
     }
 
+    private void showDeleteDialog() {
+
+         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+        alertDialog.setMessage("Are you sure you want to delete this picture : ");
+        alertDialog.setCancelable(true);
+
+        //to create  function for Yes
+        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+
+                /*if(mListener != null){
+                    mListener.onDelete(1, mGallery);
+                }*/
+                delete();
+                dialog.cancel();
+                dismiss();
+            }
+        });
+        // to create function for "No"
+        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                dialog.cancel();
+            }
+        });
+
+        // to display dialog
+        alertDialog.create().show();
+
+    }
+
+    private void delete() {
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+        myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Gallery).child(mGallery.getPictureId());
+        myRef.removeValue();
+    }
+
     public void setImg(GalleryModel category) {
-        mCategory = category;
+        mGallery = category;
+    }
+
+    @Override
+    public void onDelete( int position, GalleryModel picture) {
+        if(position == 1){
+/*
+            delete(picture);
+*/
+        }else {
+            dismiss();
+        }
+
+    }
+
+    public interface deletePicture {
+        void onDelete(int position , GalleryModel picture);
     }
 }

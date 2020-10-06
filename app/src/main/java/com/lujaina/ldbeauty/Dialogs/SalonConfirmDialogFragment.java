@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -65,6 +67,7 @@ public class SalonConfirmDialogFragment extends DialogFragment {
     private SPRegistrationModel sprModelObj;
 String mImagePath;
     Uri imgUri;
+
     public SalonConfirmDialogFragment(AoConfirmSalonsFragment aoConfirmContext, SPRegistrationModel salonsDetails) {
         mListener = (statusConfirmed) aoConfirmContext;
 		sprModelObj = salonsDetails;
@@ -110,6 +113,7 @@ String mImagePath;
         TextView date = parentView.findViewById(R.id.tv_regisDate);
         final Button confirm = parentView.findViewById(R.id.btn_confirm);
         Button cancel = parentView.findViewById(R.id.btn_cancel);
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
         if (mDetails != null) {

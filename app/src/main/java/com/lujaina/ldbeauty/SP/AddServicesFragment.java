@@ -165,14 +165,6 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
                             .child(Constants.Salon_Category).child(category.getCategoryId()).child(Constants.Salon_Service)
                             .child(serviceId);
                     myRef.removeValue();
-                    Snackbar.make(recyclerView, serviceModel.getServiceTitle(), Snackbar.LENGTH_LONG).setAction("undo", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            serviceList.add(position1, serviceModel);
-                            mAdapter.notifyItemInserted(position1);
-                        }
-
-                    }).show();
                     break;
                 case ItemTouchHelper.RIGHT:
                         mMediatorInterface.changeFragmentTo(new CustomizeCalendar(), CustomizeCalendar.class.getSimpleName());
