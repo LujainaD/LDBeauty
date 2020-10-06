@@ -68,6 +68,8 @@ public class SalonProfileFragment extends Fragment {
         ImageButton back = parentView.findViewById(R.id.ib_back);
         final TextView salonName = parentView.findViewById(R.id.tv_title);
         TextView categoryPage = parentView.findViewById(R.id.tv_services);
+        TextView galleryPage = parentView.findViewById(R.id.tv_salonGallery);
+
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         myRef = FirebaseDatabase.getInstance().getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid());
@@ -101,6 +103,16 @@ public class SalonProfileFragment extends Fragment {
         });
 
 
+        galleryPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (mMediatorInterface !=null){
+                    mMediatorInterface.changeFragmentTo(new AddGalleryFragment(), AddGalleryFragment.class.getSimpleName());
+                }
+
+            }
+        });
 
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setCancelable(false);

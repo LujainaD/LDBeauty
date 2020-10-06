@@ -53,7 +53,7 @@ public class ResetPasswordDialogFragment extends DialogFragment {
         View parentView = inflater.inflate(R.layout.fragment_reset_password_dialog, container, false);
         final EditText tv_email = parentView.findViewById(R.id.ti_userEmail);
         Button cancel = parentView.findViewById(R.id.btn_cancel);
-        Button reset = parentView.findViewById(R.id.btn_rest);
+        Button reset = parentView.findViewById(R.id.btn_reset);
         mAuth = FirebaseAuth.getInstance();
         tv_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 

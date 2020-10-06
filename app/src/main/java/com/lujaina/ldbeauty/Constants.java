@@ -6,6 +6,8 @@ public class Constants {
     public static final String Salon_Info = "Salon_Info";
     public static final String Salon_Category = "Salon_Category";
     public static final String Salon_Service = "Salon_Service";
+    public static final String Salon_Gallery = "Salon_Gallery";
+
 
 
 
