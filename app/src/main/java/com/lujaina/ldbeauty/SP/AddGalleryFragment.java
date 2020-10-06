@@ -78,6 +78,16 @@ public class AddGalleryFragment extends Fragment {
         mAdapter = new GalleryAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
+        mAdapter.setonClickListener(new GalleryAdapter.onClickListener() {
+            @Override
+            public void onClick(GalleryModel category) {
+                if(mMediatorInterface != null){
+                    FullScreenPictureFragment img = new FullScreenPictureFragment();
+                    img.setImg(category);
+                    img.show(getChildFragmentManager(), FullScreenPictureFragment.class.getSimpleName());
+                }
+            }
+        });
         readSalonInfoFromFirebaseDB();
         back.setOnClickListener(new View.OnClickListener() {
             @Override

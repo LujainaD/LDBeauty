@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -57,6 +58,15 @@ private onClickListener mListener;
     final GalleryModel category = mGallery.get(position);
             Glide.with(mContext).load(category.getPictureURL()).centerCrop().
             into(holder.picture);
+
+            holder.fullScreen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mListener != null){
+                        mListener.onClick(category);
+                    }
+                }
+            });
     
             }
     
@@ -76,12 +86,13 @@ private onClickListener mListener;
     
     public class MyViewHolder extends RecyclerView.ViewHolder{
         ImageView picture;
-        CardView card;
+        ImageButton fullScreen;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             picture = itemView.findViewById(R.id.iv_gallery);
+            fullScreen = itemView.findViewById(R.id.ib_fullscreen);
         }
     }
     }

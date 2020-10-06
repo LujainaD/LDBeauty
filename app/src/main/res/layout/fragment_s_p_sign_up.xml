@@ -3,12 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout2"
-    android:background="#FFF"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SP.SPSignUpFragment">
 
-
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/halfrose"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="0dp"
@@ -21,7 +26,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
             android:orientation="vertical">
 
             <TextView
@@ -32,31 +36,17 @@
                 android:layout_marginTop="10dp"
                 android:text="Add Salon Owner Info"
                 android:textColor="#000000"
+                app:layout_constraintTop_toBottomOf="@id/iv_salon"
                 android:textSize="16dp"
                 android:textStyle="normal" />
 
-            <View style="@style/Divider.Horizontal"
-                android:layout_width="160dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="2dp"
-                android:background="#000000"/>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/white"
-                    app:layout_constraintBottom_toTopOf="@+id/tv_addSalonInfo"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-
+    <View
+        android:id="@+id/view2"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        style="@style/Divider.Horizontal"
+        android:layout_width="155dp"
+        android:layout_marginStart="10dp"
+        android:background="#000000" />
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
@@ -157,7 +147,6 @@
                             android:layout_width="226dp"
                             android:layout_height="40dp"
                             android:layout_marginTop="10dp"
-
                             android:backgroundTint="#F3F3F3"
                             app:cardCornerRadius="20dp"
                             app:layout_constraintEnd_toEndOf="@+id/cardView4"
@@ -173,14 +162,15 @@
                                 android:background="@android:color/transparent"
                                 android:gravity="center"
                                 android:hint="Password"
-                                android:textColorHint="#000000"
                                 android:inputType="textPassword"
                                 android:textColor="#000000"
+                                android:textColorHint="#000000"
                                 android:textSize="16sp" />
 
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
+                            android:id="@+id/cv_verPass"
                             android:layout_width="226dp"
                             android:layout_height="40dp"
                             android:layout_marginTop="10dp"
@@ -208,37 +198,16 @@
 
                         </androidx.cardview.widget.CardView>
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </androidx.cardview.widget.CardView>
-
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:backgroundTint="@color/white"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_addSalonInfo"
-
-
-                    >
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
 
                         <ImageView
                             android:id="@+id/iv_salon"
                             android:layout_width="80dp"
                             android:layout_height="67dp"
                             android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
                             android:src="@drawable/camera"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toBottomOf="@+id/tv_addSalonInfo" />
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/cardView8"
@@ -366,31 +335,30 @@
 
                         </TextView>
 
+                        <View
+                            style="@style/Divider.Horizontal"
+                            android:layout_width="104dp"
+                            android:background="#000000"
+                            app:layout_constraintStart_toStartOf="@+id/tv_addSalonInfo"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_addSalonInfo" />
+
+                        <TextView
+                            android:id="@+id/tv_addSalonInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="30dp"
+                            android:text="Add Salon Info"
+                            android:textColor="#000000"
+                            android:textSize="16dp"
+                            android:textStyle="normal"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/cardView5" />-->
+
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.cardview.widget.CardView>
-
-                <View
-                    style="@style/Divider.Horizontal"
-                    android:layout_width="108dp"
-                    android:background="#000000"
-                    app:layout_constraintStart_toStartOf="@+id/tv_addSalonInfo"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_addSalonInfo" />
-
-                <TextView
-                    android:id="@+id/tv_addSalonInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="Add Salon Info"
-                    android:textColor="#000000"
-                    android:textSize="16dp"
-                    android:textStyle="normal"
-                    app:layout_constraintBottom_toTopOf="@+id/card2"
-                    app:layout_constraintStart_toStartOf="parent" />
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </LinearLayout>
@@ -399,13 +367,6 @@
     </ScrollView>
 
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/halfrose"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -97,14 +97,7 @@ public class AOLoginFragment extends Fragment {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog = new ProgressDialog(mContext);
-                progressDialog.setCancelable(false);
-                progressDialog.show();
-                progressDialog.setContentView(R.layout.custom_progress_dialog);
-                TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
-                progressText.setText("Welcome Back..");
-                progressText.setVisibility(View.VISIBLE);
-                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
                 if (mMediatorInterface != null) {
                     final String email = ti_email.getText().toString();
                     final String password = ti_password.getText().toString();
@@ -117,7 +110,14 @@ public class AOLoginFragment extends Fragment {
                         ti_password.setError("please write your password");
                     }else {
                         if(email.equals("Lujaina.me@hotmail.com") && password.equals("Lujaina95")) {
-
+                            progressDialog = new ProgressDialog(mContext);
+                            progressDialog.setCancelable(false);
+                            progressDialog.show();
+                            progressDialog.setContentView(R.layout.custom_progress_dialog);
+                            TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
+                            progressText.setText("Welcome Back..");
+                            progressText.setVisibility(View.VISIBLE);
+                            progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                             SPRegistrationModel salonOwner = new SPRegistrationModel();
                             salonOwner.setOwnerEmail(email);
                             salonOwner.setPassWord(password);
