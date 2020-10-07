@@ -10,7 +10,7 @@
         android:id="@+id/calendar_day"
         android:text="1"
         android:gravity="center"
-        android:textStyle="bold"
+        android:textStyle="normal"
         android:layout_gravity="start"
-        android:textSize="20sp"/>
+        android:textSize="15sp"/>
 </LinearLayout>

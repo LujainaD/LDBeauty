@@ -58,7 +58,7 @@
         android:id="@+id/cardView"
         android:layout_width="340dp"
         android:layout_height="40dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         app:cardCornerRadius="14dp"
         app:layout_constraintEnd_toEndOf="@+id/calendarView"
         app:layout_constraintStart_toStartOf="@+id/textView10"
@@ -75,12 +75,15 @@
                 android:layout_marginStart="1dp"
                 android:background="@drawable/arrow_left"
                 app:layout_constraintBottom_toBottomOf="parent"
+                android:clickable="true"
+                android:focusable="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
                 android:id="@+id/button2"
-
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="0dp"
@@ -108,7 +111,7 @@
         android:id="@+id/cv_service"
         android:layout_width="340dp"
         android:layout_height="56dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         app:cardCornerRadius="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -163,7 +166,7 @@
         android:id="@+id/calendarView"
         android:layout_width="340dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         app:cardCornerRadius="14dp"
         app:layout_constraintStart_toStartOf="@+id/cv_name"
         app:layout_constraintTop_toBottomOf="@+id/textView9">
@@ -175,7 +178,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_date"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
 
                 app:layout_constraintBottom_toTopOf="@+id/day"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -184,7 +187,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="45dp"
                     android:background="#17C941A1"
                     android:orientation="horizontal">
 
@@ -192,15 +195,17 @@
                         android:id="@+id/previousBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:layout_marginStart="1dp"
-                        android:layout_marginTop="19dp"
+                        android:layout_marginTop="12dp"
                         android:background="@drawable/arrow_left" />
 
                     <TextView
                         android:id="@+id/current_Date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="19dp"
+                        android:layout_marginTop="10dp"
                         android:layout_weight="3"
                         android:gravity="center"
                         android:text="CurrentDate"
@@ -212,7 +217,9 @@
                         android:id="@+id/nextBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="19dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginTop="12dp"
                         android:layout_marginEnd="0dp"
                         android:background="@drawable/arrow_right" />
                 </LinearLayout>
@@ -226,9 +233,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingStart="25dp"
-                android:paddingTop="4dp"
                 android:paddingEnd="25dp"
-                android:paddingBottom="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cv_date">
@@ -308,7 +313,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constrain"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="30dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -321,6 +326,8 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="0dp"
                     android:layout_marginBottom="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:background="@drawable/arrow_right"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -333,6 +340,8 @@
                     android:layout_marginStart="1dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:background="@drawable/arrow_left"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -341,18 +350,17 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_day"
                     android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    tools:listitem="@layout/single_cell_layout"
+                    android:layout_height="30dp"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/btn_nextDate"
                     app:layout_constraintStart_toEndOf="@+id/btn_prevDate"
-                    app:layout_constraintTop_toBottomOf="@id/day"
-                    tools:ignore="NotSibling">
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="NotSibling"
+                    tools:listitem="@layout/single_cell_layout">
 
                 </androidx.recyclerview.widget.RecyclerView>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -364,7 +372,7 @@
         android:id="@+id/tv_selected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:text="Selected Service"
         app:layout_constraintStart_toStartOf="@+id/cv_service"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
@@ -373,7 +381,7 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:text="Selected Service"
         app:layout_constraintStart_toStartOf="@+id/tv_selected"
         app:layout_constraintTop_toBottomOf="@id/cv_service" />
@@ -382,7 +390,7 @@
         android:id="@+id/cv_name"
         android:layout_width="340dp"
         android:layout_height="56dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         app:cardCornerRadius="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -414,7 +422,7 @@
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:text="Select a date"
         app:layout_constraintStart_toStartOf="@+id/cv_name"
         app:layout_constraintTop_toBottomOf="@+id/cv_name" />
@@ -423,50 +431,71 @@
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:text="Add a time"
         app:layout_constraintStart_toStartOf="@+id/calendarView"
         app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
-    <EditText
-        android:id="@+id/tv_time"
-        android:layout_width="170dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="@android:color/transparent"
-        android:elevation="@dimen/cardview_compat_inset_shadow"
-        android:hint="Time"
-        android:gravity="center"
-        android:inputType="time"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:cardCornerRadius="14dp"
         app:layout_constraintStart_toStartOf="@+id/cardView"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView">
 
-    <EditText
-        android:id="@+id/tv_timeType"
-        android:layout_width="170dp"
-        android:layout_height="50dp"
-        android:backgroundTint="@android:color/transparent"
-        android:elevation="@dimen/cardview_compat_inset_shadow"
-        android:hint="PM/AM"
-        android:gravity="center"
-        android:inputType="text"
+        <EditText
+            android:id="@+id/tv_time"
+            android:layout_width="150dp"
+            android:layout_height="35dp"
+            android:background="@drawable/edit_text_border"
+            android:backgroundTint="@android:color/transparent"
+            android:gravity="center"
+            android:hint="Time"
+            android:inputType="time"
+            app:layout_constraintStart_toStartOf="@+id/cardView"
+            app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="14dp"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
-        app:layout_constraintTop_toTopOf="@+id/tv_time" />
+        app:layout_constraintTop_toTopOf="@+id/cardView2">
+
+        <EditText
+            android:id="@+id/tv_timeType"
+            android:layout_width="140dp"
+            android:layout_height="35dp"
+            android:background="@drawable/edit_text_border"
+            android:backgroundTint="@android:color/transparent"
+            android:gravity="center"
+            android:hint="PM/AM"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="@+id/cardView"
+            app:layout_constraintTop_toTopOf="@+id/tv_time" />
+
+    </androidx.cardview.widget.CardView>
+
 
     <Button
         android:id="@+id/btn_addTime"
         android:layout_width="127dp"
         android:layout_height="32dp"
         android:layout_marginTop="10dp"
+        android:background="@drawable/btn_rectangle"
         android:backgroundTint="#DA6EA4"
         android:gravity="center"
-        android:textAllCaps="false"
-        android:background="@drawable/btn_rectangle"
-        android:textColor="@color/white"
         android:text="Add Time"
-        app:layout_constraintEnd_toEndOf="@+id/tv_timeType"
-        app:layout_constraintStart_toStartOf="@+id/tv_time"
-        app:layout_constraintTop_toBottomOf="@+id/tv_timeType" />
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/cardView9"
+        app:layout_constraintStart_toStartOf="@+id/cardView2"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
