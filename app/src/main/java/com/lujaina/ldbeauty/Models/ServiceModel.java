@@ -2,6 +2,7 @@ package com.lujaina.ldbeauty.Models;
 
 public class ServiceModel {
     public String ownerId;
+    public String idCategory;
     public String serviceTitle;
     public String serviceURL;
     public String serviceId;
@@ -14,6 +15,14 @@ public class ServiceModel {
 
     public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public String getIdCategory() {
+        return idCategory;
+    }
+
+    public void setIdCategory(String idCategory) {
+        this.idCategory = idCategory;
     }
 
     public String getServiceTitle() {

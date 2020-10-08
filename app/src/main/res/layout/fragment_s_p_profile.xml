@@ -176,7 +176,8 @@
         android:layout_marginTop="14dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_appointment"
-        app:srcCompat="@drawable/outline_event" />
+        app:srcCompat="@drawable/outline_event"
+        app:tint="?attr/colorControlNormal" />
 
     <ImageView
         android:id="@+id/imageView7"

@@ -47,7 +47,7 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
     private ServiceAdapter mAdapter;
     private MediatorInterface mMediatorInterface;
     private Context mContext;
-    ServiceModel serviceModel;
+    ServiceModel service;
     ProgressDialog progressDialog;
     private CategoryModel category;
     RecyclerView.ViewHolder viewHolder;
@@ -109,9 +109,7 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category).child(category.getCategoryId()).child(Constants.Salon_Service);
         // Read from the mDatabase
-        if(Constants.Salon_Service == null){
-            progressDialog.dismiss();
-        }else {
+
             progressDialog = new ProgressDialog(mContext);
             progressDialog.show();
             progressDialog.setContentView(R.layout.progress_bar);
@@ -121,7 +119,7 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     serviceList.clear();
                     for (DataSnapshot d : dataSnapshot.getChildren()) {
-                        ServiceModel service = d.getValue(ServiceModel.class);
+                         service = d.getValue(ServiceModel.class);
                         serviceList.add(service);
                         progressDialog.dismiss();
                         mAdapter.update(serviceList);
@@ -134,7 +132,7 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
                     progressDialog.dismiss();
                 }
             });
-        }
+
 
 
     }
@@ -167,7 +165,9 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
                     myRef.removeValue();
                     break;
                 case ItemTouchHelper.RIGHT:
-                        mMediatorInterface.changeFragmentTo(new CustomizeCalendar(), CustomizeCalendar.class.getSimpleName());
+                    AddAppointmentFragment appointment = new AddAppointmentFragment();
+                    appointment.setAppointment(service);
+                        mMediatorInterface.changeFragmentTo(appointment, AddAppointmentFragment.class.getSimpleName());
                    mAdapter.notifyDataSetChanged();
                     break;
 

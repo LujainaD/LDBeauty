@@ -235,6 +235,7 @@ public class AddServiceDialogFragment extends DialogFragment {
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category).child(mCategory.getCategoryId()).child(Constants.Salon_Service);
         String id = myRef.push().getKey();
         service.setServiceId(id);
+        service.setIdCategory(mCategory.getCategoryId());
         service.setServiceTitle(title);
         service.setServiceSpecialist(specialist);
         service.setServicePrice(price);

@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,9 +25,20 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Adapters.CategoryAdapter;
 import com.lujaina.ldbeauty.Adapters.DateAdapter;
+import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
+import com.lujaina.ldbeauty.Models.CategoryModel;
+import com.lujaina.ldbeauty.Models.ServiceModel;
 import com.lujaina.ldbeauty.R;
 
 import java.text.SimpleDateFormat;
@@ -37,6 +49,11 @@ import java.util.List;
 import java.util.Locale;
 
 public class CustomizeCalendar extends Fragment {
+
+    FirebaseAuth mAuth;
+    FirebaseUser mFirebaseUser;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference myRef;
     private MediatorInterface mMediatorInterface;
     private Context mContext;
     ImageButton PreviouseButton,NextButton;
@@ -45,9 +62,7 @@ public class CustomizeCalendar extends Fragment {
     private int weeksInView = 1; //will need to make this update dynamicallly based on when a user toggles the view
     private ArrayList<Calendar> calendarArrayList = new ArrayList<>();
     TextView CurrentDate;
-/*
-    GridView gridView;
-*/
+
     private static final int MAX_CALENDAR_Days = 42;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
@@ -56,7 +71,7 @@ public class CustomizeCalendar extends Fragment {
     Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
     Context context;
     List<Date> dateList = new ArrayList<>();
-    MyGridAdapter adapter;
+    private ServiceModel mService;
 
     public CustomizeCalendar() {
 
@@ -75,8 +90,14 @@ public class CustomizeCalendar extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View parentView = inflater.inflate(R.layout.customize_calendar, container, false);
-        TextView service = parentView.findViewById(R.id.tv_serviceTitle);
-        TextView specialist = parentView.findViewById(R.id.tv_specialist);
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mAuth.getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance();
+        myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category)
+                .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId());
+        final TextView service = parentView.findViewById(R.id.tv_serviceTitle);
+        final TextView specialist = parentView.findViewById(R.id.tv_specialist);
+        final TextView price = parentView.findViewById(R.id.tv_price);
         EditText time =parentView.findViewById(R.id.tv_time);
         EditText timeType =parentView.findViewById(R.id.tv_timeType);
         Button add = parentView.findViewById(R.id.btn_addTime);
@@ -86,11 +107,15 @@ public class CustomizeCalendar extends Fragment {
         PreviouseDate = parentView.findViewById(R.id.btn_prevDate);
         NextDate = parentView.findViewById(R.id.btn_nextDate);
         CurrentDate = parentView.findViewById(R.id.current_Date);
-        ArrayList<Calendar> weekView = getCalendarArrayList();
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mMediatorInterface != null){
+                    mMediatorInterface.onBackPressed();
+                }
+            }
+        });
 
-/*
-        gridView = parentView.findViewById(R.id.gridview);
-*/
         RecyclerView rvDate = parentView.findViewById(R.id.rv_day);
         dateAdapter = new DateAdapter(mContext,weeksInView);
         rvDate.setAdapter(dateAdapter);
@@ -116,14 +141,12 @@ public class CustomizeCalendar extends Fragment {
             }
         });
 
+        if(mService != null ){
+            service.setText(mService.getServiceTitle());
+            specialist.setText(mService.getServicePrice());
+            price.setText(mService.getServicePrice());
+        }
 
-        /*gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                final String date = dateFormat.format(dateList.get(position));
-
-            }
-            });*/
         return parentView;
     }
 
@@ -150,12 +173,10 @@ public class CustomizeCalendar extends Fragment {
             monthCalendar.add(Calendar.DAY_OF_MONTH,1);
 
         }
-       /* adapter = new MyGridAdapter(context,dateList,calendar);
-        gridView.setAdapter(adapter);*/
 
     }
-    private ArrayList<Calendar> getCalendarArrayList(){
-        return this.calendarArrayList;
-    }
 
+    public void setAppointment(ServiceModel service) {
+        mService = service;
+    }
 }

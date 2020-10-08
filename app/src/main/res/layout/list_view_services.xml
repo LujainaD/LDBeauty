@@ -40,14 +40,14 @@
                         android:layout_height="wrap_content"
                         android:layout_alignStart="@+id/event"
                         android:layout_alignParentStart="true"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="5dp"
                         android:text="Appointments"
                         android:textColor="@color/white"
-                        android:textSize="10sp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@+id/event" />
 
                     <ImageView
                         android:id="@+id/event"
@@ -56,13 +56,11 @@
                         android:layout_alignStart="@+id/tv_appointment"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
+                        android:layout_marginTop="10dp"
                         android:src="@drawable/outline_event"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/tv_appointment"
                         app:layout_constraintStart_toStartOf="@+id/tv_appointment"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_appointment"
-
-
-                        >
+                        app:layout_constraintTop_toTopOf="parent">
 
                     </ImageView>-->
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -89,14 +87,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginEnd="5dp"
                         android:text="Delete"
-                        android:textColor="@color/white"
-                        android:textSize="10sp"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp"
                         android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@+id/iv_delete" />
 
                     <ImageView
                         android:id="@+id/iv_delete"
@@ -105,10 +103,11 @@
                         android:layout_alignStart="@+id/tv_delete"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
+                        android:layout_marginTop="10dp"
                         android:src="@drawable/outline_delete"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/tv_delete"
                         app:layout_constraintStart_toStartOf="@+id/tv_delete"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_delete">
+                        app:layout_constraintTop_toTopOf="parent">
 
                     </ImageView>
 
