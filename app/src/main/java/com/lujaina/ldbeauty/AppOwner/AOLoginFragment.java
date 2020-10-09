@@ -125,7 +125,6 @@ public class AOLoginFragment extends Fragment {
 
                         }else{
                             Toast.makeText(mContext, "Sorry your are not the App Owner", Toast.LENGTH_SHORT).show();
-                            progressDialog.dismiss();
                         }
 
                     }
