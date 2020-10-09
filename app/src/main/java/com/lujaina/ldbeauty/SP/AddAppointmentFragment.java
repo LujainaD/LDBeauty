@@ -1,41 +1,48 @@
 package com.lujaina.ldbeauty.SP;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.lujaina.ldbeauty.Adapters.TimeAdapter;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
+import com.lujaina.ldbeauty.Models.AppointmentModel;
 import com.lujaina.ldbeauty.Models.ServiceModel;
 import com.lujaina.ldbeauty.R;
 
-import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.Date;
+import java.util.Map;
 
 public class AddAppointmentFragment extends Fragment {
     FirebaseAuth mAuth;
@@ -50,9 +57,24 @@ public class AddAppointmentFragment extends Fragment {
     private int mDay;
     TextView pickedDate;
     TextView pickedTime;
+    String id;
     Calendar c;
     int hour;
     int minutes;
+    String timeNew;
+    String dateArray[];
+    private ArrayList<AppointmentModel> timeList;
+    private TimeAdapter mAdapter;
+    AppointmentModel model;
+    Map map;
+    String dateNew;
+    String day ;
+    String sDay;
+    String sMonth;
+    String sYear;
+    String month;
+    String year;
+    String thedate;
     public AddAppointmentFragment() {
         // Required empty public constructor
     }
@@ -73,24 +95,29 @@ public class AddAppointmentFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView =  inflater.inflate(R.layout.fragment_add_appointment, container, false);
-        getCurrentDate();
-        getCurrentTime();
-        c = Calendar.getInstance();
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
-        myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category)
-                .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId());
+        readSalonAppointment();
+        getCurrentDate();
+        getCurrentTime();
+        c = Calendar.getInstance();
+
         final TextView service = parentView.findViewById(R.id.tv_service);
         final TextView specialist = parentView.findViewById(R.id.tv_specialist);
         final TextView price = parentView.findViewById(R.id.tv_price);
         ImageButton calendar = parentView.findViewById(R.id.ib_calender);
         ImageButton timeButton = parentView.findViewById(R.id.ib_time);
-
         pickedDate =parentView.findViewById(R.id.et_date);
         pickedTime =parentView.findViewById(R.id.et_time);
         Button add = parentView.findViewById(R.id.btn_addTime);
         ImageButton back = parentView.findViewById(R.id.ib_back);
+        RecyclerView recyclerView = parentView.findViewById(R.id.rv_time);
+        timeList = new ArrayList<>();
+        mAdapter = new TimeAdapter(mContext);
+        recyclerView.setAdapter(mAdapter);
+        setupRecyclerView(recyclerView);
+//        readSalonInfoFromFirebaseDB();
 
         calendar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +145,14 @@ public class AddAppointmentFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                dateNew = String.valueOf(pickedDate);
+
+                timeNew = String.valueOf(pickedTime);
+                String thePickedate = String.valueOf(pickedDate);
+                model = new AppointmentModel();
+                model.setDay(sDay +"/" + sMonth + "/" + sYear);
+                thedate = sDay +"/" + sMonth + "/" + sYear;
+                addDateToDB(model);
 
             }
         });
@@ -132,6 +167,74 @@ public class AddAppointmentFragment extends Fragment {
         return parentView;
     }
 
+    private void addDateToDB(final AppointmentModel model) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category)
+                .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId()).child(Constants.Service_Appointment);
+     /* if(sDay.equals(model.getDay())){
+          addMonthToDB(model);
+      }else {
+*/
+      /*    id = myRef.push().getKey();
+          model.setDateId(id);
+          model.setCategoryId(mService.getIdCategory());
+          model.setOwnerId(mFirebaseUser.getUid());
+          model.setServiceId(mService.getServiceId());
+          model.setPickedDate(pickedDate.getText().toString());*/
+
+          myRef.child(model.getDay()).setValue(model).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
+              @Override
+              public void onComplete(@NonNull Task<Void> task) {
+                  Toast.makeText(mContext, "Your service DAy is added successfully ", Toast.LENGTH_SHORT).show();
+
+                  addTimeToDate(model);
+
+/*
+                  addMonthToDB(model);
+*/
+
+/*
+                addTimeToDate(model);
+*/
+
+              }
+          }).addOnFailureListener(new OnFailureListener() {
+              @Override
+              public void onFailure(@NonNull Exception e) {
+                  Toast.makeText(mContext, "failed ", Toast.LENGTH_SHORT).show();
+              }
+          });
+
+
+    }
+
+    private void addTimeToDate( AppointmentModel model) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category)
+                .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId()).child(Constants.Service_Appointment).child(model.getDay());
+        String timeId = myRef.push().getKey();
+
+       model.setTimeId(timeId);
+       model.setPickedTime(timeNew);
+       model.setCategoryId(mService.getIdCategory());
+       model.setOwnerId(mFirebaseUser.getUid());
+       model.setServiceId(mService.getServiceId());
+       model.setPickedDate(dateNew);
+        myRef.child(model.getTimeId()).setValue(model).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(mContext, "Your service time is added successfully ", Toast.LENGTH_SHORT).show();
+
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(mContext, "failed ", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     public void setAppointment(ServiceModel service) {
         mService = service;
     }
@@ -142,6 +245,10 @@ public class AddAppointmentFragment extends Fragment {
             @Override
             public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
                 pickedDate.setText(selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear);
+                 sDay = String.valueOf(selectedDay);
+                 sMonth= String.valueOf(selectedMonth);
+                sYear= String.valueOf(selectedYear);
+
             }
         };
 
@@ -227,4 +334,62 @@ public class AddAppointmentFragment extends Fragment {
 
     }
 
+
+/*
+    public Date getDate(String date){
+
+        String dateArray[] = date.split("/");
+
+        mDay  = Integer.parseInt(dateArray[0]);
+        mMonth = Integer.parseInt(dateArray[1]);
+        mYear = Integer.parseInt(dateArray[2]);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, mDay);
+        calendar.set(Calendar.MONTH, mMonth);
+        calendar.set(Calendar.YEAR, mYear);
+
+
+        long time = calendar.getTimeInMillis();
+
+        return new Date(time);
+    }
+*/
+
+    private void readSalonAppointment() {
+        if ((sDay +"/" + sMonth + "/" + sYear) != null) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category).child(mService.getIdCategory()).child(Constants.Salon_Service)
+                    .child(mService.getServiceId()).child(Constants.Service_Appointment);
+            // Read from the mDatabase
+
+
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    timeList.clear();
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                        AppointmentModel category = d.getValue(AppointmentModel.class);
+                        timeList.add(category);
+                        mAdapter.update(timeList);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                }
+            });
+        }
+    }
+
+
+
+    private void setupRecyclerView(RecyclerView recyclerView) {
+
+        GridLayoutManager layoutManager = new GridLayoutManager(mContext,3);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+    }
 }
