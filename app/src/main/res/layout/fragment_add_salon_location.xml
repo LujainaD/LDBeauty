@@ -26,6 +26,7 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/map"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
 
         <androidx.cardview.widget.CardView
@@ -34,15 +35,19 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="26dp"
             app:cardCornerRadius="14dp"
-            app:layout_constraintBottom_toTopOf="@+id/cardView11"
-            app:layout_constraintEnd_toEndOf="@+id/cardView12"
-            app:layout_constraintStart_toStartOf="@+id/cardView11"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/tv_place"
                 android:layout_width="278dp"
-                android:layout_height="38dp" />
+                android:layout_height="40dp"
+                android:text="Address name"
+                android:paddingStart="7dp"
+                android:paddingTop="10dp"
+                android:textAlignment="textStart"
+                android:textSize="14sp" />
 
         </androidx.cardview.widget.CardView>
 
@@ -50,35 +55,44 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView11"
             android:layout_width="139dp"
-            android:layout_height="38dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="26dp"
             app:cardCornerRadius="14dp"
-            app:layout_constraintStart_toEndOf="@+id/btn_getCurrentLocation"
+            app:layout_constraintStart_toStartOf="@+id/cardView13"
             app:layout_constraintTop_toBottomOf="@+id/cardView13">
 
             <TextView
                 android:id="@+id/tv_lat"
-                android:layout_width="139dp"
-                android:layout_height="38dp" />
+                android:layout_width="141dp"
+                android:layout_height="40dp"
+                android:text="Latitude"
+                android:paddingStart="7dp"
+                android:paddingTop="10dp"
+                android:textSize="14sp" />
         </androidx.cardview.widget.CardView>
 
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView12"
-            android:layout_width="139dp"
-            android:layout_height="38dp"
-            android:layout_marginStart="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:layout_marginBottom="26dp"
             app:cardCornerRadius="14dp"
             app:layout_constraintBottom_toTopOf="@+id/saveLocation"
+            app:layout_constraintEnd_toEndOf="@+id/cardView13"
             app:layout_constraintStart_toEndOf="@+id/cardView11"
             app:layout_constraintTop_toTopOf="@+id/cardView11">
 
             <TextView
                 android:id="@+id/tv_lng"
                 android:layout_width="139dp"
-                android:layout_height="38dp"
-
+                android:layout_height="40dp"
+                android:text="Longitude"
+                android:paddingStart="7dp"
+                android:paddingTop="10dp"
+                android:textAlignment="textStart"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_label_lng"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tv_label_lng"
@@ -91,33 +105,45 @@
             android:id="@+id/btn_getCurrentLocation"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="44dp"
-            android:layout_height="42dp"
-            android:layout_marginStart="20dp"
+            android:layout_height="24dp"
             android:backgroundTint="#fff"
             android:drawableStart="@drawable/ic_location"
             android:textColor="#66BB6A"
             app:layout_constraintBottom_toBottomOf="@+id/cardView11"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/cardView11" />
+            app:layout_constraintTop_toTopOf="@+id/cardView11"
+            app:layout_constraintVertical_bias="0.214" />
 
         <Button
             android:id="@+id/saveLocation"
             android:layout_width="97dp"
             android:layout_height="41dp"
-            android:layout_marginBottom="26dp"
+            android:layout_marginBottom="24dp"
             android:background="@drawable/btn_rectangle"
             android:backgroundTint="#DA6EA4"
             android:text="Save"
             android:textAllCaps="false"
-            android:textSize="15sp"
             android:textColor="@color/white"
+            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/cardView12"
-            app:layout_constraintStart_toStartOf="@+id/cardView11" />
+            app:layout_constraintEnd_toEndOf="@+id/cardView13"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="@+id/cardView13" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="26dp"
+            android:clickable="true"
+            android:src="@drawable/ic_outline_info_24"
+            app:backgroundTint="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
