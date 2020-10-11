@@ -156,8 +156,7 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
             switch (direction) {
                 case ItemTouchHelper.LEFT:
                     final String serviceId = serviceList.get(position).getServiceId();
-                    final int position1 = viewHolder.getAdapterPosition();
-                    mAdapter.removeItem(position1);
+                    mAdapter.removeItem(position);
                     FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
                     myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid())
                             .child(Constants.Salon_Category).child(category.getCategoryId()).child(Constants.Salon_Service)
@@ -166,9 +165,8 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
                     break;
                 case ItemTouchHelper.RIGHT:
                     AddAppointmentFragment appointment = new AddAppointmentFragment();
-                    appointment.setAppointment(service);
-                        mMediatorInterface.changeFragmentTo(appointment, AddAppointmentFragment.class.getSimpleName());
-                   mAdapter.notifyDataSetChanged();
+                    appointment.setAddAppointmentFragment(service);
+                    mMediatorInterface.changeFragmentTo(appointment, AddAppointmentFragment.class.getSimpleName());
                     break;
 
                 }

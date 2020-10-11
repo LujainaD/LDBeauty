@@ -50,7 +50,7 @@ import java.util.Objects;
 import java.util.TimeZone;
 
 public class AddAppointmentFragment extends Fragment {
-	public static final String DATE_FORMAT    = "dd - MM - yyyy";
+	public static final String DATE_FORMAT    = "dd/ MM / yyyy";
 
 	private FirebaseAuth mAuth;
 	private FirebaseUser mFirebaseUser;
@@ -79,14 +79,11 @@ public class AddAppointmentFragment extends Fragment {
     private ArrayList<AppointmentModel> timeList;
     private TimeAdapter mAdapter;
     AppointmentModel appointmentModel;
-//    AppointmentModel appointmentModel;
-    String dateNew;
-    String day ;
+
     String sDay;
     String sMonth;
     String sYear;
-    String month;
-    String year;
+
     public AddAppointmentFragment() {
         // Required empty public constructor
     }
@@ -264,7 +261,7 @@ public class AddAppointmentFragment extends Fragment {
         });
     }*/
 
-    public void setAppointment(ServiceModel service) {
+    public void setAddAppointmentFragment( ServiceModel service) {
         mService = service;
     }
 
@@ -332,8 +329,7 @@ public class AddAppointmentFragment extends Fragment {
                 pickedTime.setText(hour + ":" + minute + " " + time);
             }
         };
-        TimePickerDialog timePickerDialog = new TimePickerDialog(mContext ,timeListener, hour, minutes, true);
-        timePickerDialog.getWindow().setBackgroundDrawableResource(R.drawable.inset_rectangle_bg);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(mContext ,timeListener, hour, minutes, false);
         WindowManager.LayoutParams windowManager =  new WindowManager.LayoutParams();
         windowManager.width = WindowManager.LayoutParams.WRAP_CONTENT;
         windowManager.height = WindowManager.LayoutParams.WRAP_CONTENT;

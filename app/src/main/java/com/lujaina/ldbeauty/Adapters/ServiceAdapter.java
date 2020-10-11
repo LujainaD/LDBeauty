@@ -66,15 +66,6 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
         holder.specialist.setText(category.getServiceSpecialist());
         Glide.with(mContext).load(category.getServiceURL()).centerCrop().
                 into(holder.picture);
-     /*   holder.card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mListener != null){
-                    mListener.onClick(category);
-                }
-
-            }
-        });*/
 
     }
 
@@ -90,10 +81,6 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
     public interface onClickListener {
         void onClick(ServiceModel category);
     }
-
-/*interface ServiceListener{
-        public void handleDeleteItem(SnapshotHolder snapshot);
-}*/
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         TextView service;
