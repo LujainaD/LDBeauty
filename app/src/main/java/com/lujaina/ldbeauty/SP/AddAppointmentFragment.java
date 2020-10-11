@@ -62,11 +62,9 @@ public class AddAppointmentFragment extends Fragment {
     int hour;
     int minutes;
     String timeNew;
-    String dateArray[];
     private ArrayList<AppointmentModel> timeList;
     private TimeAdapter mAdapter;
     AppointmentModel model;
-    Map map;
     String dateNew;
     String day ;
     String sDay;
@@ -116,7 +114,6 @@ public class AddAppointmentFragment extends Fragment {
         mAdapter = new TimeAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
-//        readSalonInfoFromFirebaseDB();
 
         calendar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -310,28 +307,6 @@ public class AddAppointmentFragment extends Fragment {
 */
 
     }
-
-
-/*
-    public Date getDate(String date){
-
-        String dateArray[] = date.split("/");
-
-        mDay  = Integer.parseInt(dateArray[0]);
-        mMonth = Integer.parseInt(dateArray[1]);
-        mYear = Integer.parseInt(dateArray[2]);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH, mDay);
-        calendar.set(Calendar.MONTH, mMonth);
-        calendar.set(Calendar.YEAR, mYear);
-
-
-        long time = calendar.getTimeInMillis();
-
-        return new Date(time);
-    }
-*/
 
     private void readSalonAppointment() {
         if ((sDay +"/" + sMonth + "/" + sYear) != null) {
