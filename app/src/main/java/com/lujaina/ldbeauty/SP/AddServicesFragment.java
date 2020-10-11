@@ -164,9 +164,11 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
                     myRef.removeValue();
                     break;
                 case ItemTouchHelper.RIGHT:
-                    AddAppointmentFragment appointment = new AddAppointmentFragment();
-                    appointment.setAddAppointmentFragment(service);
-                    mMediatorInterface.changeFragmentTo(appointment, AddAppointmentFragment.class.getSimpleName());
+                    if(mMediatorInterface != null){
+                        AddAppointmentFragment appointment = new AddAppointmentFragment();
+                        appointment.setAddAppointmentFragment(service);
+                        mMediatorInterface.changeFragmentTo(appointment, AddAppointmentFragment.class.getSimpleName());
+                    }
                     break;
 
                 }

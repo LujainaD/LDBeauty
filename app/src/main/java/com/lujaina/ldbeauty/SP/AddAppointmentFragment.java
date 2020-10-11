@@ -344,12 +344,10 @@ public class AddAppointmentFragment extends Fragment {
     }
 
     private void showPreviousAppointments() {
-        if (pickedDate.getText().toString().trim() != null) {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef;
                     myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category).child(mService.getIdCategory()).child(Constants.Salon_Service)
-                    .child(mService.getServiceId()).child(Constants.Service_Appointment);
-            // Read from the mDatabase
+                    .child(mService.getServiceId()).child(Constants.Service_Appointment)/*.orderByChild("appointmentDate")*/;
 
 /*
                 myRef.orderByChild("appointmentDate");
@@ -370,7 +368,7 @@ public class AddAppointmentFragment extends Fragment {
                     // Failed to read value
                 }
             });
-        }
+
     }
 
 
