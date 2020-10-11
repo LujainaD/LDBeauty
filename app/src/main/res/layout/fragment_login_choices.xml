@@ -148,7 +148,7 @@
         android:clickable="true"
         android:gravity="center"
         android:text="@string/sign_up_underline"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/pink_text"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/tv_dont"
         app:layout_constraintTop_toTopOf="@+id/tv_dont">

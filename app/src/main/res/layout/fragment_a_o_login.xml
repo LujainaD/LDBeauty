@@ -156,7 +156,7 @@
         android:clickable="true"
         android:gravity="center"
         android:text="@string/sign_up_underline"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/pink_text"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/tv_forget"
         app:layout_constraintHorizontal_bias="0.0"

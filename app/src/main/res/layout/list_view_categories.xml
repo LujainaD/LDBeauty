@@ -69,6 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_height="34dp"
+                    style="@style/Widget.AppCompat.Button.Borderless"
                     android:text="Category"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
@@ -77,7 +78,7 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:gravity="center"
-                    android:backgroundTint="#86000000"
+                    android:backgroundTint="#6A000000"
                     android:background="@drawable/btn_rectangle"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />

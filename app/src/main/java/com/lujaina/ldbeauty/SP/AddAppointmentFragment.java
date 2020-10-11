@@ -329,7 +329,7 @@ public class AddAppointmentFragment extends Fragment {
                 pickedTime.setText(hour + ":" + minute + " " + time);
             }
         };
-        TimePickerDialog timePickerDialog = new TimePickerDialog(mContext ,timeListener, hour, minutes, false);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(mContext ,R.style.MyTimePickerWidgetStyle,timeListener, hour, minutes, false);
         WindowManager.LayoutParams windowManager =  new WindowManager.LayoutParams();
         windowManager.width = WindowManager.LayoutParams.WRAP_CONTENT;
         windowManager.height = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -338,7 +338,7 @@ public class AddAppointmentFragment extends Fragment {
     }
 
     private void getCurrentTime() {
-		SimpleDateFormat serverFormat = new SimpleDateFormat("HH:mm:ss",Locale.getDefault());
+		SimpleDateFormat serverFormat = new SimpleDateFormat("hh:mm a",Locale.getDefault());
 		String timeNow = serverFormat.format(Calendar.getInstance().getTime());
 		pickedTime.setText(timeNow);
     }

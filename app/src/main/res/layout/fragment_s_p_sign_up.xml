@@ -327,7 +327,7 @@
                             android:layout_marginStart="10dp"
                             android:clickable="true"
                             android:text="@string/login_underline"
-                            android:textColor="@color/colorAccent"
+                            android:textColor="@color/pink_text"
                             android:textSize="16sp"
                             app:layout_constraintEnd_toEndOf="@+id/btn_signUp"
                             app:layout_constraintStart_toEndOf="@+id/tv_dont"

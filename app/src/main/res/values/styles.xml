@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
@@ -18,6 +18,12 @@
     <style name="Divider.Horizontal" parent="Divider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item> // You can change thickness here.
+
+    </style>
+
+    <style name="MyTimePickerWidgetStyle" parent="@android:style/Widget.Material.TimePicker">
+        <item name="android:headerBackground">#DA6EA4</item>
+
 
     </style>
 </resources>
