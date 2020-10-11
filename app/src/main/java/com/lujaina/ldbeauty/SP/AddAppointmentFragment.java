@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -31,6 +33,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Adapters.TimeAdapter;
 import com.lujaina.ldbeauty.Constants;
@@ -59,6 +62,9 @@ public class AddAppointmentFragment extends Fragment {
     private Context mContext;
     private ServiceModel mService;
 
+    RecyclerView recyclerView;
+    LinearLayoutManager lineralayoutManager;
+
 	private TextView pickedDate;
 	private TextView pickedTime;
 	private Calendar calendar;
@@ -72,6 +78,7 @@ public class AddAppointmentFragment extends Fragment {
 
     private ArrayList<AppointmentModel> timeList;
     private TimeAdapter mAdapter;
+    AppointmentModel appointmentModel;
 //    AppointmentModel appointmentModel;
     String dateNew;
     String day ;
@@ -106,7 +113,9 @@ public class AddAppointmentFragment extends Fragment {
 		ImageButton ibCalendar		= parentView.findViewById(R.id.ib_calender);
 		ImageButton ibTimeButton 	= parentView.findViewById(R.id.ib_time);
 		ImageButton ibBack 			= parentView.findViewById(R.id.ib_back);
-		RecyclerView recyclerView 	= parentView.findViewById(R.id.rv_time);
+        ImageButton ibLeft 			= parentView.findViewById(R.id.btn_left);
+        ImageButton ibRight			= parentView.findViewById(R.id.btn_right);
+        recyclerView 	= parentView.findViewById(R.id.rv_time);
 		Button btnAdd 	=	parentView.findViewById(R.id.btn_addTime);
 
 		pickedDate = parentView.findViewById(R.id.et_date);
@@ -163,11 +172,30 @@ public class AddAppointmentFragment extends Fragment {
             price.setText(mService.getServicePrice());
         }
 
+        ibLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (lineralayoutManager.findFirstVisibleItemPosition() > 0) {
+                    recyclerView.smoothScrollToPosition(lineralayoutManager.findFirstVisibleItemPosition() - 1);
+                } else {
+                    recyclerView.smoothScrollToPosition(0);
+                }
+
+            }
+        });
+
+        ibRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recyclerView.smoothScrollToPosition(lineralayoutManager.findLastVisibleItemPosition() + 1);
+            }
+        });
+
         return parentView;
     }
 
 	private void addAnAppointment() {
-		AppointmentModel appointmentModel = new AppointmentModel();
+         appointmentModel = new AppointmentModel();
 
 		appointmentModel.setAppointmentDate(pickedDate.getText().toString().trim());
 		appointmentModel.setPickedTime(pickedTime.getText().toString().trim());
@@ -186,7 +214,7 @@ public class AddAppointmentFragment extends Fragment {
 
 	}
 
-	private void addDateToDB(final AppointmentModel model) {
+/*	private void addDateToDB(final AppointmentModel model) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category)
                 .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId()).child(Constants.Service_Appointment);
@@ -234,7 +262,7 @@ public class AddAppointmentFragment extends Fragment {
                 Toast.makeText(mContext, "failed ", Toast.LENGTH_SHORT).show();
             }
         });
-    }
+    }*/
 
     public void setAppointment(ServiceModel service) {
         mService = service;
@@ -320,13 +348,16 @@ public class AddAppointmentFragment extends Fragment {
     }
 
     private void showPreviousAppointments() {
-        if ((sDay +"/" + sMonth + "/" + sYear) != null) {
+        if (pickedDate.getText().toString().trim() != null) {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category).child(mService.getIdCategory()).child(Constants.Salon_Service)
+            DatabaseReference myRef;
+                    myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category).child(mService.getIdCategory()).child(Constants.Salon_Service)
                     .child(mService.getServiceId()).child(Constants.Service_Appointment);
             // Read from the mDatabase
 
-
+/*
+                myRef.orderByChild("appointmentDate");
+*/
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -350,8 +381,8 @@ public class AddAppointmentFragment extends Fragment {
 
     private void setupRecyclerView(RecyclerView recyclerView) {
 
-        GridLayoutManager layoutManager = new GridLayoutManager(mContext,3);
-        recyclerView.setLayoutManager(layoutManager);
+        lineralayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL,false);
+        recyclerView.setLayoutManager(lineralayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
     }
