@@ -150,12 +150,12 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
     }
     @Override
     public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        position = viewHolder.getAdapterPosition();
+		ServiceModel swipedService = serviceList.get(position);
 
         if(viewHolder instanceof ServiceAdapter.MyViewHolder){
             switch (direction) {
                 case ItemTouchHelper.LEFT:
-                    final String serviceId = serviceList.get(position).getServiceId();
+                    final String serviceId = swipedService.getServiceId();
                     mAdapter.removeItem(position);
                     FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
                     myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid())
@@ -166,7 +166,7 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
                 case ItemTouchHelper.RIGHT:
                     if(mMediatorInterface != null){
                         AddAppointmentFragment appointment = new AddAppointmentFragment();
-                        appointment.setAddAppointmentFragment(service);
+                        appointment.setAddAppointmentFragment(swipedService);
                         mMediatorInterface.changeFragmentTo(appointment, AddAppointmentFragment.class.getSimpleName());
                     }
                     break;
