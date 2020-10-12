@@ -50,7 +50,7 @@ import java.util.Objects;
 import java.util.TimeZone;
 
 public class AddAppointmentFragment extends Fragment {
-	public static final String DATE_FORMAT    = "dd/ MM / yyyy";
+	public static final String DATE_FORMAT    = "dd/MM/yyyy";
 
 	private FirebaseAuth mAuth;
 	private FirebaseUser mFirebaseUser;
@@ -123,9 +123,9 @@ public class AddAppointmentFragment extends Fragment {
         mFirebaseUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
 
-		showPreviousAppointments();
         getCurrentDate();
         getCurrentTime();
+		showPreviousAppointments();
 
 
         timeList = new ArrayList<>();
@@ -275,6 +275,8 @@ public class AddAppointmentFragment extends Fragment {
                  sMonth= String.valueOf(selectedMonth);
                 sYear= String.valueOf(selectedYear);
 
+                showPreviousAppointments();
+
             }
         };
 
@@ -344,13 +346,14 @@ public class AddAppointmentFragment extends Fragment {
     }
 
     private void showPreviousAppointments() {
+    		String datePicked = pickedDate.getText().toString().trim();
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef;
                     myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category).child(mService.getIdCategory()).child(Constants.Salon_Service)
                     .child(mService.getServiceId()).child(Constants.Service_Appointment);
 
 
-            myRef.orderByChild("appointmentDate").equalTo(pickedDate.getText().toString().trim()).addValueEventListener(new ValueEventListener() {
+            myRef.orderByChild("appointmentDate").equalTo(datePicked).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     timeList.clear();
