@@ -22,10 +22,10 @@ import com.lujaina.ldbeauty.R;
 
 import java.util.ArrayList;
 
-public class TimeAdapter extends RecyclerView.Adapter<com.lujaina.ldbeauty.Adapters.TimeAdapter.MyViewHolder>{
+public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.MyViewHolder>{
         private final Context mContext;
         private ArrayList<AppointmentModel> mCategory;
-        private com.lujaina.ldbeauty.Adapters.TimeAdapter.onClickListener mListener;
+        private onClickListener mListener;
 
         public TimeAdapter(Context mContext) {
             this.mContext = mContext;
@@ -48,15 +48,15 @@ public class TimeAdapter extends RecyclerView.Adapter<com.lujaina.ldbeauty.Adapt
 
         @NonNull
         @Override
-        public com.lujaina.ldbeauty.Adapters.TimeAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public TimeAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View listItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_time, parent, false);
-            return new com.lujaina.ldbeauty.Adapters.TimeAdapter.MyViewHolder(listItemView);
+            return new TimeAdapter.MyViewHolder(listItemView);
 
         }
 
         @SuppressLint("UseCompatLoadingForDrawables")
         @Override
-        public void onBindViewHolder(@NonNull com.lujaina.ldbeauty.Adapters.TimeAdapter.MyViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull TimeAdapter.MyViewHolder holder, int position) {
             final AppointmentModel category = mCategory.get(position);
             holder.time.setText(category.getPickedTime());
 
@@ -77,7 +77,7 @@ public class TimeAdapter extends RecyclerView.Adapter<com.lujaina.ldbeauty.Adapt
             return mCategory.size();
         }
 
-        public void setonClickListener(com.lujaina.ldbeauty.Adapters.TimeAdapter.onClickListener listener){
+        public void setonClickListener(onClickListener listener){
             mListener = listener;
         }
 

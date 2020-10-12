@@ -132,6 +132,12 @@ public class AddAppointmentFragment extends Fragment {
         mAdapter = new TimeAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
+        mAdapter.setonClickListener(new TimeAdapter.onClickListener() {
+            @Override
+            public void onClick(AppointmentModel category) {
+                deleteTime(category);
+            }
+        });
 
 		ibCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,6 +196,14 @@ public class AddAppointmentFragment extends Fragment {
         return parentView;
     }
 
+    private void deleteTime(AppointmentModel category) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference dbRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category)
+                .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId()).child(Constants.Service_Appointment).child(category.getRecordId());
+        dbRef.removeValue();
+    }
+
 
     private void addAnAppointment() {
          appointmentModel = new AppointmentModel();
@@ -210,56 +224,6 @@ public class AddAppointmentFragment extends Fragment {
 
 
 	}
-
-/*	private void addDateToDB(final AppointmentModel model) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category)
-                .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId()).child(Constants.Service_Appointment);
-          myRef.child(model.getAppointmentDate()).setValue(model).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
-              @Override
-              public void onComplete(@NonNull Task<Void> task) {
-                  Toast.makeText(mContext, "Your service DAy is added successfully ", Toast.LENGTH_SHORT).show();
-
-                  addTimeToDate(model);
-
-
-              }
-          }).addOnFailureListener(new OnFailureListener() {
-              @Override
-              public void onFailure(@NonNull Exception e) {
-                  Toast.makeText(mContext, "failed ", Toast.LENGTH_SHORT).show();
-              }
-          });
-
-
-    }
-
-    private void addTimeToDate( AppointmentModel model) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category)
-                .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId()).child(Constants.Service_Appointment).child(model.getAppointmentDate());
-        String timeId = myRef.push().getKey();
-
-       model.setRecordId(timeId);
-       model.setPickedTime(timeNew);
-       model.setCategoryId(mService.getIdCategory());
-       model.setOwnerId(mFirebaseUser.getUid());
-       model.setServiceId(mService.getServiceId());
-       //model.setPickedDate(dateNew);
-        myRef.child(model.getRecordId()).setValue(model).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(mContext, "Your service time is added successfully ", Toast.LENGTH_SHORT).show();
-
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(mContext, "failed ", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }*/
 
     public void setAddAppointmentFragment( ServiceModel service) {
         mService = service;
