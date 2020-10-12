@@ -347,12 +347,10 @@ public class AddAppointmentFragment extends Fragment {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef;
                     myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category).child(mService.getIdCategory()).child(Constants.Salon_Service)
-                    .child(mService.getServiceId()).child(Constants.Service_Appointment)/*.orderByChild("appointmentDate")*/;
+                    .child(mService.getServiceId()).child(Constants.Service_Appointment);
 
-/*
-                myRef.orderByChild("appointmentDate");
-*/
-            myRef.addValueEventListener(new ValueEventListener() {
+
+            myRef.orderByChild("appointmentDate").equalTo(pickedDate.getText().toString().trim()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     timeList.clear();
@@ -380,4 +378,6 @@ public class AddAppointmentFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
     }
+
+
 }
