@@ -65,7 +65,7 @@ public class AddAppointmentFragment extends Fragment {
     RecyclerView recyclerView;
     LinearLayoutManager lineralayoutManager;
 
-	private TextView pickedDate;
+    private TextView pickedDate;
 	private TextView pickedTime;
 	private Calendar calendar;
 	private int mYear;
@@ -165,10 +165,9 @@ public class AddAppointmentFragment extends Fragment {
 
         if(mService != null ){
             service.setText(mService.getServiceTitle());
-            specialist.setText(mService.getServicePrice());
+            specialist.setText(mService.getServiceSpecialist());
             price.setText(mService.getServicePrice());
         }
-
         ibLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -191,7 +190,8 @@ public class AddAppointmentFragment extends Fragment {
         return parentView;
     }
 
-	private void addAnAppointment() {
+
+    private void addAnAppointment() {
          appointmentModel = new AppointmentModel();
 
 		appointmentModel.setAppointmentDate(pickedDate.getText().toString().trim());
