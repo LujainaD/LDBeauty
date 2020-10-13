@@ -276,11 +276,13 @@ public class SPSignUpFragment extends Fragment {
                     } else {
                         if (password.equals(verifyPassword)) {
                             progressDialog = new ProgressDialog(mContext);
-                            progressDialog.setTitle("Welcome To LD Beauty");
                             progressDialog.setCancelable(false);
                             progressDialog.show();
                             progressDialog.setContentView(R.layout.custom_progress_dialog);
+                            TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
                             progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                            progressText.setText("Welcome To LD Beauty");
+                            progressText.setVisibility(View.VISIBLE);
 
                             SPRegistrationModel registration = new SPRegistrationModel();
                             registration.setOwnerName(name);
@@ -292,7 +294,6 @@ public class SPSignUpFragment extends Fragment {
                             registration.setSalonPhoneNumber(phoneSalon);
                             registration.setUserType(userType);
                             registerToFirebase(email, password, name, phoneNumber, salonname, city, phoneSalon, userType);
-                            progressDialog.dismiss();
 
                         } else {
                             userVerify.setError("verify password must be the same as your entered password ");
@@ -378,6 +379,7 @@ public class SPSignUpFragment extends Fragment {
                             registration.setSalonCity(city);
                             registration.setSalonPhoneNumber(phoneSalon);
                             registration.setUserType(userType);
+                            registration.setStatusType("new");
                             registration.setRegistrationDate(getCurrentDate());
                             uploadUserImageToStorage(registration);
 
@@ -473,8 +475,7 @@ public class SPSignUpFragment extends Fragment {
             public void onComplete(@NonNull Task<Void> task) {
                 if (mMediatorInterface != null) {
 
-                    Intent intent = new Intent(getActivity(), HomeActivity.class);
-                    startActivity(intent);
+                    mMediatorInterface.changeFragmentTo(new SPProfileFragment(),SPProfileFragment.class.getSimpleName());
                     progressDialog.dismiss();
 
 

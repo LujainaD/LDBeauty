@@ -25,6 +25,7 @@ import com.lujaina.ldbeauty.Dialogs.ResetPasswordDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
+import com.lujaina.ldbeauty.SignUpFragment;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,7 +63,16 @@ public class AOLoginFragment extends Fragment {
         final EditText ti_password = parentView.findViewById(R.id.ti_password);
         Button login = parentView.findViewById(R.id.btn_login);
         TextView forget = parentView.findViewById(R.id.tv_forget);
+        TextView signup = parentView.findViewById(R.id.tv_SignUp);
 
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mMediatorInterface != null){
+                    mMediatorInterface.changeFragmentTo(new SignUpFragment(), SignUpFragment.class.getSimpleName());
+                }
+            }
+        });
 
         ti_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 

@@ -6,6 +6,8 @@ public class AddInfoModel {
     private String title;
     private String body;
     private String backgroundColor;
+    private boolean isShrink = true;
+
 
     public String getSalonOwnerId() {
         return salonOwnerId;
@@ -45,5 +47,13 @@ public class AddInfoModel {
 
     public void setBackgroundColor(String backgroundColor) {
         this.backgroundColor = backgroundColor;
+    }
+
+    public boolean isShrink() {
+        return isShrink;
+    }
+
+    public void setShrink(boolean shrink) {
+        isShrink = shrink;
     }
 }

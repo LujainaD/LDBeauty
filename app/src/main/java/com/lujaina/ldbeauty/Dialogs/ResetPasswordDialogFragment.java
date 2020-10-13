@@ -1,5 +1,6 @@
 package com.lujaina.ldbeauty.Dialogs;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -47,6 +48,17 @@ public class ResetPasswordDialogFragment extends DialogFragment {
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            dialog.getWindow().setLayout(width, height);
+        }
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,9 +96,11 @@ public class ResetPasswordDialogFragment extends DialogFragment {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 Toast.makeText(mContext,"check your email to reset your password", Toast.LENGTH_SHORT).show();
+                                dismiss();
                             } else {
                                 Toast.makeText(mContext, "Error", Toast.LENGTH_SHORT).show();
                                 Log.d("mail_error", task.getException().toString());
+                                dismiss();
                             }
 
 

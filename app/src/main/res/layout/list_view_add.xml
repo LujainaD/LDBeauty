@@ -76,16 +76,22 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <at.blogc.android.views.ExpandableTextView
+                <ru.embersoft.expandabletextview.ExpandableTextView
                     android:id="@+id/body_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
-                    android:layout_marginTop="10dp"
-                    android:text="body"
-                    android:textSize="14sp"
-                    android:maxLines="3"
-                    android:textStyle="normal"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="4dp"
+                    app:etv_animationTime="20"
+                    app:etv_expandLines="3"
+                    app:etv_showLine="true"
+                    android:paddingBottom="10dp"
+                    app:etv_textContentSize="14sp"
+                    app:etv_textExpand="Show more"
+                    app:etv_textShrink="Show less"
+                    app:etv_textContentColor="#8A000000"
+                    app:etv_textStateColor="@color/colorPrimaryDark"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -93,7 +99,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/title_tv"
                     app:layout_constraintVertical_bias="0.21" />
 
-                <TextView
+               <!-- <TextView
                     android:id="@+id/tv_expandable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -104,7 +110,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/body_tv"
                     app:layout_constraintTop_toBottomOf="@+id/body_tv"
-                    />
+                    />-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
