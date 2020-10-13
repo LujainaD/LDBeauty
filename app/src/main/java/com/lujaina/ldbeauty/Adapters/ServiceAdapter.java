@@ -1,6 +1,7 @@
 package com.lujaina.ldbeauty.Adapters;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
     private final Context mContext;
     private ArrayList<ServiceModel> mCategory;
     private ServiceAdapter.onClickListener mListener;
+
     public ServiceAdapter(Context mContext) {
         this.mContext = mContext;
         this.mCategory = new ArrayList<>();

@@ -1,6 +1,7 @@
 package com.lujaina.ldbeauty.Adapters;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,13 +49,15 @@ public class ConfirmAdapter extends RecyclerView.Adapter<ConfirmAdapter.MyViewHo
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final SPRegistrationModel names = mNames.get(position);
-
         Glide.with(mContext).load(names.getSalonImageURL()).into(holder.salonImg);
         holder.name.setText(names.getSalonName());
         if(names.getStatusType().equals("Confirm")) {
             holder.status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.confirm));
         }else if (names.getStatusType().equals("Cancel")){
             holder.status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.cancel));
+        }else if(names.getStatusType().equals("new")){
+            holder.status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.grayconfirm));
+
         }
 
 
@@ -66,6 +69,7 @@ public class ConfirmAdapter extends RecyclerView.Adapter<ConfirmAdapter.MyViewHo
                 }
             }
         });
+
     }
 
     @Override

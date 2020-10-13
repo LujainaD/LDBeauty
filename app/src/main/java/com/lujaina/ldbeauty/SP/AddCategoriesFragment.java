@@ -126,6 +126,7 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
     }
 
     private void readSalonInfoFromFirebaseDB() {
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category);
         // Read from the mDatabase

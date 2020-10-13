@@ -124,11 +124,12 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
     }
 
     private void readSalonInfoFromFirebaseDB() {
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Info);
         // Read from the mDatabase
         progressDialog = new ProgressDialog(mContext);
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(true);
         progressDialog.show();
         progressDialog.setContentView(R.layout.progress_bar);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);

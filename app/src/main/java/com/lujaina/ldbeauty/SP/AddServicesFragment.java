@@ -106,12 +106,13 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
     }
 
     private void readSalonInfoFromFirebaseDB() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category).child(category.getCategoryId()).child(Constants.Salon_Service);
-        // Read from the mDatabase
 
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category).child(category.getCategoryId()).child(Constants.Salon_Service);
+            // Read from the mDatabase
             progressDialog = new ProgressDialog(mContext);
             progressDialog.show();
+            progressDialog.setCancelable(true);
             progressDialog.setContentView(R.layout.progress_bar);
             progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             myRef.addValueEventListener(new ValueEventListener() {
@@ -119,10 +120,11 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     serviceList.clear();
                     for (DataSnapshot d : dataSnapshot.getChildren()) {
-                         service = d.getValue(ServiceModel.class);
-                        serviceList.add(service);
-                        progressDialog.dismiss();
-                        mAdapter.update(serviceList);
+                            service = d.getValue(ServiceModel.class);
+                            serviceList.add(service);
+                            progressDialog.dismiss();
+                            mAdapter.update(serviceList);
+
                     }
                 }
 
@@ -132,10 +134,10 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
                     progressDialog.dismiss();
                 }
             });
+        }
 
 
 
-    }
 
     public void setService(CategoryModel categoryList) {
         category = categoryList;

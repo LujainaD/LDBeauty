@@ -107,33 +107,34 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
     }
 
     private void readSalonNamesFromFireBaseDB() {
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner);
-        progressDialog = new ProgressDialog(mContext);
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-        progressDialog.setContentView(R.layout.progress_bar);
-        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                salonNamesArray = new ArrayList<>();
-                for (DataSnapshot d : dataSnapshot.getChildren()) {
-                    SPRegistrationModel salon = d.getValue(SPRegistrationModel.class);
-                    salonNamesArray.add(salon);
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner);
+            progressDialog = new ProgressDialog(mContext);
+            progressDialog.setCancelable(true);
+            progressDialog.show();
+            progressDialog.setContentView(R.layout.progress_bar);
+            progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    salonNamesArray = new ArrayList<>();
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                        SPRegistrationModel salon = d.getValue(SPRegistrationModel.class);
+                        salonNamesArray.add(salon);
+                    }
+                    progressDialog.dismiss();
+                    mAdapter.update(salonNamesArray);
+
                 }
-                progressDialog.dismiss();
-                mAdapter.update(salonNamesArray);
 
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    progressDialog.dismiss();
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                progressDialog.dismiss();
-
-            }
-        });
+                }
+            });
 
     }
 

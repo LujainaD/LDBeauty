@@ -124,6 +124,7 @@ public class AddGalleryFragment extends Fragment  {
         // Read from the mDatabase
         progressDialog = new ProgressDialog(mContext);
         progressDialog.show();
+        progressDialog.setCancelable(true);
         progressDialog.setContentView(R.layout.progress_bar);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         myRef.addValueEventListener(new ValueEventListener() {
