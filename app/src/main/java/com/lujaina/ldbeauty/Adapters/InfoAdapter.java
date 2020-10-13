@@ -1,5 +1,6 @@
 package com.lujaina.ldbeauty.Adapters;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,6 +28,10 @@ import com.lujaina.ldbeauty.Models.AddInfoModel;
 import com.lujaina.ldbeauty.R;
 
 import java.util.ArrayList;
+
+import at.blogc.android.views.ExpandableTextView;
+
+import static androidx.constraintlayout.motion.utils.Oscillator.TAG;
 
 public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> {
 
@@ -77,15 +83,85 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 	public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
 		final AddInfoModel aboutSalon = mUpdate.get(position);
 		holder.tvTitle.setText(aboutSalon.getTitle());
+		holder.expandableTextView.setText(aboutSalon.getBody());
+		holder.expandableTextView.setAnimationDuration(750L);
+		holder.expandableTextView.setInterpolator(new OvershootInterpolator());
+		holder.expandableTextView.setExpandInterpolator(new OvershootInterpolator());
+		holder.expandableTextView.setCollapseInterpolator(new OvershootInterpolator());
 
-		if (aboutSalon.getBody().length() <= 100 ) {
+// toggle the ExpandableTextView
+		holder.tvExpandable.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(final View v)
+			{
+				holder.tvExpandable.setText(holder.expandableTextView.isExpanded() ? R.string.showmore : R.string.showless);
+
+				holder.expandableTextView.toggle();
+			}
+		});
+
+// but, you can also do the checks yourself
+		holder.tvExpandable.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(final View v)
+			{
+				if (holder.expandableTextView.isExpanded())
+				{
+					holder.expandableTextView.collapse();
+					holder.tvExpandable.setText(R.string.showmore);
+
+				}
+				else
+				{
+					holder.expandableTextView.expand();
+					holder.tvExpandable.setText(R.string.showless);
+
+				}
+
+
+			}
+		});
+
+// listen for expand / collapse events
+		/*holder.expandableTextView.setOnExpandListener(new ExpandableTextView.OnExpandListener()
+		{
+			@Override
+			public void onExpand(final ExpandableTextView view)
+			{
+				Log.d(TAG, "ExpandableTextView expanded");
+			}
+
+			@Override
+			public void onCollapse(final ExpandableTextView view)
+			{
+				Log.d(TAG, "ExpandableTextView collapsed");
+			}
+		});*/
+
+
+
+
+
+
+
+
+
+
+
+	/*	if (aboutSalon.getBody().length() <= 100 ) {
 			holder.tvBody.setText(aboutSalon.getBody());
 			holder.tvExpandable.setVisibility(View.GONE);
 		}else {
 			holder.tvBody.setText(aboutSalon.getBody().substring(0, 100) + " . . . ");
 
-		}
+		}*/
 		holder.cvAboutSalon.setCardBackgroundColor(Color.parseColor(aboutSalon.getBackgroundColor()));
+
+
+
+
 
 		/*holder.cvAboutSalon.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -99,7 +175,7 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 */
 		final boolean[] isCollapse = {true};
 
-		holder.tvExpandable.setOnClickListener(new View.OnClickListener() {
+		/*holder.tvExpandable.setOnClickListener(new View.OnClickListener() {
 			@SuppressLint("SetTextI18n")
 			@Override
 			public void onClick(View view) {
@@ -131,7 +207,7 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 
 
 			}
-		});
+		});*/
 	}
 
 	@Override
@@ -153,10 +229,13 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 */
 	public class MyViewHolder extends RecyclerView.ViewHolder {
 
+/*
 		final TextView tvBody;
+*/
 		final TextView tvExpandable;
 		TextView tvTitle;
 		CardView cvAboutSalon;
+		ExpandableTextView expandableTextView;
         public RelativeLayout viewForground, viewBackground;
 		public MyViewHolder(@NonNull View itemView) {
 			super(itemView);
@@ -164,8 +243,11 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 			viewBackground =itemView.findViewById(R.id.view_background);
 			cvAboutSalon = itemView.findViewById(R.id.cv_info);
 			tvTitle = itemView.findViewById(R.id.title_tv);
+/*
 			tvBody = itemView.findViewById(R.id.body_tv);
+*/
 			tvExpandable = itemView.findViewById(R.id.tv_expandable);
+			expandableTextView = itemView.findViewById(R.id.body_tv);
 
 		}
 
