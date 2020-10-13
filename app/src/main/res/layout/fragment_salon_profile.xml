@@ -131,9 +131,22 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_offers" />
+
+    <TextView
+        android:id="@+id/tv_offers"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="#FFFFFF"
+        android:paddingStart="40dp"
+        android:paddingTop="15dp"
+        android:text="Salon's Offers"
+        android:textAlignment="textStart"
+        android:textColor="@color/pink_text"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_services" />
-
-
 
 
 
@@ -155,6 +168,15 @@
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_AboutPage"
+        app:srcCompat="@drawable/ic_arrow" />
+    <ImageView
+        android:id="@+id/iv_offer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_offers"
         app:srcCompat="@drawable/ic_arrow" />
 
     <ImageView
@@ -188,13 +210,23 @@
         app:srcCompat="@drawable/photo" />
 
     <ImageView
-        android:id="@+id/imageView15"
+        android:id="@+id/icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="14dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_offers"
         app:layout_constraintTop_toBottomOf="@+id/tv_services"
+        app:srcCompat="@drawable/outline_offer" />
+
+    <ImageView
+        android:id="@+id/imageView15"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_location"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_location"
         app:srcCompat="@drawable/location" />
 
     <ImageView

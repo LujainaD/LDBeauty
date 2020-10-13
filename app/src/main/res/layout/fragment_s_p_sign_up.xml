@@ -78,13 +78,13 @@
 
                         </androidx.cardview.widget.CardView>
 
-                        <ImageView
+                        <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/iv_user"
-                            android:layout_width="80dp"
-                            android:layout_height="67dp"
+                            android:layout_width="90dp"
+                            android:layout_height="85dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="10dp"
-                            android:src="@drawable/camera"
+                            android:src="@drawable/outline_camera"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -197,12 +197,13 @@
                         </androidx.cardview.widget.CardView>
 
 
-                        <ImageView
+                        <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/iv_salon"
-                            android:layout_width="80dp"
-                            android:layout_height="67dp"
+                            android:layout_width="90dp"
+                            android:layout_height="85dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/camera"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/outline_camera"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tv_addSalonInfo" />

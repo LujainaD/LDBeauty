@@ -17,6 +17,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -62,7 +64,8 @@ public class AddServiceDialogFragment extends DialogFragment {
     String specialist;
     String price;
     private CategoryModel mCategory;
-
+    int status = 0;
+    Handler handler = new Handler();
     public AddServiceDialogFragment() {
         // Required empty public constructor
     }
@@ -102,6 +105,7 @@ public class AddServiceDialogFragment extends DialogFragment {
         Button btnAdd = parentView.findViewById(R.id.btn_add);
         Button btnCancel = parentView.findViewById(R.id.btn_cancel);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,11 +129,42 @@ public class AddServiceDialogFragment extends DialogFragment {
                     progressDialog.show();
                     progressDialog.setContentView(R.layout.custom_progress_dialog);
                     progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                    final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
+
                     ServiceModel service = new ServiceModel();
                     service.setServiceTitle(title);
                     service.setServicePrice(price);
                     service.setServiceSpecialist(specialist);
                     uploadToStorage(service);
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            while (status < 100) {
+
+                                status += 1;
+
+                                try {
+                                    Thread.sleep(200);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        progressDialog.setProgress(status);
+                                        progressPercentage.setText(String.valueOf(status)+"%");
+
+                                        if (status == 100) {
+                                            progressDialog.dismiss();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }).start();
 
                 }
             }

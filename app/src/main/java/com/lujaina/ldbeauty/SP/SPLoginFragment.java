@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +43,8 @@ public class SPLoginFragment extends Fragment {
     private FirebaseUser mFirebaseUser;
     private static final String KEY_TAG = "login";
     ProgressDialog progressDialog;
-
+    int status = 0;
+    Handler handler = new Handler();
     public SPLoginFragment() {
         // Required empty public constructor
     }
@@ -128,10 +130,40 @@ public class SPLoginFragment extends Fragment {
                         progressDialog.setCancelable(false);
                         progressDialog.show();
                         progressDialog.setContentView(R.layout.custom_progress_dialog);
-                        TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
-                        progressText.setText("Welcome Back..");
+                        final TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
+                        final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
+                        progressText.setText("Welcome Back");
                         progressText.setVisibility(View.VISIBLE);
                         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                while (status < 100) {
+
+                                    status += 1;
+
+                                    try {
+                                        Thread.sleep(200);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            progressDialog.setProgress(status);
+                                            progressPercentage.setText(String.valueOf(status)+"%");
+
+                                            if (status == 100) {
+                                                progressDialog.dismiss();
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }).start();
 
                         SPRegistrationModel salonOwner = new SPRegistrationModel();
                         salonOwner.setOwnerEmail(email);
@@ -159,6 +191,8 @@ public class SPLoginFragment extends Fragment {
 
         return parentView;
     }
+
+
 
     private void loginUsingFirebaseAuth(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)

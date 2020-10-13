@@ -16,6 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.lujaina.ldbeauty.Constants;
@@ -53,6 +55,8 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static android.content.ContentValues.TAG;
 
 
@@ -60,7 +64,8 @@ public class SPSignUpFragment extends Fragment {
     private static final int PICK_OWNER_IMAGE = 1001;
     private static final int PICK_SALON_IMAGE = 1002;
     private static final int STORAGE_PERMISSION_REQUEST = 300;
-
+    int status = 0;
+    Handler handler = new Handler();
     public static final Pattern EMAIL_ADDRESS_PATTERN = Pattern.compile(
             "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
                     "\\@" +
@@ -72,8 +77,8 @@ public class SPSignUpFragment extends Fragment {
     );
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^" + "(?=.*[A-Z])" + ".{6,20}");
     private static final Pattern PHONENUMBER_PATTERN = Pattern.compile("^" + ".{8,20}");
-    ImageView ownerImg;
-    ImageView salonImg;
+    CircleImageView ownerImg;
+    CircleImageView salonImg;
     FirebaseUser mFirebaseUser;
 
     private Uri userImageUri;
@@ -109,8 +114,6 @@ public class SPSignUpFragment extends Fragment {
 
         ownerImg = parentView.findViewById(R.id.iv_user);
         salonImg = parentView.findViewById(R.id.iv_salon);
-
-        final ImageView salonImg = parentView.findViewById(R.id.iv_salon);
         final EditText userName = parentView.findViewById(R.id.ti_userName);
         final EditText userEmail = parentView.findViewById(R.id.ti_userEmail);
         final EditText userPass = parentView.findViewById(R.id.ti_password);
@@ -278,8 +281,10 @@ public class SPSignUpFragment extends Fragment {
                             progressDialog = new ProgressDialog(mContext);
                             progressDialog.setCancelable(false);
                             progressDialog.show();
+                            progressDialog.setMax(100);
                             progressDialog.setContentView(R.layout.custom_progress_dialog);
-                            TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
+                            final TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
+                            final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
                             progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                             progressText.setText("Welcome To LD Beauty");
                             progressText.setVisibility(View.VISIBLE);
@@ -294,6 +299,35 @@ public class SPSignUpFragment extends Fragment {
                             registration.setSalonPhoneNumber(phoneSalon);
                             registration.setUserType(userType);
                             registerToFirebase(email, password, name, phoneNumber, salonname, city, phoneSalon, userType);
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    while (status < 100) {
+
+                                        status += 1;
+
+                                        try {
+                                            Thread.sleep(200);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        handler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                progressDialog.setProgress(status);
+                                                progressPercentage.setText(String.valueOf(status)+ "%");
+
+                                                if (status == 100) {
+                                                    progressDialog.dismiss();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            }).start();
+
 
                         } else {
                             userVerify.setError("verify password must be the same as your entered password ");
@@ -401,7 +435,8 @@ public class SPSignUpFragment extends Fragment {
 
     private void uploadUserImageToStorage(final SPRegistrationModel registration) {
 		StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
-		//generate unique id for the image
+
+        //generate unique id for the image
 		String imageId = UUID.randomUUID().toString();
 
 		final StorageReference ownerImageRef = mStorageRef.child("images/" + imageId + ".jpg");
@@ -436,6 +471,7 @@ public class SPSignUpFragment extends Fragment {
 		StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
 		String imageId2 = UUID.randomUUID().toString();
 		final StorageReference salonImageRef = mStorageRef.child("images/" + imageId2 + ".jpg");
+        final TextView text = progressDialog.findViewById(R.id.tv_progress);
 
 		salonImageRef.putFile(salonImageUri)
 				.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

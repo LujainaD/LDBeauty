@@ -17,6 +17,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,6 +63,8 @@ public class AddCategoriesDialogFragment extends DialogFragment {
     FirebaseUser mFirebaseUser;
     private FirebaseAuth mAuth;
     String title;
+    int status = 0;
+    Handler handler = new Handler();
     public AddCategoriesDialogFragment() {
         // Required empty public constructor
     }
@@ -118,9 +121,39 @@ public class AddCategoriesDialogFragment extends DialogFragment {
                     progressDialog.show();
                     progressDialog.setContentView(R.layout.custom_progress_dialog);
                     progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                    final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
                     CategoryModel category = new CategoryModel();
                     category.setCategoryTitle(title);
                     UploadToFirebaseStorage(category);
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            while (status < 100) {
+
+                                status += 1;
+
+                                try {
+                                    Thread.sleep(200);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        progressDialog.setProgress(status);
+                                        progressPercentage.setText(String.valueOf(status)+"%");
+
+                                        if (status == 100) {
+                                            progressDialog.dismiss();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }).start();
                 }
             }
         });

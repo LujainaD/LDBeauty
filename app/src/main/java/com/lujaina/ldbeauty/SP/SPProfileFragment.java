@@ -28,6 +28,8 @@ import com.lujaina.ldbeauty.LoginChoicesFragment;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class SPProfileFragment extends Fragment {
     private Context mContext;
@@ -60,7 +62,7 @@ public class SPProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_s_p_profile, container, false);
-        final ImageView profileImag = parentView.findViewById(R.id.civ_profile);
+        final CircleImageView profileImag = parentView.findViewById(R.id.civ_profile);
         TextView salonPages = parentView.findViewById(R.id.tv_salonPages);
         final TextView ownerName = parentView.findViewById(R.id.tv_title);
 
