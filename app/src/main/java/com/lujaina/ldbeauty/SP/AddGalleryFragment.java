@@ -38,15 +38,14 @@ import java.util.ArrayList;
 
 
 public class AddGalleryFragment extends Fragment  {
-    FirebaseAuth mAuth;
     FirebaseUser mFirebaseUser;
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference myRef;
-    private ArrayList<GalleryModel> galleryList;
-    private GalleryAdapter mAdapter;
+
     private MediatorInterface mMediatorInterface;
     private Context mContext;
-    ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
+
+    private ArrayList<GalleryModel> galleryList;
+    private GalleryAdapter mAdapter;
 
     public AddGalleryFragment() {
         // Required empty public constructor
@@ -69,10 +68,8 @@ public class AddGalleryFragment extends Fragment  {
         View parentView = inflater.inflate(R.layout.fragment_add_gallery, container, false);
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
         ImageButton back = parentView.findViewById(R.id.ib_back);
-
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance();
         RecyclerView recyclerView = parentView.findViewById(R.id.rv_categories);
         galleryList = new ArrayList<>();
         mAdapter = new GalleryAdapter(mContext);
@@ -147,13 +144,4 @@ public class AddGalleryFragment extends Fragment  {
         });
     }
 
-  /*  @Override
-    public void onDelete(int img, GalleryModel picture) {
-        String galleryID = galleryList.get(img).getPictureId();
-        mAdapter.removeItem(img);
-        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Gallery).child(galleryID);
-        myRef.removeValue();
-
-    }*/
 }

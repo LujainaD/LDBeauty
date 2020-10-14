@@ -39,19 +39,19 @@ import com.lujaina.ldbeauty.RecyclerItemTouchHelperListener;
 import java.util.ArrayList;
 
 public class AddServicesFragment extends Fragment implements RecyclerItemTouchHelperListener {
-    FirebaseAuth mAuth;
     FirebaseUser mFirebaseUser;
-    private FirebaseDatabase mDatabase;
     private DatabaseReference myRef;
+
     private ArrayList<ServiceModel> serviceList;
     private ServiceAdapter mAdapter;
+
     private MediatorInterface mMediatorInterface;
     private Context mContext;
-    ServiceModel service;
-    ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
+
+    private ServiceModel service;
     private CategoryModel category;
-    RecyclerView.ViewHolder viewHolder;
-    RecyclerView recyclerView;
+
     public AddServicesFragment() {
         // Required empty public constructor
     }
@@ -72,10 +72,9 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
         View parentView = inflater.inflate(R.layout.fragment_add_services, container, false);
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
         ImageButton back = parentView.findViewById(R.id.ib_back);
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth= FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance();
-         recyclerView = parentView.findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = parentView.findViewById(R.id.recyclerView);
         serviceList = new ArrayList<>();
         mAdapter = new ServiceAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
@@ -88,6 +87,7 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
                 mMediatorInterface.onBackPressed();
             }
         });
+
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

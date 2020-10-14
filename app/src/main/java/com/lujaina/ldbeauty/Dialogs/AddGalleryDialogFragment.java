@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -29,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -56,18 +58,21 @@ import static android.content.ContentValues.TAG;
 
 
 public class AddGalleryDialogFragment extends DialogFragment {
-
-    ImageView picture;
-    private Context mContext;
-    private MediatorInterface mMediatorInterface;
     private static final int PICK_IMAGE = 1002;
     private static final int STORAGE_PERMISSION_REQUEST = 300;
+
+    private ProgressDialog progressDialog;
+    private FirebaseUser mFirebaseUser;
+
+    private ImageView picture;
+    private Context mContext;
+
     private static final ImageView.ScaleType SCALE_TYPE = ImageView.ScaleType.CENTER_CROP;
     private Uri imageUri;
-    ProgressDialog progressDialog;
-    FirebaseUser mFirebaseUser;
-    private FirebaseAuth mAuth;
     String[] PERMISSIONS;
+    private int status = 0;
+    Handler handler = new Handler();
+
     public AddGalleryDialogFragment() {
         // Required empty public constructor
     }
@@ -80,17 +85,13 @@ public class AddGalleryDialogFragment extends DialogFragment {
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
             int height = ViewGroup.LayoutParams.WRAP_CONTENT;
             dialog.getWindow().setLayout(width, height);
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
     }
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
-            mMediatorInterface = (MediatorInterface) context;
-        } else {
-            throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
     }
 
     @Override
@@ -98,13 +99,12 @@ public class AddGalleryDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_gallery_dialog, container, false);
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         picture = parentView.findViewById(R.id.iv_picture);
         picture.setScaleType(SCALE_TYPE);
         Button btnAdd = parentView.findViewById(R.id.btn_add);
         Button btnCancel = parentView.findViewById(R.id.btn_cancel);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         int PERMISSION_ALL = 1;
         String[] PERMISSIONS = {
                 android.Manifest.permission.READ_CONTACTS,
@@ -127,8 +127,39 @@ public class AddGalleryDialogFragment extends DialogFragment {
                     progressDialog.show();
                     progressDialog.setContentView(R.layout.custom_progress_dialog);
                     progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                    final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
                     GalleryModel gallery = new GalleryModel();
                     UploadToFirebaseStorage(gallery);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            while (status < 100) {
+
+                                status += 1;
+
+                                try {
+                                    Thread.sleep(200);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        progressDialog.setProgress(status);
+                                        progressPercentage.setText(String.valueOf(status)+"%");
+
+                                        if (status == 100) {
+                                            progressDialog.dismiss();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }).start();
+
+
                 }
             }
         });

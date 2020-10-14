@@ -37,21 +37,15 @@ import java.util.ArrayList;
 
 public class AddInfoDialogFragment extends DialogFragment implements AdapterView.OnItemSelectedListener {
 
-	private static final String TAG = "AddInforFrag";
-	FirebaseAuth mAuth;
 	FirebaseUser mFirebaseUser;
-	private FirebaseDatabase mDatabase;
 	private DatabaseReference myRef;
-	private MediatorInterface mMediatorInterface;
+
 	private Context mContext;
+
 	private ArrayList<ColorModel> colorList;
 	private ArrayList<AddInfoModel> mUpdate;
 	private InfoAdapter mAdapter;
-
 	private AddInfoModel about;
-/*
-	private color mListener;
-*/
 
 	public AddInfoDialogFragment() {
 		// Required empty public constructor
@@ -61,11 +55,6 @@ public class AddInfoDialogFragment extends DialogFragment implements AdapterView
 	public void onAttach(@NonNull Context context) {
 		super.onAttach(context);
 		mContext = context;
-		if (context instanceof MediatorInterface) {
-			mMediatorInterface = (MediatorInterface) context;
-		} else {
-			throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-		}
 	}
 
 	@Override
@@ -76,6 +65,7 @@ public class AddInfoDialogFragment extends DialogFragment implements AdapterView
 			int width = ViewGroup.LayoutParams.MATCH_PARENT;
 			int height = ViewGroup.LayoutParams.WRAP_CONTENT;
 			dialog.getWindow().setLayout(width, height);
+
 		}
 	}
 
@@ -85,9 +75,8 @@ public class AddInfoDialogFragment extends DialogFragment implements AdapterView
 
 		// Inflate the layout for this fragment
 		View parentView = inflater.inflate(R.layout.fragment_add_info_dialog, container, false);
-		mAuth = FirebaseAuth.getInstance();
+		FirebaseAuth mAuth = FirebaseAuth.getInstance();
 		mFirebaseUser = mAuth.getCurrentUser();
-		mDatabase = FirebaseDatabase.getInstance();
 		getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 		getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 		final EditText etTitle = parentView.findViewById(R.id.ti_title);
@@ -160,7 +149,6 @@ public class AddInfoDialogFragment extends DialogFragment implements AdapterView
 		FirebaseDatabase database = FirebaseDatabase.getInstance();
 		DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Info);
 		String Id = myRef.push().getKey();
-
 		about.setInfoId(Id);
 		about.setTitle(title);
 		about.setBody(body);
@@ -191,24 +179,12 @@ public class AddInfoDialogFragment extends DialogFragment implements AdapterView
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		about.setBackgroundColor(colorList.get(position).getColorValue());
-		/*if(mListener != null){
-
-			mListener.choosingColor(position);
-		}*/
 	}
 
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
 
 	}
-
-
-	/*public void setColorListener(color listener){
-		mListener = listener;
-	}
-	public interface color {
-		void choosingColor(int position);
-	}*/
 }
 
 

@@ -3,6 +3,7 @@ package com.lujaina.ldbeauty.Models;
 public class LocationModel {
     private String salonOwnerId;
     private String locationId;
+
     private String locationName;
     private double latitude;
     private double longitude;

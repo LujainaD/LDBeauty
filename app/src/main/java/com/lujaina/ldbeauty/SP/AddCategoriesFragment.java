@@ -41,15 +41,16 @@ import java.util.ArrayList;
 
 
 public class AddCategoriesFragment extends Fragment implements RecyclerItemTouchHelperListener {
-    FirebaseAuth mAuth;
     FirebaseUser mFirebaseUser;
-    private FirebaseDatabase mDatabase;
     private DatabaseReference myRef;
-    private ArrayList<CategoryModel> categoryList;
-    private CategoryAdapter mAdapter;
+
     private MediatorInterface mMediatorInterface;
     private Context mContext;
-    ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
+
+    private ArrayList<CategoryModel> categoryList;
+    private CategoryAdapter mAdapter;
+
     public AddCategoriesFragment() {
         // Required empty public constructor
     }
@@ -70,9 +71,8 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
         View  parentView = inflater.inflate(R.layout.fragment_add_categories, container, false);
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
         ImageButton back = parentView.findViewById(R.id.ib_back);
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance();
         RecyclerView recyclerView = parentView.findViewById(R.id.rv_categories);
         categoryList = new ArrayList<>();
         mAdapter = new CategoryAdapter(mContext);

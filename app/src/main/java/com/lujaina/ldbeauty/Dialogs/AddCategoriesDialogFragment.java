@@ -52,18 +52,19 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static android.content.ContentValues.TAG;
 
 public class AddCategoriesDialogFragment extends DialogFragment {
-    ImageView picture;
-    private Context mContext;
-    private MediatorInterface mMediatorInterface;
     private static final int PICK_IMAGE = 1002;
     private static final int STORAGE_PERMISSION_REQUEST = 300;
     private static final ImageView.ScaleType SCALE_TYPE = ImageView.ScaleType.CENTER_CROP;
+
+
+    private Context mContext;
+
     private Uri cateImageUri;
-    ProgressDialog progressDialog;
-    FirebaseUser mFirebaseUser;
-    private FirebaseAuth mAuth;
-    String title;
-    int status = 0;
+    private ProgressDialog progressDialog;
+    private FirebaseUser mFirebaseUser;
+
+    private ImageView picture;
+    private int status = 0;
     Handler handler = new Handler();
     public AddCategoriesDialogFragment() {
         // Required empty public constructor
@@ -76,6 +77,7 @@ public class AddCategoriesDialogFragment extends DialogFragment {
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
             int height = ViewGroup.LayoutParams.WRAP_CONTENT;
             dialog.getWindow().setLayout(width, height);
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
     }
 
@@ -83,11 +85,7 @@ public class AddCategoriesDialogFragment extends DialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
-            mMediatorInterface = (MediatorInterface) context;
-        } else {
-            throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+
     }
 
     @Override
@@ -95,22 +93,20 @@ public class AddCategoriesDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_categories_dialog, container, false);
-        progressDialog = new ProgressDialog(mContext);
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
+
+        progressDialog = new ProgressDialog(mContext);
         final EditText et_title = parentView.findViewById(R.id.ti_title);
        picture = parentView.findViewById(R.id.iv_picture);
         picture.setScaleType(SCALE_TYPE);
         Button btnAdd = parentView.findViewById(R.id.btn_add);
         Button btnCancel = parentView.findViewById(R.id.btn_cancel);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                 title = et_title.getText().toString();
+                String title = et_title.getText().toString();
                 if(title.isEmpty()) {
                     et_title.setError("you should write category name ex.(Hair, spa))");
                 }else if (cateImageUri == null) {
@@ -267,7 +263,6 @@ public class AddCategoriesDialogFragment extends DialogFragment {
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category);
         String id = myRef.push().getKey();
         category.setCategoryId(id);
-        category.setCategoryTitle(title);
         category.setOwnerId(mFirebaseUser.getUid());
         myRef.child(category.categoryId).setValue(category).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
             @Override

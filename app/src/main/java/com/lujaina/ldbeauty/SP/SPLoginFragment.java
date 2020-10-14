@@ -36,14 +36,15 @@ import java.util.regex.Pattern;
 
 
 public class SPLoginFragment extends Fragment {
+    private static final String KEY_TAG = "login";
+
+    private FirebaseAuth mAuth;
 
     private Context mContext;
     private MediatorInterface mMediatorInterface;
-    private FirebaseAuth mAuth;
-    private FirebaseUser mFirebaseUser;
-    private static final String KEY_TAG = "login";
-    ProgressDialog progressDialog;
-    int status = 0;
+
+    private ProgressDialog progressDialog;
+    private int status = 0;
     Handler handler = new Handler();
     public SPLoginFragment() {
         // Required empty public constructor
@@ -71,7 +72,6 @@ public class SPLoginFragment extends Fragment {
         TextView signup = parentView.findViewById(R.id.tv_SignUp);
         TextView forget = parentView.findViewById(R.id.tv_forget);
         mAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mAuth.getCurrentUser();
 
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,7 +172,6 @@ public class SPLoginFragment extends Fragment {
                     }
                 }
 
-
             }
         });
         forget.setOnClickListener(new View.OnClickListener() {
@@ -184,10 +183,6 @@ public class SPLoginFragment extends Fragment {
                 }
             }
         });
-
-
-
-
 
         return parentView;
     }
@@ -205,8 +200,7 @@ public class SPLoginFragment extends Fragment {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(KEY_TAG, "signInWithEmail:success");
-
-                            mFirebaseUser = mAuth.getCurrentUser();
+                            FirebaseUser mFirebaseUser = mAuth.getCurrentUser();
                             progressDialog.dismiss();
 
                             if(mMediatorInterface != null){
@@ -222,10 +216,8 @@ public class SPLoginFragment extends Fragment {
                             Toast.makeText(mContext,"incorrect email or password",
                                     Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
-
     }
 
     private boolean isEmailValid(String email) {

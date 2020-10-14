@@ -40,13 +40,12 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyViewHolder>{
         int displayYear = dateCalendar.get(Calendar.YEAR);
         int currentYear = currentDate.get(Calendar.YEAR);
         int currentMonth = currentDate.get(Calendar.MONTH) + 1;
-
         holder.date.setText(String.valueOf(dayNo));
 */
     }
     @Override
     public int getItemCount() {
-       return itemCount;
+        return itemCount;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{

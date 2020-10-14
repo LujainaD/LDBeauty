@@ -51,21 +51,22 @@ import static android.content.ContentValues.TAG;
 
 
 public class AddServiceDialogFragment extends DialogFragment {
-    ImageView picture;
-    private Context mContext;
-    private MediatorInterface mMediatorInterface;
     private static final int PICK_IMAGE = 1002;
     private static final int STORAGE_PERMISSION_REQUEST = 300;
-    private Uri cateImageUri;
-    ProgressDialog progressDialog;
-    FirebaseUser mFirebaseUser;
-    private FirebaseAuth mAuth;
-    String title;
-    String specialist;
-    String price;
-    private CategoryModel mCategory;
-    int status = 0;
+
+    private FirebaseUser mFirebaseUser;
+    private Context mContext;
+    private MediatorInterface mMediatorInterface;
+
+    private int status = 0;
     Handler handler = new Handler();
+    private ProgressDialog progressDialog;
+
+    private Uri cateImageUri;
+    private ImageView picture;
+
+    private CategoryModel mCategory;
+
     public AddServiceDialogFragment() {
         // Required empty public constructor
     }
@@ -77,6 +78,7 @@ public class AddServiceDialogFragment extends DialogFragment {
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
             int height = ViewGroup.LayoutParams.WRAP_CONTENT;
             dialog.getWindow().setLayout(width, height);
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
     }
     public void onAttach(@NonNull Context context) {
@@ -95,25 +97,31 @@ public class AddServiceDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_service_dialog, container, false);
-        progressDialog = new ProgressDialog(mContext);
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
+
+        progressDialog = new ProgressDialog(mContext);
         final EditText et_title = parentView.findViewById(R.id.ti_title);
         final EditText et_name = parentView.findViewById(R.id.ti_name);
         final EditText et_price = parentView.findViewById(R.id.ti_price);
         picture = parentView.findViewById(R.id.iv_picture);
         Button btnAdd = parentView.findViewById(R.id.btn_add);
         Button btnCancel = parentView.findViewById(R.id.btn_cancel);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
-                title = et_title.getText().toString();
-                specialist = et_name.getText().toString();
-                price = et_price.getText().toString();
+               String title = et_title.getText().toString();
+               String specialist = et_name.getText().toString();
+               String price = et_price.getText().toString();
 
                 if(title.isEmpty()) {
                     et_title.setError("you should write service name ex.(Hair cut, hair coloring))");
@@ -271,9 +279,6 @@ public class AddServiceDialogFragment extends DialogFragment {
         String id = myRef.push().getKey();
         service.setServiceId(id);
         service.setIdCategory(mCategory.getCategoryId());
-        service.setServiceTitle(title);
-        service.setServiceSpecialist(specialist);
-        service.setServicePrice(price);
         service.setOwnerId(mFirebaseUser.getUid());
         myRef.child(service.serviceId).setValue(service).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
             @Override

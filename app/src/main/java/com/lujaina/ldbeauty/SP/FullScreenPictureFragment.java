@@ -30,15 +30,14 @@ import com.lujaina.ldbeauty.Models.GalleryModel;
 import com.lujaina.ldbeauty.R;
 
 
-public class FullScreenPictureFragment extends DialogFragment implements DeleteDialogFragment.deletePicture{
+public class FullScreenPictureFragment extends DialogFragment {
+    private FirebaseUser mFirebaseUser;
+
     private MediatorInterface mMediatorInterface;
     private Context mContext;
+
     private GalleryModel mGallery;
-    FirebaseAuth mAuth;
-    FirebaseUser mFirebaseUser;
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference myRef;
-    public FullScreenPictureFragment.deletePicture mListener;
+
     public FullScreenPictureFragment() {
         // Required empty public constructor
     }
@@ -71,33 +70,22 @@ public class FullScreenPictureFragment extends DialogFragment implements DeleteD
         View parentView= inflater.inflate(R.layout.fragment_full_screen_picture, container, false);
         ImageView picture = parentView.findViewById(R.id.img);
         ImageButton menuButton = parentView.findViewById(R.id.ib_menu);
-        mDatabase = FirebaseDatabase.getInstance();
-        myRef = mDatabase.getReference(Constants.Users);
-        mAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mAuth.getCurrentUser();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mFirebaseUser= mAuth.getCurrentUser();
 
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 PopupMenu popup = new PopupMenu(mContext, v);
                 popup.getMenuInflater().inflate(R.menu.picture_menu, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
-
                             case R.id.delete:{
-                              /*  DeleteDialogFragment dialog = new DeleteDialogFragment();
-                                dialog.setPictureId(mGallery);
-                                dialog.show(getChildFragmentManager(), DeleteDialogFragment.class.getSimpleName());
-*/
                               showDeleteDialog();
-
                             }
                         }
-
-
                         return false;
                     }
                 });
@@ -121,10 +109,6 @@ public class FullScreenPictureFragment extends DialogFragment implements DeleteD
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
-
-                /*if(mListener != null){
-                    mListener.onDelete(1, mGallery);
-                }*/
                 delete();
                 dialog.cancel();
                 dismiss();
@@ -137,7 +121,6 @@ public class FullScreenPictureFragment extends DialogFragment implements DeleteD
                 dialog.cancel();
             }
         });
-
         // to display dialog
         alertDialog.create().show();
 
@@ -145,6 +128,7 @@ public class FullScreenPictureFragment extends DialogFragment implements DeleteD
 
     private void delete() {
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference myRef;
         myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Gallery).child(mGallery.getPictureId());
         myRef.removeValue();
     }
@@ -153,19 +137,5 @@ public class FullScreenPictureFragment extends DialogFragment implements DeleteD
         mGallery = category;
     }
 
-    @Override
-    public void onDelete( int position, GalleryModel picture) {
-        if(position == 1){
-/*
-            delete(picture);
-*/
-        }else {
-            dismiss();
-        }
 
-    }
-
-    public interface deletePicture {
-        void onDelete(int position , GalleryModel picture);
-    }
 }

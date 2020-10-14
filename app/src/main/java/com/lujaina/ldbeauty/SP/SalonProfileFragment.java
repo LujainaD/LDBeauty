@@ -37,8 +37,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class SalonProfileFragment extends Fragment {
     private Context mContext;
     private MediatorInterface mMediatorInterface;
-    public FirebaseAuth mAuth;
-    public FirebaseUser mFirebaseUser;
+
     DatabaseReference myRef;
 
     ProgressDialog progressDialog;
@@ -72,9 +71,9 @@ public class SalonProfileFragment extends Fragment {
         TextView categoryPage = parentView.findViewById(R.id.tv_services);
         TextView galleryPage = parentView.findViewById(R.id.tv_salonGallery);
         TextView locationPage = parentView.findViewById(R.id.tv_location);
+        FirebaseAuth mAuth= FirebaseAuth.getInstance();
+        final FirebaseUser mFirebaseUser = mAuth.getCurrentUser();
 
-        mAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mAuth.getCurrentUser();
         myRef = FirebaseDatabase.getInstance().getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid());
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -97,34 +96,27 @@ public class SalonProfileFragment extends Fragment {
         aboutPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (mMediatorInterface !=null){
                     mMediatorInterface.changeFragmentTo(new AddInfoFragment(), AddInfoFragment.class.getSimpleName());
                 }
-
             }
         });
-
 
         galleryPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (mMediatorInterface !=null){
                     mMediatorInterface.changeFragmentTo(new AddGalleryFragment(), AddGalleryFragment.class.getSimpleName());
                 }
-
             }
         });
 
         locationPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (mMediatorInterface !=null){
                     mMediatorInterface.changeFragmentTo(new AddSalonLocationFragment(), AddSalonLocationFragment.class.getSimpleName());
                 }
-
             }
         });
 
@@ -137,7 +129,6 @@ public class SalonProfileFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 SPRegistrationModel u = dataSnapshot.getValue(SPRegistrationModel.class);// this will convert json to java
-
 
                 if (mFirebaseUser != null && u != null) {
                     salonName.setText(u.getSalonName());
@@ -157,8 +148,6 @@ public class SalonProfileFragment extends Fragment {
                 progressDialog.dismiss();
             }
         });
-
         return parentView;
-
     }
 }

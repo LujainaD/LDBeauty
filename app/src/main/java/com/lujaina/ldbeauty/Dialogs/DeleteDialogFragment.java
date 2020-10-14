@@ -24,13 +24,10 @@ import com.lujaina.ldbeauty.SP.FullScreenPictureFragment;
 
 
 public class DeleteDialogFragment extends DialogFragment {
-    FirebaseAuth mAuth;
-    FirebaseUser mFirebaseUser;
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference myRef;
+
     private GalleryModel mGallery;
-    public DeleteDialogFragment.deletePicture mListener;
-    GalleryModel picture;
+    private GalleryModel picture;
+
     public DeleteDialogFragment() {
         // Required empty public constructor
     }
@@ -53,15 +50,15 @@ public class DeleteDialogFragment extends DialogFragment {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         Button delete = parentView.findViewById(R.id.btn_delete);
         Button cancel = parentView.findViewById(R.id.btn_cancel);
-        mDatabase = FirebaseDatabase.getInstance();
-        myRef = mDatabase.getReference(Constants.Users);
-        mAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mAuth.getCurrentUser();
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        final FirebaseUser mFirebaseUser = mAuth.getCurrentUser();
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+                DatabaseReference myRef;
                 myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Gallery).child(mGallery.getPictureId());
                 myRef.removeValue();
                 dismiss();
@@ -70,26 +67,14 @@ public class DeleteDialogFragment extends DialogFragment {
             }
         });
 
-cancel.setOnClickListener(new View.OnClickListener() {
+        cancel.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
 
-        if(mListener != null){
-            mListener.onDelete(2, picture);
-
-        }
         dismiss();
     }
 });
         return parentView;
     }
 
-    public void setPictureId(GalleryModel Gallery) {
-        mGallery = Gallery;
-
-    }
-
-    public interface deletePicture {
-        void onDelete(int position , GalleryModel picture);
-    }
 }

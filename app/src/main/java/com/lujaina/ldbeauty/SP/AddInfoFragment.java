@@ -48,15 +48,16 @@ import java.util.ArrayList;
 
 
 public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelperListener {
-    private MediatorInterface mMediatorInterface;
-    private Context mContext;
     FirebaseAuth mAuth;
     FirebaseUser mFirebaseUser;
-    private FirebaseDatabase mDatabase;
     private DatabaseReference myRef;
-    private ArrayList<AddInfoModel> mUpdate;
+
+    private MediatorInterface mMediatorInterface;
+    private Context mContext;
+    private ProgressDialog progressDialog;
+
+    private ArrayList<AddInfoModel> infoArray;
     private InfoAdapter mAdapter;
-    ProgressDialog progressDialog;
 
     public AddInfoFragment() {
         // Required empty public constructor
@@ -83,9 +84,8 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance();
         RecyclerView recyclerView = parentView.findViewById(R.id.add_rv);
-        mUpdate = new ArrayList<>();
+        infoArray = new ArrayList<>();
         mAdapter = new InfoAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
@@ -126,7 +126,7 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
     private void readSalonInfoFromFirebaseDB() {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Info);
+         myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Info);
         // Read from the mDatabase
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setCancelable(true);
@@ -136,12 +136,12 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mUpdate.clear();
+                infoArray.clear();
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     AddInfoModel aboutModel = d.getValue(AddInfoModel.class);
-                    mUpdate.add(aboutModel);
+                    infoArray.add(aboutModel);
                     progressDialog.dismiss();
-                    mAdapter.update(mUpdate);
+                    mAdapter.update(infoArray);
                 }
             }
 
@@ -152,22 +152,12 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
             }
         });
     }
-
-  /*  @Override
-    public void deleteInfo(int postion) {
-    	String infoID = mUpdate.get(postion).getInfoId();
-        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid())
-                .child(Constants.Salon_Info)
-                .child(infoID);
-        myRef.removeValue();
-    }
-*/
+    
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if(viewHolder instanceof InfoAdapter.MyViewHolder){
-            String infoID = mUpdate.get(position).getInfoId();
+            String infoID = infoArray.get(position).getInfoId();
             int position1 = viewHolder.getAdapterPosition();
             mAdapter.removeItem(position1);
             FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();

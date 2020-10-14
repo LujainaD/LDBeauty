@@ -19,34 +19,20 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.lujaina.ldbeauty.Dialogs.AddInfoDialogFragment;
-import com.lujaina.ldbeauty.Dialogs.SalonConfirmDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.AddInfoModel;
 import com.lujaina.ldbeauty.R;
 
 import java.util.ArrayList;
 
-import at.blogc.android.views.ExpandableTextView;
-import at.blogc.android.views.ExpandableTextView.OnExpandListener;
-
-import static androidx.constraintlayout.motion.utils.Oscillator.TAG;
 
 public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> {
 
 	public Context mContext;
 	public MediatorInterface mMidiatorCallback;
 	private ArrayList<AddInfoModel> mUpdate;
-/*
-	private infoListener mListener;
-*/
-/*
-	private AddInfoDialogFragment.color mColor;
-*/
 
 	public InfoAdapter(Context mContext) {
 		mUpdate = new ArrayList<>();
@@ -68,11 +54,7 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 		mUpdate.remove(position);
 		notifyItemRemoved(position);
 	}
-	public void restoreItem(AddInfoModel item ,int position) {
-		mUpdate.add(position,item);
-		notifyItemInserted(position);
 
-	}
 	@NonNull
 	@Override
 	public InfoAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -87,48 +69,7 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 		final AddInfoModel aboutSalon = mUpdate.get(position);
 		holder.tvTitle.setText(aboutSalon.getTitle());
 		holder.tvBody.setText(aboutSalon.getBody());
-		/*holder.expandableTextView.setAnimationDuration(750L);
-		if(lineCount >3) {
-			holder.expandableTextView.setInterpolator(new OvershootInterpolator());
-			holder.expandableTextView.setExpandInterpolator(new OvershootInterpolator());
-			holder.expandableTextView.setCollapseInterpolator(new OvershootInterpolator());
-		}
-// toggle the ExpandableTextView
-		holder.tvExpandable.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(final View v)
-			{
-				if(holder.expandableTextView.getMaxLines() >= 3 ){
-					holder.tvExpandable.setText(holder.expandableTextView.isExpanded() ? R.string.showmore : R.string.showless);
-					holder.expandableTextView.toggle();
-				}else {
-					holder.tvExpandable.setVisibility(View.INVISIBLE);
-				}
 
-			}
-		});
-
-// but, you can also do the checks yourself
-		holder.tvExpandable.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(final View v) {
-
-					if (holder.expandableTextView.isExpanded()) {
-						holder.expandableTextView.collapse();
-						holder.tvExpandable.setText(R.string.showmore);
-
-					} else {
-						holder.expandableTextView.expand();
-						holder.tvExpandable.setText(R.string.showless);
-
-					}
-
-
-
-			}
-		});*/
 
 		holder.tvBody.setOnStateChangeListener(new ru.embersoft.expandabletextview.ExpandableTextView.OnStateChangeListener() {
 			@Override
@@ -141,90 +82,8 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 		});
 		holder.tvBody.setText(aboutSalon.getBody());
 		holder.tvBody.resetState(aboutSalon.isShrink());
-// listen for expand / collapse events
-		/*holder.expandableTextView.setOnExpandListener(new ExpandableTextView.OnExpandListener()
-		{
-			@Override
-			public void onExpand(final ExpandableTextView view)
-			{
-				Log.d(TAG, "ExpandableTextView expanded");
-			}
 
-			@Override
-			public void onCollapse(final ExpandableTextView view)
-			{
-				Log.d(TAG, "ExpandableTextView collapsed");
-			}
-		});*/
-
-
-
-
-
-
-
-
-
-
-
-	/*	if (aboutSalon.getBody().length() <= 100 ) {
-			holder.tvBody.setText(aboutSalon.getBody());
-			holder.tvExpandable.setVisibility(View.GONE);
-		}else {
-			holder.tvBody.setText(aboutSalon.getBody().substring(0, 100) + " . . . ");
-
-		}*/
 		holder.cvAboutSalon.setCardBackgroundColor(Color.parseColor(aboutSalon.getBackgroundColor()));
-
-
-
-
-
-		/*holder.cvAboutSalon.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-				if (mListener != null) {
-					mListener.deleteInfo(position);
-				}
-			}
-		});
-*/
-		final boolean[] isCollapse = {true};
-
-		/*holder.tvExpandable.setOnClickListener(new View.OnClickListener() {
-			@SuppressLint("SetTextI18n")
-			@Override
-			public void onClick(View view) {
-
-				if (isCollapse[0]) {
-
-					if (aboutSalon.getBody().length() <= 100 ) {
-						holder.tvBody.setText(aboutSalon.getBody());
-						holder.tvExpandable.setVisibility(View.GONE);
-					} else {
-						holder.tvBody.setText(aboutSalon.getBody());
-						holder.tvExpandable.setText("Show less");
-					}
-
-
-				} else {
-
-					if (aboutSalon.getBody().length() <= 100 ) {
-						holder.tvBody.setText(aboutSalon.getBody());
-						holder.tvExpandable.setVisibility(View.GONE);
-					} else {
-						holder.tvBody.setText(aboutSalon.getBody().substring(0, 100) + " . . . ");
-						holder.tvExpandable.setText("Show more");
-					}
-
-
-				}
-				isCollapse[0] = !isCollapse[0];
-
-
-			}
-		});*/
 	}
 
 	@Override
@@ -232,18 +91,7 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 		return mUpdate.size();
 	}
 
-	/*public void setRemoveListener(infoListener listener) {
 
-		mListener = listener;
-	}
-
-
-
-	public interface infoListener {
-
-		void deleteInfo(int position);
-	}
-*/
 	public class MyViewHolder extends RecyclerView.ViewHolder {
 
 		final ru.embersoft.expandabletextview.ExpandableTextView tvBody;
@@ -260,8 +108,5 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 			tvBody = itemView.findViewById(R.id.body_tv);
 
 		}
-
-
 	}
-
 }

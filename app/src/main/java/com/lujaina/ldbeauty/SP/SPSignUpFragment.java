@@ -64,8 +64,6 @@ public class SPSignUpFragment extends Fragment {
     private static final int PICK_OWNER_IMAGE = 1001;
     private static final int PICK_SALON_IMAGE = 1002;
     private static final int STORAGE_PERMISSION_REQUEST = 300;
-    int status = 0;
-    Handler handler = new Handler();
     public static final Pattern EMAIL_ADDRESS_PATTERN = Pattern.compile(
             "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
                     "\\@" +
@@ -77,16 +75,23 @@ public class SPSignUpFragment extends Fragment {
     );
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^" + "(?=.*[A-Z])" + ".{6,20}");
     private static final Pattern PHONENUMBER_PATTERN = Pattern.compile("^" + ".{8,20}");
-    CircleImageView ownerImg;
-    CircleImageView salonImg;
+
+    private FirebaseAuth mAuth;
     FirebaseUser mFirebaseUser;
+
+    private int status = 0;
+    Handler handler = new Handler();
+    private Context mContext;
+    private MediatorInterface mMediatorInterface;
+    private ProgressDialog progressDialog;
+
+    private CircleImageView ownerImg;
+    private CircleImageView salonImg;
 
     private Uri userImageUri;
     private Uri salonImageUri;
-    private FirebaseAuth mAuth;
-    private Context mContext;
-    private MediatorInterface mMediatorInterface;
-    ProgressDialog progressDialog;
+
+
     public SPSignUpFragment() {
         // Required empty public constructor
     }
@@ -290,14 +295,7 @@ public class SPSignUpFragment extends Fragment {
                             progressText.setVisibility(View.VISIBLE);
 
                             SPRegistrationModel registration = new SPRegistrationModel();
-                            registration.setOwnerName(name);
-                            registration.setOwnerEmail(email);
-                            registration.setPassWord(password);
-                            registration.setPhoneNumber(phoneNumber);
-                            registration.setSalonName(salonname);
-                            registration.setSalonCity(city);
-                            registration.setSalonPhoneNumber(phoneSalon);
-                            registration.setUserType(userType);
+
                             registerToFirebase(email, password, name, phoneNumber, salonname, city, phoneSalon, userType);
                             new Thread(new Runnable() {
                                 @Override
@@ -328,12 +326,9 @@ public class SPSignUpFragment extends Fragment {
                                 }
                             }).start();
 
-
                         } else {
                             userVerify.setError("verify password must be the same as your entered password ");
                             progressDialog.dismiss();
-
-
                         }
                     }
                 }
@@ -349,10 +344,8 @@ public class SPSignUpFragment extends Fragment {
                     showRunTimePermission();
 
                 }
-
             }
         });
-
         salonImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -371,11 +364,7 @@ public class SPSignUpFragment extends Fragment {
     }
 
     public void showRunTimePermission() {
-        // Permission is not Granted !
-        // we should Request the Permission!
-        // put all permissions you need in this Screen into string array
         String[] permissionsArray = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        //here we requet the permission
         requestPermissions(permissionsArray, STORAGE_PERMISSION_REQUEST);
     }
     @Override
@@ -399,8 +388,6 @@ public class SPSignUpFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
-                            // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             SPRegistrationModel registration = new SPRegistrationModel();
@@ -418,10 +405,10 @@ public class SPSignUpFragment extends Fragment {
                             uploadUserImageToStorage(registration);
 
                         } else {
-                            // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(mContext, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
                         }
                     }
               /*  }).addOnFailureListener(new OnFailureListener() {
@@ -499,8 +486,6 @@ public class SPSignUpFragment extends Fragment {
 					}
 				});
 	}
-
-
 
 	private void addToDB(SPRegistrationModel registration) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();

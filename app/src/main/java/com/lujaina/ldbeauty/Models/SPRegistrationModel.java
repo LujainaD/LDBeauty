@@ -6,14 +6,15 @@ public class SPRegistrationModel {
     private String phoneNumber;
     private String ownerEmail;
     private String passWord;
+    private String ownerImageURL;
+
     private String salonName;
     private String salonCity;
     private String salonPhoneNumber;
-    private String ownerImageURL;
     private String salonImageURL;
+
     private String userType;
     private String registrationDate;
-    private String status;
     private String statusType;
     private String updatedDate;
 
@@ -57,6 +58,14 @@ public class SPRegistrationModel {
         this.passWord = passWord;
     }
 
+    public String getOwnerImageURL() {
+        return ownerImageURL;
+    }
+
+    public void setOwnerImageURL(String ownerImageURL) {
+        this.ownerImageURL = ownerImageURL;
+    }
+
     public String getSalonName() {
         return salonName;
     }
@@ -79,14 +88,6 @@ public class SPRegistrationModel {
 
     public void setSalonPhoneNumber(String salonPhoneNumber) {
         this.salonPhoneNumber = salonPhoneNumber;
-    }
-
-    public String getOwnerImageURL() {
-        return ownerImageURL;
-    }
-
-    public void setOwnerImageURL(String ownerImageURL) {
-        this.ownerImageURL = ownerImageURL;
     }
 
     public String getSalonImageURL() {
@@ -113,12 +114,12 @@ public class SPRegistrationModel {
         this.registrationDate = registrationDate;
     }
 
-    public String getStatus() {
-        return status;
+    public String getStatusType() {
+        return statusType;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatusType(String statusType) {
+        this.statusType = statusType;
     }
 
     public String getUpdatedDate() {
@@ -127,13 +128,5 @@ public class SPRegistrationModel {
 
     public void setUpdatedDate(String updatedDate) {
         this.updatedDate = updatedDate;
-    }
-
-    public String getStatusType() {
-        return statusType;
-    }
-
-    public void setStatusType(String statusType) {
-        this.statusType = statusType;
     }
 }

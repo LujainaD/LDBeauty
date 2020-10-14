@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,13 +33,16 @@ import java.util.regex.Pattern;
 
 
 public class AOLoginFragment extends Fragment {
-    private Context mContext;
-    private MediatorInterface mMediatorInterface;
+    private static final String KEY_TAG = "login";
+
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;
-    private static final String KEY_TAG = "login";
-    ProgressDialog progressDialog;
 
+    private Context mContext;
+    private MediatorInterface mMediatorInterface;
+    private ProgressDialog progressDialog;
+    private int status = 0;
+    Handler handler = new Handler();
     public AOLoginFragment() {
         // Required empty public constructor
     }
@@ -59,6 +63,8 @@ public class AOLoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_a_o_login, container, false);
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mAuth.getCurrentUser();
         final EditText ti_email = parentView.findViewById(R.id.ti_userEmail);
         final EditText ti_password = parentView.findViewById(R.id.ti_password);
         Button login = parentView.findViewById(R.id.btn_login);
@@ -101,8 +107,7 @@ public class AOLoginFragment extends Fragment {
         });
 
 
-        mAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mAuth.getCurrentUser();
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +130,7 @@ public class AOLoginFragment extends Fragment {
                             progressDialog.show();
                             progressDialog.setContentView(R.layout.custom_progress_dialog);
                             TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
+                            final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
                             progressText.setText("Welcome Back..");
                             progressText.setVisibility(View.VISIBLE);
                             progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -132,6 +138,34 @@ public class AOLoginFragment extends Fragment {
                             salonOwner.setOwnerEmail(email);
                             salonOwner.setPassWord(password);
                             loginUsingFirebaseAuth(email, password);
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    while (status < 100) {
+
+                                        status += 1;
+
+                                        try {
+                                            Thread.sleep(200);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        handler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                progressDialog.setProgress(status);
+                                                progressPercentage.setText(String.valueOf(status)+"%");
+
+                                                if (status == 100) {
+                                                    progressDialog.dismiss();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            }).start();
 
                         }else{
                             Toast.makeText(mContext, "Sorry your are not the App Owner", Toast.LENGTH_SHORT).show();
@@ -167,16 +201,11 @@ public class AOLoginFragment extends Fragment {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(KEY_TAG, "signInWithEmail:success");
-
-                            mFirebaseUser = mAuth.getCurrentUser();
                             progressDialog.dismiss();
 
-                            Toast.makeText(mContext, "Welcome to LD beauty App", Toast.LENGTH_SHORT).show();
                             if(mMediatorInterface != null){
                                 mMediatorInterface.changeFragmentTo(new AppOwnerProfileFragment(), AppOwnerProfileFragment.class.getSimpleName());
                             }
-
-
 
                         } else {
                             // If sign in fails, display a message to the user.

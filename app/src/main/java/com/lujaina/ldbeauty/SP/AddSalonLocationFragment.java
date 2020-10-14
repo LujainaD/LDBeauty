@@ -59,10 +59,17 @@ import java.util.Locale;
 
 public class AddSalonLocationFragment extends Fragment implements OnMapReadyCallback {
     private static final int KEY_PERMISSION_REQUEST_ID = 100;
-    public static final String KEY_SALON_LOCATION = "Salon Location";
+
+    private FirebaseUser mFirebaseUser;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference myRef;
+    private FusedLocationProviderClient mFusedLocationClient;
+
     private GoogleMap mMap;
     private MapView mMapView;
     private Context mContext;
+    private MediatorInterface mMediatorInterface;
+
     private TextView tvLocationName;
     private TextView tvLat;
     private TextView tvLng;
@@ -70,14 +77,10 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     private Button save;
     private Marker selectedLocation;
     private List<Address> addresses;
-    FirebaseAuth mAuth;
-    FirebaseUser mFirebaseUser;
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference myRef;
+
     private double mLat;
     private double mLng;
-    private FusedLocationProviderClient mFusedLocationClient;
-    private MediatorInterface mMediatorInterface;
+
 
     public AddSalonLocationFragment() {
         // Required empty public constructor
@@ -98,16 +101,18 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_salon_location, container, false);
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
-        myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Location);
+
+        ImageButton ibBack  = parentView.findViewById(R.id.ib_back);
+
         tvLocationName = parentView.findViewById(R.id.tv_place);
         tvLat = parentView.findViewById(R.id.tv_lat);
         tvLng = parentView.findViewById(R.id.tv_lng);
         save = parentView.findViewById(R.id.saveLocation);
         btnGetLocationInfo = parentView.findViewById(R.id.btn_getCurrentLocation);
-        ImageButton ibBack 			= parentView.findViewById(R.id.ib_back);
+
 
         if (isPermissionGranted()) {  // in order to display map in fragment
             mMapView = parentView.findViewById(R.id.map);
@@ -166,23 +171,15 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-
 // default location
         getLastLocation();
-
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
                 //latLng is the location  that the user clicked
-
                 mLat = latLng.latitude;
                 mLng = latLng.longitude;
-
                 getLocationName();
-
-
-                //   Toast.makeText(mContext, latLng.latitude + "/" + latLng.longitude, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -215,35 +212,22 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
 
     }
 
-    /**
-     * draw location pen
-     *
-     * @param fullAddress is required
-     */
     private void setLocationPen(String fullAddress) {
         LatLng location = new LatLng(mLat, mLng);
-
         if (selectedLocation != null) {
             selectedLocation.remove();
         }
         selectedLocation = mMap.addMarker(new MarkerOptions().position(new LatLng(mLat, mLng)).title(fullAddress));// add marker non the location
-
-
-        //move camera
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location)); //move camera up,bottom, left, right
-
         //to zoom to selected location
         mMap.animateCamera(CameraUpdateFactory.zoomTo(16f), 1000, null);
-
         tvLat.setText(mLat + "");
         tvLng.setText(mLng + "");
 
     }
 
-
     private void requestNewLocationData() {
         //request new location data
-
         LocationRequest request = new LocationRequest();
         request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         request.setInterval(0);
@@ -321,7 +305,6 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
 
     }
     private LocationCallback myLocationCallback() {
-
         LocationCallback callback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -330,7 +313,6 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
                 mLat = location.getLatitude();
                 mLng = location.getLongitude();
                 getLocationName();
-
             }
         };
 
@@ -354,7 +336,7 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
         myRef.child(map.getLocationId()).setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(mContext, "Your Location is add sucessfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Your Location is add successfully", Toast.LENGTH_SHORT).show();
 
             }
         });

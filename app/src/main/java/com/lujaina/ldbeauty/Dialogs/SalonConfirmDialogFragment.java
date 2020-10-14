@@ -53,37 +53,17 @@ import java.util.UUID;
 import static android.content.ContentValues.TAG;
 
 public class SalonConfirmDialogFragment extends DialogFragment {
-    private static final int CAPTURE_IMAGE = 1;
-    private static final String TAG = "icon";
-    private FirebaseAuth mAuth;
-    FirebaseUser mFirebaseUser;
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
-    SPRegistrationModel status;
+
     private SPRegistrationModel mDetails;
-    private Context mContext;
-    private MediatorInterface mMediatorInterface;
     private SalonConfirmDialogFragment.statusConfirmed mListener;
     private SPRegistrationModel sprModelObj;
-String mImagePath;
-    Uri imgUri;
+
 
     public SalonConfirmDialogFragment(AoConfirmSalonsFragment aoConfirmContext, SPRegistrationModel salonsDetails) {
         mListener = (statusConfirmed) aoConfirmContext;
 		sprModelObj = salonsDetails;
     }
 
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        mContext = context;
-        if (context instanceof MediatorInterface) {
-            mMediatorInterface = (MediatorInterface) context;
-        } else {
-            throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
-    }
 
 
     @Override
@@ -102,10 +82,7 @@ String mImagePath;
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_salon_confirm_dialog, container, false);
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner);
-        mAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mAuth.getCurrentUser();
+
         TextView ownerName = parentView.findViewById(R.id.tv_ownerName);
         TextView ownerPhone = parentView.findViewById(R.id.tv_ownerPhoner);
         TextView salonName = parentView.findViewById(R.id.tv_salonName);

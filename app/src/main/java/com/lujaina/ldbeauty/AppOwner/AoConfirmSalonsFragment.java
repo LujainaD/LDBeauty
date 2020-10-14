@@ -153,12 +153,11 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
 		sprObj.setOwnerId(id);
 		if(confirmOrDecline==1) {
 			salonNamesArray.get(itemPos).setStatusType("Confirm");
-            uploadIcon(sprObj);
 		}else{
 			salonNamesArray.get(itemPos).setStatusType("Cancel");
-            uploadIcon(sprObj);
         }
-		mAdapter.update(salonNamesArray);
+        uploadIcon(sprObj);
+        mAdapter.update(salonNamesArray);
 	}
     private void uploadIcon(SPRegistrationModel sprObj) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();

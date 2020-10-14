@@ -26,10 +26,7 @@ import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.R;
 
 public class ResetPasswordDialogFragment extends DialogFragment {
-    private FirebaseAuth mAuth;
     private Context mContext;
-    private MediatorInterface mMediatorInterface;
-
 
     public ResetPasswordDialogFragment() {
         // Required empty public constructor
@@ -40,12 +37,6 @@ public class ResetPasswordDialogFragment extends DialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if(context instanceof MediatorInterface) {
-            mMediatorInterface = (MediatorInterface) context;
-        }
-        else{
-            throw new RuntimeException(context.toString()+ "must implement MediatorInterface");
-        }
     }
 
     @Override
@@ -56,6 +47,7 @@ public class ResetPasswordDialogFragment extends DialogFragment {
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
             int height = ViewGroup.LayoutParams.WRAP_CONTENT;
             dialog.getWindow().setLayout(width, height);
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
     }
 
@@ -65,11 +57,11 @@ public class ResetPasswordDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_reset_password_dialog, container, false);
+
         final EditText tv_email = parentView.findViewById(R.id.ti_userEmail);
         Button cancel = parentView.findViewById(R.id.btn_cancel);
         Button reset = parentView.findViewById(R.id.btn_reset);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        mAuth = FirebaseAuth.getInstance();
+
         tv_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
@@ -91,6 +83,7 @@ public class ResetPasswordDialogFragment extends DialogFragment {
                     tv_email.setError("Please write your email");
                 }
                 else{
+                    FirebaseAuth mAuth = FirebaseAuth.getInstance();
                     mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

@@ -34,10 +34,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class SPProfileFragment extends Fragment {
     private Context mContext;
     private MediatorInterface mMediatorInterface;
-    public FirebaseAuth mAuth;
-    public FirebaseUser mFirebaseUser;
-    DatabaseReference myRef;
-    ProgressDialog progressDialog;
+
+    private ProgressDialog progressDialog;
     private SPRegistrationModel mCurrentUser;
 
 
@@ -65,10 +63,9 @@ public class SPProfileFragment extends Fragment {
         final CircleImageView profileImag = parentView.findViewById(R.id.civ_profile);
         TextView salonPages = parentView.findViewById(R.id.tv_salonPages);
         final TextView ownerName = parentView.findViewById(R.id.tv_title);
-
-        mAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mAuth.getCurrentUser();
-        myRef = FirebaseDatabase.getInstance().getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid());
+         FirebaseAuth mAuth = FirebaseAuth.getInstance();
+         final FirebaseUser mFirebaseUser = mAuth.getCurrentUser();
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid());
 
         salonPages.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +77,6 @@ public class SPProfileFragment extends Fragment {
             }
         });
 
-
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -90,7 +86,6 @@ public class SPProfileFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 SPRegistrationModel u = dataSnapshot.getValue(SPRegistrationModel.class);// this will convert json to java
-
 
                 if (mFirebaseUser != null && u != null) {
                     ownerName.setText(u.getOwnerName());
