@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.lujaina.ldbeauty.Constants;
+import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.LocationActivity;
 import com.lujaina.ldbeauty.Models.LocationModel;
 import com.lujaina.ldbeauty.R;
@@ -75,6 +77,7 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     private double mLat;
     private double mLng;
     private FusedLocationProviderClient mFusedLocationClient;
+    private MediatorInterface mMediatorInterface;
 
     public AddSalonLocationFragment() {
         // Required empty public constructor
@@ -83,8 +86,12 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
+        if (context instanceof MediatorInterface) {
+            mMediatorInterface = (MediatorInterface) context;
+        } else {
+            throw new RuntimeException(context.toString() + "must implement MediatorInterface");
+        }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -100,6 +107,7 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
         tvLng = parentView.findViewById(R.id.tv_lng);
         save = parentView.findViewById(R.id.saveLocation);
         btnGetLocationInfo = parentView.findViewById(R.id.btn_getCurrentLocation);
+        ImageButton ibBack 			= parentView.findViewById(R.id.ib_back);
 
         if (isPermissionGranted()) {  // in order to display map in fragment
             mMapView = parentView.findViewById(R.id.map);
@@ -135,7 +143,15 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
             requestRuntimePermission();
         }
 
+        ibBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mMediatorInterface != null){
+                    mMediatorInterface.onBackPressed();
+                }
 
+            }
+        });
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

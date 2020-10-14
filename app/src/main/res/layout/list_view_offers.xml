@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <RelativeLayout
+        android:id="@+id/view_background"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view_forground"
+        app:layout_constraintTop_toTopOf="@+id/view_forground">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_1"
+                android:layout_width="180dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/lightGray"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="2dp"
+                app:cardCornerRadius="22dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tv_appointment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/event"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="5dp"
+                        android:text="Appointments"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/event" />
+
+                    <ImageView
+                        android:id="@+id/event"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignStart="@+id/tv_appointment"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/outline_event"
+                        app:layout_constraintEnd_toEndOf="@+id/tv_appointment"
+                        app:layout_constraintStart_toStartOf="@+id/tv_appointment"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    </ImageView>-->
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_2"
+                android:layout_width="180dp"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:backgroundTint="#F00000"
+                android:layout_marginEnd="10dp"
+                app:cardCornerRadius="22dp"
+                android:layout_marginBottom="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:layout_editor_absoluteY="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tv_delete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="5dp"
+                        android:text="Delete"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/iv_delete" />
+
+                    <ImageView
+                        android:id="@+id/iv_delete"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignStart="@+id/tv_delete"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/outline_delete"
+                        app:layout_constraintEnd_toEndOf="@+id/tv_delete"
+                        app:layout_constraintStart_toStartOf="@+id/tv_delete"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    </ImageView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/view_forground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card"
+            android:layout_width="match_parent"
+            android:layout_height="79dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="1dp"
+            app:cardCornerRadius="22dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="previous price"
+                    android:textColor="#FC051E"
+                    android:gravity="center|start"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/tv_name"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center|start"
+                    android:text="services"
+                    android:textColor="#95989A"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_title"
+                    app:layout_constraintStart_toEndOf="@+id/iv_service"
+                    app:layout_constraintStart_toStartOf="@+id/tv_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:gravity="center|start"
+                    android:text="offer title"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/tv_current"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="20dp"
+                    android:gravity="center|start"
+                    android:text="current price"
+                    android:textColor="#000000"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_price"
+                    app:layout_constraintStart_toEndOf="@+id/tv_price"
+                    app:layout_constraintTop_toTopOf="@+id/tv_price" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="3dp"
+                    android:gravity="center|start"
+                    android:text="OMR"
+                    android:textColor="#000000"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_current"
+                    app:layout_constraintStart_toEndOf="@+id/tv_current"
+                    app:layout_constraintTop_toTopOf="@+id/tv_current" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
