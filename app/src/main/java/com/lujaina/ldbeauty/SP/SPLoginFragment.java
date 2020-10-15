@@ -77,7 +77,9 @@ public class SPLoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(mMediatorInterface != null){
-                    mMediatorInterface.changeFragmentTo(new SignUpFragment(), SignUpFragment.class.getSimpleName());
+                    SignUpFragment position = new SignUpFragment();
+                    position.setViewPager(1);
+                    mMediatorInterface.changeFragmentTo(position, SignUpFragment.class.getSimpleName());
                 }
             }
         });

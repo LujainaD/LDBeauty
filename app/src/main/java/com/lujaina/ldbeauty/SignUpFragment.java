@@ -1,5 +1,6 @@
 package com.lujaina.ldbeauty;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -21,6 +22,7 @@ import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 public class SignUpFragment extends Fragment {
     private Context mContext;
     private MediatorInterface mMediatorInterface;
+    private int mSPposition;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -60,9 +62,21 @@ public class SignUpFragment extends Fragment {
         SignUpViewAdapter adapter = new SignUpViewAdapter(getChildFragmentManager());
         viewPager.setAdapter(adapter);
 
+        if(mSPposition==1){
+            viewPager.setCurrentItem(1);
+        }
+        if(mSPposition == 0){
+            viewPager.setCurrentItem(0);
+        }
+
+
         tabs.setupWithViewPager(viewPager);
 
 
         return parentView;
+    }
+
+    public void setViewPager(int i) {
+        mSPposition = i;
     }
 }

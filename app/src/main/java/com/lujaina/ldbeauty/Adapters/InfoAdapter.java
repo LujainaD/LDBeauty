@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.AddInfoModel;
+import com.lujaina.ldbeauty.Models.CategoryModel;
 import com.lujaina.ldbeauty.R;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 	public Context mContext;
 	public MediatorInterface mMidiatorCallback;
 	private ArrayList<AddInfoModel> mUpdate;
+	private onClickListener mListener;
 
 	public InfoAdapter(Context mContext) {
 		mUpdate = new ArrayList<>();
@@ -84,6 +86,16 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 		holder.tvBody.resetState(aboutSalon.isShrink());
 
 		holder.cvAboutSalon.setCardBackgroundColor(Color.parseColor(aboutSalon.getBackgroundColor()));
+
+		holder.tvTitle.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(mListener != null){
+					mListener.onClick(aboutSalon);
+				}
+
+			}
+		});
 	}
 
 	@Override
@@ -91,6 +103,13 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> 
 		return mUpdate.size();
 	}
 
+	public void setonClickListener(InfoAdapter.onClickListener listener){
+		mListener = listener;
+	}
+
+	public interface onClickListener {
+		void onClick(AddInfoModel info);
+	}
 
 	public class MyViewHolder extends RecyclerView.ViewHolder {
 

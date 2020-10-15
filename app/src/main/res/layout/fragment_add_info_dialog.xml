@@ -26,6 +26,8 @@
 			android:layout_height="25dp"
 			android:descendantFocusability="blocksDescendants"
 			android:spinnerMode="dropdown"
+			android:singleLine="true"
+			android:text="Background color"
 			android:theme="@style/ThemeOverlay.AppCompat.Light" />
 	</androidx.cardview.widget.CardView>
 

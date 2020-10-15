@@ -126,9 +126,9 @@ public class AddServiceDialogFragment extends DialogFragment {
                 if(title.isEmpty()) {
                     et_title.setError("you should write service name ex.(Hair cut, hair coloring))");
                 }else if (specialist.isEmpty()) {
-                    et_title.setError("you should write specialist name)");
+                    et_name.setError("you should write specialist name)");
                 }else if (price.isEmpty()) {
-                    et_title.setError("you should write the price)");
+                    et_price.setError("you should write the price)");
                 }else if (cateImageUri == null) {
                     Toast.makeText(mContext, "please add service picture", Toast.LENGTH_SHORT).show();
                 }else {
@@ -283,7 +283,7 @@ public class AddServiceDialogFragment extends DialogFragment {
         myRef.child(service.serviceId).setValue(service).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(mContext, "Your service service is added successfully ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Your service is added successfully ", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
                 dismiss();
             }

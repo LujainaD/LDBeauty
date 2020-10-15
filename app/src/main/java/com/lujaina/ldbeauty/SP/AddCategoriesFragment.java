@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -27,14 +25,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Adapters.CategoryAdapter;
-import com.lujaina.ldbeauty.Adapters.InfoAdapter;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Dialogs.AddCategoriesDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
-import com.lujaina.ldbeauty.Models.AddInfoModel;
 import com.lujaina.ldbeauty.Models.CategoryModel;
 import com.lujaina.ldbeauty.R;
-import com.lujaina.ldbeauty.RecyclerItemTouchHelper;
 import com.lujaina.ldbeauty.RecyclerItemTouchHelperListener;
 
 import java.util.ArrayList;
@@ -142,9 +137,10 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     CategoryModel category = d.getValue(CategoryModel.class);
                     categoryList.add(category);
-                    progressDialog.dismiss();
-                    mAdapter.update(categoryList);
+
                 }
+                progressDialog.dismiss();
+                mAdapter.update(categoryList);
             }
 
             @Override

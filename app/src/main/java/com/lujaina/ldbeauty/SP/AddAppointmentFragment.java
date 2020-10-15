@@ -324,8 +324,10 @@ public class AddAppointmentFragment extends Fragment {
                     for (DataSnapshot d : dataSnapshot.getChildren()) {
                         AppointmentModel category = d.getValue(AppointmentModel.class);
                         timeList.add(category);
-                        mAdapter.update(timeList);
+
                     }
+                    mAdapter.update(timeList);
+
                 }
 
                 @Override

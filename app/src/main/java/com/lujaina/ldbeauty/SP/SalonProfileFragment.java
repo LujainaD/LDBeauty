@@ -71,6 +71,8 @@ public class SalonProfileFragment extends Fragment {
         TextView categoryPage = parentView.findViewById(R.id.tv_services);
         TextView galleryPage = parentView.findViewById(R.id.tv_salonGallery);
         TextView locationPage = parentView.findViewById(R.id.tv_location);
+        TextView offerPage = parentView.findViewById(R.id.tv_offers);
+
         FirebaseAuth mAuth= FirebaseAuth.getInstance();
         final FirebaseUser mFirebaseUser = mAuth.getCurrentUser();
 
@@ -115,7 +117,16 @@ public class SalonProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (mMediatorInterface !=null){
+                    AddSalonLocationFragment location = new AddSalonLocationFragment();
                     mMediatorInterface.changeFragmentTo(new AddSalonLocationFragment(), AddSalonLocationFragment.class.getSimpleName());
+                }
+            }
+        });
+        offerPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mMediatorInterface !=null){
+                    mMediatorInterface.changeFragmentTo(new AddSalonOffersFragment(), AddSalonOffersFragment.class.getSimpleName());
                 }
             }
         });

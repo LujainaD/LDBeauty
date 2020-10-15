@@ -146,7 +146,22 @@
             app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="@+id/cardView13" />
 
-
+        <Button
+            android:id="@+id/updateLocation"
+            android:layout_width="97dp"
+            android:layout_height="41dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/btn_rectangle"
+            android:backgroundTint="#DA6EA4"
+            android:text="Update"
+            android:visibility="gone"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/cardView13"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="@+id/cardView13" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

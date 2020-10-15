@@ -49,6 +49,7 @@ public class AddInfoModel {
         this.backgroundColor = backgroundColor;
     }
 
+
     public boolean isShrink() {
         return isShrink;
     }

@@ -9,6 +9,7 @@ public class Constants {
     public static final String Salon_Gallery = "Salon_Gallery";
     public static final String Service_Appointment = "Service_Appointment";
     public static final String Salon_Location = "Salon_Location";
+    public static final String Salon_Offers = "Salon_Offers";
 
 
 

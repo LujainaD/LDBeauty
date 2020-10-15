@@ -131,9 +131,10 @@ public class AddGalleryFragment extends Fragment  {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     GalleryModel category = d.getValue(GalleryModel.class);
                     galleryList.add(category);
-                    progressDialog.dismiss();
-                    mAdapter.update(galleryList);
+
                 }
+                progressDialog.dismiss();
+                mAdapter.update(galleryList);
             }
 
             @Override

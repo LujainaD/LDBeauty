@@ -11,12 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lujaina.ldbeauty.Adapters.InfoAdapter;
 import com.lujaina.ldbeauty.SP.AddInfoFragment;
 
-public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
+public class RecyclerItemTouchHelperInfo extends ItemTouchHelper.SimpleCallback {
 
 
     private RecyclerItemTouchHelperListener listener;
 
-    public RecyclerItemTouchHelper(int dragDirs, int swipeDirs,RecyclerItemTouchHelperListener listener) {
+    public RecyclerItemTouchHelperInfo(int dragDirs, int swipeDirs, RecyclerItemTouchHelperListener listener) {
         super(dragDirs, swipeDirs);
         this.listener =listener;
     }

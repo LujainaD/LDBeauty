@@ -1,16 +1,10 @@
 package com.lujaina.ldbeauty.SP;
 
 import android.app.ProgressDialog;
-import android.content.ClipData;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -20,12 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 
-import com.google.android.material.behavior.SwipeDismissBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -36,12 +27,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Adapters.InfoAdapter;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Dialogs.AddInfoDialogFragment;
-import com.lujaina.ldbeauty.Dialogs.SalonConfirmDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.AddInfoModel;
-import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
-import com.lujaina.ldbeauty.RecyclerItemTouchHelper;
+import com.lujaina.ldbeauty.RecyclerItemTouchHelperInfo;
 import com.lujaina.ldbeauty.RecyclerItemTouchHelperListener;
 
 import java.util.ArrayList;
@@ -90,9 +79,18 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
         readSalonInfoFromFirebaseDB();
-        ItemTouchHelper.SimpleCallback item = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this) {
+        ItemTouchHelper.SimpleCallback item = new RecyclerItemTouchHelperInfo(0, ItemTouchHelper.LEFT, this) {
 
         };
+
+        mAdapter.setonClickListener(new InfoAdapter.onClickListener() {
+            @Override
+            public void onClick(AddInfoModel info) {
+                UpdateInfoFragment dialogUpdate = new UpdateInfoFragment();
+                dialogUpdate.setupdate(info);
+                dialogUpdate.show(getChildFragmentManager(), UpdateInfoFragment.class.getSimpleName());
+            }
+        });
 
         new ItemTouchHelper(item).attachToRecyclerView(recyclerView);
 
@@ -140,9 +138,10 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     AddInfoModel aboutModel = d.getValue(AddInfoModel.class);
                     infoArray.add(aboutModel);
-                    progressDialog.dismiss();
-                    mAdapter.update(infoArray);
+
                 }
+                progressDialog.dismiss();
+                mAdapter.update(infoArray);
             }
 
             @Override

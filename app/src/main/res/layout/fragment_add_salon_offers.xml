@@ -85,7 +85,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        tools:listitem="@layout/list_view_services" />
+        tools:listitem="@layout/list_view_offers" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

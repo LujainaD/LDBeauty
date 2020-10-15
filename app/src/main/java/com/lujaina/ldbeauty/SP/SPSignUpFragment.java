@@ -495,9 +495,8 @@ public class SPSignUpFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (mMediatorInterface != null) {
-
-                    mMediatorInterface.changeFragmentTo(new SPProfileFragment(),SPProfileFragment.class.getSimpleName());
                     progressDialog.dismiss();
+                    mMediatorInterface.changeFragmentTo(new SPProfileFragment(),SPProfileFragment.class.getSimpleName());
 
 
                 } else {

@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.lujaina.ldbeauty.Adapters.ColorAdapter;
 import com.lujaina.ldbeauty.Adapters.InfoAdapter;
+import com.lujaina.ldbeauty.Adapters.NothingSelectedSpinnerAdapter;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.AddInfoModel;
@@ -120,7 +121,12 @@ public class AddInfoDialogFragment extends DialogFragment implements AdapterView
 		colorSpinner.setOnItemSelectedListener(this);
 		ColorAdapter mAdapter = new ColorAdapter(mContext, colorList);
 		colorSpinner.setAdapter(mAdapter);
-
+		/*colorSpinner.setAdapter(
+				new NothingSelectedSpinnerAdapter(
+						mAdapter,
+						R.layout.contact_spinner_row_nothing_selected,
+						// R.layout.contact_spinner_nothing_selected_dropdown, // Optional
+						mContext));*/
 		btnAdd.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

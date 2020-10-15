@@ -1,6 +1,7 @@
 package com.lujaina.ldbeauty.SP;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -44,11 +45,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.LocationActivity;
+import com.lujaina.ldbeauty.Models.AppointmentModel;
 import com.lujaina.ldbeauty.Models.LocationModel;
 import com.lujaina.ldbeauty.R;
 
@@ -75,12 +80,16 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     private TextView tvLng;
     private Button btnGetLocationInfo;
     private Button save;
+    private Button update;
     private Marker selectedLocation;
     private List<Address> addresses;
 
+    String locationName;
+    String key;
     private double mLat;
     private double mLng;
 
+    LocationModel locationModel;
 
     public AddSalonLocationFragment() {
         // Required empty public constructor
@@ -104,13 +113,14 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
-
+        showPreviousLocation();
         ImageButton ibBack  = parentView.findViewById(R.id.ib_back);
-
         tvLocationName = parentView.findViewById(R.id.tv_place);
         tvLat = parentView.findViewById(R.id.tv_lat);
         tvLng = parentView.findViewById(R.id.tv_lng);
         save = parentView.findViewById(R.id.saveLocation);
+        update = parentView.findViewById(R.id.updateLocation);
+
         btnGetLocationInfo = parentView.findViewById(R.id.btn_getCurrentLocation);
 
 
@@ -163,10 +173,19 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
                 saveLocationToDB();
             }
         });
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateLocationToDB();
+            }
+        });
 
 
         return parentView;
     }
+
+
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -323,15 +342,17 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
         return ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
+    @SuppressLint("ResourceAsColor")
     private void saveLocationToDB() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Location);
-
+         locationName = tvLocationName.getText().toString();
         LocationModel map = new LocationModel();
-        String key = myRef.push().getKey();
+         key = myRef.push().getKey();
         map.setLocationId(key);
         map.setLatitude(mLat);
         map.setLongitude(mLng);
+        map.setLocationName(locationName);
         map.setSalonOwnerId(mFirebaseUser.getUid());
         myRef.child(map.getLocationId()).setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -341,6 +362,51 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
             }
         });
 
+        save.setVisibility(View.INVISIBLE);
+        update.setVisibility(View.VISIBLE);
+
+
 
     }
+
+    private void updateLocationToDB() {
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Location).child(key);
+        String location = tvLocationName.getText().toString();
+
+        myRef.child("latitude").setValue(mLat);
+        myRef.child("longitude").setValue(mLng);
+       myRef.child("locationName").setValue(location);
+       myRef.child("salonOwnerId").setValue(mFirebaseUser.getUid());
+       myRef.child("locationId").setValue(key).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(mContext, "Your Location is add successfully", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
+    private void showPreviousLocation() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Location);
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
+                    LocationModel db = d.getValue(LocationModel.class);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
+
+    }
+
 }

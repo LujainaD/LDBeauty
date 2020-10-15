@@ -122,10 +122,11 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
                     for (DataSnapshot d : dataSnapshot.getChildren()) {
                             service = d.getValue(ServiceModel.class);
                             serviceList.add(service);
-                            progressDialog.dismiss();
-                            mAdapter.update(serviceList);
 
                     }
+                    progressDialog.dismiss();
+                    mAdapter.update(serviceList);
+
                 }
 
                 @Override
