@@ -55,6 +55,7 @@ import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.LocationActivity;
 import com.lujaina.ldbeauty.Models.AppointmentModel;
 import com.lujaina.ldbeauty.Models.LocationModel;
+import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 
 import java.io.IOException;
@@ -87,7 +88,7 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     String locationName;
     String key;
     private double mLat;
-    private double mLng;
+    private double  mLng;
 
     LocationModel locationModel;
 
@@ -118,8 +119,16 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
         tvLocationName = parentView.findViewById(R.id.tv_place);
         tvLat = parentView.findViewById(R.id.tv_lat);
         tvLng = parentView.findViewById(R.id.tv_lng);
+        showPreviousLocation();
+
         save = parentView.findViewById(R.id.saveLocation);
         update = parentView.findViewById(R.id.updateLocation);
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateLocationToDB();
+            }
+        });
 
         btnGetLocationInfo = parentView.findViewById(R.id.btn_getCurrentLocation);
 
@@ -173,12 +182,6 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
                 saveLocationToDB();
             }
         });
-        update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateLocationToDB();
-            }
-        });
 
 
         return parentView;
@@ -199,6 +202,7 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
                 mLat = latLng.latitude;
                 mLng = latLng.longitude;
                 getLocationName();
+
             }
         });
     }
@@ -242,6 +246,9 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
         mMap.animateCamera(CameraUpdateFactory.zoomTo(16f), 1000, null);
         tvLat.setText(mLat + "");
         tvLng.setText(mLng + "");
+/*
+        showPreviousLocation();
+*/
 
     }
 
@@ -268,6 +275,7 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
 
     }
     private void getLastLocation() {
+
         if (isLocationEnabled()) {
             //get user last location
             if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -310,6 +318,7 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     }
 
     private void getLocationName() {
+
         try {
             Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
             //get address name
@@ -342,19 +351,17 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
         return ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
-    @SuppressLint("ResourceAsColor")
     private void saveLocationToDB() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Location);
          locationName = tvLocationName.getText().toString();
         LocationModel map = new LocationModel();
          key = myRef.push().getKey();
-        map.setLocationId(key);
         map.setLatitude(mLat);
         map.setLongitude(mLng);
         map.setLocationName(locationName);
         map.setSalonOwnerId(mFirebaseUser.getUid());
-        myRef.child(map.getLocationId()).setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+        myRef/*.child(map.getLocationId())*/.setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(mContext, "Your Location is add successfully", Toast.LENGTH_SHORT).show();
@@ -372,14 +379,13 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     private void updateLocationToDB() {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Location).child(key);
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Location);
         String location = tvLocationName.getText().toString();
 
         myRef.child("latitude").setValue(mLat);
         myRef.child("longitude").setValue(mLng);
        myRef.child("locationName").setValue(location);
-       myRef.child("salonOwnerId").setValue(mFirebaseUser.getUid());
-       myRef.child("locationId").setValue(key).addOnSuccessListener(new OnSuccessListener<Void>() {
+       myRef.child("salonOwnerId").setValue(mFirebaseUser.getUid()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(mContext, "Your Location is add successfully", Toast.LENGTH_SHORT).show();
@@ -389,14 +395,28 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
 
     }
 
+    //TODO
     private void showPreviousLocation() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Location);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot d : dataSnapshot.getChildren()) {
-                    LocationModel db = d.getValue(LocationModel.class);
+                LocationModel u = dataSnapshot.getValue(LocationModel.class);
+                if(u != null){
+                    tvLocationName.setText(u.getLocationName());
+                    String latitude = Double.toString(u.getLatitude());
+                    String longitude = Double.toString(u.getLongitude());
+                    tvLat.setText(latitude);
+                    tvLng.setText(longitude);
+
+                    save.setVisibility(View.INVISIBLE);
+                    update.setVisibility(View.VISIBLE);
+
+                }
+                else {
+                    save.setVisibility(View.VISIBLE);
+                    update.setVisibility(View.INVISIBLE);
                 }
 
             }
