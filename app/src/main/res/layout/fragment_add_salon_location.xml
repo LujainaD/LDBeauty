@@ -59,7 +59,8 @@
                 android:paddingBottom="5dp"
                 android:text="Address name"
                 android:paddingStart="7dp"
-                android:paddingTop="10dp"
+                android:paddingEnd="7dp"
+                android:paddingTop="5dp"
                 android:layout_gravity="start"
                 android:textAlignment="textStart"
                 android:textSize="12sp" />

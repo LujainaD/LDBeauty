@@ -59,8 +59,10 @@ import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 
 public class AddSalonLocationFragment extends Fragment implements OnMapReadyCallback {
@@ -83,15 +85,20 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     private Button save;
     private Button update;
     private Marker selectedLocation;
-    private List<Address> addresses;
 
-    String locationName;
+    String fullAddress;
+/*
+    String addressName;
+*/
     String key;
+    double latDouble;
+    double longDouble;
     private double mLat;
     private double  mLng;
+    String latitudeFB;
+    String longitudeFB;
 
-    LocationModel locationModel;
-
+    LocationModel u;
     public AddSalonLocationFragment() {
         // Required empty public constructor
     }
@@ -114,13 +121,10 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
-        showPreviousLocation();
         ImageButton ibBack  = parentView.findViewById(R.id.ib_back);
         tvLocationName = parentView.findViewById(R.id.tv_place);
         tvLat = parentView.findViewById(R.id.tv_lat);
         tvLng = parentView.findViewById(R.id.tv_lng);
-        showPreviousLocation();
-
         save = parentView.findViewById(R.id.saveLocation);
         update = parentView.findViewById(R.id.updateLocation);
         update.setOnClickListener(new View.OnClickListener() {
@@ -236,19 +240,32 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     }
 
     private void setLocationPen(String fullAddress) {
+
+        //put marker depend on lat and lon from firebase data
+//        LatLng locationFB = new LatLng(latDouble, longDouble);
+//
+//        if (selectedLocation != null) {
+//            selectedLocation.remove();
+//        }
+//
+//        selectedLocation = mMap.addMarker(new MarkerOptions().position(new LatLng(latDouble, longDouble)).title(fullAddress));// add marker non the location
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(locationFB)); //move camera up,bottom, left, right
+//        //to zoom to selected location
+//        mMap.animateCamera(CameraUpdateFactory.zoomTo(16f), 1000, null);
+//        tvLat.setText(latDouble + "");
+//        tvLng.setText(longDouble + "");
+
+
         LatLng location = new LatLng(mLat, mLng);
-        if (selectedLocation != null) {
-            selectedLocation.remove();
-        }
+            if (selectedLocation != null) {
+                selectedLocation.remove();
+            }
         selectedLocation = mMap.addMarker(new MarkerOptions().position(new LatLng(mLat, mLng)).title(fullAddress));// add marker non the location
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location)); //move camera up,bottom, left, right
         //to zoom to selected location
         mMap.animateCamera(CameraUpdateFactory.zoomTo(16f), 1000, null);
         tvLat.setText(mLat + "");
         tvLng.setText(mLng + "");
-/*
-        showPreviousLocation();
-*/
 
     }
 
@@ -275,7 +292,6 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
 
     }
     private void getLastLocation() {
-
         if (isLocationEnabled()) {
             //get user last location
             if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -297,6 +313,8 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
                         // request new location Data
                         requestNewLocationData();
                     } else {
+                        showPreviousLocation();
+
                         // location is available
                         mLat = location.getLatitude();
                         mLng = location.getLongitude();
@@ -313,6 +331,7 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
             //take the user to gps enabling screen
             Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(i);
+            showPreviousLocation();
 
         }
     }
@@ -320,10 +339,14 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     private void getLocationName() {
 
         try {
+
             Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
             //get address name
             List<Address> addresses = geocoder.getFromLocation(mLat, mLng, 1);
-            String fullAddress = addresses.get(0).getAddressLine(0);
+            fullAddress = addresses.get(0).getAddressLine(0);
+/*
+             addressName = tvLocationName.getText().toString();
+*/
             setLocationPen(fullAddress);
             tvLocationName.setText(fullAddress);
 
@@ -332,6 +355,24 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
         }
 
     }
+
+/*
+    private void sellocationPenFB(String addressName) {
+        LatLng locationFB = new LatLng(latDouble, longDouble);
+
+        if (selectedLocation != null) {
+            selectedLocation.remove();
+        }
+
+        selectedLocation = mMap.addMarker(new MarkerOptions().position(new LatLng(latDouble, longDouble)).title(addressName));// add marker non the location
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(locationFB)); //move camera up,bottom, left, right
+        //to zoom to selected location
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(16f), 1000, null);
+        tvLat.setText(latDouble + "");
+        tvLng.setText(longDouble + "");
+    }
+*/
+
     private LocationCallback myLocationCallback() {
         LocationCallback callback = new LocationCallback() {
             @Override
@@ -354,12 +395,11 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     private void saveLocationToDB() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Location);
-         locationName = tvLocationName.getText().toString();
         LocationModel map = new LocationModel();
          key = myRef.push().getKey();
         map.setLatitude(mLat);
         map.setLongitude(mLng);
-        map.setLocationName(locationName);
+        map.setLocationName(fullAddress);
         map.setSalonOwnerId(mFirebaseUser.getUid());
         myRef/*.child(map.getLocationId())*/.setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -380,11 +420,9 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Location);
-        String location = tvLocationName.getText().toString();
-
         myRef.child("latitude").setValue(mLat);
         myRef.child("longitude").setValue(mLng);
-       myRef.child("locationName").setValue(location);
+       myRef.child("locationName").setValue(fullAddress);
        myRef.child("salonOwnerId").setValue(mFirebaseUser.getUid()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -402,13 +440,16 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                LocationModel u = dataSnapshot.getValue(LocationModel.class);
+                 u = dataSnapshot.getValue(LocationModel.class);
                 if(u != null){
                     tvLocationName.setText(u.getLocationName());
-                    String latitude = Double.toString(u.getLatitude());
-                    String longitude = Double.toString(u.getLongitude());
-                    tvLat.setText(latitude);
-                    tvLng.setText(longitude);
+                     latitudeFB = Double.toString(u.getLatitude());
+                     longitudeFB = Double.toString(u.getLongitude());
+                    tvLat.setText(latitudeFB);
+                    tvLng.setText(longitudeFB);
+                     latDouble = Double.parseDouble(latitudeFB);
+                     longDouble = Double.parseDouble(longitudeFB);
+
 
                     save.setVisibility(View.INVISIBLE);
                     update.setVisibility(View.VISIBLE);
