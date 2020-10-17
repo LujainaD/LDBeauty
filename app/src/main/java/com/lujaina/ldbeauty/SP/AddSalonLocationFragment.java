@@ -85,7 +85,6 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     private Button save;
     private Button update;
     private Marker selectedLocation;
-
     String fullAddress;
 /*
     String addressName;
@@ -197,9 +196,9 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
 // default location
         getLastLocation();
-
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
@@ -241,7 +240,6 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     }
 
     private void setLocationPen(String fullAddress) {
-
         //put marker depend on lat and lon from firebase data
         /*LatLng locationFB = new LatLng(latDouble, longDouble);
 
@@ -255,7 +253,6 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
         mMap.animateCamera(CameraUpdateFactory.zoomTo(16f), 1000, null);
         tvLat.setText(latDouble + "");
         tvLng.setText(longDouble + "");*/
-
         LatLng location = new LatLng(mLat, mLng);
             if (selectedLocation != null) {
                 selectedLocation.remove();
@@ -339,7 +336,6 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     private void getLocationName() {
 
         try {
-
             Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
             //get address name
             List<Address> addresses = geocoder.getFromLocation(mLat, mLng, 1);
@@ -349,7 +345,6 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
 */
             setLocationPen(fullAddress);
             tvLocationName.setText(fullAddress);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
