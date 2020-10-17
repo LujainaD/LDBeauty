@@ -199,6 +199,7 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
         mMap = googleMap;
 // default location
         getLastLocation();
+
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
@@ -242,19 +243,18 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     private void setLocationPen(String fullAddress) {
 
         //put marker depend on lat and lon from firebase data
-//        LatLng locationFB = new LatLng(latDouble, longDouble);
-//
-//        if (selectedLocation != null) {
-//            selectedLocation.remove();
-//        }
-//
-//        selectedLocation = mMap.addMarker(new MarkerOptions().position(new LatLng(latDouble, longDouble)).title(fullAddress));// add marker non the location
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(locationFB)); //move camera up,bottom, left, right
-//        //to zoom to selected location
-//        mMap.animateCamera(CameraUpdateFactory.zoomTo(16f), 1000, null);
-//        tvLat.setText(latDouble + "");
-//        tvLng.setText(longDouble + "");
+        /*LatLng locationFB = new LatLng(latDouble, longDouble);
 
+        if (selectedLocation != null) {
+            selectedLocation.remove();
+        }
+
+        selectedLocation = mMap.addMarker(new MarkerOptions().position(new LatLng(latDouble, longDouble)).title(tvLocationName.getText().toString()));// add marker non the location
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(locationFB)); //move camera up,bottom, left, right
+        //to zoom to selected location
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(16f), 1000, null);
+        tvLat.setText(latDouble + "");
+        tvLng.setText(longDouble + "");*/
 
         LatLng location = new LatLng(mLat, mLng);
             if (selectedLocation != null) {
@@ -404,7 +404,7 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
         myRef/*.child(map.getLocationId())*/.setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(mContext, "Your Location is add successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Your Location is saved successfully", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -426,7 +426,7 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
        myRef.child("salonOwnerId").setValue(mFirebaseUser.getUid()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(mContext, "Your Location is add successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Your Location is updated", Toast.LENGTH_SHORT).show();
 
             }
         });

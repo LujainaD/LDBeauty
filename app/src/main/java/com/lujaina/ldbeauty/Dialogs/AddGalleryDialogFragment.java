@@ -228,7 +228,7 @@ public class AddGalleryDialogFragment extends DialogFragment {
         myRef.child(gallery.pictureId).setValue(gallery).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(mContext, "Your service category is added successfully ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "The picture is added successfully ", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
                 dismiss();
             }

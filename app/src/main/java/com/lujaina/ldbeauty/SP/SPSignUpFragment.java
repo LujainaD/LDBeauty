@@ -300,7 +300,7 @@ public class SPSignUpFragment extends Fragment {
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    while (status < 100) {
+                                    while (status < 200) {
 
                                         status += 1;
 

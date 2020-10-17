@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="User Name"
+        android:text="Lujaina"
         android:textColor="#F8F8F8"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -43,10 +43,10 @@
         android:layout_width="104dp"
         android:layout_height="104dp"
         android:layout_marginTop="10dp"
+        android:foregroundGravity="center"
         android:src="@drawable/logpict"
         app:civ_circle_background_color="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
@@ -159,16 +159,15 @@
         app:layout_constraintStart_toStartOf="@+id/tv_list"
         app:layout_constraintTop_toTopOf="@+id/tv_list"
         app:srcCompat="@drawable/service" />
+
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="612dp"
-        android:layout_marginEnd="316dp"
         android:src="@drawable/halfrose"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
