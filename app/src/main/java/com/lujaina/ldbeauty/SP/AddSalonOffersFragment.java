@@ -160,9 +160,9 @@ public class AddSalonOffersFragment extends Fragment implements RecyclerItemTouc
                     break;
                 case ItemTouchHelper.RIGHT:
                     if (mMediatorInterface != null) {
-                       /* AddAppointmentFragment appointment = new AddAppointmentFragment();
+                        OffersAppointmentFragment appointment = new OffersAppointmentFragment();
                         appointment.setAddAppointmentFragment(swipedService);
-                        mMediatorInterface.changeFragmentTo(appointment, AddAppointmentFragment.class.getSimpleName());*/
+                        mMediatorInterface.changeFragmentTo(appointment, OffersAppointmentFragment.class.getSimpleName());
                     }
                     break;
 
@@ -170,4 +170,6 @@ public class AddSalonOffersFragment extends Fragment implements RecyclerItemTouc
 
         }
     }
+
+
 }

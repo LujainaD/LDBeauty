@@ -3,6 +3,7 @@ package com.lujaina.ldbeauty.Models;
 public class AppointmentModel {
     private String categoryId;
     private String serviceId;
+    private String offerId;
     private String ownerId;
     private String recordId;
     private String pickedTime;
@@ -22,6 +23,14 @@ public class AppointmentModel {
 
 	public void setServiceId(String serviceId) {
 		this.serviceId = serviceId;
+	}
+
+	public String getOfferId() {
+		return offerId;
+	}
+
+	public void setOfferId(String offerId) {
+		this.offerId = offerId;
 	}
 
 	public String getOwnerId() {

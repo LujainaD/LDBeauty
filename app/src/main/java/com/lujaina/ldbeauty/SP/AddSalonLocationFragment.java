@@ -205,31 +205,21 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
         });
     }
 
-    private void requestRuntimePermission() {
-        String permissions[] = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-        ActivityCompat.requestPermissions(getActivity(), permissions, KEY_PERMISSION_REQUEST_ID);
-    }
+    private void getLocationName(double lang, double latt) {
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == KEY_PERMISSION_REQUEST_ID) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //user granted the permission
-                Intent intent = new Intent(mContext, LocationActivity.class);
-                startActivity(intent);
-
-            } else {
-                // user didn't grant the permission
-                getActivity().finish(); // close the host activity.
+        try {
+            Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
+            //get address name
+            List<Address> addresses = geocoder.getFromLocation(lang, latt, 1);
+            if(addresses.size()>0) {
+                fullAddress = addresses.get(0).getAddressLine(0);
+                tvLocationName.setText(fullAddress);
             }
-        }
-    }
+            setLocationPen(lang, latt, fullAddress);
 
-    private boolean isLocationEnabled() {
-        LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -259,6 +249,35 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
         tvLng.setText(lang + "");
 
     }
+    private void requestRuntimePermission() {
+        String permissions[] = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+        ActivityCompat.requestPermissions(getActivity(), permissions, KEY_PERMISSION_REQUEST_ID);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == KEY_PERMISSION_REQUEST_ID) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //user granted the permission
+                Intent intent = new Intent(mContext, LocationActivity.class);
+                startActivity(intent);
+
+            } else {
+                // user didn't grant the permission
+                getActivity().finish(); // close the host activity.
+            }
+        }
+    }
+
+    private boolean isLocationEnabled() {
+        LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+    }
+
+
 
     private void requestNewLocationData() {
         //request new location data
@@ -324,22 +343,7 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
         }
     }
 
-    private void getLocationName(double lang, double latt) {
 
-        try {
-            Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
-            //get address name
-            List<Address> addresses = geocoder.getFromLocation(mLat, mLng, 1);
-            if(addresses.size()>0) {
-                fullAddress = addresses.get(0).getAddressLine(0);
-            }
-            setLocationPen(lang, latt, fullAddress);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 
 /*
     private void sellocationPenFB(String addressName) {
@@ -364,7 +368,6 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
                 Location location = locationResult.getLastLocation();
-
                 getLocationName(location.getLatitude(),location.getLongitude());
             }
         };
@@ -380,9 +383,12 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Location);
         LocationModel map = new LocationModel();
+        double lat = Double.parseDouble(tvLat.getText().toString());
+        double lngt = Double.parseDouble(tvLng.getText().toString());
+
         key = myRef.push().getKey();
-        map.setLatitude(mLat);
-        map.setLongitude(mLng);
+        map.setLatitude(lat);
+        map.setLongitude(lngt);
         map.setLocationName(fullAddress);
         map.setSalonOwnerId(mFirebaseUser.getUid());
         myRef/*.child(map.getLocationId())*/.setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -403,11 +409,10 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Location);
-       double lat = Double.parseDouble(tvLat.getText().toString());
-        double lng = Double.parseDouble(tvLng.getText().toString());
-
+        double lat = Double.parseDouble(tvLat.getText().toString());
+        double lngt = Double.parseDouble(tvLng.getText().toString());
         myRef.child("latitude").setValue(lat);
-        myRef.child("longitude").setValue(lng);
+        myRef.child("longitude").setValue(lngt);
         myRef.child("locationName").setValue(fullAddress);
         myRef.child("salonOwnerId").setValue(mFirebaseUser.getUid()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -430,14 +435,12 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
                     tvLocationName.setText(u.getLocationName());
                     latitudeFB = Double.toString(u.getLatitude());
                     longitudeFB = Double.toString(u.getLongitude());
-                    double lan3 = u.getLatitude();
-                    double lat3 = u.getLongitude();
                     tvLat.setText(latitudeFB);
                     tvLng.setText(longitudeFB);
                     latDouble = Double.parseDouble(latitudeFB);
                     longDouble = Double.parseDouble(longitudeFB);
 
-                    setLocationPen(u.getLatitude(),u.getLongitude(),u.getLocationName());
+                    setLocationPen(latDouble,longDouble,u.getLocationName());
                     save.setVisibility(View.INVISIBLE);
                     update.setVisibility(View.VISIBLE);
 
