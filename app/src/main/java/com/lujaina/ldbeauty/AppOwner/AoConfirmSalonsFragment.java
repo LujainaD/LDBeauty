@@ -39,16 +39,17 @@ import java.util.ArrayList;
 
 
 public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDialogFragment.statusConfirmed {
-	private static final String TAG = "AoConfirmSalonsFragment";
-    private Context mContext;
-    private MediatorInterface mMediatorInterface;
     FirebaseAuth mAuth;
     FirebaseUser mFirebaseUser;
     private FirebaseDatabase mDatabase;
+
+    private Context mContext;
+    private MediatorInterface mMediatorInterface;
+    ProgressDialog progressDialog;
+
     RecyclerView recyclerView;
     private ConfirmAdapter mAdapter;
     ArrayList<SPRegistrationModel> salonNamesArray;
-   ProgressDialog progressDialog;
     public AoConfirmSalonsFragment() {
         // Required empty public constructor
     }

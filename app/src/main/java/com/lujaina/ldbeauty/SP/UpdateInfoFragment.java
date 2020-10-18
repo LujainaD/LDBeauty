@@ -24,7 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.lujaina.ldbeauty.Adapters.ColorAdapter;
 import com.lujaina.ldbeauty.Adapters.InfoAdapter;
-import com.lujaina.ldbeauty.Adapters.NothingSelectedSpinnerAdapter;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Models.AddInfoModel;
 import com.lujaina.ldbeauty.Models.ColorModel;

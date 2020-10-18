@@ -233,7 +233,12 @@ public class SPSignUpFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (mMediatorInterface != null){
+/*
                     mMediatorInterface.changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
+*/
+                    mMediatorInterface.changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
+
+
                 }
             }
         });
