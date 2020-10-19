@@ -8,7 +8,6 @@
         android:id="@+id/cv_salonNames"
         android:layout_width="match_parent"
         android:layout_height="85dp"
-        android:background="#FFFFFF"
         android:layout_marginTop="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,7 +16,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="85dp"
-            android:background="#FFFFFF">
+            >
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/civ_profile"

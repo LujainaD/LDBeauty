@@ -234,8 +234,6 @@ public class SPSignUpFragment extends Fragment {
             public void onClick(View v) {
                 if (mMediatorInterface != null){
                     mMediatorInterface.changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
-
-
                 }
             }
         });

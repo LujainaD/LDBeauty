@@ -26,7 +26,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.lujaina.ldbeauty.Dialogs.ResetPasswordDialogFragment;
+import com.lujaina.ldbeauty.HomeActivity;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
+import com.lujaina.ldbeauty.MainActivity;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 import com.lujaina.ldbeauty.SignUpFragment;
@@ -206,9 +208,11 @@ public class SPLoginFragment extends Fragment {
                             progressDialog.dismiss();
 
                             if(mMediatorInterface != null){
-                                SPProfileFragment profile = new SPProfileFragment();
+                                /*SPProfileFragment profile = new SPProfileFragment();
                                 profile.setOwnerName(user);
-                                mMediatorInterface.changeFragmentTo(profile, SPProfileFragment.class.getSimpleName());
+                                mMediatorInterface.changeFragmentTo(profile, SPProfileFragment.class.getSimpleName());*/
+                                startActivity(new Intent(mContext, HomeActivity.class));
+
                             }
 
                         } else {
