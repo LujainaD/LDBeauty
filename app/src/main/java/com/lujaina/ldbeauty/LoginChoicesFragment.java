@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -40,6 +41,7 @@ public class LoginChoicesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_login_choices, container, false);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         Button client = parentView.findViewById(R.id.btn_client);
         Button salonOwner = parentView.findViewById(R.id.btn_salonOwner);
         Button appOwner = parentView.findViewById(R.id.tv_appOwner);

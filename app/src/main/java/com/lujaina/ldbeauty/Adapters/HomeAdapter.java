@@ -2,17 +2,20 @@ package com.lujaina.ldbeauty.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.lujaina.ldbeauty.Models.CategoryModel;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 
@@ -23,10 +26,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder>{
     private final Context mContext;
     private ArrayList<SPRegistrationModel> mNames;
+    private onClickListener mListener;
 
     public HomeAdapter(Context mContext) {
         this.mContext = mContext;
         this.mNames = new ArrayList<>();
+    }
+
+    public void update(int position, SPRegistrationModel names) {
+        mNames.add(position,names);
+        notifyItemChanged(position);
     }
 
     public void update(ArrayList<SPRegistrationModel> names) {
@@ -39,11 +48,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder>{
     @Override
     public HomeAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View listItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_salons, parent, false);
-        return new HomeAdapter.MyViewHolder(listItemView);
+        return new MyViewHolder(listItemView);
 
     }
-
-    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull HomeAdapter.MyViewHolder holder, int position) {
         final SPRegistrationModel names = mNames.get(position);
@@ -55,7 +62,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder>{
             @Override
             public void onClick(View v) {
                 if(mListener != null){
-                    mListener.onItemClick(names);
+                    Log.d("selectedSalon", "onItemClick-HomeAdapter : " + names.getOwnerId());
+                    mListener.onClick(names);
                 }
             }
         });
@@ -67,18 +75,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder>{
         return mNames.size();
     }
 
-//    public void setStatusListener(SalonConfirmDialogFragment.status status) {
-//
-//    }
 
-
-    public interface onItemClickListener {
-        void onItemClick(SPRegistrationModel salonsDetails);
+    public void setonClickListener(onClickListener listener){
+        mListener = listener;
     }
 
-    private HomeAdapter.onItemClickListener mListener;
-    public void setupOnItemClickListener(HomeAdapter.onItemClickListener listener){
-        mListener = listener;
+    public interface onClickListener {
+        void onClick(SPRegistrationModel category);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{

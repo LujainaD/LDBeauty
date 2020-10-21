@@ -2,39 +2,51 @@ package com.lujaina.ldbeauty;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.TypefaceSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.SP.SPProfileFragment;
-import com.lujaina.ldbeauty.SP.SalonsHomeFragment;
+import com.lujaina.ldbeauty.User.SalonsHomeFragment;
+import com.lujaina.ldbeauty.User.SelectedSalonFragment;
 
 public class HomeActivity extends AppCompatActivity implements MediatorInterface, BottomNavigationView.OnNavigationItemSelectedListener {
 
-    BottomNavigationView bottomNav;
+
     FirebaseUser mFirebaseUser;
     private FirebaseAuth mAuth;
+    BottomNavigationView bottomNav;
 
+
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
+        bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setOnNavigationItemSelectedListener(this);
         changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
-
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
     }
@@ -98,13 +110,11 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
         inflater.inflate(R.menu.side_menu, menu);
         if (user != null) {
             menu.getItem(0).setVisible(true);
-            menu.getItem(1).setVisible(true);
-            menu.getItem(2).setVisible(false);
+            menu.getItem(1).setVisible(false);
 
         } else {
             menu.getItem(0).setVisible(false);
-            menu.getItem(1).setVisible(false);
-            menu.getItem(2).setVisible(true);
+            menu.getItem(1).setVisible(true);
 
         }
         return super.onCreateOptionsMenu(menu);
@@ -119,12 +129,10 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
 
         if (user != null) {
             menu.getItem(0).setVisible(true);
-            menu.getItem(1).setVisible(true);
-            menu.getItem(2).setVisible(false);
+            menu.getItem(1).setVisible(false);
         } else {
             menu.getItem(0).setVisible(false);
-            menu.getItem(1).setVisible(false);
-            menu.getItem(2).setVisible(true);
+            menu.getItem(1).setVisible(true);
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -134,22 +142,14 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         FirebaseUser user = mAuth.getCurrentUser();
         switch (item.getItemId()) {
-            case R.id.my_profile_menu: {
-                if (user != null) {
-                    changeFragmentTo(new SPProfileFragment(), SPProfileFragment.class.getSimpleName());
-                    break;
-                } else {
-                    changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
-                }
-            }
 
             case R.id.log_out_menu: {
                 changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
-                finish();
+                bottomNav.setVisibility(View.GONE);
             }
             case R.id.choose_menu: {
-                startActivity(new Intent(HomeActivity.this, MainActivity.class));
-                finish();
+                changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
+                bottomNav.setVisibility(View.GONE);
             }
 
         }
@@ -157,5 +157,14 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
         return super.onOptionsItemSelected(item);
 
     }
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+            finish();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
 
 }

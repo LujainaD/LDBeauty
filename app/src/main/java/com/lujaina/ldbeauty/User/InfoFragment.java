@@ -1,4 +1,4 @@
-package com.lujaina.ldbeauty.SP;
+package com.lujaina.ldbeauty.User;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -15,7 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,14 +34,13 @@ import com.lujaina.ldbeauty.Models.AddInfoModel;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 import com.lujaina.ldbeauty.RecyclerItemTouchHelperInfo;
-import com.lujaina.ldbeauty.RecyclerItemTouchHelperListener;
+import com.lujaina.ldbeauty.SP.UpdateInfoFragment;
 
 import java.util.ArrayList;
 
+public class InfoFragment extends Fragment {
 
-public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelperListener {
     FirebaseAuth mAuth;
-    FirebaseUser mFirebaseUser;
     private DatabaseReference myRef;
 
     private MediatorInterface mMediatorInterface;
@@ -48,10 +49,14 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
 
     private ArrayList<AddInfoModel> infoArray;
     private InfoAdapter mAdapter;
-
-    public AddInfoFragment() {
+    FloatingActionButton add;
+    private SPRegistrationModel info;
+    TextView empty;
+    RecyclerView recyclerView;
+    public InfoFragment() {
         // Required empty public constructor
     }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -64,37 +69,33 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_info, container, false);
+        TextView salonName = parentView.findViewById(R.id.tv_toolbar);
+
+        empty = parentView.findViewById(R.id.tv_empty);
         ImageButton back = parentView.findViewById(R.id.ib_back);
-        FloatingActionButton add = parentView.findViewById(R.id.add_button);
+        add = parentView.findViewById(R.id.add_button);
+        add.setVisibility(View.GONE);
         mAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mAuth.getCurrentUser();
-        RecyclerView recyclerView = parentView.findViewById(R.id.add_rv);
+         recyclerView = parentView.findViewById(R.id.add_rv);
         infoArray = new ArrayList<>();
         mAdapter = new InfoAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
         readSalonInfoFromFirebaseDB();
-        ItemTouchHelper.SimpleCallback item = new RecyclerItemTouchHelperInfo(0, ItemTouchHelper.LEFT, this) {
 
-        };
+        if(mAdapter == null){
+            empty.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
+        }
 
-        mAdapter.setonClickListener(new InfoAdapter.onClickListener() {
-            @Override
-            public void onClick(AddInfoModel info) {
-                UpdateInfoFragment dialogUpdate = new UpdateInfoFragment();
-                dialogUpdate.setupdate(info);
-                dialogUpdate.show(getChildFragmentManager(), UpdateInfoFragment.class.getSimpleName());
-            }
-        });
-
-        new ItemTouchHelper(item).attachToRecyclerView(recyclerView);
-
+        if (info != null) {
+            salonName.setText(info.getSalonName()+ " Info");
+        }
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,13 +105,6 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
             }
         });
 
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddInfoDialogFragment dialogColor = new AddInfoDialogFragment();
-                dialogColor.show(getChildFragmentManager(), AddInfoDialogFragment.class.getSimpleName());
-            }
-        });
         return parentView;
     }
 
@@ -125,7 +119,7 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
     private void readSalonInfoFromFirebaseDB() {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-         myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Info);
+        myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(info.getOwnerId()).child(Constants.Salon_Info);
         // Read from the mDatabase
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setCancelable(true);
@@ -140,6 +134,7 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
                     AddInfoModel aboutModel = d.getValue(AddInfoModel.class);
                     infoArray.add(aboutModel);
 
+
                 }
                 progressDialog.dismiss();
                 mAdapter.update(infoArray);
@@ -148,24 +143,19 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
+
                 progressDialog.dismiss();
+
+
             }
         });
     }
-    
 
-    @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        if(viewHolder instanceof InfoAdapter.MyViewHolder){
-            String infoID = infoArray.get(position).getInfoId();
-            int position1 = viewHolder.getAdapterPosition();
-            mAdapter.removeItem(position1);
-            FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-            myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid())
-                    .child(Constants.Salon_Info)
-                    .child(infoID);
-            myRef.removeValue();
 
-        }
+
+    public void setInfo(SPRegistrationModel names) {
+        info  = names;
+
     }
+
 }

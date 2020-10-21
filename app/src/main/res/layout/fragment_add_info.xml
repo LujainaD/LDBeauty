@@ -64,7 +64,6 @@
         app:layout_constraintStart_toStartOf="parent" />
 
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/add_rv"
         android:layout_width="0dp"
@@ -87,4 +86,15 @@
         android:src="@drawable/gradient_fb"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"  />
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Nothing Added Yet"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

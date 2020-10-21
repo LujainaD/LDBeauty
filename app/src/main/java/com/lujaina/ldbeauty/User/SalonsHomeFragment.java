@@ -1,4 +1,4 @@
-package com.lujaina.ldbeauty.SP;
+package com.lujaina.ldbeauty.User;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuAdapter;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -27,7 +28,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -59,7 +62,6 @@ public class SalonsHomeFragment extends Fragment {
     private MediatorInterface mMediatorInterface;
     ProgressDialog progressDialog;
 
-    RecyclerView recyclerView;
     private HomeAdapter mAdapter;
     ArrayList<SPRegistrationModel> salonNamesArray;
 
@@ -83,98 +85,33 @@ public class SalonsHomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_salons_home, container, false);
-        Toolbar toolbar = parentView.findViewById(R.id.toolbar);
-        toolbar.inflateMenu(R.menu.side_menu);
-        setHasOptionsMenu(true);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.my_profile_menu: {
-                        if (mFirebaseUser != null) {
-                            mMediatorInterface.changeFragmentTo(new SPProfileFragment(), SPProfileFragment.class.getSimpleName());
-                            break;
-                        } else {
-
-                            mMediatorInterface.changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
-                        }
-                    }
-
-                    case R.id.log_out_menu: {
-                        if (mFirebaseUser != null) {
-                            mMediatorInterface.changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
-                        }else {
-                        }
-                    }
-                    case R.id.choose_menu: {
-                        if (mFirebaseUser == null) {
-                            startActivity(new Intent(mContext, MainActivity.class));
-                        }else {
-                        }
-                    }
-
-                }
-                return false;
-            }
-
-        });
-
-
-        /*
-        ImageButton menuButton = parentView.findViewById(R.id.menu);
-*/
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+        navBar.setVisibility(View.VISIBLE);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
         myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner);
-        final EditText ti_search = parentView.findViewById(R.id.tv_search);
+        EditText ti_search = parentView.findViewById(R.id.tv_search);
+        RecyclerView recyclerView = parentView.findViewById(R.id.rv_salons);
+        salonNamesArray = new ArrayList<>();
+        mAdapter = new HomeAdapter(mContext);
+        recyclerView.setAdapter(mAdapter);
+        setupRecyclerView(recyclerView);
+        readSalonNamesFromFireBaseDB();
 
-   /*     menuButton.setOnClickListener(new View.OnClickListener() {
+        mAdapter.setonClickListener(new HomeAdapter.onClickListener() {
             @Override
-            public void onClick(View v) {
-                PopupMenu popup = new PopupMenu(mContext, v);
-                popup.getMenuInflater().inflate(R.menu.side_menu, popup.getMenu());
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.my_profile_menu: {
-                                if (mFirebaseUser != null) {
-                                    item.setVisible(true);
-                                    mMediatorInterface.changeFragmentTo(new SPProfileFragment(), SPProfileFragment.class.getSimpleName());
-                                    break;
-                                } else {
-                                    item.setVisible(false);
-*//*
-                                    mMediatorInterface.changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
-*//*
-                                }
-                            }
+            public void onClick(SPRegistrationModel salon) {
+                if(mMediatorInterface != null){
+                    SelectedSalonFragment section = new SelectedSalonFragment();
+                    section.setSection(salon);
+                    mMediatorInterface.changeFragmentTo(section ,SelectedSalonFragment.class.getSimpleName());
 
-                            case R.id.log_out_menu: {
-                                if (mFirebaseUser != null) {
-                                    item.setVisible(true);
-                                    mMediatorInterface.changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
-                                }else {
-                                    item.setVisible(false);
-                                }
-                                }
-                            case R.id.choose_menu: {
-                                if (mFirebaseUser == null) {
-                                    item.setVisible(true);
-                                    startActivity(new Intent(mContext, MainActivity.class));
-                                }else {
-                                    item.setVisible(false);
-                                }
-                                }
+                }
 
-                        }
-                        return false;
-                    }
-                });
-                popup.show();
             }
-        });*/
+        });
 
         ti_search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -199,16 +136,6 @@ public class SalonsHomeFragment extends Fragment {
             }
         });
 
-
-        recyclerView = parentView.findViewById(R.id.rv_salons);
-        readSalonNamesFromFireBaseDB();
-
-        setupRecyclerView(recyclerView);
-        mAdapter = new HomeAdapter(mContext);
-        recyclerView.setAdapter(mAdapter);
-
-
-
         return parentView;
     }
 
@@ -226,14 +153,9 @@ public class SalonsHomeFragment extends Fragment {
     }
     private void setupRecyclerView(RecyclerView recyclerView) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
-/*
         DividerItemDecoration divider = new DividerItemDecoration(mContext, layoutManager.getOrientation());
-*/
-
         recyclerView.setLayoutManager(layoutManager);
-/*
         recyclerView.addItemDecoration(divider);
-*/
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
     }
@@ -255,7 +177,6 @@ public class SalonsHomeFragment extends Fragment {
                 salonNamesArray = new ArrayList<>();
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     SPRegistrationModel salon = d.getValue(SPRegistrationModel.class);
-                    Log.d("serviceId", salon.getOwnerId());
                     salonNamesArray.add(salon);
 
                 }

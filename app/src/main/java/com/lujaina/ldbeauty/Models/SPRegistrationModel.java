@@ -18,6 +18,9 @@ public class SPRegistrationModel {
     private String statusType;
     private String updatedDate;
 
+    private String salonSection;
+
+
     public String getOwnerId() {
         return ownerId;
     }
@@ -128,5 +131,13 @@ public class SPRegistrationModel {
 
     public void setUpdatedDate(String updatedDate) {
         this.updatedDate = updatedDate;
+    }
+
+    public String getSalonSection() {
+        return salonSection;
+    }
+
+    public void setSalonSection(String salonSection) {
+        this.salonSection = salonSection;
     }
 }
