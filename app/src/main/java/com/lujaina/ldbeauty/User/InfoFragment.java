@@ -40,7 +40,6 @@ import java.util.ArrayList;
 
 public class InfoFragment extends Fragment {
 
-    FirebaseAuth mAuth;
     private DatabaseReference myRef;
 
     private MediatorInterface mMediatorInterface;
@@ -80,18 +79,12 @@ public class InfoFragment extends Fragment {
         ImageButton back = parentView.findViewById(R.id.ib_back);
         add = parentView.findViewById(R.id.add_button);
         add.setVisibility(View.GONE);
-        mAuth = FirebaseAuth.getInstance();
          recyclerView = parentView.findViewById(R.id.add_rv);
         infoArray = new ArrayList<>();
         mAdapter = new InfoAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
         readSalonInfoFromFirebaseDB();
-
-        if(mAdapter == null){
-            empty.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.INVISIBLE);
-        }
 
         if (info != null) {
             salonName.setText(info.getSalonName()+ " Info");
