@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,7 +46,8 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
 
     private ArrayList<CategoryModel> categoryList;
     private CategoryAdapter mAdapter;
-
+    RecyclerView recyclerView;
+    TextView empty;
     public AddCategoriesFragment() {
         // Required empty public constructor
     }
@@ -65,10 +67,11 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
         // Inflate the layout for this fragment
         View  parentView = inflater.inflate(R.layout.fragment_add_categories, container, false);
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
+         empty = parentView.findViewById(R.id.tv_empty);
         ImageButton back = parentView.findViewById(R.id.ib_back);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
-        RecyclerView recyclerView = parentView.findViewById(R.id.rv_categories);
+        recyclerView = parentView.findViewById(R.id.rv_categories);
         categoryList = new ArrayList<>();
         mAdapter = new CategoryAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
@@ -140,6 +143,8 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
 
                 }
                 progressDialog.dismiss();
+                recyclerView.setVisibility(View.VISIBLE);
+                empty.setVisibility(View.INVISIBLE);
                 mAdapter.update(categoryList);
             }
 

@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,33 +25,34 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.lujaina.ldbeauty.Adapters.InfoAdapter;
+import com.lujaina.ldbeauty.Adapters.CategoryAdapter;
 import com.lujaina.ldbeauty.Constants;
-import com.lujaina.ldbeauty.Dialogs.AddInfoDialogFragment;
+import com.lujaina.ldbeauty.Dialogs.AddCategoriesDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
-import com.lujaina.ldbeauty.Models.AddInfoModel;
+import com.lujaina.ldbeauty.Models.CategoryModel;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
-import com.lujaina.ldbeauty.RecyclerItemTouchHelperInfo;
-import com.lujaina.ldbeauty.SP.UpdateInfoFragment;
+import com.lujaina.ldbeauty.SP.AddServicesFragment;
+import com.lujaina.ldbeauty.SP.RecyclerItemTouchHelperCategories;
 
 import java.util.ArrayList;
 
-public class InfoFragment extends Fragment {
 
+public class CategoriesFragment extends Fragment {
+
+    FirebaseUser mFirebaseUser;
     private DatabaseReference myRef;
 
     private MediatorInterface mMediatorInterface;
     private Context mContext;
     private ProgressDialog progressDialog;
 
-    private ArrayList<AddInfoModel> infoArray;
-    private InfoAdapter mAdapter;
-    FloatingActionButton add;
-    private SPRegistrationModel info;
-    TextView empty;
+    private ArrayList<CategoryModel> categoryList;
+    private CategoryAdapter mAdapter;
+    private SPRegistrationModel ownerId;
     RecyclerView recyclerView;
-    public InfoFragment() {
+    TextView empty;
+    public CategoriesFragment() {
         // Required empty public constructor
     }
 
@@ -67,27 +67,37 @@ public class InfoFragment extends Fragment {
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View parentView = inflater.inflate(R.layout.fragment_add_info, container, false);
-        TextView salonName = parentView.findViewById(R.id.tv_toolbar);
+        View parentView = inflater.inflate(R.layout.fragment_add_categories, container, false);
+        FloatingActionButton add = parentView.findViewById(R.id.add_button);
+        empty = parentView.findViewById(R.id.tv_empty);
 
+        add.setVisibility(View.INVISIBLE);
         ImageButton back = parentView.findViewById(R.id.ib_back);
-        add = parentView.findViewById(R.id.add_button);
-        add.setVisibility(View.GONE);
-         recyclerView = parentView.findViewById(R.id.add_rv);
-        infoArray = new ArrayList<>();
-        mAdapter = new InfoAdapter(mContext);
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mAuth.getCurrentUser();
+        recyclerView = parentView.findViewById(R.id.rv_categories);
+        categoryList = new ArrayList<>();
+        mAdapter = new CategoryAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
         readSalonInfoFromFirebaseDB();
 
-        if (info != null) {
-            salonName.setText(info.getSalonName()+ " Info");
-        }
+        mAdapter.setonClickListener(new CategoryAdapter.onClickListener() {
+            @Override
+            public void onClick(CategoryModel category) {
+                if(mMediatorInterface != null){
+                    ServicesFragment service = new ServicesFragment();
+                    service.setServiceID(category);
+                    mMediatorInterface.changeFragmentTo(service, ServicesFragment.class.getSimpleName());
+
+                }
+            }
+        });
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,6 +106,7 @@ public class InfoFragment extends Fragment {
                 }
             }
         });
+
 
         return parentView;
     }
@@ -111,7 +122,7 @@ public class InfoFragment extends Fragment {
     private void readSalonInfoFromFirebaseDB() {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(info.getOwnerId()).child(Constants.Salon_Info);
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(ownerId.getOwnerId()).child(Constants.Salon_Category);
         // Read from the mDatabase
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setCancelable(true);
@@ -121,33 +132,27 @@ public class InfoFragment extends Fragment {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                infoArray.clear();
+                categoryList.clear();
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
-                    AddInfoModel aboutModel = d.getValue(AddInfoModel.class);
-                    infoArray.add(aboutModel);
-
+                    CategoryModel category = d.getValue(CategoryModel.class);
+                    categoryList.add(category);
 
                 }
                 progressDialog.dismiss();
-                mAdapter.update(infoArray);
+                recyclerView.setVisibility(View.VISIBLE);
+                empty.setVisibility(View.INVISIBLE);
+                mAdapter.update(categoryList);
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
-
                 progressDialog.dismiss();
-
-
             }
         });
     }
 
-
-
-    public void setInfo(SPRegistrationModel names) {
-        info  = names;
-
+    public void setSalonCategory(SPRegistrationModel section) {
+        ownerId = section;
     }
-
 }

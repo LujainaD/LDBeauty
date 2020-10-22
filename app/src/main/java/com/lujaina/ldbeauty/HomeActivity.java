@@ -145,11 +145,9 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
 
             case R.id.log_out_menu: {
                 changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
-                bottomNav.setVisibility(View.GONE);
             }
-            case R.id.choose_menu: {
+            case R.id.not_login: {
                 changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
-                bottomNav.setVisibility(View.GONE);
             }
 
         }

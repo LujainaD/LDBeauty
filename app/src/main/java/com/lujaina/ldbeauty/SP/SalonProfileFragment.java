@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -64,6 +65,8 @@ public class SalonProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_salon_profile, container, false);
+        BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+        navBar.setVisibility(View.GONE);
         TextView aboutPage = parentView.findViewById(R.id.tv_AboutPage);
         final CircleImageView profileImag = parentView.findViewById(R.id.civ_profile);
         ImageButton back = parentView.findViewById(R.id.ib_back);

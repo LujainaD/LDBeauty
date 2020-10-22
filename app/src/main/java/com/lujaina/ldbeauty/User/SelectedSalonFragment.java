@@ -103,37 +103,35 @@ public class SelectedSalonFragment extends Fragment {
 
                         break;
 
-             /*       case 1:
-                        SalonGalleryFragment gallery = new SalonGalleryFragment();
-                        gallery.setSalongallery(mCurrent);
-
-                        mMediatorCallback.changeFragmentTo(gallery, SalonGalleryFragment.class.getSimpleName());
+                    case 1:
+                        CategoriesFragment categoriesFragment = new CategoriesFragment();
+                        categoriesFragment.setSalonCategory(section);
+                        mMediatorCallback.changeFragmentTo(categoriesFragment, CategoriesFragment.class.getSimpleName());
                         break;
+
                     case 2:
-                        SalonCategoryFragment services = new SalonCategoryFragment();
-                        services.setSalonCategory(mCurrent);
-
-                        mMediatorCallback.changeFragmentTo(services, SalonCategoryFragment.class.getSimpleName());
+                        OffersFragment gallery = new OffersFragment();
+                        gallery.setSalonOffers(section);
+                        mMediatorCallback.changeFragmentTo(gallery, OffersFragment.class.getSimpleName());
                         break;
 
-                    case 3:
+                    /*case 3:
 
                         mMediatorCallback.changeFragmentTo(new OffersFragment(), OffersFragment.class.getSimpleName());
-                        break;
-                    case 4:
+                        break;*/
+                    /*case 4:
                         CustomerFeedBackAndRatingFragment customeFeedBack = new CustomerFeedBackAndRatingFragment();
                         customeFeedBack.setSalonFeedback(mCurrent);
                         mMediatorCallback.changeFragmentTo(customeFeedBack, CustomerFeedBackAndRatingFragment.class.getSimpleName());
 
-                        break;
-
+                        break;*/
+/*
                     case 5:
                         SalonLocationFragment salonLocation = new SalonLocationFragment();
                         salonLocation.setSalonLocation(mCurrent);
                         mMediatorCallback.changeFragmentTo(salonLocation, SalonLocationFragment.class.getSimpleName());
 
-                        break;
-*/
+                        break;*/
 
                 }
             }

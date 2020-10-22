@@ -25,7 +25,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Adapters.OfferAdapter;
-import com.lujaina.ldbeauty.Adapters.ServiceAdapter;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Dialogs.OffersDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
@@ -160,9 +159,9 @@ public class AddSalonOffersFragment extends Fragment implements RecyclerItemTouc
                     break;
                 case ItemTouchHelper.RIGHT:
                     if (mMediatorInterface != null) {
-                        OffersAppointmentFragment appointment = new OffersAppointmentFragment();
+                        AddOffersAppointmentFragment appointment = new AddOffersAppointmentFragment();
                         appointment.setAddAppointmentFragment(swipedService);
-                        mMediatorInterface.changeFragmentTo(appointment, OffersAppointmentFragment.class.getSimpleName());
+                        mMediatorInterface.changeFragmentTo(appointment, AddOffersAppointmentFragment.class.getSimpleName());
                     }
                     break;
 

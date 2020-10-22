@@ -7,7 +7,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,9 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,37 +23,36 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.lujaina.ldbeauty.Adapters.InfoAdapter;
+import com.lujaina.ldbeauty.Adapters.UserOfferAdapter;
 import com.lujaina.ldbeauty.Constants;
-import com.lujaina.ldbeauty.Dialogs.AddInfoDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
-import com.lujaina.ldbeauty.Models.AddInfoModel;
+import com.lujaina.ldbeauty.Models.OfferModel;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
-import com.lujaina.ldbeauty.RecyclerItemTouchHelperInfo;
-import com.lujaina.ldbeauty.SP.UpdateInfoFragment;
+import com.lujaina.ldbeauty.SP.AddOffersAppointmentFragment;
 
 import java.util.ArrayList;
 
-public class InfoFragment extends Fragment {
 
+public class OffersFragment extends Fragment {
+
+    FirebaseUser mFirebaseUser;
     private DatabaseReference myRef;
+
+    private ArrayList<OfferModel> offersList;
+    private UserOfferAdapter mAdapter;
 
     private MediatorInterface mMediatorInterface;
     private Context mContext;
     private ProgressDialog progressDialog;
 
-    private ArrayList<AddInfoModel> infoArray;
-    private InfoAdapter mAdapter;
-    FloatingActionButton add;
-    private SPRegistrationModel info;
-    TextView empty;
-    RecyclerView recyclerView;
-    public InfoFragment() {
+    private OfferModel offer;
+    private SPRegistrationModel ownerId;
+
+    public OffersFragment() {
         // Required empty public constructor
     }
 
-    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
@@ -67,33 +63,38 @@ public class InfoFragment extends Fragment {
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View parentView = inflater.inflate(R.layout.fragment_add_info, container, false);
-        TextView salonName = parentView.findViewById(R.id.tv_toolbar);
-
+        View parentView = inflater.inflate(R.layout.fragment_add_salon_offers, container, false);
+        FloatingActionButton add = parentView.findViewById(R.id.add_button);
+        add.setVisibility(View.INVISIBLE);
         ImageButton back = parentView.findViewById(R.id.ib_back);
-        add = parentView.findViewById(R.id.add_button);
-        add.setVisibility(View.GONE);
-         recyclerView = parentView.findViewById(R.id.add_rv);
-        infoArray = new ArrayList<>();
-        mAdapter = new InfoAdapter(mContext);
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mAuth.getCurrentUser();
+        RecyclerView recyclerView = parentView.findViewById(R.id.recyclerView);
+        offersList = new ArrayList<>();
+        mAdapter = new UserOfferAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
-        readSalonInfoFromFirebaseDB();
+        readSalonOffersFromFirebaseDB();
+        mAdapter.setonClickListener(new UserOfferAdapter.onClickListener() {
+            @Override
+            public void onClick(OfferModel offerModel) {
+                if(mMediatorInterface != null){
+                    OfferAppointmentFragment offerAppointmentFragment = new OfferAppointmentFragment();
+                    OfferAppointmentFragment.setOfferID(offerModel);
+                    mMediatorInterface.changeFragmentTo(offerAppointmentFragment, OfferAppointmentFragment.class.getSimpleName());
+                }
+            }
+        });
 
-        if (info != null) {
-            salonName.setText(info.getSalonName()+ " Info");
-        }
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
-                    mMediatorInterface.onBackPressed();
-                }
+                mMediatorInterface.onBackPressed();
             }
         });
 
@@ -108,46 +109,38 @@ public class InfoFragment extends Fragment {
 
     }
 
-    private void readSalonInfoFromFirebaseDB() {
+    private void readSalonOffersFromFirebaseDB() {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(info.getOwnerId()).child(Constants.Salon_Info);
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(ownerId.getOwnerId()).child(Constants.Salon_Offers);
         // Read from the mDatabase
         progressDialog = new ProgressDialog(mContext);
-        progressDialog.setCancelable(true);
         progressDialog.show();
+        progressDialog.setCancelable(true);
         progressDialog.setContentView(R.layout.progress_bar);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                infoArray.clear();
+                offersList.clear();
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
-                    AddInfoModel aboutModel = d.getValue(AddInfoModel.class);
-                    infoArray.add(aboutModel);
-
+                    offer = d.getValue(OfferModel.class);
+                    offersList.add(offer);
 
                 }
                 progressDialog.dismiss();
-                mAdapter.update(infoArray);
+                mAdapter.update(offersList);
+
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
-
                 progressDialog.dismiss();
-
-
             }
         });
     }
-
-
-
-    public void setInfo(SPRegistrationModel names) {
-        info  = names;
-
+    public void setSalonOffers(SPRegistrationModel section) {
+        ownerId = section;
     }
-
 }

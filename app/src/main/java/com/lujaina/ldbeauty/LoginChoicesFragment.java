@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.lujaina.ldbeauty.AppOwner.AOLoginFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.SP.SPLoginFragment;
@@ -42,6 +43,8 @@ public class LoginChoicesFragment extends Fragment {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_login_choices, container, false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+        navBar.setVisibility(View.GONE);
         Button client = parentView.findViewById(R.id.btn_client);
         Button salonOwner = parentView.findViewById(R.id.btn_salonOwner);
         Button appOwner = parentView.findViewById(R.id.tv_appOwner);

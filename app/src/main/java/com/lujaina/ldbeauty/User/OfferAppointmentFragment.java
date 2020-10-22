@@ -1,4 +1,4 @@
-package com.lujaina.ldbeauty.SP;
+package com.lujaina.ldbeauty.User;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.lujaina.ldbeauty.Adapters.AppointmentAdapter;
 import com.lujaina.ldbeauty.Adapters.TimeAdapter;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
@@ -39,11 +40,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.TimeZone;
 
+public class OfferAppointmentFragment extends Fragment {
 
-public class OffersAppointmentFragment extends Fragment {
     public static final String DATE_FORMAT    = "dd/MM/yyyy";
 
     private FirebaseAuth mAuth;
@@ -54,7 +54,6 @@ public class OffersAppointmentFragment extends Fragment {
     private MediatorInterface mMediatorInterface;
 
     private Context mContext;
-    private OfferModel mOffer;
 
     RecyclerView recyclerView;
     LinearLayoutManager lineralayoutManager;
@@ -71,15 +70,16 @@ public class OffersAppointmentFragment extends Fragment {
     String timeNew;
 
     private ArrayList<AppointmentModel> timeList;
-    private TimeAdapter mAdapter;
+    private AppointmentAdapter mAdapter;
     AppointmentModel appointmentModel;
 
     String sDay;
     String sMonth;
     String sYear;
 
+    private static OfferModel offerID;
 
-    public OffersAppointmentFragment() {
+    public OfferAppointmentFragment() {
         // Required empty public constructor
     }
 
@@ -98,7 +98,7 @@ public class OffersAppointmentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View parentView = inflater.inflate(R.layout.fragment_offers_appointment, container, false);
+        View parentView =  inflater.inflate(R.layout.fragment_offer_appointment, container, false);
         TextView offerTitle 	= parentView.findViewById(R.id.tv_service);
         TextView services = parentView.findViewById(R.id.tv_specialist);
         TextView curPrice 		= parentView.findViewById(R.id.tv_price);
@@ -109,9 +109,7 @@ public class OffersAppointmentFragment extends Fragment {
         ImageButton ibRight			= parentView.findViewById(R.id.btn_right);
         recyclerView 	= parentView.findViewById(R.id.rv_time);
         Button btnAdd 	=	parentView.findViewById(R.id.btn_addTime);
-
         pickedDate = parentView.findViewById(R.id.et_date);
-        pickedTime = parentView.findViewById(R.id.et_time);
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -119,20 +117,14 @@ public class OffersAppointmentFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance();
 
         getCurrentDate();
-        getCurrentTime();
         showPreviousAppointments();
 
 
         timeList = new ArrayList<>();
-        mAdapter = new TimeAdapter(mContext);
+        mAdapter = new AppointmentAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
-        mAdapter.setonClickListener(new TimeAdapter.onClickListener() {
-            @Override
-            public void onClick(AppointmentModel category) {
-                deleteTime(category);
-            }
-        });
+
 
         ibCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,25 +141,12 @@ public class OffersAppointmentFragment extends Fragment {
 
             }
         });
-        ibTimeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showTimeDialog();
-            }
-        });
-
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addAnAppointment();
-            }
-        });
 
 
-        if(mOffer != null ){
-            offerTitle.setText(mOffer.getTitle());
-            services.setText(mOffer.getServices());
-            curPrice.setText(mOffer.getCurrentPrice());
+        if(offerID != null ){
+            offerTitle.setText(offerID.getTitle());
+            services.setText(offerID.getServices());
+            curPrice.setText(offerID.getCurrentPrice());
         }
         ibLeft.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,40 +168,6 @@ public class OffersAppointmentFragment extends Fragment {
         });
 
         return parentView;
-    }
-
-
-
-    private void deleteTime(AppointmentModel category) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        DatabaseReference dbRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Offers)
-                .child(mOffer.getOfferId()).child(Constants.Service_Appointment).child(category.getRecordId());
-        dbRef.removeValue();
-    }
-
-
-    private void addAnAppointment() {
-        appointmentModel = new AppointmentModel();
-
-        appointmentModel.setAppointmentDate(pickedDate.getText().toString().trim());
-        appointmentModel.setPickedTime(pickedTime.getText().toString().trim());
-        appointmentModel.setOfferId(mOffer.getOfferId());
-        appointmentModel.setOwnerId(mOffer.getSalonOwnerId());
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Offers)
-                .child(mOffer.getOfferId()).child(Constants.Service_Appointment);
-        String recordID = dbRef.push().getKey();
-        appointmentModel.setRecordId(recordID);
-
-        dbRef.child(Objects.requireNonNull(recordID)).setValue(appointmentModel);
-
-
-    }
-
-    public void setAddAppointmentFragment( OfferModel service) {
-        mOffer = service;
     }
 
     private void showDateDialog() {
@@ -299,18 +244,14 @@ public class OffersAppointmentFragment extends Fragment {
         timePickerDialog.show();
     }
 
-    private void getCurrentTime() {
-        SimpleDateFormat serverFormat = new SimpleDateFormat("hh:mm a",Locale.getDefault());
-        String timeNow = serverFormat.format(Calendar.getInstance().getTime());
-        pickedTime.setText(timeNow);
-    }
+
 
     private void showPreviousAppointments() {
         String datePicked = pickedDate.getText().toString().trim();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef;
-        myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid())
-                .child(Constants.Salon_Offers).child(mOffer.getOfferId()).child(Constants.Service_Appointment);
+        myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(offerID.getSalonOwnerId())
+                .child(Constants.Salon_Offers).child(offerID.getOfferId()).child(Constants.Service_Appointment);
 
 
         myRef.orderByChild("appointmentDate").equalTo(datePicked).addValueEventListener(new ValueEventListener() {
@@ -344,5 +285,9 @@ public class OffersAppointmentFragment extends Fragment {
 
     }
 
+
+    public static void setOfferID(OfferModel offerModel) {
+        offerID =offerModel;
+    }
 
 }
