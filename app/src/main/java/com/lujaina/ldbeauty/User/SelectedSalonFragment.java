@@ -26,6 +26,7 @@ import com.lujaina.ldbeauty.HomeActivity;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
+import com.lujaina.ldbeauty.SP.AddGalleryFragment;
 import com.lujaina.ldbeauty.SP.AddInfoFragment;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class SelectedSalonFragment extends Fragment {
     private Context mContext;
     private MediatorInterface mMediatorCallback;
     private SectionsAdapter mAdapter;
-
+int i;
 
     public SelectedSalonFragment() {
         // Required empty public constructor
@@ -110,14 +111,14 @@ public class SelectedSalonFragment extends Fragment {
                         break;
 
                     case 2:
-                        OffersFragment gallery = new OffersFragment();
-                        gallery.setSalonOffers(section);
-                        mMediatorCallback.changeFragmentTo(gallery, OffersFragment.class.getSimpleName());
+                        OffersFragment offers = new OffersFragment();
+                        offers.setSalonOffers(section);
+                        mMediatorCallback.changeFragmentTo(offers, OffersFragment.class.getSimpleName());
                         break;
 
-                    /*case 3:
+                   /* case 3:
 
-                        mMediatorCallback.changeFragmentTo(new OffersFragment(), OffersFragment.class.getSimpleName());
+                        mMediatorCallback.changeFragmentTo(galleryFragment, AddGalleryFragment.class.getSimpleName());
                         break;*/
                     /*case 4:
                         CustomerFeedBackAndRatingFragment customeFeedBack = new CustomerFeedBackAndRatingFragment();

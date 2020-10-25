@@ -6,8 +6,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.lujaina.ldbeauty.Client.UserSignUpFragment;
 import com.lujaina.ldbeauty.SP.SPSignUpFragment;
+import com.lujaina.ldbeauty.Client.ClientSignUpFragment;
 
 public class SignUpViewAdapter extends FragmentPagerAdapter {
 
@@ -25,7 +25,7 @@ public class SignUpViewAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return new UserSignUpFragment();
+                return new ClientSignUpFragment();
             case 1 :
                 return new SPSignUpFragment();
 
