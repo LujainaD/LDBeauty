@@ -172,7 +172,6 @@
                     android:textColor="#95989A"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/iv_service"
                     app:layout_constraintStart_toStartOf="@+id/tv_title"
                     app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
@@ -189,17 +188,25 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/iv_service"
+                    app:layout_constraintStart_toEndOf="@+id/service_Card"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/iv_service"
-                    android:layout_width="94dp"
-                    android:layout_height="0dp"
-                    android:src="@drawable/rounded_rectangle_bg"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/service_Card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:cardCornerRadius="14dp"
+                    >
+                    <ImageView
+                        android:id="@+id/iv_service"
+                        android:layout_width="94dp"
+                        android:layout_height="match_parent"
+                         />
+                </androidx.cardview.widget.CardView>
+
 
                 <TextView
                     android:id="@+id/textView4"
