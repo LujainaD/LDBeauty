@@ -45,6 +45,7 @@ public class OffersDialogFragment extends DialogFragment {
     private FirebaseUser mFirebaseUser;
     private Context mContext;
     private MediatorInterface mMediatorInterface;
+    private String salonName;
 
     public OffersDialogFragment() {
         // Required empty public constructor
@@ -123,6 +124,7 @@ public class OffersDialogFragment extends DialogFragment {
         String id = myRef.push().getKey();
         offers.setOfferId(id);
         offers.setSalonOwnerId(mFirebaseUser.getUid());
+        offers.setSalonName(salonName);
         myRef.child(offers.getOfferId()).setValue(offers).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -140,6 +142,7 @@ public class OffersDialogFragment extends DialogFragment {
 
     }
 
-    public void setOffers(OfferModel offersList) {
+    public void setOffers(OfferModel offersList, String salonName) {
+        this.salonName = salonName;
     }
 }

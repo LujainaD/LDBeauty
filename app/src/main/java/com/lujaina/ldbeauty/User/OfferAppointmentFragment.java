@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +30,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Adapters.AppointmentAdapter;
-import com.lujaina.ldbeauty.Adapters.TimeAdapter;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.AppointmentModel;
+import com.lujaina.ldbeauty.Models.ClientsAppointmentModel;
 import com.lujaina.ldbeauty.Models.OfferModel;
+import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 
 import java.text.SimpleDateFormat;
@@ -77,7 +79,8 @@ public class OfferAppointmentFragment extends Fragment {
     String sMonth;
     String sYear;
 
-    private static OfferModel offerID;
+    private SPRegistrationModel ownerId;
+    private OfferModel offerID;
 
     public OfferAppointmentFragment() {
         // Required empty public constructor
@@ -108,8 +111,9 @@ public class OfferAppointmentFragment extends Fragment {
         ImageButton ibLeft 			= parentView.findViewById(R.id.btn_left);
         ImageButton ibRight			= parentView.findViewById(R.id.btn_right);
         recyclerView 	= parentView.findViewById(R.id.rv_time);
-        Button btnAdd 	=	parentView.findViewById(R.id.btn_addTime);
+        Button btnConfirm 	=	parentView.findViewById(R.id.btn_confirm);
         pickedDate = parentView.findViewById(R.id.et_date);
+
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -167,8 +171,55 @@ public class OfferAppointmentFragment extends Fragment {
             }
         });
 
+
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.w("owner", "salon Owner "+ ownerId.getUserId());
+
+                selectedDate();
+            }
+        });
+
+
         return parentView;
     }
+
+    private void selectedDate(){
+        ClientsAppointmentModel clientsAppointment = new ClientsAppointmentModel();
+            clientsAppointment.setUserId(mFirebaseUser.getUid());
+            clientsAppointment.setOwnerId(offerID.getSalonOwnerId());
+            clientsAppointment.setSalonName(offerID.getSalonName());
+            clientsAppointment.setOrderDate(currentDate());
+            clientsAppointment.setOfferServices(offerID.getServices());
+            clientsAppointment.setOfferId(offerID.getOfferId());
+            clientsAppointment.setAppointmentStatus("not confirmed yet");
+            clientsAppointment.setPrice(offerID.getCurrentPrice());
+            addAppointmentToDB(clientsAppointment);
+
+
+    }
+
+    private void addAppointmentToDB(ClientsAppointmentModel category) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference salonRef;
+
+        salonRef =  database.getReference(Constants.Users).child(Constants.Salon_Owner).child(offerID.getSalonOwnerId())
+                .child(Constants.Clients_Appointments);
+        DatabaseReference clientRef;
+
+        clientRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid())
+                .child(Constants.Clients_Appointments);
+        ClientsAppointmentModel clientsAppointment = new ClientsAppointmentModel();
+        String appointmentId = salonRef.push().getKey();
+
+
+salonRef.child(appointmentId).setValue(category);
+
+
+    }
+
+
 
     private void showDateDialog() {
 
@@ -286,8 +337,19 @@ public class OfferAppointmentFragment extends Fragment {
     }
 
 
-    public static void setOfferID(OfferModel offerModel) {
-        offerID =offerModel;
+    public void setOfferId(OfferModel offerModel) {
+        offerID = offerModel;
+    }
+
+    private String currentDate() {
+        //Get current date of device
+        Calendar c = Calendar.getInstance();
+
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        return mDay + "/" + (mMonth + 1) + "/" + mYear;
     }
 
 }

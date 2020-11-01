@@ -111,7 +111,7 @@ public class InfoFragment extends Fragment {
     private void readSalonInfoFromFirebaseDB() {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(info.getOwnerId()).child(Constants.Salon_Info);
+        myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(info.getUserId()).child(Constants.Salon_Info);
         // Read from the mDatabase
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setCancelable(true);

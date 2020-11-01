@@ -259,7 +259,7 @@
         app:layout_constraintTop_toTopOf="@+id/cardView10" />
 
     <Button
-        android:id="@+id/btn_addTime"
+        android:id="@+id/btn_confirm"
         android:layout_width="127dp"
         android:layout_height="32dp"
         android:layout_marginTop="41dp"

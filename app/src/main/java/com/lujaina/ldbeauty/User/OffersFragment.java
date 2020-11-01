@@ -79,12 +79,13 @@ public class OffersFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
         readSalonOffersFromFirebaseDB();
+
         mAdapter.setonClickListener(new UserOfferAdapter.onClickListener() {
             @Override
             public void onClick(OfferModel offerModel) {
                 if(mMediatorInterface != null){
                     OfferAppointmentFragment offerAppointmentFragment = new OfferAppointmentFragment();
-                    OfferAppointmentFragment.setOfferID(offerModel);
+                    offerAppointmentFragment.setOfferId(offerModel);
                     mMediatorInterface.changeFragmentTo(offerAppointmentFragment, OfferAppointmentFragment.class.getSimpleName());
                 }
             }
@@ -112,7 +113,7 @@ public class OffersFragment extends Fragment {
     private void readSalonOffersFromFirebaseDB() {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(ownerId.getOwnerId()).child(Constants.Salon_Offers);
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(ownerId.getUserId()).child(Constants.Salon_Offers);
         // Read from the mDatabase
         progressDialog = new ProgressDialog(mContext);
         progressDialog.show();
@@ -140,7 +141,7 @@ public class OffersFragment extends Fragment {
             }
         });
     }
-    public void setSalonOffers(SPRegistrationModel section) {
+    public void setSalonOffers( SPRegistrationModel section) {
         ownerId = section;
     }
 }

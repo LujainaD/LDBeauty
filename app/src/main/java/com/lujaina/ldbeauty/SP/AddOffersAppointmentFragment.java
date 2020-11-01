@@ -77,6 +77,7 @@ public class AddOffersAppointmentFragment extends Fragment {
     String sDay;
     String sMonth;
     String sYear;
+    private String salonName;
 
 
     public AddOffersAppointmentFragment() {
@@ -215,14 +216,17 @@ public class AddOffersAppointmentFragment extends Fragment {
                 .child(mOffer.getOfferId()).child(Constants.Service_Appointment);
         String recordID = dbRef.push().getKey();
         appointmentModel.setRecordId(recordID);
+        appointmentModel.setSalonName(salonName);
+
 
         dbRef.child(Objects.requireNonNull(recordID)).setValue(appointmentModel);
 
 
     }
 
-    public void setAddAppointmentFragment( OfferModel service) {
+    public void setAddAppointmentFragment(OfferModel service, String salonName) {
         mOffer = service;
+        this.salonName = salonName;
     }
 
     private void showDateDialog() {

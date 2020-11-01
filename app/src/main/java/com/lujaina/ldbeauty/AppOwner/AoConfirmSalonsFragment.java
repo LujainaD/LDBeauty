@@ -87,7 +87,7 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
                                             salonsDetails) {
                 if (mMediatorInterface != null) {
                     SalonConfirmDialogFragment details = new SalonConfirmDialogFragment(AoConfirmSalonsFragment.this ,salonsDetails);
-                    Log.d("serviceId", "onItemClick-SalonNamesFragment : " + salonsDetails.getOwnerId());
+                    Log.d("serviceId", "onItemClick-SalonNamesFragment : " + salonsDetails.getUserId());
                     details.setSalonObj(salonsDetails);
                     details.show(getChildFragmentManager(), SalonConfirmDialogFragment.class.getSimpleName());
                 }
@@ -150,8 +150,8 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
 	public void onStatusSelected(int confirmOrDecline, SPRegistrationModel sprObj) {
 
 		int itemPos = salonNamesArray.indexOf(sprObj);
-		String id = sprObj.getOwnerId();
-		sprObj.setOwnerId(id);
+		String id = sprObj.getUserId();
+		sprObj.setUserId(id);
 		if(confirmOrDecline==1) {
 			salonNamesArray.get(itemPos).setStatusType("Confirm");
 		}else{
@@ -162,7 +162,7 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
 	}
     private void uploadIcon(SPRegistrationModel sprObj) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(sprObj.getOwnerId());
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(sprObj.getUserId());
         myRef.child("statusType").setValue(sprObj.getStatusType())
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
                     @Override

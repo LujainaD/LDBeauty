@@ -93,7 +93,7 @@ public class SPProfileFragment extends Fragment {
                 SPRegistrationModel u = dataSnapshot.getValue(SPRegistrationModel.class);// this will convert json to java
 
                 if (mFirebaseUser != null && u != null) {
-                    ownerName.setText(u.getOwnerName());
+                    ownerName.setText(u.getUserName());
                     Glide.with(mContext).load(u.getOwnerImageURL()).into(profileImag);
                     progressDialog.dismiss();
 

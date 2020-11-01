@@ -2,6 +2,7 @@ package com.lujaina.ldbeauty.User;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 import com.lujaina.ldbeauty.SP.AddGalleryFragment;
 import com.lujaina.ldbeauty.SP.AddInfoFragment;
+import com.soundcloud.android.crop.Crop;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -83,6 +85,8 @@ int i;
             salonName.setText(section.getSalonName());
             Glide.with(mContext).load(section.getSalonImageURL()).into(salonLogo);
         }
+
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

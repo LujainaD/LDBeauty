@@ -170,7 +170,7 @@ public class SPLoginFragment extends Fragment {
                         }).start();
 
                         SPRegistrationModel salonOwner = new SPRegistrationModel();
-                        salonOwner.setOwnerEmail(email);
+                        salonOwner.setUserEmail(email);
                         salonOwner.setPassWord(password);
                         loginUsingFirebaseAuth(email, password);
                     }
@@ -211,8 +211,9 @@ public class SPLoginFragment extends Fragment {
                                 /*SPProfileFragment profile = new SPProfileFragment();
                                 profile.setOwnerName(user);
                                 mMediatorInterface.changeFragmentTo(profile, SPProfileFragment.class.getSimpleName());*/
-                                startActivity(new Intent(mContext, HomeActivity.class));
 
+
+                              startActivity(new Intent(mContext, HomeActivity.class));
                             }
 
                         } else {

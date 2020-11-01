@@ -94,7 +94,7 @@ public class SalonConfirmDialogFragment extends DialogFragment {
 
 
         if (mDetails != null) {
-            ownerName.setText(mDetails.getOwnerName());
+            ownerName.setText(mDetails.getUserName());
             ownerPhone.setText(mDetails.getPhoneNumber());
             salonName.setText(mDetails.getSalonName());
             salonLocation.setText(mDetails.getSalonCity());

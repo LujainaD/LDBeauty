@@ -22,7 +22,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextClock;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
@@ -75,6 +78,9 @@ public class ServicesFragment extends Fragment {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_services, container, false);
         ImageView img = parentView.findViewById(R.id.iv_category);
+        ImageButton back = parentView.findViewById(R.id.ib_back);
+        TextView categoryTitle = parentView.findViewById(R.id.tv_categoryTitle);
+
         RecyclerView recyclerView = parentView.findViewById(R.id.recyclerView);
         serviceList = new ArrayList<>();
         mAdapter = new UserServiceAdapter(mContext);
@@ -82,9 +88,18 @@ public class ServicesFragment extends Fragment {
         setupRecyclerView(recyclerView);
         readSalonInfoFromFirebaseDB();
 
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mMediatorCallback != null){
+                    mMediatorCallback.onBackPressed();
+                }
+            }
+        });
 
         if(serviceId != null){
             Glide.with(mContext).load(serviceId.getCategoryURL()).into(img);
+            categoryTitle.setText(serviceId.getCategoryTitle());
         }
         return parentView;
     }

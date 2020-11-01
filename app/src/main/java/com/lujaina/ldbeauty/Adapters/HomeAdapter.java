@@ -62,7 +62,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder>{
             @Override
             public void onClick(View v) {
                 if(mListener != null){
-                    Log.d("selectedSalon", "onItemClick-HomeAdapter : " + names.getOwnerId());
+                    Log.d("selectedSalon", "onItemClick-HomeAdapter : " + names.getUserId());
                     mListener.onClick(names);
                 }
             }

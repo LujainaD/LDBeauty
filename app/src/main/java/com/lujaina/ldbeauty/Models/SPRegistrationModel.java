@@ -1,10 +1,10 @@
 package com.lujaina.ldbeauty.Models;
 
 public class SPRegistrationModel {
-    private String ownerId;
-    private String ownerName;
+    private String userId;
+    private String userName;
     private String phoneNumber;
-    private String ownerEmail;
+    private String userEmail;
     private String passWord;
     private String ownerImageURL;
 
@@ -21,20 +21,20 @@ public class SPRegistrationModel {
     private String salonSection;
 
 
-    public String getOwnerId() {
-        return ownerId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setOwnerId(String ownerId) {
-        this.ownerId = ownerId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getOwnerName() {
-        return ownerName;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPhoneNumber() {
@@ -45,12 +45,12 @@ public class SPRegistrationModel {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getOwnerEmail() {
-        return ownerEmail;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setOwnerEmail(String ownerEmail) {
-        this.ownerEmail = ownerEmail;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getPassWord() {

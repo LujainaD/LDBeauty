@@ -47,6 +47,7 @@ public class AddSalonOffersFragment extends Fragment implements RecyclerItemTouc
     private ProgressDialog progressDialog;
 
     private OfferModel offer;
+    private String salonName;
 
     public AddSalonOffersFragment() {
         // Required empty public constructor
@@ -89,7 +90,7 @@ public class AddSalonOffersFragment extends Fragment implements RecyclerItemTouc
             @Override
             public void onClick(View v) {
                 OffersDialogFragment dialogFragment = new OffersDialogFragment();
-                dialogFragment.setOffers(offer);
+                dialogFragment.setOffers(offer, salonName);
                 dialogFragment.show(getChildFragmentManager(), OffersDialogFragment.class.getSimpleName());
             }
         });
@@ -160,7 +161,7 @@ public class AddSalonOffersFragment extends Fragment implements RecyclerItemTouc
                 case ItemTouchHelper.RIGHT:
                     if (mMediatorInterface != null) {
                         AddOffersAppointmentFragment appointment = new AddOffersAppointmentFragment();
-                        appointment.setAddAppointmentFragment(swipedService);
+                        appointment.setAddAppointmentFragment(swipedService, salonName);
                         mMediatorInterface.changeFragmentTo(appointment, AddOffersAppointmentFragment.class.getSimpleName());
                     }
                     break;
@@ -171,4 +172,7 @@ public class AddSalonOffersFragment extends Fragment implements RecyclerItemTouc
     }
 
 
+    public void setSalonInfo(String salonName) {
+        this.salonName =salonName;
+    }
 }

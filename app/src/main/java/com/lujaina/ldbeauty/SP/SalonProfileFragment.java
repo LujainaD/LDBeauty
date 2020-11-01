@@ -129,7 +129,9 @@ public class SalonProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (mMediatorInterface !=null){
-                    mMediatorInterface.changeFragmentTo(new AddSalonOffersFragment(), AddSalonOffersFragment.class.getSimpleName());
+                    AddSalonOffersFragment salonInfo = new AddSalonOffersFragment();
+                    salonInfo.setSalonInfo(salonName.getText().toString());
+                    mMediatorInterface.changeFragmentTo(salonInfo, AddSalonOffersFragment.class.getSimpleName());
                 }
             }
         });

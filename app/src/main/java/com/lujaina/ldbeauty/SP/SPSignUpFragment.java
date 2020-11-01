@@ -392,9 +392,9 @@ public class SPSignUpFragment extends Fragment {
                             FirebaseUser user = mAuth.getCurrentUser();
                             SPRegistrationModel registration = new SPRegistrationModel();
                             assert user != null;
-                            registration.setOwnerId(user.getUid());
-                            registration.setOwnerName(name);
-                            registration.setOwnerEmail(email);
+                            registration.setUserId(user.getUid());
+                            registration.setUserName(name);
+                            registration.setUserEmail(email);
                             registration.setPhoneNumber(phoneNumber);
                             registration.setSalonName(salonname);
                             registration.setSalonCity(city);
@@ -491,7 +491,7 @@ public class SPSignUpFragment extends Fragment {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner);
 
-        myRef.child(registration.getOwnerId()).setValue(registration).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
+        myRef.child(registration.getUserId()).setValue(registration).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (mMediatorInterface != null) {

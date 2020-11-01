@@ -2,6 +2,8 @@ package com.lujaina.ldbeauty.Models;
 
 public class OfferModel {
     private String salonOwnerId;
+    private String salonName;
+
     private String offerId;
     private String title;
     private String services;
@@ -14,6 +16,14 @@ public class OfferModel {
 
     public void setSalonOwnerId(String salonOwnerId) {
         this.salonOwnerId = salonOwnerId;
+    }
+
+    public String getSalonName() {
+        return salonName;
+    }
+
+    public void setSalonName(String salonName) {
+        this.salonName = salonName;
     }
 
     public String getOfferId() {

@@ -8,6 +8,19 @@ public class AppointmentModel {
     private String recordId;
     private String pickedTime;
     private String appointmentDate;
+	private String salonName;
+
+
+	private boolean isSelected;
+
+
+	public boolean isSelected() {
+		return isSelected;
+	}
+
+	public void setSelected(boolean selected) {
+		isSelected = selected;
+	}
 
 	public String getCategoryId() {
 		return categoryId;
@@ -63,5 +76,13 @@ public class AppointmentModel {
 
 	public void setAppointmentDate(String appointmentDate) {
 		this.appointmentDate = appointmentDate;
+	}
+
+	public String getSalonName() {
+		return salonName;
+	}
+
+	public void setSalonName(String salonName) {
+		this.salonName = salonName;
 	}
 }

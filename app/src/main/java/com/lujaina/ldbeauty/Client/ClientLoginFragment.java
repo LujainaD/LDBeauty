@@ -1,7 +1,8 @@
-package com.lujaina.ldbeauty.AppOwner;
+package com.lujaina.ldbeauty.Client;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,8 +23,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Dialogs.ResetPasswordDialogFragment;
+import com.lujaina.ldbeauty.HomeActivity;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
+import com.lujaina.ldbeauty.Models.AppointmentModel;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 import com.lujaina.ldbeauty.SignUpFragment;
@@ -32,18 +41,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class AOLoginFragment extends Fragment {
+public class ClientLoginFragment extends Fragment {
+
     private static final String KEY_TAG = "login";
 
     private FirebaseAuth mAuth;
-    private FirebaseUser mFirebaseUser;
 
     private Context mContext;
     private MediatorInterface mMediatorInterface;
+
     private ProgressDialog progressDialog;
     private int status = 0;
     Handler handler = new Handler();
-    public AOLoginFragment() {
+
+    public ClientLoginFragment() {
         // Required empty public constructor
     }
     @Override
@@ -57,26 +68,24 @@ public class AOLoginFragment extends Fragment {
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View parentView = inflater.inflate(R.layout.fragment_a_o_login, container, false);
-        mAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mAuth.getCurrentUser();
+        View parentView = inflater.inflate(R.layout.fragment_s_p_login, container, false);
         final EditText ti_email = parentView.findViewById(R.id.ti_userEmail);
         final EditText ti_password = parentView.findViewById(R.id.ti_password);
         Button login = parentView.findViewById(R.id.btn_login);
-        TextView forget = parentView.findViewById(R.id.tv_forget);
         TextView signup = parentView.findViewById(R.id.tv_SignUp);
+        TextView forget = parentView.findViewById(R.id.tv_forget);
+        mAuth = FirebaseAuth.getInstance();
 
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mMediatorInterface != null){
                     SignUpFragment position = new SignUpFragment();
-                    position.setViewPager(0);
+                    position.setViewPager(1);
                     mMediatorInterface.changeFragmentTo(position, SignUpFragment.class.getSimpleName());
                 }
             }
@@ -86,11 +95,11 @@ public class AOLoginFragment extends Fragment {
 
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                    if(hasFocus){
-                        ti_email.setHint("");
-                    }else{
-                        ti_email.setHint(R.string.userEmail);
-                    }
+                if(hasFocus){
+                    ti_email.setHint("");
+                }else{
+                    ti_email.setHint(R.string.userEmail);
+                }
 
             }
         });
@@ -109,8 +118,6 @@ public class AOLoginFragment extends Fragment {
         });
 
 
-
-
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,62 +130,59 @@ public class AOLoginFragment extends Fragment {
                         ti_email.setError("Please write your email");
                     } else if (!isEmailValid(email)) {
                         ti_email.setError("invalid email");
+
                     } else if (password.isEmpty()) {
                         ti_password.setError("please write your password");
+
                     }else {
-                        if(email.equals("Lujaina.me@hotmail.com") && password.equals("Lujaina95")) {
-                            progressDialog = new ProgressDialog(mContext);
-                            progressDialog.setCancelable(false);
-                            progressDialog.show();
-                            progressDialog.setContentView(R.layout.custom_progress_dialog);
-                            TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
-                            final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
-                            progressText.setText("Welcome Back..");
-                            progressText.setVisibility(View.VISIBLE);
-                            progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                            SPRegistrationModel salonOwner = new SPRegistrationModel();
-                            salonOwner.setUserEmail(email);
-                            salonOwner.setPassWord(password);
-                            loginUsingFirebaseAuth(email, password);
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    while (status < 100) {
+                        progressDialog = new ProgressDialog(mContext);
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
+                        progressDialog.setContentView(R.layout.custom_progress_dialog);
+                        final TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
+                        final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
+                        progressText.setText("Welcome Back");
+                        progressText.setVisibility(View.VISIBLE);
+                        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
-                                        status += 1;
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                while (status < 100) {
 
-                                        try {
-                                            Thread.sleep(200);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
+                                    status += 1;
 
-                                        handler.post(new Runnable() {
-                                            @Override
-                                            public void run() {
-
-                                                progressDialog.setProgress(status);
-                                                progressPercentage.setText(String.valueOf(status)+"%");
-
-                                                if (status == 100) {
-                                                    progressDialog.dismiss();
-                                                }
-                                            }
-                                        });
+                                    try {
+                                        Thread.sleep(200);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
                                     }
+
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            progressDialog.setProgress(status);
+                                            progressPercentage.setText(String.valueOf(status)+"%");
+
+                                            if (status == 100) {
+                                                progressDialog.dismiss();
+                                            }
+                                        }
+                                    });
                                 }
-                            }).start();
+                            }
+                        }).start();
 
-                        }else{
-                            Toast.makeText(mContext, "Sorry your are not the App Owner", Toast.LENGTH_SHORT).show();
-                        }
-
+                        SPRegistrationModel salonOwner = new SPRegistrationModel();
+                        salonOwner.setUserEmail(email);
+                        salonOwner.setPassWord(password);
+                        loginUsingFirebaseAuth(email, password);
                     }
                 }
+
             }
         });
-
-
         forget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,39 +193,66 @@ public class AOLoginFragment extends Fragment {
             }
         });
 
-
-
         return parentView;
     }
 
-    private void loginUsingFirebaseAuth(String email, String password) {
+    private void loginUsingFirebaseAuth(final String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-
+                        /*progressDialog.setTitle("Welcome Back"+ user.getOwnerName() );
+                        progressDialog.show();*/
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(KEY_TAG, "signInWithEmail:success");
-                            progressDialog.dismiss();
 
-                            if(mMediatorInterface != null){
-                                mMediatorInterface.changeFragmentTo(new AppOwnerProfileFragment(), AppOwnerProfileFragment.class.getSimpleName());
-                            }
+                            checkIfClient(email);
+
+                              startActivity(new Intent(mContext, HomeActivity.class));
 
                         } else {
                             // If sign in fails, display a message to the user.
                             progressDialog.dismiss();
-
                             Log.w(KEY_TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(mContext,"incorrect email or password",
                                     Toast.LENGTH_SHORT).show();
                         }
-
-                        // ...
                     }
                 });
+    }
 
+    private void checkIfClient(final String email) {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef;
+        myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Client);
+
+        myRef.orderByChild("ownerEmail").equalTo(email).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("client", "Client Email : "+ email);
+                SPRegistrationModel model = dataSnapshot.getValue(SPRegistrationModel.class);
+                if(model != null) {
+                    String emailDB = model.getUserEmail();
+                    Log.d("client", "DB Email : " + model.getUserType());
+                   if (email == emailDB) {
+                        progressDialog.dismiss();
+                        startActivity(new Intent(mContext, HomeActivity.class));
+                    } else {
+                        progressDialog.dismiss();
+                        Toast.makeText(mContext,"You r not client/ not registered",
+                                Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Toast.makeText(mContext,"You r not client",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private boolean isEmailValid(String email) {
@@ -230,6 +261,4 @@ public class AOLoginFragment extends Fragment {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
-
-
 }
