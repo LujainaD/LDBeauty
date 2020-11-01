@@ -175,7 +175,6 @@ public class OfferAppointmentFragment extends Fragment {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.w("owner", "salon Owner "+ ownerId.getUserId());
 
                 selectedDate();
             }

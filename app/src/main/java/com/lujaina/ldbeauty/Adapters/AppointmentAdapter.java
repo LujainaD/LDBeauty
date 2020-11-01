@@ -26,8 +26,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     private ArrayList<AppointmentModel> mCategory;
     private AppointmentAdapter.onClickListener mListener;
 
-    // if checkedPosition = 0, 1st item is selected by default
-    private int checkedPosition = 0;
+    int clickedposition = 0;
 
     public AppointmentAdapter(Context mContext) {
         this.mContext = mContext;
@@ -72,18 +71,25 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
                     holder.card.getCardBackgroundColor();
                     ColorStateList.valueOf(Color.parseColor("#FFFFFF"));
-                    holder.card.setCardBackgroundColor(Color.parseColor("#FFCCEC"));
+                    holder.card.setCardBackgroundColor(Color.parseColor("#DA6EA4"));
+                    holder.time.setTextColor(Color.parseColor("#FFFFFF"));
+/*
                     mCategory.add(category);
-
+*/
 
                 }else {
                     holder.card.getCardBackgroundColor();
-                    ColorStateList.valueOf(Color.parseColor("#FFCCEC"));
+                    ColorStateList.valueOf(Color.parseColor("#DA6EA4"));
                     holder.card.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+                    holder.time.setTextColor(Color.parseColor("#000000"));
+
+/*
                     mCategory.remove(category);
+*/
 
 
                 }
+
 
                 isClicked[0] = !isClicked[0];
 
@@ -136,6 +142,9 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             time = itemView.findViewById(R.id.itv_time);
             card = itemView.findViewById(R.id.card);
 
+
         }
+
+
     }
 }
