@@ -25,6 +25,12 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Dialogs.ResetPasswordDialogFragment;
 import com.lujaina.ldbeauty.HomeActivity;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
@@ -32,6 +38,7 @@ import com.lujaina.ldbeauty.MainActivity;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 import com.lujaina.ldbeauty.SignUpFragment;
+import com.lujaina.ldbeauty.User.SalonsHomeFragment;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -203,18 +210,11 @@ public class SPLoginFragment extends Fragment {
                         progressDialog.show();*/
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(KEY_TAG, "signInWithEmail:success");
-                            FirebaseUser mFirebaseUser = mAuth.getCurrentUser();
-                            progressDialog.dismiss();
 
-                            if(mMediatorInterface != null){
-                                /*SPProfileFragment profile = new SPProfileFragment();
-                                profile.setOwnerName(user);
-                                mMediatorInterface.changeFragmentTo(profile, SPProfileFragment.class.getSimpleName());*/
+                            String userId = task.getResult().getUser().getUid();
 
+                            checkUserRole(userId);
 
-                              startActivity(new Intent(mContext, HomeActivity.class));
-                            }
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -227,6 +227,49 @@ public class SPLoginFragment extends Fragment {
                 });
     }
 
+    private void checkUserRole(String userId) {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef;
+        myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.All_Users).child(userId);
+
+        myRef.orderByChild(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                progressDialog.dismiss();
+                SPRegistrationModel model = snapshot.getValue(SPRegistrationModel.class);
+                assert model != null;
+                model.getUserType();
+                Toast.makeText(mContext, model.getUserType(), Toast.LENGTH_SHORT).show();
+
+
+                if(model.getUserType().equals("Client")){
+                    progressDialog.dismiss();
+                    Toast.makeText(mContext, "u r not Salon Owner", Toast.LENGTH_SHORT).show();
+
+                }else if(model.getUserType().equals("Salon Owner")){
+                    if (mMediatorInterface != null) {
+                        progressDialog.dismiss();
+                        SalonsHomeFragment clientInfo = new SalonsHomeFragment();
+                        mMediatorInterface.changeFragmentTo(new SalonsHomeFragment(),SalonsHomeFragment.class.getSimpleName());
+
+
+                    }
+                }else{
+                    progressDialog.dismiss();
+                    Toast.makeText(mContext, "u r not registered", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
     private boolean isEmailValid(String email) {
         String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);

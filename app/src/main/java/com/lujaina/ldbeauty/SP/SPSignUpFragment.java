@@ -47,6 +47,7 @@ import com.lujaina.ldbeauty.LoginChoicesFragment;
 import com.lujaina.ldbeauty.MainActivity;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
+import com.lujaina.ldbeauty.User.SalonsHomeFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -487,16 +488,29 @@ public class SPSignUpFragment extends Fragment {
 				});
 	}
 
-	private void addToDB(SPRegistrationModel registration) {
+	private void addToDB(final SPRegistrationModel registration) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner);
 
         myRef.child(registration.getUserId()).setValue(registration).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+                addAllUsersToDB(registration);
+            }
+        });
+    }
+
+    private void addAllUsersToDB(SPRegistrationModel registration) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.All_Users);
+
+        myRef.child(registration.getUserId()).setValue(registration).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
                 if (mMediatorInterface != null) {
                     progressDialog.dismiss();
-                    mMediatorInterface.changeFragmentTo(new SPProfileFragment(),SPProfileFragment.class.getSimpleName());
+                    mMediatorInterface.changeFragmentTo(new SalonsHomeFragment(),SalonsHomeFragment.class.getSimpleName());
 
 
                 } else {

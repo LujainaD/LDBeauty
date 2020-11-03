@@ -92,6 +92,8 @@ public class SalonsHomeFragment extends Fragment {
         mFirebaseUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
         myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner);
+        Log.w("userName", "user"+ mFirebaseUser.getUid());
+
         EditText ti_search = parentView.findViewById(R.id.tv_search);
         RecyclerView recyclerView = parentView.findViewById(R.id.rv_salons);
         salonNamesArray = new ArrayList<>();
@@ -193,5 +195,6 @@ public class SalonsHomeFragment extends Fragment {
             }
         });
     }
+
 
 }

@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +35,7 @@ import com.lujaina.ldbeauty.Models.AppointmentModel;
 import com.lujaina.ldbeauty.Models.ClientsAppointmentModel;
 import com.lujaina.ldbeauty.Models.OfferModel;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
+import com.lujaina.ldbeauty.Models.TimeModel;
 import com.lujaina.ldbeauty.R;
 
 import java.text.SimpleDateFormat;
@@ -44,7 +44,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class OfferAppointmentFragment extends Fragment {
+public class OfferAppointmentFragment extends Fragment implements AppointmentAdapter.onTimePickedListener{
 
     public static final String DATE_FORMAT    = "dd/MM/yyyy";
 
@@ -73,7 +73,6 @@ public class OfferAppointmentFragment extends Fragment {
 
     private ArrayList<AppointmentModel> timeList;
     private AppointmentAdapter mAdapter;
-    AppointmentModel appointmentModel;
 
     String sDay;
     String sMonth;
@@ -176,7 +175,9 @@ public class OfferAppointmentFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+/*
                 selectedDate();
+*/
             }
         });
 
@@ -184,6 +185,7 @@ public class OfferAppointmentFragment extends Fragment {
         return parentView;
     }
 
+/*
     private void selectedDate(){
         ClientsAppointmentModel clientsAppointment = new ClientsAppointmentModel();
             clientsAppointment.setUserId(mFirebaseUser.getUid());
@@ -198,8 +200,9 @@ public class OfferAppointmentFragment extends Fragment {
 
 
     }
+*/
 
-    private void addAppointmentToDB(ClientsAppointmentModel category) {
+   /* private void addAppointmentToDB(ClientsAppointmentModel clientAppointment) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference salonRef;
 
@@ -213,10 +216,10 @@ public class OfferAppointmentFragment extends Fragment {
         String appointmentId = salonRef.push().getKey();
 
 
-salonRef.child(appointmentId).setValue(category);
+salonRef.child(appointmentId).setValue(clientAppointment);
 
 
-    }
+    }*/
 
 
 
@@ -304,13 +307,17 @@ salonRef.child(appointmentId).setValue(category);
                 .child(Constants.Salon_Offers).child(offerID.getOfferId()).child(Constants.Service_Appointment);
 
 
-        myRef.orderByChild("appointmentDate").equalTo(datePicked).addValueEventListener(new ValueEventListener() {
+        myRef.orderByChild("appointmentDate").equalTo(datePicked).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 timeList.clear();
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
-                    AppointmentModel category = d.getValue(AppointmentModel.class);
-                    timeList.add(category);
+/*
+                    String time = (String) d.getValue();
+*/
+
+                    AppointmentModel appointmentModel = d.getValue(AppointmentModel.class);
+                    timeList.add(appointmentModel);
 
                 }
                 mAdapter.update(timeList);
@@ -349,6 +356,14 @@ salonRef.child(appointmentId).setValue(category);
         int mDay = c.get(Calendar.DAY_OF_MONTH);
 
         return mDay + "/" + (mMonth + 1) + "/" + mYear;
+    }
+
+    @Override
+    public void onItemSelected(int position, int previousSelectedposition) {
+       /* timeList.set(position, timeList.get(position).isSelected());
+        timeList.set(position, false)
+        mAdapter.notifyDataSetChanged();*/
+
     }
 
 }

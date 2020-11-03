@@ -411,13 +411,38 @@ public class ClientSignUpFragment extends Fragment {
         });
     }
 
-    private void addUserInfoToDB(SPRegistrationModel registration) {
+    private void addUserInfoToDB(final SPRegistrationModel registration) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Client);
 
         myRef.child(registration.getUserId()).setValue(registration).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+
+                if(task.isSuccessful()){
+                    addAllUsersToDB(registration);
+
+                }else {
+                    Toast.makeText(mContext, "failed ", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+
+                }
+
+            }
+
+
+
+        });
+    }
+
+    private void addAllUsersToDB(final SPRegistrationModel registration) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.All_Users);
+
+        myRef.child(registration.getUserId()).setValue(registration).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
                 if (mMediatorInterface != null) {
                     progressDialog.dismiss();
                     mMediatorInterface.changeFragmentTo(new SalonsHomeFragment(),SalonsHomeFragment.class.getSimpleName());

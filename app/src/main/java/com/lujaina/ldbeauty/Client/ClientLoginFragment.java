@@ -36,6 +36,7 @@ import com.lujaina.ldbeauty.Models.AppointmentModel;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 import com.lujaina.ldbeauty.SignUpFragment;
+import com.lujaina.ldbeauty.User.SalonsHomeFragment;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -205,9 +206,10 @@ public class ClientLoginFragment extends Fragment {
                         progressDialog.show();*/
                         if (task.isSuccessful()) {
 
-                            checkIfClient(email);
+                            String userId = task.getResult().getUser().getUid();
 
-                              startActivity(new Intent(mContext, HomeActivity.class));
+                            checkUserRole(userId);
+
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -220,40 +222,49 @@ public class ClientLoginFragment extends Fragment {
                 });
     }
 
-    private void checkIfClient(final String email) {
+    private void checkUserRole(String userId) {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef;
-        myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Client);
+        myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.All_Users).child(userId);
 
-        myRef.orderByChild("ownerEmail").equalTo(email).addValueEventListener(new ValueEventListener() {
+        myRef.orderByChild(userId).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("client", "Client Email : "+ email);
-                SPRegistrationModel model = dataSnapshot.getValue(SPRegistrationModel.class);
-                if(model != null) {
-                    String emailDB = model.getUserEmail();
-                    Log.d("client", "DB Email : " + model.getUserType());
-                   if (email == emailDB) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                progressDialog.dismiss();
+                SPRegistrationModel model = snapshot.getValue(SPRegistrationModel.class);
+                assert model != null;
+                model.getUserType();
+                Toast.makeText(mContext, model.getUserType(), Toast.LENGTH_SHORT).show();
+
+
+                if(model.getUserType().equals("Client")){
+                    if (mMediatorInterface != null) {
                         progressDialog.dismiss();
-                        startActivity(new Intent(mContext, HomeActivity.class));
-                    } else {
-                        progressDialog.dismiss();
-                        Toast.makeText(mContext,"You r not client/ not registered",
-                                Toast.LENGTH_SHORT).show();
+                        SalonsHomeFragment clientInfo = new SalonsHomeFragment();
+                        mMediatorInterface.changeFragmentTo(new SalonsHomeFragment(),SalonsHomeFragment.class.getSimpleName());
+
 
                     }
-                }
+                }else if(model.getUserType().equals("Salon Owner")){
+                    progressDialog.dismiss();
+                    Toast.makeText(mContext, "u r not client", Toast.LENGTH_SHORT).show();
 
+                }else{
+                    progressDialog.dismiss();
+                    Toast.makeText(mContext, "u r not registered", Toast.LENGTH_SHORT).show();
+
+                }
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Toast.makeText(mContext,"You r not client",
-                        Toast.LENGTH_SHORT).show();
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
+
 
     private boolean isEmailValid(String email) {
         String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";

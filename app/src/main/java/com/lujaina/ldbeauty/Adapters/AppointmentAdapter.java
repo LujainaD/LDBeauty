@@ -7,8 +7,6 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,34 +14,34 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lujaina.ldbeauty.Models.AppointmentModel;
-import com.lujaina.ldbeauty.Models.OfferModel;
+import com.lujaina.ldbeauty.Models.AppointmentModel;
 import com.lujaina.ldbeauty.R;
 
 import java.util.ArrayList;
 
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.MyViewHolder>{
     private final Context mContext;
-    private ArrayList<AppointmentModel> mCategory;
-    private AppointmentAdapter.onClickListener mListener;
+    private ArrayList<AppointmentModel> mTime;
+    private AppointmentAdapter.onTimePickedListener mListener;
 
-    int clickedposition = 0;
+    int previousSelectedItem = 0;
 
     public AppointmentAdapter(Context mContext) {
         this.mContext = mContext;
-        this.mCategory = new ArrayList<>();
+        this.mTime = new ArrayList<>();
     }
 
-    public void update(ArrayList<AppointmentModel> names) {
-        mCategory = names;
+    public void update(ArrayList<AppointmentModel> timeArray) {
+        mTime = timeArray;
         notifyDataSetChanged();
 
     }
     public void update(int position, AppointmentModel appointmentModel) {
-        mCategory.add(position, appointmentModel);
+        mTime.add(position, appointmentModel);
         notifyItemChanged(position);
     }
     public void removeItem(int position){
-        mCategory.remove(position);
+        mTime.remove(position);
         notifyItemRemoved(position);
     }
 
@@ -58,8 +56,8 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull final AppointmentAdapter.MyViewHolder holder, final int position) {
-        final AppointmentModel category = mCategory.get(position);
-        holder.time.setText(category.getPickedTime());
+        final AppointmentModel model = mTime.get(position);
+        holder.time.setText(model.getPickedTime());
 
         final boolean[] isClicked = {true};
 
@@ -67,8 +65,13 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
+/*
+                if(mTime.get(position).isSelected()){
+*/
                 if(isClicked[0]){
 
+
+                    previousSelectedItem = position;
                     holder.card.getCardBackgroundColor();
                     ColorStateList.valueOf(Color.parseColor("#FFFFFF"));
                     holder.card.setCardBackgroundColor(Color.parseColor("#DA6EA4"));
@@ -88,10 +91,14 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 */
 
 
+
                 }
 
 
                 isClicked[0] = !isClicked[0];
+/*
+                mListener.onItemSelected(position , previousSelectedItem);
+*/
 
             }
         });
@@ -116,20 +123,19 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     @Override
     public int getItemCount() {
-        return mCategory.size();
+        return mTime.size();
     }
 
    /* public ArrayList<AppointmentModel> getAppointmentArrayList() {
         return mCategory;
     }*/
 
-    public void setonClickListener(AppointmentAdapter.onClickListener listener){
+    public void setonClickListener(AppointmentAdapter.onTimePickedListener listener){
         mListener = listener;
     }
 
-    public interface onClickListener {
-        void onClick(AppointmentModel category);
-        void onDelete(AppointmentModel category);
+    public interface onTimePickedListener {
+        void onItemSelected(int position, int previousSelectedPosition);
     }
 
 

@@ -44,7 +44,8 @@ public class SelectedSalonFragment extends Fragment {
     private Context mContext;
     private MediatorInterface mMediatorCallback;
     private SectionsAdapter mAdapter;
-int i;
+    int i;
+    private String userName;
 
     public SelectedSalonFragment() {
         // Required empty public constructor

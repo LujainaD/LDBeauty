@@ -48,6 +48,7 @@ public class OffersFragment extends Fragment {
 
     private OfferModel offer;
     private SPRegistrationModel ownerId;
+    private String userName;
 
     public OffersFragment() {
         // Required empty public constructor
@@ -141,7 +142,7 @@ public class OffersFragment extends Fragment {
             }
         });
     }
-    public void setSalonOffers( SPRegistrationModel section) {
+    public void setSalonOffers(SPRegistrationModel section) {
         ownerId = section;
     }
 }
