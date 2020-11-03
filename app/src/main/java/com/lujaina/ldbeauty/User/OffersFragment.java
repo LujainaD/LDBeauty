@@ -48,7 +48,6 @@ public class OffersFragment extends Fragment {
 
     private OfferModel offer;
     private SPRegistrationModel ownerId;
-    private String userName;
 
     public OffersFragment() {
         // Required empty public constructor
