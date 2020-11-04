@@ -124,7 +124,7 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
 
 
         timeList = new ArrayList<>();
-        mAdapter = new AppointmentAdapter(mContext);
+        mAdapter = new AppointmentAdapter(mContext , this);
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
 
@@ -312,16 +312,10 @@ salonRef.child(appointmentId).setValue(clientAppointment);
             public void onDataChange(DataSnapshot dataSnapshot) {
                 timeList.clear();
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
-/*
-                    String time = (String) d.getValue();
-*/
-
                     AppointmentModel appointmentModel = d.getValue(AppointmentModel.class);
                     timeList.add(appointmentModel);
-
                 }
                 mAdapter.update(timeList);
-
             }
 
             @Override
@@ -359,10 +353,13 @@ salonRef.child(appointmentId).setValue(clientAppointment);
     }
 
     @Override
-    public void onItemSelected(int position, int previousSelectedposition) {
-       /* timeList.set(position, timeList.get(position).isSelected());
-        timeList.set(position, false)
-        mAdapter.notifyDataSetChanged();*/
+    public void onItemSelected(int position, int previousSelectedposition){
+		timeList.get(position).setSelected(!timeList.get(position).isSelected());
+		if(position!=previousSelectedposition) {
+			timeList.get(previousSelectedposition).setSelected(false);
+		}
+
+		mAdapter.notifyDataSetChanged();
 
     }
 

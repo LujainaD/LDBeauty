@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lujaina.ldbeauty.Models.AppointmentModel;
 import com.lujaina.ldbeauty.Models.AppointmentModel;
 import com.lujaina.ldbeauty.R;
+import com.lujaina.ldbeauty.User.OfferAppointmentFragment;
 
 import java.util.ArrayList;
 
@@ -24,11 +25,16 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     private ArrayList<AppointmentModel> mTime;
     private AppointmentAdapter.onTimePickedListener mListener;
 
+	public interface onTimePickedListener {
+		void onItemSelected(int position, int previousSelectedPosition);
+	}
+
     int previousSelectedItem = 0;
 
-    public AppointmentAdapter(Context mContext) {
+    public AppointmentAdapter(Context mContext, OfferAppointmentFragment offerAppointmentFragment) {
         this.mContext = mContext;
         this.mTime = new ArrayList<>();
+        mListener = (onTimePickedListener) offerAppointmentFragment;
     }
 
     public void update(ArrayList<AppointmentModel> timeArray) {
@@ -61,47 +67,30 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
         final boolean[] isClicked = {true};
 
-        holder.card.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("ResourceAsColor")
-            @Override
-            public void onClick(View v) {
-/*
-                if(mTime.get(position).isSelected()){
-*/
-                if(isClicked[0]){
+		holder.card.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mListener.onItemSelected(position,previousSelectedItem);
+			}
+		});
 
 
-                    previousSelectedItem = position;
-                    holder.card.getCardBackgroundColor();
-                    ColorStateList.valueOf(Color.parseColor("#FFFFFF"));
-                    holder.card.setCardBackgroundColor(Color.parseColor("#DA6EA4"));
-                    holder.time.setTextColor(Color.parseColor("#FFFFFF"));
-/*
-                    mCategory.add(category);
-*/
-
-                }else {
-                    holder.card.getCardBackgroundColor();
-                    ColorStateList.valueOf(Color.parseColor("#DA6EA4"));
-                    holder.card.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
-                    holder.time.setTextColor(Color.parseColor("#000000"));
-
-/*
-                    mCategory.remove(category);
-*/
+		if(model.isSelected()){
+			previousSelectedItem = position;
+			holder.card.getCardBackgroundColor();
+			ColorStateList.valueOf(Color.parseColor("#FFFFFF"));
+			holder.card.setCardBackgroundColor(Color.parseColor("#DA6EA4"));
+			holder.time.setTextColor(Color.parseColor("#FFFFFF"));
+		}else {
+			holder.card.getCardBackgroundColor();
+			ColorStateList.valueOf(Color.parseColor("#DA6EA4"));
+			holder.card.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+			holder.time.setTextColor(Color.parseColor("#000000"));
+		}
 
 
 
-                }
 
-
-                isClicked[0] = !isClicked[0];
-/*
-                mListener.onItemSelected(position , previousSelectedItem);
-*/
-
-            }
-        });
 
       /*  holder.card.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
@@ -134,9 +123,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         mListener = listener;
     }
 
-    public interface onTimePickedListener {
-        void onItemSelected(int position, int previousSelectedPosition);
-    }
+
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
