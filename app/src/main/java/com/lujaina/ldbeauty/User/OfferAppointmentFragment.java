@@ -1,8 +1,10 @@
 package com.lujaina.ldbeauty.User;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +22,7 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,7 +38,6 @@ import com.lujaina.ldbeauty.Models.AppointmentModel;
 import com.lujaina.ldbeauty.Models.ClientsAppointmentModel;
 import com.lujaina.ldbeauty.Models.OfferModel;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
-import com.lujaina.ldbeauty.Models.TimeModel;
 import com.lujaina.ldbeauty.R;
 
 import java.text.SimpleDateFormat;
@@ -59,6 +61,7 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
 
     RecyclerView recyclerView;
     LinearLayoutManager lineralayoutManager;
+    Button btnConfirm;
 
     private TextView pickedDate;
     private TextView pickedTime;
@@ -80,7 +83,8 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
 
     private SPRegistrationModel ownerId;
     private OfferModel offerID;
-
+    private String userName;
+    String selectedTime;
     public OfferAppointmentFragment() {
         // Required empty public constructor
     }
@@ -96,6 +100,7 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
         }
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -110,23 +115,25 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
         ImageButton ibLeft 			= parentView.findViewById(R.id.btn_left);
         ImageButton ibRight			= parentView.findViewById(R.id.btn_right);
         recyclerView 	= parentView.findViewById(R.id.rv_time);
-        Button btnConfirm 	=	parentView.findViewById(R.id.btn_confirm);
+         btnConfirm 	=	parentView.findViewById(R.id.btn_confirm);
         pickedDate = parentView.findViewById(R.id.et_date);
 
-
+        btnConfirm.setClickable(false);
+        btnConfirm.setEnabled(false);
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
-
+        getUserInfo();
         getCurrentDate();
         showPreviousAppointments();
 
 
         timeList = new ArrayList<>();
-        mAdapter = new AppointmentAdapter(mContext , this);
+        mAdapter = new AppointmentAdapter(mContext , this, btnConfirm);
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
+
 
 
         ibCalendar.setOnClickListener(new View.OnClickListener() {
@@ -175,9 +182,9 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
             @Override
             public void onClick(View v) {
 
-/*
                 selectedDate();
-*/
+
+
             }
         });
 
@@ -185,13 +192,39 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
         return parentView;
     }
 
-/*
+
+
+private void getUserInfo(){
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference userRef;
+
+    userRef =  database.getReference(Constants.Users).child(Constants.All_Users).child(mFirebaseUser.getUid());
+    userRef.orderByChild(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            SPRegistrationModel model = dataSnapshot.getValue(SPRegistrationModel.class);
+            model.getUserName();
+            userName = model.getUserName();
+        }
+
+        @Override
+        public void onCancelled(DatabaseError error) {
+            // Failed to read value
+        }
+    });
+
+
+}
+
     private void selectedDate(){
         ClientsAppointmentModel clientsAppointment = new ClientsAppointmentModel();
             clientsAppointment.setUserId(mFirebaseUser.getUid());
             clientsAppointment.setOwnerId(offerID.getSalonOwnerId());
             clientsAppointment.setSalonName(offerID.getSalonName());
+            clientsAppointment.setClientName(userName);
             clientsAppointment.setOrderDate(currentDate());
+            clientsAppointment.setAppointmentTime(selectedTime);
+            clientsAppointment.setAppointmentDate(pickedDate.getText().toString().trim());
             clientsAppointment.setOfferServices(offerID.getServices());
             clientsAppointment.setOfferId(offerID.getOfferId());
             clientsAppointment.setAppointmentStatus("not confirmed yet");
@@ -200,9 +233,8 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
 
 
     }
-*/
 
-   /* private void addAppointmentToDB(ClientsAppointmentModel clientAppointment) {
+    private void addAppointmentToDB(ClientsAppointmentModel clientAppointment) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference salonRef;
 
@@ -212,14 +244,14 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
 
         clientRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid())
                 .child(Constants.Clients_Appointments);
-        ClientsAppointmentModel clientsAppointment = new ClientsAppointmentModel();
         String appointmentId = salonRef.push().getKey();
 
 
-salonRef.child(appointmentId).setValue(clientAppointment);
+    salonRef.child(appointmentId).setValue(clientAppointment);
+    clientRef.child(appointmentId).setValue(clientAppointment);
 
 
-    }*/
+    }
 
 
 
@@ -353,11 +385,16 @@ salonRef.child(appointmentId).setValue(clientAppointment);
     }
 
     @Override
-    public void onItemSelected(int position, int previousSelectedposition){
+    public void onItemSelected(int position, int previousSelectedposition, AppointmentModel model){
+
 		timeList.get(position).setSelected(!timeList.get(position).isSelected());
 		if(position!=previousSelectedposition) {
 			timeList.get(previousSelectedposition).setSelected(false);
+
 		}
+
+        selectedTime = model.getPickedTime();
+
 
 		mAdapter.notifyDataSetChanged();
 

@@ -236,17 +236,15 @@ public class ClientLoginFragment extends Fragment {
                 SPRegistrationModel model = snapshot.getValue(SPRegistrationModel.class);
                 assert model != null;
                 model.getUserType();
-                Toast.makeText(mContext, model.getUserType(), Toast.LENGTH_SHORT).show();
 
+                String userRole = model.getUserType();
 
                 if(model.getUserType().equals("Client")){
-                    if (mMediatorInterface != null) {
                         progressDialog.dismiss();
-                        SalonsHomeFragment clientInfo = new SalonsHomeFragment();
-                        mMediatorInterface.changeFragmentTo(new SalonsHomeFragment(),SalonsHomeFragment.class.getSimpleName());
+                        Intent i = new Intent(getActivity(), HomeActivity.class);
+                        startActivity(i);
 
 
-                    }
                 }else if(model.getUserType().equals("Salon Owner")){
                     progressDialog.dismiss();
                     Toast.makeText(mContext, "u r not client", Toast.LENGTH_SHORT).show();

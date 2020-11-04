@@ -21,12 +21,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.lujaina.ldbeauty.Client.ClientProfileFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
+import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.SP.SPProfileFragment;
 import com.lujaina.ldbeauty.User.SalonsHomeFragment;
 import com.lujaina.ldbeauty.User.SelectedSalonFragment;
@@ -34,10 +42,10 @@ import com.lujaina.ldbeauty.User.SelectedSalonFragment;
 public class HomeActivity extends AppCompatActivity implements MediatorInterface, BottomNavigationView.OnNavigationItemSelectedListener {
 
 
-    FirebaseUser mFirebaseUser;
     private FirebaseAuth mAuth;
     BottomNavigationView bottomNav;
-
+    FirebaseUser user;
+    String userRole;
 
     @SuppressLint("ResourceType")
     @Override
@@ -48,14 +56,44 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
         bottomNav.setOnNavigationItemSelectedListener(this);
         changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
         mAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mAuth.getCurrentUser();
+        user = mAuth.getCurrentUser();
+
+
+
+    }
+
+    private void getUserRole() {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef;
+        myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.All_Users).child(user.getUid());
+
+        myRef.orderByChild(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                SPRegistrationModel model = snapshot.getValue(SPRegistrationModel.class);
+                assert model != null;
+                model.getUserType();
+
+                 userRole = model.getUserType();
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        FirebaseUser user = mAuth.getCurrentUser();
+        user = mAuth.getCurrentUser();
+        if(user != null){
+            getUserRole();
 
+        }
         switch (item.getItemId()) {
             case R.id.nav_search: {
                 changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
@@ -64,15 +102,40 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
             }
 
             case R.id.nav_profile: {
-
                 if (user != null) {
+                    if (userRole != null) {
+                       if (userRole.equals("Client")) {
+                        Toast.makeText(HomeActivity.this, userRole, Toast.LENGTH_SHORT).show();
 
-                    changeFragmentTo(new SPProfileFragment(), SPProfileFragment.class.getSimpleName());
+                    } else{
+                        Toast.makeText(HomeActivity.this, userRole, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                        Toast.makeText(HomeActivity.this, "not registered", Toast.LENGTH_SHORT).show();
+                        changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
                     return true;
+                }
+            }
+
+               /*     if(userRole.equals("Client")){
+                        Toast.makeText(HomeActivity.this, "u r client", Toast.LENGTH_SHORT).show();
+
+                        changeFragmentTo(new ClientProfileFragment(), ClientProfileFragment.class.getSimpleName());
+                        return true;
+
+                    }else if(userRole.equals("Salon Owner")){
+                        Toast.makeText(HomeActivity.this, "u r Salon Owner", Toast.LENGTH_SHORT).show();
+
+                        changeFragmentTo(new SPProfileFragment(), SPProfileFragment.class.getSimpleName());
+                        return true;
+
+                    }
+
                 } else {
                     changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
                     return true;
                 }
+*/
 
             }
             case R.id.nav_app: {
@@ -81,9 +144,11 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
 */
                 return true;
             }
-        }
 
+
+        }
         return false;
+
     }
 
 
