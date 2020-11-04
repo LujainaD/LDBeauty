@@ -184,7 +184,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Offer servie/s"
+        android:text="Offer service/s"
         app:layout_constraintStart_toStartOf="@+id/tv_selected"
         app:layout_constraintTop_toBottomOf="@id/cv_service" />
 
