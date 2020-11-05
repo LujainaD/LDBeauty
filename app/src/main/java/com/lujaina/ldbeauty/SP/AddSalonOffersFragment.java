@@ -30,7 +30,7 @@ import com.lujaina.ldbeauty.Dialogs.OffersDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.OfferModel;
 import com.lujaina.ldbeauty.R;
-import com.lujaina.ldbeauty.RecyclerItemTouchHelperListener;
+import com.lujaina.ldbeauty.Interfaces.RecyclerItemTouchHelperListener;
 import com.lujaina.ldbeauty.RecyclerItemTouchHelperOffers;
 
 import java.util.ArrayList;

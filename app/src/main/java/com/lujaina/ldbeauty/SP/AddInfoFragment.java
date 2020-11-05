@@ -29,10 +29,9 @@ import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Dialogs.AddInfoDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.AddInfoModel;
-import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 import com.lujaina.ldbeauty.RecyclerItemTouchHelperInfo;
-import com.lujaina.ldbeauty.RecyclerItemTouchHelperListener;
+import com.lujaina.ldbeauty.Interfaces.RecyclerItemTouchHelperListener;
 
 import java.util.ArrayList;
 

@@ -5,15 +5,11 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lujaina.ldbeauty.Adapters.ServiceAdapter;
-import com.lujaina.ldbeauty.R;
-import com.lujaina.ldbeauty.RecyclerItemTouchHelperListener;
-
-import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+import com.lujaina.ldbeauty.Interfaces.RecyclerItemTouchHelperListener;
 
 public class RecyclerItemTouchHelperService extends ItemTouchHelper.SimpleCallback {
 

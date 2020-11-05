@@ -31,7 +31,7 @@ import com.lujaina.ldbeauty.Dialogs.AddCategoriesDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.CategoryModel;
 import com.lujaina.ldbeauty.R;
-import com.lujaina.ldbeauty.RecyclerItemTouchHelperListener;
+import com.lujaina.ldbeauty.Interfaces.RecyclerItemTouchHelperListener;
 
 import java.util.ArrayList;
 

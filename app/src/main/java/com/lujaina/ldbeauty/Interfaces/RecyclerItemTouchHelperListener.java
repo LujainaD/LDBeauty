@@ -1,4 +1,4 @@
-package com.lujaina.ldbeauty;
+package com.lujaina.ldbeauty.Interfaces;
 
 import androidx.recyclerview.widget.RecyclerView;
 

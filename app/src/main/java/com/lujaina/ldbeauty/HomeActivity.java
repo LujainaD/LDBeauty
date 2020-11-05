@@ -106,10 +106,14 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
                     if (userRole != null) {
                        if (userRole.equals("Client")) {
                         Toast.makeText(HomeActivity.this, userRole, Toast.LENGTH_SHORT).show();
+                           changeFragmentTo(new ClientProfileFragment(), ClientProfileFragment.class.getSimpleName());
 
-                    } else{
+
+                       } else{
                         Toast.makeText(HomeActivity.this, userRole, Toast.LENGTH_SHORT).show();
-                    }
+                           changeFragmentTo(new SPProfileFragment(), SPProfileFragment.class.getSimpleName());
+
+                       }
                 } else {
                         Toast.makeText(HomeActivity.this, "not registered", Toast.LENGTH_SHORT).show();
                         changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
@@ -117,25 +121,7 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
                 }
             }
 
-               /*     if(userRole.equals("Client")){
-                        Toast.makeText(HomeActivity.this, "u r client", Toast.LENGTH_SHORT).show();
 
-                        changeFragmentTo(new ClientProfileFragment(), ClientProfileFragment.class.getSimpleName());
-                        return true;
-
-                    }else if(userRole.equals("Salon Owner")){
-                        Toast.makeText(HomeActivity.this, "u r Salon Owner", Toast.LENGTH_SHORT).show();
-
-                        changeFragmentTo(new SPProfileFragment(), SPProfileFragment.class.getSimpleName());
-                        return true;
-
-                    }
-
-                } else {
-                    changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
-                    return true;
-                }
-*/
 
             }
             case R.id.nav_app: {

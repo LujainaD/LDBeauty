@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lujaina.ldbeauty.Adapters.OfferAdapter;
+import com.lujaina.ldbeauty.Interfaces.RecyclerItemTouchHelperListener;
 
 public class RecyclerItemTouchHelperOffers extends ItemTouchHelper.SimpleCallback {
 
