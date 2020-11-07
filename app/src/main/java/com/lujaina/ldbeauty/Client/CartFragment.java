@@ -77,10 +77,21 @@ public class CartFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_cart, container, false);
+        ImageButton ibBack 			= parentView.findViewById(R.id.ib_back);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
         myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner);
+        ibBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mMediatorInterface != null){
+                    mMediatorInterface.onBackPressed();
+                }
+
+            }
+        });
+
         TextView pay = parentView.findViewById(R.id.tv_pay);
 
         RecyclerView recyclerView = parentView.findViewById(R.id.rv_cart);
@@ -91,6 +102,7 @@ public class CartFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
         readClientAppointmentFireBaseDB();
+
 
         mAdapter.setonClickListener(new CartAdapter.onDeleteListener() {
             @Override
