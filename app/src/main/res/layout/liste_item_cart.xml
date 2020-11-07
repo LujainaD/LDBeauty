@@ -5,73 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-
-    <RelativeLayout
-        android:id="@+id/view_background"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/view_forground"
-        app:layout_constraintTop_toTopOf="@+id/view_forground">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:backgroundTint="#F00000"
-                android:layout_marginEnd="10dp"
-                app:cardCornerRadius="22dp"
-                android:layout_marginBottom="2dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:layout_editor_absoluteY="0dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/tv_delete"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="10dp"
-                        android:text="Delete"
-                        android:textColor="@android:color/white"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/iv_delete" />
-
-                    <ImageView
-                        android:id="@+id/iv_delete"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_alignStart="@+id/tv_delete"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="10dp"
-                        android:src="@drawable/outline_delete"
-                        app:layout_constraintEnd_toEndOf="@+id/tv_delete"
-                        app:layout_constraintStart_toStartOf="@+id/tv_delete"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                    </ImageView>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </RelativeLayout>
-
     <RelativeLayout
         android:id="@+id/view_forground"
         android:layout_width="match_parent"
@@ -84,7 +17,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/card"
             android:layout_width="match_parent"
-            android:layout_height="79dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
@@ -97,7 +30,23 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/card"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.511"
+                tools:layout_editor_absoluteX="-55dp"
+                >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/fixed_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
 
                 <TextView
                     android:id="@+id/tv_price"
@@ -112,25 +61,26 @@
                     app:layout_constraintTop_toTopOf="@+id/tv_title" />
 
 
-                <TextView
-                    android:id="@+id/tv_title"
-                    android:layout_width="0dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="20dp"
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="0dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="20dp"
 
-                    android:gravity="center|start"
-                    android:text="TextView"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/tv_price"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                        android:gravity="center|start"
+                        android:text="TextView"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_price"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.207" />
 
-
-                <TextView
+                    <TextView
                     android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
@@ -143,20 +93,161 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/tv_price" />
 
-                <TextView
-                    android:id="@+id/tv_book"
-                    android:layout_width="wrap_content"
+
+                    <ImageButton
+                        android:id="@+id/arrow_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="15dp"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:src="@drawable/ic_baseline_expand_more_24"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/tv_price"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_price" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/hidden_view"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:text="Book"
-                    android:textColor="@color/pink_text"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
+                    android:orientation="vertical"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fixed_layout">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="Salon Name:"
+                            android:textColor="#000000"
+                            android:textSize="20sp" />
+
+
+                        <TextView
+                            android:id="@+id/tv_salonName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginTop="10dp"
+                            android:paddingStart="2dp"
+                            android:text="name"
+                            android:textColor="#000000"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="20dp"
+              android:layout_marginTop="10dp"
+              android:layout_marginEnd="10dp"
+              android:layout_marginBottom="10dp"
+              android:text="Specialist: "
+              android:textColor="#000000"
+              android:textSize="20sp" />
+
+
+                        <TextView
+                            android:id="@+id/tv_specialist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="58dp"
+                            android:layout_marginTop="10dp"
+                            android:paddingStart="2dp"
+
+                            android:text="specialist"
+                            android:textColor="#000000"
+                            android:textSize="20sp" />
+                </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="Date: "
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="98dp"
+            android:layout_marginTop="10dp"
+            android:paddingStart="2dp"
+
+            android:text="date"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="Time: "
+                            android:textColor="#000000"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/tv_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="94dp"
+                            android:layout_marginTop="10dp"
+                            android:paddingStart="2dp"
+
+                            android:text="time"
+                            android:textColor="#000000"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btn_delete"
+                        android:layout_width="127dp"
+                        android:layout_height="32dp"
+                        android:layout_marginStart="230dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/btn_rectangle"
+                        android:backgroundTint="#DA6EA4"
+                        android:gravity="center"
+                        android:text="Delete"
+                        android:textColor="@color/white"/>
+
+
+                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 

@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -46,6 +47,7 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
     BottomNavigationView bottomNav;
     FirebaseUser user;
     String userRole;
+    ProgressDialog progressDialog;
 
     @SuppressLint("ResourceType")
     @Override
@@ -57,7 +59,10 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
         changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+        if(user != null){
+            getUserRole();
 
+        }
 
 
     }
@@ -89,13 +94,15 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        user = mAuth.getCurrentUser();
-        if(user != null){
-            getUserRole();
+        progressDialog = new ProgressDialog(HomeActivity.this);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.progress_bar);
+        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
-        }
         switch (item.getItemId()) {
             case R.id.nav_search: {
+                progressDialog.dismiss();
                 changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
                 return true;
 
@@ -105,26 +112,36 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
                 if (user != null) {
                     if (userRole != null) {
                        if (userRole.equals("Client")) {
+                           progressDialog.dismiss();
                         Toast.makeText(HomeActivity.this, userRole, Toast.LENGTH_SHORT).show();
                            changeFragmentTo(new ClientProfileFragment(), ClientProfileFragment.class.getSimpleName());
 
 
                        } else{
-                        Toast.makeText(HomeActivity.this, userRole, Toast.LENGTH_SHORT).show();
+                           progressDialog.dismiss();
+
+                           Toast.makeText(HomeActivity.this, userRole, Toast.LENGTH_SHORT).show();
                            changeFragmentTo(new SPProfileFragment(), SPProfileFragment.class.getSimpleName());
 
                        }
                 } else {
+                        progressDialog.dismiss();
                         Toast.makeText(HomeActivity.this, "not registered", Toast.LENGTH_SHORT).show();
                         changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
                     return true;
                 }
-            }
+            }else {
+                    progressDialog.dismiss();
+                    Toast.makeText(HomeActivity.this, "not registered", Toast.LENGTH_SHORT).show();
+                    changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
+                    return true;
+                }
 
 
 
             }
             case R.id.nav_app: {
+                progressDialog.dismiss();
 /*
                 changeFragmentTo(new AppProfileFragment(), AppProfileFragment.class.getSimpleName());
 */

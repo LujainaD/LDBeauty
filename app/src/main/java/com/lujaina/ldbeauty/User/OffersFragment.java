@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Adapters.UserOfferAdapter;
+import com.lujaina.ldbeauty.Client.CartFragment;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.OfferModel;
@@ -69,6 +71,8 @@ public class OffersFragment extends Fragment {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_salon_offers, container, false);
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
+        TextView pay = parentView.findViewById(R.id.tv_cart);
+        pay.setVisibility(View.VISIBLE);
         add.setVisibility(View.INVISIBLE);
         ImageButton back = parentView.findViewById(R.id.ib_back);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -79,6 +83,16 @@ public class OffersFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
         readSalonOffersFromFirebaseDB();
+
+        pay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mMediatorInterface != null){
+                    mMediatorInterface.changeFragmentTo(new CartFragment(), CartFragment.class.getSimpleName());
+                }
+
+            }
+        });
 
         mAdapter.setonClickListener(new UserOfferAdapter.onClickListener() {
             @Override
