@@ -68,9 +68,6 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     public void onBindViewHolder(@NonNull final AppointmentAdapter.MyViewHolder holder, final int position) {
         final AppointmentModel model = mTime.get(position);
         holder.time.setText(model.getPickedTime());
-
-        final boolean[] isClicked = {true};
-
 		holder.card.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -93,7 +90,6 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 		}else {
             btnConfirm.setEnabled(false);
             btnConfirm.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.lightGray), PorterDuff.Mode.MULTIPLY);
-
             holder.card.getCardBackgroundColor();
 			ColorStateList.valueOf(Color.parseColor("#DA6EA4"));
 			holder.card.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -101,6 +97,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
 
         }
+
 
 
     }

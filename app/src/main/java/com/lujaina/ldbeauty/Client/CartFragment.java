@@ -5,15 +5,21 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,6 +55,9 @@ public class CartFragment extends Fragment {
     private CartAdapter mAdapter;
     ArrayList<ClientsAppointmentModel> cartArray;
 
+
+
+
     public CartFragment() {
         // Required empty public constructor
     }
@@ -83,8 +92,19 @@ public class CartFragment extends Fragment {
         setupRecyclerView(recyclerView);
         readClientAppointmentFireBaseDB();
 
+        mAdapter.setonClickListener(new CartAdapter.onDeleteListener() {
+            @Override
+            public void onDelete( ClientsAppointmentModel model) {
+                deleteAppointmentFromCart(model);
+            }
+        });
+
 
         return parentView;
+    }
+
+    private void deleteAppointmentFromCart(ClientsAppointmentModel model) {
+
     }
 
     private void readClientAppointmentFireBaseDB() {

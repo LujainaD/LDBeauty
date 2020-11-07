@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Adapters.UserOfferAdapter;
 import com.lujaina.ldbeauty.Client.CartFragment;
 import com.lujaina.ldbeauty.Constants;
+import com.lujaina.ldbeauty.Dialogs.NoLoginDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.OfferModel;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
@@ -97,11 +98,17 @@ public class OffersFragment extends Fragment {
         mAdapter.setonClickListener(new UserOfferAdapter.onClickListener() {
             @Override
             public void onClick(OfferModel offerModel) {
-                if(mMediatorInterface != null){
-                    OfferAppointmentFragment offerAppointmentFragment = new OfferAppointmentFragment();
-                    offerAppointmentFragment.setOfferId(offerModel);
-                    mMediatorInterface.changeFragmentTo(offerAppointmentFragment, OfferAppointmentFragment.class.getSimpleName());
+                if(mFirebaseUser == null){
+                    NoLoginDialogFragment dialog = new NoLoginDialogFragment();
+                    dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
+                }else{
+                    if(mMediatorInterface != null){
+                        OfferAppointmentFragment offerAppointmentFragment = new OfferAppointmentFragment();
+                        offerAppointmentFragment.setOfferId(offerModel);
+                        mMediatorInterface.changeFragmentTo(offerAppointmentFragment, OfferAppointmentFragment.class.getSimpleName());
+                    }
                 }
+
             }
         });
 

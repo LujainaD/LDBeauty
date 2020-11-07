@@ -48,62 +48,51 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0">
 
-                <TextView
-                    android:id="@+id/tv_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:gravity="center|start"
-                    android:text="TextView"
-                    android:textColor="#FC051E"
-                    android:textSize="10sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_title"
-                    app:layout_constraintEnd_toStartOf="@+id/textView4"
-                    app:layout_constraintTop_toTopOf="@+id/tv_title" />
 
+                    <TextView
+                        android:id="@+id/tv_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center|start"
+                        android:text="TextView"
+                        android:textColor="#FC051E"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_title"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_title"
+                        app:layout_constraintVertical_bias="0.0" />
 
                     <TextView
                         android:id="@+id/tv_title"
                         android:layout_width="0dp"
-                        android:layout_height="20dp"
+                        android:layout_height="0dp"
                         android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginEnd="20dp"
-
                         android:gravity="center|start"
                         android:text="TextView"
                         android:textColor="#000000"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/arrow_button"
                         app:layout_constraintEnd_toStartOf="@+id/tv_price"
-                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.207" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:gravity="center|start"
-                    android:text="OMR"
-                    android:textColor="#FC051E"
-                    android:textSize="10sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_price"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tv_price" />
+
 
 
                     <ImageButton
                         android:id="@+id/arrow_button"
+                        style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="wrap_content"
                         android:layout_height="24dp"
-                        android:layout_marginEnd="15dp"
-                        style="@style/Widget.AppCompat.Button.Borderless"
                         android:src="@drawable/ic_baseline_expand_more_24"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/tv_price"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_price" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
@@ -130,7 +119,8 @@
                             android:layout_marginBottom="10dp"
                             android:text="Salon Name:"
                             android:textColor="#000000"
-                            android:textSize="20sp" />
+                            android:textSize="16sp"
+                            />
 
 
                         <TextView
@@ -142,7 +132,8 @@
                             android:paddingStart="2dp"
                             android:text="name"
                             android:textColor="#000000"
-                            android:textSize="20sp" />
+                            android:textSize="16sp"
+                            />
                     </LinearLayout>
 
 
@@ -160,20 +151,21 @@
               android:layout_marginBottom="10dp"
               android:text="Specialist: "
               android:textColor="#000000"
-              android:textSize="20sp" />
+              android:textSize="16sp"
+              />
 
 
                         <TextView
                             android:id="@+id/tv_specialist"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="58dp"
+                            android:layout_marginStart="53dp"
                             android:layout_marginTop="10dp"
                             android:paddingStart="2dp"
-
                             android:text="specialist"
                             android:textColor="#000000"
-                            android:textSize="20sp" />
+                            android:textSize="16sp"
+                            />
                 </LinearLayout>
 
     <LinearLayout
@@ -190,19 +182,20 @@
             android:layout_marginBottom="10dp"
             android:text="Date: "
             android:textColor="#000000"
-            android:textSize="20sp" />
+            android:textSize="16sp"
+            />
 
         <TextView
             android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="98dp"
+            android:layout_marginStart="88dp"
             android:layout_marginTop="10dp"
             android:paddingStart="2dp"
 
             android:text="date"
             android:textColor="#000000"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
                     <LinearLayout
@@ -219,32 +212,34 @@
                             android:layout_marginBottom="10dp"
                             android:text="Time: "
                             android:textColor="#000000"
-                            android:textSize="20sp" />
+                            android:textSize="16sp"
+                            />
 
                         <TextView
                             android:id="@+id/tv_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="94dp"
+                            android:layout_marginStart="86dp"
                             android:layout_marginTop="10dp"
                             android:paddingStart="2dp"
 
                             android:text="time"
                             android:textColor="#000000"
-                            android:textSize="20sp" />
+                            android:textSize="16sp"
+                            />
                     </LinearLayout>
 
                     <Button
                         android:id="@+id/btn_delete"
                         android:layout_width="127dp"
                         android:layout_height="32dp"
-                        android:layout_marginStart="230dp"
+                        android:layout_gravity="center"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/btn_rectangle"
                         android:backgroundTint="#DA6EA4"
                         android:gravity="center"
                         android:text="Delete"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white" />
 
 
                 </LinearLayout>

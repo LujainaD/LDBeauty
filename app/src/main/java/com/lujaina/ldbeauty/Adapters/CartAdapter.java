@@ -2,11 +2,15 @@ package com.lujaina.ldbeauty.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -14,9 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.lujaina.ldbeauty.Models.AppointmentModel;
-import com.lujaina.ldbeauty.Models.CategoryModel;
+
 import com.lujaina.ldbeauty.Models.ClientsAppointmentModel;
 import com.lujaina.ldbeauty.R;
 
@@ -25,7 +27,13 @@ import java.util.ArrayList;
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
     private final Context mContext;
     private ArrayList<ClientsAppointmentModel> mAppointment;
+    private CartAdapter.onDeleteListener mListener;
 
+    public interface onDeleteListener {
+        void onDelete( ClientsAppointmentModel model);
+    }
+    
+    
     public CartAdapter(Context mContext) {
         this.mContext = mContext;
         this.mAppointment = new ArrayList<>();
@@ -55,18 +63,48 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
-    public void onBindViewHolder(@NonNull CartAdapter.MyViewHolder holder, int position) {
-        final ClientsAppointmentModel category = mAppointment.get(position);
-        holder.salonName.setText(category.getSalonName());
-        holder.time.setText(category.getAppointmentTime());
-        holder.date.setText(category.getAppointmentDate());
-        holder.serviceTitle.setText(category.getOfferServices());
-        holder.price.setText(category.getPrice());
+    public void onBindViewHolder(@NonNull final CartAdapter.MyViewHolder holder, final int position) {
+        final ClientsAppointmentModel clientAppointment = mAppointment.get(position);
+        holder.salonName.setText(clientAppointment.getSalonName());
+        holder.time.setText(clientAppointment.getAppointmentTime());
+        holder.date.setText(clientAppointment.getAppointmentDate());
+        holder.serviceTitle.setText(clientAppointment.getOfferServices());
+        holder.price.setText(clientAppointment.getPrice() + " OMR");
 
+        holder.arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(holder.hiddenView.getVisibility() == View.VISIBLE){
+                    TransitionManager.beginDelayedTransition(holder.cardView, new AutoTransition());
+                    holder.hiddenView.setVisibility(View.GONE);
+                    holder.arrow.setImageResource(R.drawable.ic_baseline_expand_more_24);
+
+                }
+                else {
+                    TransitionManager.beginDelayedTransition(holder.cardView,
+                            new AutoTransition());
+                    holder.hiddenView.setVisibility(View.VISIBLE);
+                    holder.arrow.setImageResource(R.drawable.ic_baseline_expand_less_24);
+                }
+
+            }
+        });
+        
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onDelete(clientAppointment);
+                
+            }
+        });
 
 
     }
 
+    public void setonClickListener(CartAdapter.onDeleteListener listener){
+        mListener = listener;
+    }
     @Override
     public int getItemCount() {
         return mAppointment.size();
@@ -80,6 +118,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
         TextView specialist;
         TextView date;
         TextView time;
+
+        ImageButton arrow;
+        LinearLayout hiddenView;
+        CardView cardView;
         public RelativeLayout viewForground, viewBackground;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -94,6 +136,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
             viewForground = itemView.findViewById(R.id.view_forground);
             viewBackground =itemView.findViewById(R.id.view_background);
 
+            cardView = itemView.findViewById(R.id.card);
+            arrow = itemView.findViewById(R.id.arrow_button);
+            hiddenView =itemView.findViewById(R.id.hidden_view);
         }
     }
 }

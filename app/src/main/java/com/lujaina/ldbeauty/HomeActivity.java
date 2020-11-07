@@ -34,6 +34,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Client.ClientProfileFragment;
+import com.lujaina.ldbeauty.Dialogs.NoLoginDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.SP.SPProfileFragment;
@@ -127,13 +128,15 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
                 } else {
                         progressDialog.dismiss();
                         Toast.makeText(HomeActivity.this, "not registered", Toast.LENGTH_SHORT).show();
-                        changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
+                        NoLoginDialogFragment dialog = new NoLoginDialogFragment();
+                        dialog.show(getSupportFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
                     return true;
                 }
             }else {
                     progressDialog.dismiss();
                     Toast.makeText(HomeActivity.this, "not registered", Toast.LENGTH_SHORT).show();
-                    changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
+                    NoLoginDialogFragment dialog = new NoLoginDialogFragment();
+                    dialog.show(getSupportFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
                     return true;
                 }
 
