@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,17 +23,17 @@ import com.lujaina.ldbeauty.R;
 
 import java.util.ArrayList;
 
-public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
+public class CartOffersAdapter extends RecyclerView.Adapter<CartOffersAdapter.MyViewHolder>{
     private final Context mContext;
     private ArrayList<ClientsAppointmentModel> mAppointment;
-    private CartAdapter.onDeleteListener mListener;
+    private CartOffersAdapter.onDeleteListener mListener;
 
     public interface onDeleteListener {
         void onDelete( ClientsAppointmentModel model);
     }
     
     
-    public CartAdapter(Context mContext) {
+    public CartOffersAdapter(Context mContext) {
         this.mContext = mContext;
         this.mAppointment = new ArrayList<>();
     }
@@ -55,15 +54,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
 
     @NonNull
     @Override
-    public CartAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CartOffersAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View listItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.liste_item_cart, parent, false);
-        return new CartAdapter.MyViewHolder(listItemView);
+        return new CartOffersAdapter.MyViewHolder(listItemView);
 
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
-    public void onBindViewHolder(@NonNull final CartAdapter.MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final CartOffersAdapter.MyViewHolder holder, final int position) {
         final ClientsAppointmentModel clientAppointment = mAppointment.get(position);
         holder.salonName.setText(clientAppointment.getSalonName());
         holder.time.setText(clientAppointment.getAppointmentTime());
@@ -102,7 +101,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
 
     }
 
-    public void setonClickListener(CartAdapter.onDeleteListener listener){
+    public void setonClickListener(CartOffersAdapter.onDeleteListener listener){
         mListener = listener;
     }
     @Override
@@ -122,7 +121,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
         ImageButton arrow;
         LinearLayout hiddenView;
         CardView cardView;
-        public RelativeLayout viewForground, viewBackground;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -133,8 +131,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder>{
             specialist   = itemView.findViewById(R.id.tv_specialist);
             date         = itemView.findViewById(R.id.tv_date);
             time         = itemView.findViewById(R.id.tv_time);
-            viewForground = itemView.findViewById(R.id.view_forground);
-            viewBackground =itemView.findViewById(R.id.view_background);
 
             cardView = itemView.findViewById(R.id.card);
             arrow = itemView.findViewById(R.id.arrow_button);

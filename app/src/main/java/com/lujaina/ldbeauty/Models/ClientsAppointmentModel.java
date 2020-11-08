@@ -23,6 +23,7 @@ public class ClientsAppointmentModel {
     private String appointmentStatus;
 
     private String orderDate;
+    private String appointmentID;
 
 
 
@@ -130,5 +131,11 @@ public class ClientsAppointmentModel {
         this.orderDate = orderDate;
     }
 
+    public String getAppointmentID() {
+        return appointmentID;
+    }
 
+    public void setAppointmentID(String appointmentID) {
+        this.appointmentID = appointmentID;
+    }
 }

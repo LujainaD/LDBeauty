@@ -72,9 +72,11 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 			@Override
 			public void onClick(View v) {
                 btnConfirm.setEnabled(true);
-				mListener.onItemSelected(position,previousSelectedItem, model);
+                btnConfirm.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
+                mListener.onItemSelected(position,previousSelectedItem, model);
 			}
 		});
+
 
 
 		if(model.isSelected()){

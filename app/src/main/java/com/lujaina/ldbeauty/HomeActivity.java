@@ -33,6 +33,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.lujaina.ldbeauty.Client.CartFragment;
 import com.lujaina.ldbeauty.Client.ClientProfileFragment;
 import com.lujaina.ldbeauty.Dialogs.NoLoginDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
@@ -149,6 +150,17 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
                 changeFragmentTo(new AppProfileFragment(), AppProfileFragment.class.getSimpleName());
 */
                 return true;
+            }
+            case R.id.cart: {
+                progressDialog.dismiss();
+                if(user !=null){
+                    changeFragmentTo(new CartFragment(), CartFragment.class.getSimpleName());
+                }else {
+                    NoLoginDialogFragment dialog = new NoLoginDialogFragment();
+                    dialog.show(getSupportFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
+                }
+
+              return true;
             }
 
 

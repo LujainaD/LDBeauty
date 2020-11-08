@@ -5,9 +5,11 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -182,7 +184,7 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
             @Override
             public void onClick(View v) {
 
-                selectedDate();
+                addAppointmentToDB();
 
 
             }
@@ -194,11 +196,11 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
 
 
 
-private void getUserInfo(){
+private void getUserInfo() {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference userRef;
 
-    userRef =  database.getReference(Constants.Users).child(Constants.All_Users).child(mFirebaseUser.getUid());
+    userRef = database.getReference(Constants.Users).child(Constants.All_Users).child(mFirebaseUser.getUid());
     userRef.orderByChild(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -213,42 +215,38 @@ private void getUserInfo(){
         }
     });
 
-
 }
 
-    private void selectedDate(){
-        ClientsAppointmentModel clientsAppointment = new ClientsAppointmentModel();
-            clientsAppointment.setUserId(mFirebaseUser.getUid());
-            clientsAppointment.setOwnerId(offerID.getSalonOwnerId());
-            clientsAppointment.setSalonName(offerID.getSalonName());
-            clientsAppointment.setClientName(userName);
-            clientsAppointment.setOrderDate(currentDate());
-            clientsAppointment.setAppointmentTime(selectedTime);
-            clientsAppointment.setAppointmentDate(pickedDate.getText().toString().trim());
-            clientsAppointment.setOfferServices(offerID.getServices());
-            clientsAppointment.setOfferId(offerID.getOfferId());
-            clientsAppointment.setAppointmentStatus("not confirmed yet");
-            clientsAppointment.setPrice(offerID.getCurrentPrice());
-            addAppointmentToDB(clientsAppointment);
-
-
-    }
-
-    private void addAppointmentToDB(ClientsAppointmentModel clientAppointment) {
+    private void addAppointmentToDB() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference salonRef;
 
         salonRef =  database.getReference(Constants.Users).child(Constants.Salon_Owner).child(offerID.getSalonOwnerId())
-                .child(Constants.Clients_Appointments);
+                .child(Constants.Clients_Offers_Appointments);
         DatabaseReference clientRef;
 
         clientRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid())
-                .child(Constants.Clients_Appointments);
+                .child(Constants.Clients_Offers_Appointments);
         String appointmentId = salonRef.push().getKey();
+        ClientsAppointmentModel clientsAppointment = new ClientsAppointmentModel();
+        clientsAppointment.setAppointmentID(appointmentId);
+        clientsAppointment.setUserId(mFirebaseUser.getUid());
+        clientsAppointment.setOwnerId(offerID.getSalonOwnerId());
+        clientsAppointment.setSalonName(offerID.getSalonName());
+        clientsAppointment.setClientName(userName);
+        clientsAppointment.setOrderDate(currentDate());
+        clientsAppointment.setAppointmentTime(selectedTime);
+        clientsAppointment.setAppointmentDate(pickedDate.getText().toString().trim());
+        clientsAppointment.setOfferServices(offerID.getServices());
+        clientsAppointment.setOfferId(offerID.getOfferId());
+        clientsAppointment.setAppointmentStatus("not confirmed yet");
+        clientsAppointment.setPrice(offerID.getCurrentPrice());
 
+    salonRef.child(appointmentId).setValue(clientsAppointment);
+    clientRef.child(appointmentId).setValue(clientsAppointment);
 
-    salonRef.child(appointmentId).setValue(clientAppointment);
-    clientRef.child(appointmentId).setValue(clientAppointment);
+    btnConfirm.setEnabled(false);
+        btnConfirm.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.lightGray), PorterDuff.Mode.MULTIPLY);
 
 
     }
@@ -397,6 +395,7 @@ private void getUserInfo(){
 
 
 		mAdapter.notifyDataSetChanged();
+
 
     }
 
