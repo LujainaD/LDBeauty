@@ -10,4 +10,9 @@
         android:id="@+id/not_login"
         android:title="Log in/Sign up"
         />
+
+    <item
+        android:id="@+id/my_cart"
+        android:title="My Cart"
+        />
 </menu>

@@ -2,6 +2,7 @@ package com.lujaina.ldbeauty.User;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +30,7 @@ import com.lujaina.ldbeauty.Adapters.UserOfferAdapter;
 import com.lujaina.ldbeauty.Client.CartFragment;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Dialogs.NoLoginDialogFragment;
+import com.lujaina.ldbeauty.HomeActivity;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.OfferModel;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
@@ -39,6 +42,7 @@ import java.util.ArrayList;
 
 public class OffersFragment extends Fragment {
 
+    private FirebaseAuth mAuth;
     FirebaseUser mFirebaseUser;
     private DatabaseReference myRef;
 
@@ -51,6 +55,8 @@ public class OffersFragment extends Fragment {
 
     private OfferModel offer;
     private SPRegistrationModel ownerId;
+
+    String userRole;
 
     public OffersFragment() {
         // Required empty public constructor
@@ -71,13 +77,17 @@ public class OffersFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_salon_offers, container, false);
+        mAuth = FirebaseAuth.getInstance();
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
-        TextView pay = parentView.findViewById(R.id.tv_cart);
-        pay.setVisibility(View.VISIBLE);
+        TextView cart = parentView.findViewById(R.id.tv_cart);
+        cart.setVisibility(View.VISIBLE);
         add.setVisibility(View.INVISIBLE);
         ImageButton back = parentView.findViewById(R.id.ib_back);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
+        if(mFirebaseUser!= null){
+            checkUserRole(mFirebaseUser.getUid());
+        }
         RecyclerView recyclerView = parentView.findViewById(R.id.recyclerView);
         offersList = new ArrayList<>();
         mAdapter = new UserOfferAdapter(mContext);
@@ -85,12 +95,18 @@ public class OffersFragment extends Fragment {
         setupRecyclerView(recyclerView);
         readSalonOffersFromFirebaseDB();
 
-        pay.setOnClickListener(new View.OnClickListener() {
+        cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
-                    mMediatorInterface.changeFragmentTo(new CartFragment(), CartFragment.class.getSimpleName());
+                if(mFirebaseUser != null && !userRole.equals("Salon Owner")){
+                    if(mMediatorInterface != null){
+                        mMediatorInterface.changeFragmentTo(new CartFragment(), CartFragment.class.getSimpleName());
+                    }
+                }else{
+                    NoLoginDialogFragment dialog = new NoLoginDialogFragment();
+                    dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
                 }
+
 
             }
         });
@@ -98,7 +114,7 @@ public class OffersFragment extends Fragment {
         mAdapter.setonClickListener(new UserOfferAdapter.onClickListener() {
             @Override
             public void onClick(OfferModel offerModel) {
-                if(mFirebaseUser == null){
+                if(mFirebaseUser == null || userRole.equals("Salon Owner")){
                     NoLoginDialogFragment dialog = new NoLoginDialogFragment();
                     dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
                 }else{
@@ -164,5 +180,39 @@ public class OffersFragment extends Fragment {
     }
     public void setSalonOffers(SPRegistrationModel section) {
         ownerId = section;
+    }
+
+
+    private void checkUserRole(String uid) {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef;
+        myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.All_Users).child(uid);
+
+        myRef.orderByChild(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                SPRegistrationModel model = snapshot.getValue(SPRegistrationModel.class);
+                model.getUserType();
+                mAuth.getCurrentUser();
+                if(mAuth!=null) {
+                    //Get Currrent User info from Firebase Database
+                    SPRegistrationModel currentUser = SPRegistrationModel.getInstance();
+                    currentUser.setUserName(model.getUserName());
+                    currentUser.setUserEmail(model.getUserEmail());
+                    currentUser.setUserId(model.getUserId());
+                    currentUser.setUserType(model.getUserType());
+                     userRole = model.getUserType();
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

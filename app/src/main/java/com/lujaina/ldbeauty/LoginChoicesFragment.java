@@ -56,7 +56,9 @@ public class LoginChoicesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(mMediatorInterface != null){
-                    mMediatorInterface.changeFragmentTo(new SignUpFragment(), SignUpFragment.class.getSimpleName());
+                    SignUpFragment usertype= new SignUpFragment();
+                    usertype.setViewPager("Client");
+                    mMediatorInterface.changeFragmentTo(usertype, SignUpFragment.class.getSimpleName());
                 }
             }
         });

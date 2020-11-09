@@ -150,17 +150,7 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
 */
                 return true;
             }
-            case R.id.cart: {
-                progressDialog.dismiss();
-                if(user !=null){
-                    changeFragmentTo(new CartFragment(), CartFragment.class.getSimpleName());
-                }else {
-                    NoLoginDialogFragment dialog = new NoLoginDialogFragment();
-                    dialog.show(getSupportFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
-                }
 
-              return true;
-            }
 
 
         }
@@ -193,10 +183,13 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
         if (user != null) {
             menu.getItem(0).setVisible(true);
             menu.getItem(1).setVisible(false);
+            menu.getItem(2).setVisible(true);
+
 
         } else {
             menu.getItem(0).setVisible(false);
             menu.getItem(1).setVisible(true);
+            menu.getItem(2).setVisible(false);
 
         }
         return super.onCreateOptionsMenu(menu);
@@ -212,9 +205,14 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
         if (user != null) {
             menu.getItem(0).setVisible(true);
             menu.getItem(1).setVisible(false);
+            menu.getItem(2).setVisible(true);
+
+
         } else {
             menu.getItem(0).setVisible(false);
             menu.getItem(1).setVisible(true);
+            menu.getItem(2).setVisible(false);
+
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -225,11 +223,15 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
         FirebaseUser user = mAuth.getCurrentUser();
         switch (item.getItemId()) {
 
-            case R.id.log_out_menu: {
-                changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
-            }
+            case R.id.log_out_menu:
             case R.id.not_login: {
                 changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
+                break;
+            }
+            case R.id.my_cart: {
+                changeFragmentTo(new CartFragment(), CartFragment.class.getSimpleName());
+                break;
+
             }
 
         }

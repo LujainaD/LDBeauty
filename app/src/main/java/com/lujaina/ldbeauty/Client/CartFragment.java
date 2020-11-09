@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -74,10 +75,12 @@ public class CartFragment extends Fragment {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_cart, container, false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-
+        BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+        navBar.setVisibility(View.GONE);
         ImageButton ibBack 	= parentView.findViewById(R.id.ib_back);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
+
         mDatabase = FirebaseDatabase.getInstance();
         myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner);
          tv_total = parentView.findViewById(R.id.tv_totalPrice);
@@ -108,8 +111,11 @@ public class CartFragment extends Fragment {
         setupRecyclerView(recyclerView);
         setupRecyclerView(cart_rv);
 
-        readClientOffersAppointmentDB();
-        readClientServiceAppointmentDB();
+        if(mFirebaseUser != null){
+            readClientOffersAppointmentDB();
+            readClientServiceAppointmentDB();
+        }
+
 
 
 

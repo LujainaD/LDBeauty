@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 
@@ -43,6 +45,9 @@ public class SignUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView =  inflater.inflate(R.layout.fragment_sign_up, container, false);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+        navBar.setVisibility(View.GONE);
         Toolbar toolbar = parentView.findViewById(R.id.toolbar);
         ImageButton back = parentView.findViewById(R.id.ib_back);
         TabLayout tabs = parentView.findViewById(R.id.tab);
