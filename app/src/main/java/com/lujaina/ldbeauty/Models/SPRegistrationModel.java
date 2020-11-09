@@ -1,6 +1,9 @@
 package com.lujaina.ldbeauty.Models;
 
 public class SPRegistrationModel {
+    private static SPRegistrationModel INSTANCE;
+    private static final Object sLock = new Object();
+
     private String userId;
     private String userName;
     private String phoneNumber;
@@ -19,6 +22,18 @@ public class SPRegistrationModel {
     private String updatedDate;
 
     private String salonSection;
+
+    private void SPRegistrationModel(){
+    }
+    public static SPRegistrationModel getInstance() {
+        synchronized (sLock) {
+            if (INSTANCE == null) {
+                INSTANCE = new SPRegistrationModel();
+            }
+            return INSTANCE;
+        }
+    }
+
 
 
     public String getUserId() {

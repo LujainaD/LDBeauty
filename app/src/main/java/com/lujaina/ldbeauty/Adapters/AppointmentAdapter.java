@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.MyViewHolder>{
     private final Context mContext;
-    private final Button btnConfirm;
+    //private final Button btnConfirm;
     private ArrayList<AppointmentModel> mTime;
     private AppointmentAdapter.onTimePickedListener mListener;
 
@@ -38,7 +38,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         this.mContext = mContext;
         this.mTime = new ArrayList<>();
         mListener = (onTimePickedListener) offerAppointmentFragment;
-         this.btnConfirm = btnConfirm;
+        // this.btnConfirm = btnConfirm;
     }
 
     public void update(ArrayList<AppointmentModel> timeArray) {
@@ -71,8 +71,8 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 		holder.card.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-                btnConfirm.setEnabled(true);
-                btnConfirm.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
+               // btnConfirm.setEnabled(true);
+               // btnConfirm.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
                 mListener.onItemSelected(position,previousSelectedItem, model);
 			}
 		});
@@ -86,22 +86,17 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 			ColorStateList.valueOf(Color.parseColor("#FFFFFF"));
 			holder.card.setCardBackgroundColor(Color.parseColor("#DA6EA4"));
 			holder.time.setTextColor(Color.parseColor("#FFFFFF"));
-            btnConfirm.setEnabled(true);
-            btnConfirm.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
+           // btnConfirm.setEnabled(true);
+          //  btnConfirm.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
 
 		}else {
-            btnConfirm.setEnabled(false);
-            btnConfirm.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.lightGray), PorterDuff.Mode.MULTIPLY);
+          //  btnConfirm.setEnabled(false);
+            //btnConfirm.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.lightGray), PorterDuff.Mode.MULTIPLY);
             holder.card.getCardBackgroundColor();
 			ColorStateList.valueOf(Color.parseColor("#DA6EA4"));
 			holder.card.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
 			holder.time.setTextColor(Color.parseColor("#000000"));
-
-
         }
-
-
-
     }
 
     @Override

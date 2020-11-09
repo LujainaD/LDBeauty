@@ -86,9 +86,9 @@ public class SPLoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(mMediatorInterface != null){
-                    SignUpFragment position = new SignUpFragment();
-                    position.setViewPager(1);
-                    mMediatorInterface.changeFragmentTo(position, SignUpFragment.class.getSimpleName());
+                    SignUpFragment signUpFragment = new SignUpFragment();
+                    signUpFragment.setViewPager("");
+                    mMediatorInterface.changeFragmentTo(signUpFragment, SignUpFragment.class.getSimpleName());
                 }
             }
         });
@@ -239,16 +239,27 @@ public class SPLoginFragment extends Fragment {
 
                 progressDialog.dismiss();
                 SPRegistrationModel model = snapshot.getValue(SPRegistrationModel.class);
-                assert model != null;
                 model.getUserType();
-                Toast.makeText(mContext, model.getUserType(), Toast.LENGTH_SHORT).show();
+
+                String userRole = model.getUserType();
+
+                mAuth.getCurrentUser();
+                if(mAuth!=null) {
+                    //Get Currrent User info from Firebase Database
+                    SPRegistrationModel currentUser = SPRegistrationModel.getInstance();
+                    currentUser.setUserName(model.getUserName());
+                    currentUser.setUserEmail(model.getUserEmail());
+                    currentUser.setUserId(model.getUserId());
+                    currentUser.setUserType(model.getUserType());
+                    Toast.makeText(mContext, model.getUserType(), Toast.LENGTH_SHORT).show();
+                }
 
 
-                if(model.getUserType().equals("Client")){
+                if(userRole.equals("Client")){
                     progressDialog.dismiss();
                     Toast.makeText(mContext, "u r not Salon Owner", Toast.LENGTH_SHORT).show();
 
-                }else if(model.getUserType().equals("Salon Owner")){
+                }else if(userRole.equals("Salon Owner")){
                     if (mMediatorInterface != null) {
                         progressDialog.dismiss();
                         SalonsHomeFragment clientInfo = new SalonsHomeFragment();

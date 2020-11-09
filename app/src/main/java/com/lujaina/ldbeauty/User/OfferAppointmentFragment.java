@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class OfferAppointmentFragment extends Fragment implements AppointmentAdapter.onTimePickedListener{
+    private static final String TAG = "OfferAppointmentFragmen";
 
     public static final String DATE_FORMAT    = "dd/MM/yyyy";
 
@@ -180,15 +182,7 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
         });
 
 
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                addAppointmentToDB();
-
-
-            }
-        });
 
 
         return parentView;
@@ -217,7 +211,7 @@ private void getUserInfo() {
 
 }
 
-    private void addAppointmentToDB() {
+    private void addAppointmentToDB(AppointmentModel model) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference salonRef;
 
@@ -247,7 +241,7 @@ private void getUserInfo() {
 
     btnConfirm.setEnabled(false);
         btnConfirm.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.lightGray), PorterDuff.Mode.MULTIPLY);
-
+        model.setSelected(false);
 
     }
 
@@ -383,20 +377,31 @@ private void getUserInfo() {
     }
 
     @Override
-    public void onItemSelected(int position, int previousSelectedposition, AppointmentModel model){
+    public void onItemSelected(final int position, int previousSelectedposition, final AppointmentModel model){
 
 		timeList.get(position).setSelected(!timeList.get(position).isSelected());
+		boolean isNeedtoEnable =  timeList.get(position).isSelected();
+        if(isNeedtoEnable){
+            btnConfirm.setEnabled(true);
+            btnConfirm.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
+            btnConfirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    addAppointmentToDB(model);
+
+
+                }
+            });
+        }else{
+            btnConfirm.setEnabled(false);
+            btnConfirm.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.lightGray), PorterDuff.Mode.MULTIPLY);
+        }
 		if(position!=previousSelectedposition) {
 			timeList.get(previousSelectedposition).setSelected(false);
-
 		}
-
         selectedTime = model.getPickedTime();
-
-
 		mAdapter.notifyDataSetChanged();
-
-
     }
 
 }

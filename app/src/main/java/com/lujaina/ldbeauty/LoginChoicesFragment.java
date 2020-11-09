@@ -65,7 +65,9 @@ public class LoginChoicesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(mMediatorInterface != null){
-                    mMediatorInterface.changeFragmentTo(new ClientLoginFragment(), ClientLoginFragment.class.getSimpleName());
+                    LoginFragment usertype= new LoginFragment();
+                    usertype.setUserType("Client");
+                    mMediatorInterface.changeFragmentTo(usertype, LoginFragment.class.getSimpleName());
                 }
             }
         });
@@ -74,7 +76,9 @@ public class LoginChoicesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(mMediatorInterface != null){
-                    mMediatorInterface.changeFragmentTo(new SPLoginFragment(), SPLoginFragment.class.getSimpleName());
+                    LoginFragment usertype= new LoginFragment();
+                    usertype.setUserType("Salon Owner");
+                    mMediatorInterface.changeFragmentTo(usertype, LoginFragment.class.getSimpleName());
                 }
             }
         });

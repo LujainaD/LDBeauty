@@ -61,15 +61,15 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
         changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+
         if(user != null){
             getUserRole();
-
         }
-
-
     }
 
     private void getUserRole() {
+        //userRole = SPRegistrationModel.getInstance().getUserType();
+
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef;
         myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.All_Users).child(user.getUid());
@@ -115,13 +115,12 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
                     if (userRole != null) {
                        if (userRole.equals("Client")) {
                            progressDialog.dismiss();
-                        Toast.makeText(HomeActivity.this, userRole, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(HomeActivity.this, userRole, Toast.LENGTH_SHORT).show();
                            changeFragmentTo(new ClientProfileFragment(), ClientProfileFragment.class.getSimpleName());
 
 
                        } else{
                            progressDialog.dismiss();
-
                            Toast.makeText(HomeActivity.this, userRole, Toast.LENGTH_SHORT).show();
                            changeFragmentTo(new SPProfileFragment(), SPProfileFragment.class.getSimpleName());
 
