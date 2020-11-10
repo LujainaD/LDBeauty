@@ -66,6 +66,7 @@ public class AddServiceDialogFragment extends DialogFragment {
     private ImageView picture;
 
     private CategoryModel mCategory;
+    private String salonName;
 
     public AddServiceDialogFragment() {
         // Required empty public constructor
@@ -143,6 +144,7 @@ public class AddServiceDialogFragment extends DialogFragment {
                     service.setServiceTitle(title);
                     service.setServicePrice(price);
                     service.setServiceSpecialist(specialist);
+                    service.setSalonName(salonName);
                     uploadToStorage(service);
 
                     new Thread(new Runnable() {
@@ -298,7 +300,8 @@ public class AddServiceDialogFragment extends DialogFragment {
 
     }
 
-    public void setService(CategoryModel category) {
+    public void setService(CategoryModel category, String salonName) {
         mCategory = category;
+        this.salonName = salonName;
     }
 }

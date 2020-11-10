@@ -1,4 +1,4 @@
-package com.lujaina.ldbeauty.User;
+package com.lujaina.ldbeauty.Client;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -134,7 +134,7 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
 
 
         timeList = new ArrayList<>();
-        mAdapter = new AppointmentAdapter(mContext , this, btnConfirm);
+        mAdapter = new AppointmentAdapter(mContext , this);
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
 

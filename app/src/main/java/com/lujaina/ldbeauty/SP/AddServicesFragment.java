@@ -48,6 +48,7 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
 
     private ServiceModel service;
     private CategoryModel category;
+    private String salonName;
 
     public AddServicesFragment() {
         // Required empty public constructor
@@ -89,7 +90,7 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
             @Override
             public void onClick(View v) {
                 AddServiceDialogFragment dialogFragment = new AddServiceDialogFragment();
-                dialogFragment.setService(category);
+                dialogFragment.setService(category, salonName);
                 dialogFragment.show(getChildFragmentManager(), AddServiceDialogFragment.class.getSimpleName());
             }
         });
@@ -137,8 +138,9 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
 
 
 
-    public void setService(CategoryModel categoryList) {
+    public void setService(CategoryModel categoryList, String salonName) {
         category = categoryList;
+        this.salonName = salonName;
 
     }
     private void setupRecyclerView(RecyclerView recyclerView) {

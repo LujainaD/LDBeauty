@@ -48,6 +48,8 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
     private CategoryAdapter mAdapter;
     RecyclerView recyclerView;
     TextView empty;
+    private String salonName;
+
     public AddCategoriesFragment() {
         // Required empty public constructor
     }
@@ -83,7 +85,7 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
             public void onClick(CategoryModel category) {
                 if(mMediatorInterface != null){
                     AddServicesFragment service = new AddServicesFragment();
-                    service.setService(category);
+                    service.setService(category, salonName);
                     mMediatorInterface.changeFragmentTo(service, AddServicesFragment.class.getSimpleName());
 
                 }
@@ -169,5 +171,9 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
             myRef.removeValue();
 
         }
+    }
+
+    public void setSalonInfo(String salonInfo) {
+        salonName = salonInfo;
     }
 }

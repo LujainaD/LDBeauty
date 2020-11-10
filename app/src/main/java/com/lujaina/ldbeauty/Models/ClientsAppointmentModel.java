@@ -16,6 +16,7 @@ public class ClientsAppointmentModel {
     private String price;
     private String specialList;
     private String offerServices;
+    private String serviceTitle;
 
 
     private String appointmentTime;
@@ -97,6 +98,14 @@ public class ClientsAppointmentModel {
 
     public void setOfferServices(String offerServices) {
         this.offerServices = offerServices;
+    }
+
+    public String getServiceTitle() {
+        return serviceTitle;
+    }
+
+    public void setServiceTitle(String serviceTitle) {
+        this.serviceTitle = serviceTitle;
     }
 
     public String getAppointmentTime() {

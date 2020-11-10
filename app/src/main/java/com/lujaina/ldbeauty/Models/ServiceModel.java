@@ -4,6 +4,7 @@ public class ServiceModel {
     public String ownerId;
     public String idCategory;
     public String serviceId;
+    public String salonName;
 
     public String serviceTitle;
     public String serviceURL;
@@ -32,6 +33,14 @@ public class ServiceModel {
 
     public void setServiceId(String serviceId) {
         this.serviceId = serviceId;
+    }
+
+    public String getSalonName() {
+        return salonName;
+    }
+
+    public void setSalonName(String salonName) {
+        this.salonName = salonName;
     }
 
     public String getServiceTitle() {

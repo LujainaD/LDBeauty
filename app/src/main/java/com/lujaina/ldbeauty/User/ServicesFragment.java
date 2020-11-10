@@ -2,15 +2,6 @@ package com.lujaina.ldbeauty.User;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,20 +15,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextClock;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.lujaina.ldbeauty.Adapters.ServiceAdapter;
 import com.lujaina.ldbeauty.Adapters.UserServiceAdapter;
+import com.lujaina.ldbeauty.Client.OfferAppointmentFragment;
+import com.lujaina.ldbeauty.Client.ServiceAppointmentFragment;
 import com.lujaina.ldbeauty.Constants;
+import com.lujaina.ldbeauty.Dialogs.NoLoginDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.CategoryModel;
+import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.Models.ServiceModel;
 import com.lujaina.ldbeauty.R;
 
@@ -45,7 +40,9 @@ import java.util.ArrayList;
 
 
 public class ServicesFragment extends Fragment {
-
+    private FirebaseAuth mAuth;
+    FirebaseUser mFirebaseUser;
+    private DatabaseReference myRef;
 
     private CategoryModel serviceId;
     private MediatorInterface mMediatorCallback;
@@ -59,6 +56,8 @@ public class ServicesFragment extends Fragment {
 
     private ServiceModel service;
     private CategoryModel category;
+    String userRole;
+
     public ServicesFragment() {
         // Required empty public constructor
     }
@@ -82,6 +81,11 @@ public class ServicesFragment extends Fragment {
         TextView categoryTitle = parentView.findViewById(R.id.tv_categoryTitle);
 
         RecyclerView recyclerView = parentView.findViewById(R.id.recyclerView);
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mAuth.getCurrentUser();
+        if(mFirebaseUser!= null){
+            checkUserRole(mFirebaseUser.getUid());
+        }
         serviceList = new ArrayList<>();
         mAdapter = new UserServiceAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
@@ -101,6 +105,24 @@ public class ServicesFragment extends Fragment {
             Glide.with(mContext).load(serviceId.getCategoryURL()).into(img);
             categoryTitle.setText(serviceId.getCategoryTitle());
         }
+
+        mAdapter.setOnBookClickListener(new UserServiceAdapter.onBookClickListener() {
+            @Override
+            public void onBookClick(ServiceModel service) {
+                if(mFirebaseUser == null || userRole.equals("Salon Owner")){
+                    NoLoginDialogFragment dialog = new NoLoginDialogFragment();
+                    dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
+                }else{
+                    if(mMediatorCallback != null){
+                        ServiceAppointmentFragment serviceAppointmentFragment = new ServiceAppointmentFragment();
+                        serviceAppointmentFragment.setServiceID(service);
+                        mMediatorCallback.changeFragmentTo(serviceAppointmentFragment, OfferAppointmentFragment.class.getSimpleName());
+                    }
+                }
+            }
+        });
+
+
         return parentView;
     }
 
@@ -148,4 +170,38 @@ public class ServicesFragment extends Fragment {
     public void setServiceID(CategoryModel category) {
         serviceId = category;
     }
+
+    private void checkUserRole(String uid) {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef;
+        myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.All_Users).child(uid);
+
+        myRef.orderByChild(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                SPRegistrationModel model = snapshot.getValue(SPRegistrationModel.class);
+                model.getUserType();
+                mAuth.getCurrentUser();
+                if(mAuth!=null) {
+                    //Get Currrent User info from Firebase Database
+                    SPRegistrationModel currentUser = SPRegistrationModel.getInstance();
+                    currentUser.setUserName(model.getUserName());
+                    currentUser.setUserEmail(model.getUserEmail());
+                    currentUser.setUserId(model.getUserId());
+                    currentUser.setUserType(model.getUserType());
+                    userRole = model.getUserType();
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
 }

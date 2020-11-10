@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class UserServiceAdapter extends RecyclerView.Adapter<UserServiceAdapter.MyViewHolder> {
     private final Context mContext;
     private ArrayList<ServiceModel> mCategory;
-    private UserServiceAdapter.onClickListener mListener;
+    private onBookClickListener mListener;
 
     public UserServiceAdapter(Context mContext) {
         this.mContext = mContext;
@@ -64,6 +64,15 @@ public class UserServiceAdapter extends RecyclerView.Adapter<UserServiceAdapter.
         Glide.with(mContext).load(category.getServiceURL()).centerCrop().
                 into(holder.picture);
 
+        holder.book.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mListener != null){
+                    mListener.onBookClick(category);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -71,12 +80,12 @@ public class UserServiceAdapter extends RecyclerView.Adapter<UserServiceAdapter.
         return mCategory.size();
     }
 
-    public void setonClickListener(View.OnClickListener listener) {
-        mListener = (UserServiceAdapter.onClickListener) listener;
+    public void setOnBookClickListener(onBookClickListener listener) {
+        mListener = (UserServiceAdapter.onBookClickListener) listener;
     }
 
-    public interface onClickListener {
-        void onClick(ServiceModel category);
+    public interface onBookClickListener {
+        void onBookClick(ServiceModel category);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

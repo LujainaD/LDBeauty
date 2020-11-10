@@ -66,7 +66,7 @@ public class CartServicesAdapter extends RecyclerView.Adapter<CartServicesAdapte
         holder.salonName.setText(clientAppointment.getSalonName());
         holder.time.setText(clientAppointment.getAppointmentTime());
         holder.date.setText(clientAppointment.getAppointmentDate());
-        holder.serviceTitle.setText(clientAppointment.getOfferServices());
+        holder.serviceTitle.setText(clientAppointment.getServiceTitle());
         holder.specialist.setText(clientAppointment.getSpecialList());
         holder.price.setText(clientAppointment.getPrice() + " OMR");
 

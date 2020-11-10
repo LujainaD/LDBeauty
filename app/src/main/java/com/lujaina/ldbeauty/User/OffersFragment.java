@@ -2,7 +2,6 @@ package com.lujaina.ldbeauty.User;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,14 +26,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Adapters.UserOfferAdapter;
 import com.lujaina.ldbeauty.Client.CartFragment;
+import com.lujaina.ldbeauty.Client.OfferAppointmentFragment;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Dialogs.NoLoginDialogFragment;
-import com.lujaina.ldbeauty.HomeActivity;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.OfferModel;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
-import com.lujaina.ldbeauty.SP.AddOffersAppointmentFragment;
 
 import java.util.ArrayList;
 
