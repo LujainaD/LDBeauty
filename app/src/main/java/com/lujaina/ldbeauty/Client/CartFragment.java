@@ -91,11 +91,14 @@ public class CartFragment extends Fragment {
         ImageButton ibBack 	= parentView.findViewById(R.id.ib_back);
         TextView pay = parentView.findViewById(R.id.tv_pay);
          emptyservice = parentView.findViewById(R.id.tv_emptyServices);
+
+
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
-
         mDatabase = FirebaseDatabase.getInstance();
         myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner);
+
+
          tv_total = parentView.findViewById(R.id.tv_totalPrice);
 
         ibBack.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +131,6 @@ public class CartFragment extends Fragment {
         readClientServiceAppointmentDB();
 
 
-        displayTotal(sumOfService, sumOfOffers);
 
         serviceAdapter.setonClickListener(new CartServicesAdapter.onDeleteListener() {
             @Override
@@ -145,6 +147,7 @@ public class CartFragment extends Fragment {
             }
         });
 
+        displayTotal(sumOfService, sumOfOffers);
 
         return parentView;
     }
