@@ -179,7 +179,6 @@ public class OffersFragment extends Fragment {
         ownerId = section;
     }
 
-
     private void checkUserRole(String uid) {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef;

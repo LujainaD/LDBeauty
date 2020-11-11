@@ -62,8 +62,6 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
         }
     }
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -114,7 +112,6 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -151,7 +148,6 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
             }
         });
     }
-    
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {

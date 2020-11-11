@@ -135,9 +135,6 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
             });
         }
 
-
-
-
     public void setService(CategoryModel categoryList, String salonName) {
         category = categoryList;
         this.salonName = salonName;

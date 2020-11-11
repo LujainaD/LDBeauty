@@ -166,7 +166,6 @@ public class ServicesFragment extends Fragment {
 
     }
 
-
     public void setServiceID(CategoryModel category) {
         serviceId = category;
     }

@@ -69,7 +69,6 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
 
     private void getUserRole() {
         //userRole = SPRegistrationModel.getInstance().getUserType();
-
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef;
         myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.All_Users).child(user.getUid());
@@ -77,14 +76,10 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
         myRef.orderByChild(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-
                 SPRegistrationModel model = snapshot.getValue(SPRegistrationModel.class);
-                assert model != null;
                 model.getUserType();
 
                  userRole = model.getUserType();
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -92,7 +87,6 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
             }
         });
     }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -158,9 +152,6 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
 
     }
 
-
-
-
     @Override
     public void changeFragmentTo(Fragment fragmentToDisplay, String fragmentTag) {
         FragmentManager fm = getSupportFragmentManager();
@@ -172,7 +163,6 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
         }
         ft.commit();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -217,7 +207,6 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
         return super.onPrepareOptionsMenu(menu);
     }
     // to handle user click on menu item
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         FirebaseUser user = mAuth.getCurrentUser();
@@ -247,6 +236,5 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
             super.onBackPressed();
         }
     }
-
 
 }

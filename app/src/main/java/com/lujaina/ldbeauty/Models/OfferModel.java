@@ -10,6 +10,7 @@ public class OfferModel {
     private String previousPrice;
     private String currentPrice;
 
+
     public String getSalonOwnerId() {
         return salonOwnerId;
     }
@@ -65,4 +66,5 @@ public class OfferModel {
     public void setCurrentPrice(String currentPrice) {
         this.currentPrice = currentPrice;
     }
+
 }

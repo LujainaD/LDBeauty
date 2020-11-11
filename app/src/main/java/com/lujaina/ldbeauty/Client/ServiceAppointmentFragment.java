@@ -216,11 +216,11 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
         DatabaseReference salonRef;
 
         salonRef =  database.getReference(Constants.Users).child(Constants.Salon_Owner).child(serviceInfo.getOwnerId())
-                .child(Constants.Clients_Service_Appointments);
+                .child(Constants.Clients_Appointments);
         DatabaseReference clientRef;
 
         clientRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid())
-                .child(Constants.Clients_Service_Appointments);
+                .child(Constants.Clients_Appointments);
         String appointmentId = salonRef.push().getKey();
         ClientsAppointmentModel clientsAppointment = new ClientsAppointmentModel();
         clientsAppointment.setAppointmentID(appointmentId);
@@ -235,15 +235,19 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
         clientsAppointment.setAppointmentStatus("not confirmed yet");
         clientsAppointment.setSpecialList(serviceInfo.getServiceSpecialist());
         clientsAppointment.setServiceTitle(serviceInfo.getServiceTitle());
+        clientsAppointment.setServiceType("Service");
         clientsAppointment.setPrice(serviceInfo.getServicePrice());
 
         salonRef.child(appointmentId).setValue(clientsAppointment);
         clientRef.child(appointmentId).setValue(clientsAppointment);
 
-        btnConfirm.setEnabled(false);
-        btnConfirm.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.lightGray), PorterDuff.Mode.MULTIPLY);
-        model.setSelected(false);
+        showConfirmationDialog();
 
+    }
+
+    private void showConfirmationDialog() {
+        BookingConfirmationDialog dialog = new BookingConfirmationDialog();
+        dialog.show(getChildFragmentManager(), BookingConfirmationDialog.class.getSimpleName());
     }
 
     private void showDateDialog() {
@@ -322,7 +326,6 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
         mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
     }
-
 
     public void setServiceID(ServiceModel service) {
         serviceInfo = service;

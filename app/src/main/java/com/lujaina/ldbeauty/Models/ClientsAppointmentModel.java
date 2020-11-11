@@ -13,6 +13,7 @@ public class ClientsAppointmentModel {
     private String offerId;
     private String serviceId;
 
+    private String serviceType;
     private String price;
     private String specialList;
     private String offerServices;
@@ -25,7 +26,6 @@ public class ClientsAppointmentModel {
 
     private String orderDate;
     private String appointmentID;
-
 
 
     public String getUserId() {
@@ -74,6 +74,14 @@ public class ClientsAppointmentModel {
 
     public void setServiceId(String serviceId) {
         this.serviceId = serviceId;
+    }
+
+    public String getServiceType() {
+        return serviceType;
+    }
+
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
     }
 
     public String getPrice() {

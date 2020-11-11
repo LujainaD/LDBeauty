@@ -80,9 +80,7 @@ public class ClientSignUpFragment extends Fragment {
     private ProgressDialog progressDialog;
 
     private CircleImageView clientImg;
-
     private Uri userImageUri;
-    
 
     public ClientSignUpFragment() {
         // Required empty public constructor

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -54,7 +55,7 @@ public class CartServicesAdapter extends RecyclerView.Adapter<CartServicesAdapte
     @NonNull
     @Override
     public CartServicesAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View listItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_service_cart, parent, false);
+        View listItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_cart, parent, false);
         return new CartServicesAdapter.MyViewHolder(listItemView);
 
     }
@@ -63,32 +64,28 @@ public class CartServicesAdapter extends RecyclerView.Adapter<CartServicesAdapte
     @Override
     public void onBindViewHolder(@NonNull final CartServicesAdapter.MyViewHolder holder, final int position) {
         final ClientsAppointmentModel clientAppointment = mAppointment.get(position);
-        holder.salonName.setText(clientAppointment.getSalonName());
-        holder.time.setText(clientAppointment.getAppointmentTime());
-        holder.date.setText(clientAppointment.getAppointmentDate());
-        holder.serviceTitle.setText(clientAppointment.getServiceTitle());
-        holder.specialist.setText(clientAppointment.getSpecialList());
-        holder.price.setText(clientAppointment.getPrice() + " OMR");
 
-        holder.arrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (clientAppointment.getServiceType().equals("Service")){
+            holder.salonName.setText(clientAppointment.getSalonName());
+            holder.time.setText(clientAppointment.getAppointmentTime());
+            holder.date.setText(clientAppointment.getAppointmentDate());
+            holder.serviceTitle.setText(clientAppointment.getServiceTitle());
+            holder.specialist.setText(clientAppointment.getSpecialList());
+            holder.price.setText(clientAppointment.getPrice() + " R.O");
+            holder.offerImg.setVisibility(View.GONE);
+        }else {
+            holder.salonName.setText(clientAppointment.getSalonName());
+            holder.time.setText(clientAppointment.getAppointmentTime());
+            holder.date.setText(clientAppointment.getAppointmentDate());
+            holder.serviceTitle.setText(clientAppointment.getOfferServices());
+            holder.specialist.setVisibility(View.GONE);
+            holder.iconSpecialist.setVisibility(View.GONE);
+            holder.offerImg.setVisibility(View.VISIBLE);
+            holder.price.setText(clientAppointment.getPrice() + " R.O");
+        }
 
-                if(holder.hiddenView.getVisibility() == View.VISIBLE){
-                    TransitionManager.beginDelayedTransition(holder.cardView, new AutoTransition());
-                    holder.hiddenView.setVisibility(View.GONE);
-                    holder.arrow.setImageResource(R.drawable.ic_baseline_expand_more_24);
 
-                }
-                else {
-                    TransitionManager.beginDelayedTransition(holder.cardView,
-                            new AutoTransition());
-                    holder.hiddenView.setVisibility(View.VISIBLE);
-                    holder.arrow.setImageResource(R.drawable.ic_baseline_expand_less_24);
-                }
 
-            }
-        });
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,31 +107,31 @@ public class CartServicesAdapter extends RecyclerView.Adapter<CartServicesAdapte
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        Button delete;
+        ImageButton delete;
         TextView serviceTitle;
         TextView price;
         TextView salonName;
         TextView specialist;
         TextView date;
         TextView time;
-        ImageButton arrow;
-        LinearLayout hiddenView;
         CardView cardView;
+        ImageView offerImg;
+        ImageView iconSpecialist;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            delete = itemView.findViewById(R.id.btn_delete);
+            delete       = itemView.findViewById(R.id.btn_delete);
             serviceTitle = itemView.findViewById(R.id.tv_title);
             price        = itemView.findViewById(R.id.tv_price);
             salonName    = itemView.findViewById(R.id.tv_salonName);
             specialist   = itemView.findViewById(R.id.tv_specialist);
             date         = itemView.findViewById(R.id.tv_date);
             time         = itemView.findViewById(R.id.tv_time);
-
+            offerImg     = itemView.findViewById(R.id.iv_offer);
+            iconSpecialist     = itemView.findViewById(R.id.imageView22);
 
             cardView = itemView.findViewById(R.id.card);
-            arrow = itemView.findViewById(R.id.arrow_button);
-            hiddenView =itemView.findViewById(R.id.hidden_view);
+
         }
     }
 }

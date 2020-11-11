@@ -64,8 +64,6 @@ public class SalonConfirmDialogFragment extends DialogFragment {
 		sprModelObj = salonsDetails;
     }
 
-
-
     @Override
     public void onStart() {
         super.onStart();
@@ -139,7 +137,6 @@ public class SalonConfirmDialogFragment extends DialogFragment {
     public void setSalonObj(SPRegistrationModel salonsDetails) {
         mDetails = salonsDetails;
     }
-
 
 }
 

@@ -15,9 +15,7 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.lujaina.ldbeauty.AppOwner.AOLoginFragment;
-import com.lujaina.ldbeauty.Client.ClientLoginFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
-import com.lujaina.ldbeauty.SP.SPLoginFragment;
 
 
 public class LoginChoicesFragment extends Fragment {

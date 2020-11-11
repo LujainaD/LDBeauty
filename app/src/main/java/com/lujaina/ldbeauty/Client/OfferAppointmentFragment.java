@@ -49,46 +49,36 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class OfferAppointmentFragment extends Fragment implements AppointmentAdapter.onTimePickedListener{
+public class OfferAppointmentFragment extends Fragment implements AppointmentAdapter.onTimePickedListener {
+    public static final String DATE_FORMAT = "dd/MM/yyyy";
     private static final String TAG = "OfferAppointmentFragmen";
-
-    public static final String DATE_FORMAT    = "dd/MM/yyyy";
 
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference myRef;
 
     private MediatorInterface mMediatorInterface;
-
     private Context mContext;
-
-    RecyclerView recyclerView;
-    LinearLayoutManager lineralayoutManager;
-    Button btnConfirm;
-
-    private TextView pickedDate;
-    private TextView pickedTime;
-    private Calendar calendar;
-    private int mYear;
-    private int mMonth;
-    private int mDay;
-    private int hour;
-    private int minutes;
-
-    String timeNew;
 
     private ArrayList<AppointmentModel> timeList;
     private AppointmentAdapter mAdapter;
+    private OfferModel offerID;
+    private String userName;
 
+    RecyclerView recyclerView;
+    LinearLayoutManager lineralayoutManager;
+
+    Button btnConfirm;
     String sDay;
     String sMonth;
     String sYear;
-
-    private SPRegistrationModel ownerId;
-    private OfferModel offerID;
-    private String userName;
     String selectedTime;
+
+    private TextView pickedDate;
+    private int mYear;
+    private int mMonth;
+    private int mDay;
+
+
     public OfferAppointmentFragment() {
         // Required empty public constructor
     }
@@ -109,17 +99,17 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View parentView =  inflater.inflate(R.layout.fragment_offer_appointment, container, false);
-        TextView offerTitle 	= parentView.findViewById(R.id.tv_service);
+        View parentView = inflater.inflate(R.layout.fragment_offer_appointment, container, false);
+        TextView offerTitle = parentView.findViewById(R.id.tv_service);
         TextView services = parentView.findViewById(R.id.tv_specialist);
-        TextView curPrice 		= parentView.findViewById(R.id.tv_price);
-        ImageButton ibCalendar		= parentView.findViewById(R.id.ib_calender);
-        ImageButton ibTimeButton 	= parentView.findViewById(R.id.ib_time);
-        ImageButton ibBack 			= parentView.findViewById(R.id.ib_back);
-        ImageButton ibLeft 			= parentView.findViewById(R.id.btn_left);
-        ImageButton ibRight			= parentView.findViewById(R.id.btn_right);
-        recyclerView 	= parentView.findViewById(R.id.rv_time);
-         btnConfirm 	=	parentView.findViewById(R.id.btn_confirm);
+        TextView curPrice = parentView.findViewById(R.id.tv_price);
+        ImageButton ibCalendar = parentView.findViewById(R.id.ib_calender);
+        ImageButton ibTimeButton = parentView.findViewById(R.id.ib_time);
+        ImageButton ibBack = parentView.findViewById(R.id.ib_back);
+        ImageButton ibLeft = parentView.findViewById(R.id.btn_left);
+        ImageButton ibRight = parentView.findViewById(R.id.btn_right);
+        recyclerView = parentView.findViewById(R.id.rv_time);
+        btnConfirm = parentView.findViewById(R.id.btn_confirm);
         pickedDate = parentView.findViewById(R.id.et_date);
 
         btnConfirm.setClickable(false);
@@ -127,17 +117,16 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance();
+
         getUserInfo();
         getCurrentDate();
         showPreviousAppointments();
 
 
         timeList = new ArrayList<>();
-        mAdapter = new AppointmentAdapter(mContext , this);
+        mAdapter = new AppointmentAdapter(mContext, this);
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
-
 
 
         ibCalendar.setOnClickListener(new View.OnClickListener() {
@@ -149,7 +138,7 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
+                if (mMediatorInterface != null) {
                     mMediatorInterface.onBackPressed();
                 }
 
@@ -157,7 +146,7 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
         });
 
 
-        if(offerID != null ){
+        if (offerID != null) {
             offerTitle.setText(offerID.getTitle());
             services.setText(offerID.getServices());
             curPrice.setText(offerID.getCurrentPrice());
@@ -182,45 +171,41 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
         });
 
 
-
-
-
         return parentView;
     }
 
 
+    private void getUserInfo() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference userRef;
 
-private void getUserInfo() {
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference userRef;
+        userRef = database.getReference(Constants.Users).child(Constants.All_Users).child(mFirebaseUser.getUid());
+        userRef.orderByChild(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                SPRegistrationModel model = dataSnapshot.getValue(SPRegistrationModel.class);
+                model.getUserName();
+                userName = model.getUserName();
+            }
 
-    userRef = database.getReference(Constants.Users).child(Constants.All_Users).child(mFirebaseUser.getUid());
-    userRef.orderByChild(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            SPRegistrationModel model = dataSnapshot.getValue(SPRegistrationModel.class);
-            model.getUserName();
-            userName = model.getUserName();
-        }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
 
-        @Override
-        public void onCancelled(DatabaseError error) {
-            // Failed to read value
-        }
-    });
-
-}
+    }
 
     private void addAppointmentToDB(AppointmentModel model) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference salonRef;
 
-        salonRef =  database.getReference(Constants.Users).child(Constants.Salon_Owner).child(offerID.getSalonOwnerId())
-                .child(Constants.Clients_Offers_Appointments);
+        salonRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(offerID.getSalonOwnerId())
+                .child(Constants.Clients_Appointments);
         DatabaseReference clientRef;
 
         clientRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid())
-                .child(Constants.Clients_Offers_Appointments);
+                .child(Constants.Clients_Appointments);
         String appointmentId = salonRef.push().getKey();
         ClientsAppointmentModel clientsAppointment = new ClientsAppointmentModel();
         clientsAppointment.setAppointmentID(appointmentId);
@@ -233,19 +218,20 @@ private void getUserInfo() {
         clientsAppointment.setAppointmentDate(pickedDate.getText().toString().trim());
         clientsAppointment.setOfferServices(offerID.getServices());
         clientsAppointment.setOfferId(offerID.getOfferId());
+        clientsAppointment.setServiceType("Offer");
         clientsAppointment.setAppointmentStatus("not confirmed yet");
         clientsAppointment.setPrice(offerID.getCurrentPrice());
 
-    salonRef.child(appointmentId).setValue(clientsAppointment);
-    clientRef.child(appointmentId).setValue(clientsAppointment);
+        salonRef.child(appointmentId).setValue(clientsAppointment);
+        clientRef.child(appointmentId).setValue(clientsAppointment);
 
-    btnConfirm.setEnabled(false);
-        btnConfirm.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.lightGray), PorterDuff.Mode.MULTIPLY);
-        model.setSelected(false);
-
+        showConfirmationDialog();
     }
 
-
+    private void showConfirmationDialog() {
+        BookingConfirmationDialog dialog = new BookingConfirmationDialog();
+        dialog.show(getChildFragmentManager(), BookingConfirmationDialog.class.getSimpleName());
+    }
 
     private void showDateDialog() {
 
@@ -254,8 +240,8 @@ private void getUserInfo() {
             public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
                 pickedDate.setText(selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear);
                 sDay = String.valueOf(selectedDay);
-                sMonth= String.valueOf(selectedMonth);
-                sYear= String.valueOf(selectedYear);
+                sMonth = String.valueOf(selectedMonth);
+                sYear = String.valueOf(selectedYear);
 
                 showPreviousAppointments();
 
@@ -265,6 +251,7 @@ private void getUserInfo() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, selectListener, mYear, mMonth, mDay);
         datePickerDialog.show();
     }
+
     private void getCurrentDate() {
 
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
@@ -278,50 +265,6 @@ private void getUserInfo() {
 //		returnDate = Calendar.getInstance();
 //		returnDate.set(returnYear, returnMonth, returnDay);
     }
-
-    private void showTimeDialog() {
-
-        TimePickerDialog.OnTimeSetListener timeListener = new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectMinute) {
-                String time;
-                int h;
-                String hour;
-                String minute;
-                //to convert hours from 24-hours to 12-hours system
-                if (selectedHour >= 13) {
-                    time = "PM";
-                    h = selectedHour - 12;
-                } else {
-                    time = "AM";
-                    h = selectedHour;
-                }
-
-                // add zero to select hour if it is equal or less than 9
-                if (h <= 9) {
-                    hour = "0" + h;
-                } else {
-                    hour = h + "";
-                }
-
-                // add zero to select minute if it is equal or less than 9
-                if (selectMinute <= 9) {
-                    minute = "0" + selectMinute;
-                } else {
-                    minute = selectMinute + "";
-                }
-                pickedTime.setText(hour + ":" + minute + " " + time);
-            }
-        };
-        TimePickerDialog timePickerDialog = new TimePickerDialog(mContext ,R.style.MyTimePickerWidgetStyle,timeListener, hour, minutes, false);
-        WindowManager.LayoutParams windowManager =  new WindowManager.LayoutParams();
-        windowManager.width = WindowManager.LayoutParams.WRAP_CONTENT;
-        windowManager.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        timePickerDialog.getWindow().setAttributes(windowManager);
-        timePickerDialog.show();
-    }
-
-
 
     private void showPreviousAppointments() {
         String datePicked = pickedDate.getText().toString().trim();
@@ -350,16 +293,13 @@ private void getUserInfo() {
 
     }
 
-
-
     private void setupRecyclerView(RecyclerView recyclerView) {
 
-        lineralayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL,false);
+        lineralayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(lineralayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
     }
-
 
     public void setOfferId(OfferModel offerModel) {
         offerID = offerModel;
@@ -377,13 +317,14 @@ private void getUserInfo() {
     }
 
     @Override
-    public void onItemSelected(final int position, int previousSelectedposition, final AppointmentModel model){
+    public void onItemSelected(final int position, int previousSelectedposition, final AppointmentModel model) {
 
-		timeList.get(position).setSelected(!timeList.get(position).isSelected());
-		boolean isNeedtoEnable =  timeList.get(position).isSelected();
-        if(isNeedtoEnable){
+        timeList.get(position).setSelected(!timeList.get(position).isSelected());
+        boolean isNeedtoEnable = timeList.get(position).isSelected();
+        if (isNeedtoEnable) {
             btnConfirm.setEnabled(true);
             btnConfirm.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
+
             btnConfirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -393,15 +334,15 @@ private void getUserInfo() {
 
                 }
             });
-        }else{
+        } else {
             btnConfirm.setEnabled(false);
             btnConfirm.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.lightGray), PorterDuff.Mode.MULTIPLY);
         }
-		if(position!=previousSelectedposition) {
-			timeList.get(previousSelectedposition).setSelected(false);
-		}
+        if (position != previousSelectedposition) {
+            timeList.get(previousSelectedposition).setSelected(false);
+        }
         selectedTime = model.getPickedTime();
-		mAdapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
     }
 
 }

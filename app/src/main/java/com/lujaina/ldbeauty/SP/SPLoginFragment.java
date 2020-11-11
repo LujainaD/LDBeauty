@@ -198,8 +198,6 @@ public class SPLoginFragment extends Fragment {
         return parentView;
     }
 
-
-
     private void loginUsingFirebaseAuth(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {

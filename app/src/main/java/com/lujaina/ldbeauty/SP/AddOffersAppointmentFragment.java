@@ -192,8 +192,6 @@ public class AddOffersAppointmentFragment extends Fragment {
         return parentView;
     }
 
-
-
     private void deleteTime(AppointmentModel category) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -201,7 +199,6 @@ public class AddOffersAppointmentFragment extends Fragment {
                 .child(mOffer.getOfferId()).child(Constants.Service_Appointment).child(category.getRecordId());
         dbRef.removeValue();
     }
-
 
     private void addAnAppointment() {
         appointmentModel = new AppointmentModel();
@@ -337,8 +334,6 @@ public class AddOffersAppointmentFragment extends Fragment {
         });
 
     }
-
-
 
     private void setupRecyclerView(RecyclerView recyclerView) {
 

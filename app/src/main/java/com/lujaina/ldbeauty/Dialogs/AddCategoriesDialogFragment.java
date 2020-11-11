@@ -55,20 +55,18 @@ public class AddCategoriesDialogFragment extends DialogFragment {
     private static final int PICK_IMAGE = 1002;
     private static final int STORAGE_PERMISSION_REQUEST = 300;
     private static final ImageView.ScaleType SCALE_TYPE = ImageView.ScaleType.CENTER_CROP;
-
-
-    private Context mContext;
-
-    private Uri cateImageUri;
-    private ProgressDialog progressDialog;
+    Handler handler = new Handler();
     private FirebaseUser mFirebaseUser;
-
+    private ProgressDialog progressDialog;
+    private Context mContext;
+    private Uri cateImageUri;
     private ImageView picture;
     private int status = 0;
-    Handler handler = new Handler();
+
     public AddCategoriesDialogFragment() {
         // Required empty public constructor
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -98,7 +96,7 @@ public class AddCategoriesDialogFragment extends DialogFragment {
 
         progressDialog = new ProgressDialog(mContext);
         final EditText et_title = parentView.findViewById(R.id.ti_title);
-       picture = parentView.findViewById(R.id.iv_picture);
+        picture = parentView.findViewById(R.id.iv_picture);
         picture.setScaleType(SCALE_TYPE);
         Button btnAdd = parentView.findViewById(R.id.btn_add);
         Button btnCancel = parentView.findViewById(R.id.btn_cancel);
@@ -107,11 +105,11 @@ public class AddCategoriesDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 String title = et_title.getText().toString();
-                if(title.isEmpty()) {
+                if (title.isEmpty()) {
                     et_title.setError("you should write category name ex.(Hair, spa))");
-                }else if (cateImageUri == null) {
-                        Toast.makeText(mContext, "please add salon logo", Toast.LENGTH_SHORT).show();
-                }else {
+                } else if (cateImageUri == null) {
+                    Toast.makeText(mContext, "please add salon logo", Toast.LENGTH_SHORT).show();
+                } else {
                     progressDialog = new ProgressDialog(mContext);
                     progressDialog.setCancelable(false);
                     progressDialog.show();
@@ -140,7 +138,7 @@ public class AddCategoriesDialogFragment extends DialogFragment {
                                     public void run() {
 
                                         progressDialog.setProgress(status);
-                                        progressPercentage.setText(String.valueOf(status)+"%");
+                                        progressPercentage.setText(String.valueOf(status) + "%");
 
                                         if (status == 100) {
                                             progressDialog.dismiss();
@@ -163,9 +161,9 @@ public class AddCategoriesDialogFragment extends DialogFragment {
         picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isPermissionGranted()){
+                if (isPermissionGranted()) {
                     openGallery(PICK_IMAGE);
-                }else {
+                } else {
                     showRunTimePermission();
                 }
             }
@@ -204,7 +202,7 @@ public class AddCategoriesDialogFragment extends DialogFragment {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e(TAG, "onFailure: Uploading image Failed"+e.getLocalizedMessage());
+                Log.e(TAG, "onFailure: Uploading image Failed" + e.getLocalizedMessage());
             }
         });
 
@@ -214,7 +212,7 @@ public class AddCategoriesDialogFragment extends DialogFragment {
         Intent i = new Intent();
         i.setType("image/*"); // specify the type of data you expect
         i.setAction(Intent.ACTION_GET_CONTENT); // we need to get content from another act.
-        startActivityForResult(Intent.createChooser(i, "choose a Picture"),requestCode);
+        startActivityForResult(Intent.createChooser(i, "choose a Picture"), requestCode);
     }
 
     @Override
@@ -245,6 +243,7 @@ public class AddCategoriesDialogFragment extends DialogFragment {
         //here we requet the permission
         requestPermissions(permissionsArray, STORAGE_PERMISSION_REQUEST);
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -267,9 +266,9 @@ public class AddCategoriesDialogFragment extends DialogFragment {
         myRef.child(category.categoryId).setValue(category).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                    Toast.makeText(mContext, "Your service category is added successfully ", Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
-                    dismiss();
+                Toast.makeText(mContext, "Your service category is added successfully ", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+                dismiss();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

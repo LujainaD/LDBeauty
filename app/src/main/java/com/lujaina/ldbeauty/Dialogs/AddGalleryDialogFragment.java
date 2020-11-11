@@ -118,7 +118,6 @@ public class AddGalleryDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
 
-
                 if (imageUri == null) {
                     Toast.makeText(mContext, "please add a picture", Toast.LENGTH_SHORT).show();
                 } else {

@@ -38,21 +38,20 @@ import java.util.ArrayList;
 
 public class AddCategoriesFragment extends Fragment implements RecyclerItemTouchHelperListener {
     FirebaseUser mFirebaseUser;
+    RecyclerView recyclerView;
+    TextView empty;
     private DatabaseReference myRef;
-
     private MediatorInterface mMediatorInterface;
     private Context mContext;
     private ProgressDialog progressDialog;
-
     private ArrayList<CategoryModel> categoryList;
     private CategoryAdapter mAdapter;
-    RecyclerView recyclerView;
-    TextView empty;
     private String salonName;
 
     public AddCategoriesFragment() {
         // Required empty public constructor
     }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -63,13 +62,14 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
         }
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View  parentView = inflater.inflate(R.layout.fragment_add_categories, container, false);
+        View parentView = inflater.inflate(R.layout.fragment_add_categories, container, false);
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
-         empty = parentView.findViewById(R.id.tv_empty);
+        empty = parentView.findViewById(R.id.tv_empty);
         ImageButton back = parentView.findViewById(R.id.ib_back);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
@@ -83,7 +83,7 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
         mAdapter.setonClickListener(new CategoryAdapter.onClickListener() {
             @Override
             public void onClick(CategoryModel category) {
-                if(mMediatorInterface != null){
+                if (mMediatorInterface != null) {
                     AddServicesFragment service = new AddServicesFragment();
                     service.setService(category, salonName);
                     mMediatorInterface.changeFragmentTo(service, AddServicesFragment.class.getSimpleName());
@@ -108,13 +108,13 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
+                if (mMediatorInterface != null) {
                     mMediatorInterface.onBackPressed();
                 }
             }
         });
 
-        return  parentView;
+        return parentView;
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {
@@ -160,7 +160,7 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        if(viewHolder instanceof CategoryAdapter.MyViewHolder){
+        if (viewHolder instanceof CategoryAdapter.MyViewHolder) {
             String categoryID = categoryList.get(position).getCategoryId();
             int position1 = viewHolder.getAdapterPosition();
             mAdapter.removeItem(position1);

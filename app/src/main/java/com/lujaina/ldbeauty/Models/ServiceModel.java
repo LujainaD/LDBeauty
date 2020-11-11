@@ -74,4 +74,6 @@ public class ServiceModel {
     public void setServicePrice(String servicePrice) {
         this.servicePrice = servicePrice;
     }
+
+
 }

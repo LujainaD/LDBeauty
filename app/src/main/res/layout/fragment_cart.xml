@@ -81,9 +81,9 @@
                 android:id="@+id/tv_totalPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="price"
+                android:text="0"
                 android:textColor="#000000"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -100,9 +100,10 @@
         android:layout_marginStart="29dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="322dp"
-        android:text="booked services"
+        android:text="Booked services"
         android:textColor="#000000"
         android:textSize="16dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/imageView4"
         app:layout_constraintHorizontal_bias="0.076"
         app:layout_constraintStart_toStartOf="parent"
@@ -122,60 +123,28 @@
         android:id="@+id/tv_emptyServices"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="0"
+        android:layout_marginTop="16dp"
         android:gravity="center"
+        android:text="No booked services yet"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_cart"
-        android:layout_width="wrap_content"
-        android:layout_height="150dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="5dp"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/cardView14"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11"
-        tools:listitem="@layout/list_item_service_cart" />
+        tools:listitem="@layout/list_item_cart" />
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="booked offers"
-        android:textColor="#000000"
-        android:textSize="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.037"
-        app:layout_constraintStart_toStartOf="@+id/rv_cart"
-        app:layout_constraintTop_toBottomOf="@+id/rv_cart" />
-
-    <View
-        android:id="@+id/view22"
-        style="@style/Divider.Horizontal"
-        android:layout_width="100dp"
-        android:background="#000000"
-        app:layout_constraintEnd_toEndOf="@+id/textView1"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/textView1"
-        app:layout_constraintTop_toBottomOf="@+id/textView1" />
-
-
-
-     <androidx.recyclerview.widget.RecyclerView
-         android:id="@+id/rv_cart_offers"
-         android:layout_width="wrap_content"
-         android:layout_height="150dp"
-         android:layout_marginTop="10dp"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintHorizontal_bias="0.0"
-         app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toBottomOf="@+id/textView1"
-         tools:listitem="@layout/liste_item_cart" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

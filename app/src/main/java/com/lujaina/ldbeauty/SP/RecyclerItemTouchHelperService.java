@@ -59,17 +59,6 @@ public class RecyclerItemTouchHelperService extends ItemTouchHelper.SimpleCallba
     @Override
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         View forgroundView = ((ServiceAdapter.MyViewHolder) viewHolder).viewForground;
-/*
-        new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                .addSwipeLeftBackgroundColor(R.color.red)
-                .addSwipeLeftLabel("Delete")
-                .addSwipeLeftActionIcon(R.drawable.delete)
-                .addSwipeLeftBackgroundColor(R.color.lightPink)
-                .addSwipeRightActionIcon(R.drawable.ic_event)
-                .addSwipeRightLabel("Add Appointment")
-                .create()
-                .decorate();
-        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);*/
         getDefaultUIUtil().onDraw(c, recyclerView, forgroundView, dX*3/8, dY, actionState, isCurrentlyActive);
 
     }

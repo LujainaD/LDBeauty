@@ -37,7 +37,7 @@ import com.lujaina.ldbeauty.R;
 import java.util.ArrayList;
 
 
-public class AddGalleryFragment extends Fragment  {
+public class AddGalleryFragment extends Fragment {
     FirebaseUser mFirebaseUser;
 
     private MediatorInterface mMediatorInterface;
@@ -50,6 +50,7 @@ public class AddGalleryFragment extends Fragment  {
     public AddGalleryFragment() {
         // Required empty public constructor
     }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -70,7 +71,7 @@ public class AddGalleryFragment extends Fragment  {
         ImageButton back = parentView.findViewById(R.id.ib_back);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
-        RecyclerView recyclerView = parentView.findViewById(R.id.rv_categories);
+        RecyclerView recyclerView = parentView.findViewById(R.id.rv_Gallery);
         galleryList = new ArrayList<>();
         mAdapter = new GalleryAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
@@ -79,7 +80,7 @@ public class AddGalleryFragment extends Fragment  {
         mAdapter.setonClickListener(new GalleryAdapter.onClickListener() {
             @Override
             public void onClick(GalleryModel category) {
-                if(mMediatorInterface != null){
+                if (mMediatorInterface != null) {
                     FullScreenPictureFragment img = new FullScreenPictureFragment();
                     img.setImg(category);
                     img.show(getChildFragmentManager(), FullScreenPictureFragment.class.getSimpleName());
@@ -90,7 +91,7 @@ public class AddGalleryFragment extends Fragment  {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
+                if (mMediatorInterface != null) {
                     mMediatorInterface.onBackPressed();
                 }
             }
@@ -109,7 +110,7 @@ public class AddGalleryFragment extends Fragment  {
 
     private void setupRecyclerView(RecyclerView recyclerView) {
 
-        GridLayoutManager layoutManager = new GridLayoutManager(mContext,3);
+        GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 

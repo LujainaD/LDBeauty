@@ -68,9 +68,6 @@ import java.util.Map;
 public class AddSalonLocationFragment extends Fragment implements OnMapReadyCallback {
     private static final int KEY_PERMISSION_REQUEST_ID = 100;
     String fullAddress;
-    /*
-        String addressName;
-    */
     String key;
     double latDouble;
     double longDouble;
@@ -277,8 +274,6 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
 
     }
 
-
-
     private void requestNewLocationData() {
         //request new location data
         LocationRequest request = new LocationRequest();
@@ -342,25 +337,6 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
 
         }
     }
-
-
-
-/*
-    private void sellocationPenFB(String addressName) {
-        LatLng locationFB = new LatLng(latDouble, longDouble);
-
-        if (selectedLocation != null) {
-            selectedLocation.remove();
-        }
-
-        selectedLocation = mMap.addMarker(new MarkerOptions().position(new LatLng(latDouble, longDouble)).title(addressName));// add marker non the location
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(locationFB)); //move camera up,bottom, left, right
-        //to zoom to selected location
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(16f), 1000, null);
-        tvLat.setText(latDouble + "");
-        tvLng.setText(longDouble + "");
-    }
-*/
 
     private LocationCallback myLocationCallback() {
         LocationCallback callback = new LocationCallback() {
