@@ -34,7 +34,6 @@ import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.HomeActivity;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.ClientsAppointmentModel;
-import com.lujaina.ldbeauty.PaymentActivity;
 import com.lujaina.ldbeauty.R;
 
 import java.util.ArrayList;
@@ -121,12 +120,9 @@ public class CartFragment extends Fragment {
         pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              /*  if(mMediatorInterface != null){
+                if(mMediatorInterface != null){
                     mMediatorInterface.changeFragmentTo(new PaymentFragment(), PayPalFragment.class.getSimpleName());
-                }*/
-
-                Intent intent = new Intent(getActivity(), PaymentActivity.class);
-                startActivity(intent);
+                }
 
             }
         });
