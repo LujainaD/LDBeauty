@@ -2,6 +2,7 @@ package com.lujaina.ldbeauty.Client;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -30,8 +31,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Adapters.CartServicesAdapter;
 import com.lujaina.ldbeauty.Constants;
+import com.lujaina.ldbeauty.HomeActivity;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.ClientsAppointmentModel;
+import com.lujaina.ldbeauty.PaymentActivity;
 import com.lujaina.ldbeauty.R;
 
 import java.util.ArrayList;
@@ -111,6 +114,19 @@ public class CartFragment extends Fragment {
             @Override
             public void onDelete(ClientsAppointmentModel model) {
                 deleteServiceAppointmentFromCart(model);
+
+            }
+        });
+
+        pay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              /*  if(mMediatorInterface != null){
+                    mMediatorInterface.changeFragmentTo(new PaymentFragment(), PayPalFragment.class.getSimpleName());
+                }*/
+
+                Intent intent = new Intent(getActivity(), PaymentActivity.class);
+                startActivity(intent);
 
             }
         });
