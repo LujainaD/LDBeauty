@@ -121,7 +121,9 @@ public class CartFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(mMediatorInterface != null){
-                    mMediatorInterface.changeFragmentTo(new PaymentFragment(), PayPalFragment.class.getSimpleName());
+                    PaymentFragment paymentFragment = new PaymentFragment();
+                    paymentFragment.setTotalPrice(tv_total.getText().toString());
+                    mMediatorInterface.changeFragmentTo(paymentFragment, PayPalFragment.class.getSimpleName());
                 }
 
             }

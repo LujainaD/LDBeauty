@@ -47,7 +47,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.rishabhharit.roundedimageview:RoundedImageView:0.8.4'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
-
+    compile 'com.paypal.sdk:paypal-android-sdk:2.14.1'
 
 
 }
