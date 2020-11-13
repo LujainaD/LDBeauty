@@ -1,6 +1,5 @@
 package com.lujaina.ldbeauty.SP;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,7 +23,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.lujaina.ldbeauty.Constants;
-import com.lujaina.ldbeauty.Dialogs.DeleteDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.GalleryModel;
 import com.lujaina.ldbeauty.R;
@@ -37,6 +35,7 @@ public class FullScreenPictureFragment extends DialogFragment {
     private Context mContext;
 
     private GalleryModel mGallery;
+    private int i;
 
     public FullScreenPictureFragment() {
         // Required empty public constructor
@@ -72,7 +71,11 @@ public class FullScreenPictureFragment extends DialogFragment {
         ImageButton menuButton = parentView.findViewById(R.id.ib_menu);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mFirebaseUser= mAuth.getCurrentUser();
+        menuButton.setVisibility(View.VISIBLE);
 
+        if(i == 0){
+            menuButton.setVisibility(View.GONE);
+        }
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,8 +136,9 @@ public class FullScreenPictureFragment extends DialogFragment {
         myRef.removeValue();
     }
 
-    public void setImg(GalleryModel category) {
+    public void setImg(GalleryModel category, int i) {
         mGallery = category;
+        this.i = i;
     }
 
 

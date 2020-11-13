@@ -1,4 +1,4 @@
-package com.lujaina.ldbeauty.SP;
+package com.lujaina.ldbeauty.User;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,15 +24,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Adapters.GalleryAdapter;
 import com.lujaina.ldbeauty.Constants;
-import com.lujaina.ldbeauty.Dialogs.AddGalleryDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.GalleryModel;
+import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
+import com.lujaina.ldbeauty.SP.FullScreenPictureFragment;
 
 import java.util.ArrayList;
 
 
-public class AddGalleryFragment extends Fragment {
+public class GalleryFragment extends Fragment {
     FirebaseUser mFirebaseUser;
 
     private MediatorInterface mMediatorInterface;
@@ -42,8 +42,10 @@ public class AddGalleryFragment extends Fragment {
 
     private ArrayList<GalleryModel> galleryList;
     private GalleryAdapter mAdapter;
+    private SPRegistrationModel ownerId;
 
-    public AddGalleryFragment() {
+
+    public GalleryFragment() {
         // Required empty public constructor
     }
 
@@ -58,12 +60,13 @@ public class AddGalleryFragment extends Fragment {
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View parentView = inflater.inflate(R.layout.fragment_add_gallery, container, false);
-        FloatingActionButton add = parentView.findViewById(R.id.add_button);
+        View parentView = inflater.inflate(R.layout.fragment_salon_gallery, container, false);
+
         ImageButton back = parentView.findViewById(R.id.ib_back);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
@@ -78,7 +81,7 @@ public class AddGalleryFragment extends Fragment {
             public void onClick(GalleryModel category) {
                 if (mMediatorInterface != null) {
                     FullScreenPictureFragment img = new FullScreenPictureFragment();
-                    img.setImg(category, 1);
+                    img.setImg(category , 0);
                     img.show(getChildFragmentManager(), FullScreenPictureFragment.class.getSimpleName());
                 }
             }
@@ -93,16 +96,9 @@ public class AddGalleryFragment extends Fragment {
             }
         });
 
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddGalleryDialogFragment dialogFragment = new AddGalleryDialogFragment();
-                dialogFragment.show(getChildFragmentManager(), AddGalleryDialogFragment.class.getSimpleName());
-            }
-        });
-
         return parentView;
     }
+
 
     private void setupRecyclerView(RecyclerView recyclerView) {
 
@@ -114,7 +110,7 @@ public class AddGalleryFragment extends Fragment {
 
     private void readSalonInfoFromFirebaseDB() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Gallery);
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(ownerId.getUserId()).child(Constants.Salon_Gallery);
         // Read from the mDatabase
         progressDialog = new ProgressDialog(mContext);
         progressDialog.show();
@@ -142,4 +138,7 @@ public class AddGalleryFragment extends Fragment {
         });
     }
 
+    public void setSalonGallery(SPRegistrationModel section) {
+        ownerId = section;
+    }
 }
