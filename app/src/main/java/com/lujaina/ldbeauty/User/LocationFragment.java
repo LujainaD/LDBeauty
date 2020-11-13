@@ -301,7 +301,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
 
     private void setSalonLocationPen(double lat , double lang, String fullAddress ) {
         //put marker depend on lat and lon from firebase data
-        LatLng locationFB = new LatLng(latDouble, longDouble);
+        LatLng locationFB = new LatLng(lat, lang);
 
         locationOfSalon = new Location(latitudeFB);
         locationOfSalon.setLatitude(lat);
@@ -329,7 +329,6 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         ;// add marker non the location
         mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation)); //move camera up,bottom, left, right
         //to zoom to selected location
-
         mMap.animateCamera(CameraUpdateFactory.zoomTo(16f), 1000, null);
 
     }

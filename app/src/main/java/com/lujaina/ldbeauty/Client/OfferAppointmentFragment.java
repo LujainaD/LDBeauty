@@ -218,6 +218,7 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
         clientsAppointment.setAppointmentDate(pickedDate.getText().toString().trim());
         clientsAppointment.setOfferServices(offerID.getServices());
         clientsAppointment.setOfferId(offerID.getOfferId());
+        clientsAppointment.setOfferTitle(offerID.getTitle());
         clientsAppointment.setServiceType("Offer");
         clientsAppointment.setAppointmentStatus("not confirmed yet");
         clientsAppointment.setPrice(offerID.getCurrentPrice());
