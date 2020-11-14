@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.MyViewHolder>{
     private final Context mContext;
-    //private final Button btnConfirm;
     private ArrayList<AppointmentModel> mTime;
     private AppointmentAdapter.onTimePickedListener mListener;
 
@@ -35,7 +34,6 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         this.mContext = mContext;
         this.mTime = new ArrayList<>();
         mListener = (onTimePickedListener) offerAppointmentFragment;
-        // this.btnConfirm = btnConfirm;
     }
 
     public void update(ArrayList<AppointmentModel> timeArray) {

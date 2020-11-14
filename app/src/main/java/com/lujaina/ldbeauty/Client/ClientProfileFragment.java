@@ -45,7 +45,7 @@ public class ClientProfileFragment extends Fragment {
         View parentView = inflater.inflate(R.layout.fragment_client_profile, container, false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
-        navBar.setVisibility(View.GONE);
+        navBar.setVisibility(View.VISIBLE);
 
         TextView appointment = parentView.findViewById(R.id.tv_appointment);
 
