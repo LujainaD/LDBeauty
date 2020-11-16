@@ -62,7 +62,7 @@ public class ClientAppointmentAdapter extends RecyclerView.Adapter<ClientAppoint
             holder.tv_service.setText("Offer Title");
             holder.serviceTitle.setText(appointment.getOfferTitle());
             holder.tv_specialist.setText("Offer Services");
-            holder.specialist.setText(appointment.getOfferServices() + " , " + appointment.getPrice()) ;
+            holder.specialist.setText(appointment.getOfferServices() + " , " + appointment.getPrice()+" R.O") ;
             holder.status.setText(appointment.getAppointmentStatus());
         }
     }

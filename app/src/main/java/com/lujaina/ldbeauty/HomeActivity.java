@@ -171,10 +171,18 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.side_menu, menu);
         if (user != null) {
-            menu.getItem(0).setVisible(true);
-            menu.getItem(1).setVisible(false);
-            menu.getItem(2).setVisible(true);
+            if(userRole != null){
+                if(userRole.equals("Client")){
+                    menu.getItem(0).setVisible(true);
+                    menu.getItem(1).setVisible(false);
+                    menu.getItem(2).setVisible(true);
+                }else {
+                    menu.getItem(0).setVisible(true);
+                    menu.getItem(1).setVisible(false);
+                    menu.getItem(2).setVisible(false);
+                }
 
+            }
 
         } else {
             menu.getItem(0).setVisible(false);
@@ -193,10 +201,17 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
         FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
-            menu.getItem(0).setVisible(true);
-            menu.getItem(1).setVisible(false);
-            menu.getItem(2).setVisible(true);
-
+            if(userRole != null) {
+                if (userRole.equals("Client")) {
+                    menu.getItem(0).setVisible(true);
+                    menu.getItem(1).setVisible(false);
+                    menu.getItem(2).setVisible(true);
+                } else {
+                    menu.getItem(0).setVisible(true);
+                    menu.getItem(1).setVisible(false);
+                    menu.getItem(2).setVisible(false);
+                }
+            }
 
         } else {
             menu.getItem(0).setVisible(false);

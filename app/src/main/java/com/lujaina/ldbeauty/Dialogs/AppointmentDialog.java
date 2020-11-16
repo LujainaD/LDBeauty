@@ -66,10 +66,9 @@ public class AppointmentDialog extends DialogFragment {
                 clientName.setText(appointmentInfo.getClientName());
                 clientPhone.setText(appointmentInfo.getClientPhone());
                 date.setText(appointmentInfo.getAppointmentDate());
-                specialist.setVisibility(View.VISIBLE);
                 specialist.setText(appointmentInfo.getSpecialList());
                 service.setText(appointmentInfo.getServiceTitle());
-                price.setText(appointmentInfo.getPrice());
+                price.setText(appointmentInfo.getPrice()+" R.O");
                 status.setText(appointmentInfo.getAppointmentStatus());
             }else{
                 clientName.setText(appointmentInfo.getClientName());
@@ -79,7 +78,7 @@ public class AppointmentDialog extends DialogFragment {
                 specialist.setText(appointmentInfo.getOfferTitle());
                 tv_ser.setText("Offer Services");
                 service.setText(appointmentInfo.getOfferServices());
-                price.setText(appointmentInfo.getPrice());
+                price.setText(appointmentInfo.getPrice()+" R.O");
                 status.setText(appointmentInfo.getAppointmentStatus());
 
             }
