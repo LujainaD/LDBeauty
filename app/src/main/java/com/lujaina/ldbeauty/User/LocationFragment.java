@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -22,9 +21,7 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -44,7 +41,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -55,13 +51,10 @@ import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.LocationModel;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
-import com.lujaina.ldbeauty.SP.AddSalonLocationFragment;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class LocationFragment extends Fragment implements OnMapReadyCallback {
@@ -78,7 +71,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     private MediatorInterface mMediatorCallback;
 
 
-    private FloatingActionButton btnGetLocationInfo;
+    private FloatingActionButton btnGetUserLocation;
     FloatingActionButton togoogleMap;
 
     private Marker selectedLocation;
@@ -108,7 +101,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_location, container, false);
         ImageButton ibBack = parentView.findViewById(R.id.ib_back);
-        btnGetLocationInfo = parentView.findViewById(R.id.fab_info);
+        btnGetUserLocation = parentView.findViewById(R.id.fab_info);
          togoogleMap = parentView.findViewById(R.id.fab_googleMap);
 
 
@@ -121,7 +114,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
 
            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
 
-            btnGetLocationInfo.setOnClickListener(new View.OnClickListener() {
+            btnGetUserLocation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     getLastLocation();

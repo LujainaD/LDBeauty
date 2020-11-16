@@ -9,6 +9,8 @@ public class ClientsAppointmentModel {
 
     private String clientName;
     private String salonName;
+    private String clientPhone;
+
 
     private String offerId;
     private String serviceId;
@@ -60,6 +62,14 @@ public class ClientsAppointmentModel {
 
     public void setSalonName(String salonName) {
         this.salonName = salonName;
+    }
+
+    public String getClientPhone() {
+        return clientPhone;
+    }
+
+    public void setClientPhone(String clientPhone) {
+        this.clientPhone = clientPhone;
     }
 
     public String getOfferId() {

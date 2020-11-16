@@ -83,6 +83,8 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
     private SPRegistrationModel ownerId;
     private OfferModel offerID;
     private String userName;
+    private String userPhone;
+
     String selectedTime;
     private ServiceModel serviceInfo;
 
@@ -201,6 +203,8 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
                 SPRegistrationModel model = dataSnapshot.getValue(SPRegistrationModel.class);
                 model.getUserName();
                 userName = model.getUserName();
+                userPhone = model.getPhoneNumber();
+
             }
 
             @Override
@@ -237,6 +241,7 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
         clientsAppointment.setServiceTitle(serviceInfo.getServiceTitle());
         clientsAppointment.setServiceType("Service");
         clientsAppointment.setPrice(serviceInfo.getServicePrice());
+        clientsAppointment.setClientPhone(userPhone);
 
         salonRef.child(appointmentId).setValue(clientsAppointment);
         clientRef.child(appointmentId).setValue(clientsAppointment);

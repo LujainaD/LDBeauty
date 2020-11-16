@@ -66,8 +66,10 @@ public class SPProfileFragment extends Fragment {
         BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
         navBar.setVisibility(View.VISIBLE);
         final CircleImageView profileImag = parentView.findViewById(R.id.civ_profile);
+        TextView salonAppointment = parentView.findViewById(R.id.tv_appointment);
         TextView salonPages = parentView.findViewById(R.id.tv_salonPages);
         final TextView ownerName = parentView.findViewById(R.id.tv_title);
+
          FirebaseAuth mAuth = FirebaseAuth.getInstance();
          final FirebaseUser mFirebaseUser = mAuth.getCurrentUser();
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid());
@@ -77,6 +79,16 @@ public class SPProfileFragment extends Fragment {
             public void onClick(View v) {
                 if (mMediatorInterface !=null){
                     mMediatorInterface.changeFragmentTo(new SalonProfileFragment(), SalonProfileFragment.class.getSimpleName());
+                }
+
+            }
+        });
+
+        salonAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mMediatorInterface !=null){
+                    mMediatorInterface.changeFragmentTo(new SalonAppointmentFragment(), SalonAppointmentFragment.class.getSimpleName());
                 }
 
             }

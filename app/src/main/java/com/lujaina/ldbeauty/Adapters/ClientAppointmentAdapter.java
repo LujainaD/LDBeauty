@@ -53,8 +53,8 @@ public class ClientAppointmentAdapter extends RecyclerView.Adapter<ClientAppoint
         final ClientsAppointmentModel appointment = clientsAppointment.get(position);
         if (appointment.getServiceType().equals("Service")){
             holder.dateAndTime.setText(appointment.getAppointmentDate() + " , "+ appointment.getAppointmentTime());
-            holder.specialist.setText(appointment.getSpecialList()) ;
-            holder.serviceTitle.setText(appointment.getServiceTitle() + " , " + appointment.getPrice());
+            holder.specialist.setText(appointment.getSalonName() + " , " + appointment.getSpecialList()) ;
+            holder.serviceTitle.setText(appointment.getServiceTitle() + " , " + appointment.getPrice()+" R.O");
             holder.status.setText(appointment.getAppointmentStatus());
 
         }else {
@@ -67,9 +67,15 @@ public class ClientAppointmentAdapter extends RecyclerView.Adapter<ClientAppoint
         }
     }
 
+    private int limit = 2;
     @Override
     public int getItemCount() {
-        return clientsAppointment.size();
+        if(clientsAppointment.size() > limit){
+            return limit;
+
+        }else {
+            return clientsAppointment.size();
+        }
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{

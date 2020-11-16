@@ -27,6 +27,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="showmore">Show more</string>
     <string name="showless">show less</string>
+    <string name="appointment_details"><u>Appointment_Details</u></string>
 
 
 </resources>

@@ -125,12 +125,12 @@ public class SelectedSalonFragment extends Fragment {
                         gallery.setSalonGallery(section);
                         mMediatorCallback.changeFragmentTo(gallery, GalleryFragment.class.getSimpleName());
                         break;
-                    /*case 4:
-                        CustomerFeedBackAndRatingFragment customeFeedBack = new CustomerFeedBackAndRatingFragment();
-                        customeFeedBack.setSalonFeedback(mCurrent);
-                        mMediatorCallback.changeFragmentTo(customeFeedBack, CustomerFeedBackAndRatingFragment.class.getSimpleName());
+                    case 4:
+                        RatingFragment customeFeedBack = new RatingFragment();
+                        customeFeedBack.setSalonFeedback(section);
+                        mMediatorCallback.changeFragmentTo(customeFeedBack, RatingFragment.class.getSimpleName());
 
-                        break;*/
+                        break;
                     case 5:
                         LocationFragment salonLocation = new LocationFragment();
                         salonLocation.setSalonLocation(section);

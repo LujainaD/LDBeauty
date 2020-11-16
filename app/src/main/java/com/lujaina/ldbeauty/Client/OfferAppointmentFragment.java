@@ -63,6 +63,7 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
     private AppointmentAdapter mAdapter;
     private OfferModel offerID;
     private String userName;
+    private String userPhone;
 
     RecyclerView recyclerView;
     LinearLayoutManager lineralayoutManager;
@@ -186,6 +187,7 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
                 SPRegistrationModel model = dataSnapshot.getValue(SPRegistrationModel.class);
                 model.getUserName();
                 userName = model.getUserName();
+                userPhone = model.getPhoneNumber();
             }
 
             @Override
@@ -222,6 +224,7 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
         clientsAppointment.setServiceType("Offer");
         clientsAppointment.setAppointmentStatus("not confirmed yet");
         clientsAppointment.setPrice(offerID.getCurrentPrice());
+        clientsAppointment.setClientPhone(userPhone);
 
         salonRef.child(appointmentId).setValue(clientsAppointment);
         clientRef.child(appointmentId).setValue(clientsAppointment);

@@ -43,7 +43,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
 
-public class AddAppointmentFragment extends Fragment {
+public class AddServiceAppointmentFragment extends Fragment {
     public static final String DATE_FORMAT = "dd/MM/yyyy";
     RecyclerView recyclerView;
     LinearLayoutManager lineralayoutManager;
@@ -70,7 +70,7 @@ public class AddAppointmentFragment extends Fragment {
     private ArrayList<AppointmentModel> timeList;
     private TimeAdapter mAdapter;
 
-    public AddAppointmentFragment() {
+    public AddServiceAppointmentFragment() {
         // Required empty public constructor
     }
 

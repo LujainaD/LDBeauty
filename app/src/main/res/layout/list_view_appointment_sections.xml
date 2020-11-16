@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -12,7 +13,7 @@
         app:cardCornerRadius="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/view3">
+        app:layout_constraintTop_toBottomOf="@+id/cardView16">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -41,120 +42,124 @@
 
     </androidx.cardview.widget.CardView>
 
-  <androidx.cardview.widget.CardView
-      android:id="@+id/cardView16"
-      android:layout_width="0dp"
-      android:layout_height="75dp"
-      android:layout_marginTop="20dp"
-      app:cardCornerRadius="14dp"
-      app:layout_constraintEnd_toEndOf="@+id/cardView15"
-      app:layout_constraintStart_toStartOf="@+id/cardView15"
-      app:layout_constraintTop_toBottomOf="@+id/cardView15">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView16"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="14dp"
+        app:layout_constraintEnd_toEndOf="@+id/cardView15"
+        app:layout_constraintStart_toStartOf="@+id/cardView15"
+        app:layout_constraintTop_toBottomOf="@+id/cardView17">
 
-  <androidx.constraintlayout.widget.ConstraintLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      app:layout_constraintTop_toTopOf="@+id/cardView16">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="@+id/cardView16">
 
-      <TextView
-          android:id="@+id/service"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="28dp"
-          android:layout_marginTop="14dp"
-          android:text="Service :"
-          android:textColor="@color/pink_text"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="14dp"
+                android:text="Service :"
+                android:textColor="@color/pink_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-      <TextView
-          android:id="@+id/tv_service"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="15dp"
-          android:text="TextView"
-          app:layout_constraintStart_toStartOf="@+id/service"
-          app:layout_constraintTop_toBottomOf="@+id/service" />
-  </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tv_service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="TextView"
+                app:layout_constraintStart_toStartOf="@+id/service"
+                app:layout_constraintTop_toBottomOf="@+id/service" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-  </androidx.cardview.widget.CardView>
-  <androidx.cardview.widget.CardView
-      android:id="@+id/cardView17"
-      android:layout_width="0dp"
-      android:layout_height="75dp"
-      android:layout_marginTop="20dp"
-      app:cardCornerRadius="14dp"
-      app:layout_constraintEnd_toEndOf="@+id/cardView16"
-      app:layout_constraintStart_toStartOf="@+id/cardView16"
-      app:layout_constraintTop_toBottomOf="@+id/cardView16">
+    </androidx.cardview.widget.CardView>
 
-      <androidx.constraintlayout.widget.ConstraintLayout
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          app:layout_constraintTop_toTopOf="@+id/cardView16">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView17"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="14dp"
+        app:layout_constraintEnd_toEndOf="@+id/cardView16"
+        app:layout_constraintStart_toStartOf="@+id/cardView16"
+        app:layout_constraintTop_toTopOf="parent">
 
-          <TextView
-              android:id="@+id/specialist"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="28dp"
-              android:layout_marginTop="14dp"
-              android:text="Specialist :"
-              android:textColor="@color/pink_text"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="@+id/cardView16">
 
-          <TextView
-              android:id="@+id/tv_specialist"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="15dp"
-              android:text="TextView"
-              app:layout_constraintStart_toStartOf="@+id/specialist"
-              app:layout_constraintTop_toBottomOf="@+id/specialist" />
-      </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/specialist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="14dp"
+                android:text="Salon Name &amp; Specialist :"
+                android:textColor="@color/pink_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-
-  </androidx.cardview.widget.CardView>
-
-  <androidx.cardview.widget.CardView
-      android:id="@+id/cardView18"
-      android:layout_width="0dp"
-      android:layout_height="75dp"
-      android:layout_marginTop="20dp"
-      app:cardCornerRadius="14dp"
-      app:layout_constraintEnd_toEndOf="@+id/cardView17"
-      app:layout_constraintHorizontal_bias="0.0"
-      app:layout_constraintStart_toStartOf="@+id/cardView17"
-      app:layout_constraintTop_toBottomOf="@+id/cardView17">
-      <androidx.constraintlayout.widget.ConstraintLayout
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          app:layout_constraintTop_toTopOf="@+id/cardView16">
-
-          <TextView
-              android:id="@+id/service2"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="28dp"
-              android:layout_marginTop="14dp"
-              android:text="Appointment Status :"
-              android:textColor="@color/pink_text"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toTopOf="parent" />
-
-          <TextView
-              android:id="@+id/tv_status"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="15dp"
-              android:text="TextView"
-              app:layout_constraintStart_toStartOf="@+id/service2"
-              app:layout_constraintTop_toBottomOf="@+id/service2" />
-      </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tv_specialist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="TextView"
+                app:layout_constraintStart_toStartOf="@+id/specialist"
+                app:layout_constraintTop_toBottomOf="@+id/specialist" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-  </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView18"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="14dp"
+        app:layout_constraintEnd_toEndOf="@+id/cardView17"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/cardView17"
+        app:layout_constraintTop_toBottomOf="@+id/cardView15">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="@+id/cardView16">
+
+            <TextView
+                android:id="@+id/service2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="14dp"
+                android:text="Appointment Status :"
+                android:textColor="@color/pink_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="8dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/service2"
+                app:layout_constraintTop_toBottomOf="@+id/service2" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
