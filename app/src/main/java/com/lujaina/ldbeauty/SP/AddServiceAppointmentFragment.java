@@ -204,7 +204,7 @@ public class AddServiceAppointmentFragment extends Fragment {
                 .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId()).child(Constants.Service_Appointment);
         String recordID = dbRef.push().getKey();
         appointmentModel.setRecordId(recordID);
-
+        appointmentModel.setIsChosen("no");
         dbRef.child(Objects.requireNonNull(recordID)).setValue(appointmentModel);
 
 

@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -121,9 +122,6 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
         ImageButton ibRight			= parentView.findViewById(R.id.btn_right);
         recyclerView 	= parentView.findViewById(R.id.rv_time);
         btnConfirm 	=	parentView.findViewById(R.id.btn_confirm);
-        pickedDate = parentView.findViewById(R.id.et_date);
-
-
         pickedDate = parentView.findViewById(R.id.et_date);
         pickedTime = parentView.findViewById(R.id.et_time);
 
@@ -348,8 +346,7 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
                 public void onClick(View v) {
 
                     addAppointmentToDB(model);
-
-
+                    addSelectItemAsBooked(model);
                 }
             });
         }else{
@@ -361,15 +358,24 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
         }
         selectedTime = model.getPickedTime();
         mAdapter.notifyDataSetChanged();
+    }
 
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    private void addSelectItemAsBooked(AppointmentModel model) {
 
-                addAppointmentToDB(model);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef;
+        myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(serviceInfo.getOwnerId())
+                .child(Constants.Salon_Category).child(serviceInfo.getIdCategory()).child(Constants.Salon_Service).child(serviceInfo.getServiceId()).child(Constants.Service_Appointment).child(model.getRecordId());
 
 
-            }
-        });
+   myRef.child("isSelected").setValue(model.isSelected());
+   myRef.child("appointmentDate").setValue(pickedDate.getText().toString());
+   myRef.child("categoryId").setValue(serviceInfo.getIdCategory());
+   myRef.child("ownerId").setValue(serviceInfo.getOwnerId());
+   myRef.child("pickedTime").setValue(selectedTime);
+   myRef.child("recordId").setValue(model.getRecordId());
+   myRef.child("serviceId").setValue(serviceInfo.getServiceId());
+   myRef.child("isChosen").setValue("yes");
+
     }
 }
