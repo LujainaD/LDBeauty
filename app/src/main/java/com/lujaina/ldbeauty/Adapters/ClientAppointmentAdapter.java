@@ -59,10 +59,10 @@ public class ClientAppointmentAdapter extends RecyclerView.Adapter<ClientAppoint
 
         }else {
             holder.dateAndTime.setText(appointment.getAppointmentDate() + " , "+ appointment.getAppointmentTime());
-            holder.tv_service.setText("Offer Title");
-            holder.serviceTitle.setText(appointment.getOfferTitle());
-            holder.tv_specialist.setText("Offer Services");
-            holder.specialist.setText(appointment.getOfferServices() + " , " + appointment.getPrice()+" R.O") ;
+            holder.tv_service.setText("Offer Services");
+            holder.serviceTitle.setText(appointment.getOfferServices() + " , " + appointment.getPrice()+" R.O") ;
+            holder.tv_specialist .setText("Salon Name");
+            holder.specialist.setText(appointment.getSalonName()) ;
             holder.status.setText(appointment.getAppointmentStatus());
         }
     }

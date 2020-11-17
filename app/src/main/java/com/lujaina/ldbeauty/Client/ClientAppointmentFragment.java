@@ -70,6 +70,7 @@ public class ClientAppointmentFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_client_appointment, container, false);
+        ImageButton ibBack = parentView.findViewById(R.id.ib_back);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
@@ -100,6 +101,16 @@ public class ClientAppointmentFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 recyclerView.smoothScrollToPosition(lineralayoutManager.findLastVisibleItemPosition() + 1);
+            }
+        });
+
+        ibBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mMediatorInterface != null) {
+                    mMediatorInterface.onBackPressed();
+                }
+
             }
         });
 

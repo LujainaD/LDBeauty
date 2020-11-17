@@ -2,11 +2,14 @@ package com.lujaina.ldbeauty.Client;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -15,14 +18,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.lujaina.ldbeauty.Constants;
+import com.lujaina.ldbeauty.Dialogs.OrderDialog;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
+import com.lujaina.ldbeauty.Models.ClientsAppointmentModel;
+import com.lujaina.ldbeauty.Models.PayPalModel;
 import com.lujaina.ldbeauty.R;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
@@ -33,6 +48,7 @@ import com.paypal.android.sdk.payments.PaymentConfirmation;
 import org.json.JSONException;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 
 public class PaymentFragment extends Fragment {
@@ -47,9 +63,14 @@ public class PaymentFragment extends Fragment {
 
     private Context mContext;
     private MediatorInterface mMediatorCallback;
-
+     FirebaseDatabase database ;
+    DatabaseReference myRef;
     FragmentTransaction transaction;
     private String totalPrice;
+    private String clientId;
+    String values;
+
+    private ArrayList<ClientsAppointmentModel> serviceArray;
 
     public PaymentFragment() {
         // Required empty public constructor
@@ -68,13 +89,12 @@ public class PaymentFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_payment, container, false);
+        database = FirebaseDatabase.getInstance();
+         myRef = database.getReference(Constants.Users).child(Constants.Client).child(clientId).child(Constants.Clients_Appointments);
         TextView total = parentView.findViewById(R.id.tv_total);
-
         ImageButton paypal = parentView.findViewById(R.id.btn_paypal);
         ImageButton visa = parentView.findViewById(R.id.btn_visa);
-
         total.setText(totalPrice);
-
         paypal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,8 +122,10 @@ public class PaymentFragment extends Fragment {
         return parentView;
     }
 
-    public void setTotalPrice(String totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setTotalPrice(String price, String uid, ArrayList<ClientsAppointmentModel> serviceArray) {
+        this.totalPrice = price;
+        clientId = uid;
+        this.serviceArray = serviceArray;
     }
 
     public void beginPayment(){
@@ -137,6 +159,8 @@ public class PaymentFragment extends Fragment {
                     // TODO: send 'confirm' to your server for verification.
                     // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
                     // for more details.
+                    OrderDialog dialog = new OrderDialog();
+                    dialog.show(getChildFragmentManager(),OrderDialog.class.getSimpleName());
 
                 } catch (JSONException e) {
                     Log.e("sampleapp", "an extremely unlikely failure occurred: ", e);
@@ -149,13 +173,13 @@ public class PaymentFragment extends Fragment {
         }
     }
 
-
-
     @Override
     public void onDestroy() {
         // Stop service when done
         getActivity().stopService(new Intent(getContext(), PayPalService.class));
         super.onDestroy();
     }
+
+
 }
 

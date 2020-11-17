@@ -122,7 +122,7 @@ public class CartFragment extends Fragment {
             public void onClick(View v) {
                 if(mMediatorInterface != null){
                     PaymentFragment paymentFragment = new PaymentFragment();
-                    paymentFragment.setTotalPrice(tv_total.getText().toString());
+                    paymentFragment.setTotalPrice(tv_total.getText().toString(), mFirebaseUser.getUid(), serviceArray);
                     mMediatorInterface.changeFragmentTo(paymentFragment, PayPalFragment.class.getSimpleName());
                 }
 
@@ -191,8 +191,7 @@ public class CartFragment extends Fragment {
 
 
     private void setupRecyclerView(RecyclerView recyclerView) {
-        GridLayoutManager layoutManager = new GridLayoutManager(mContext, 2);
-        //LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
