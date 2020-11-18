@@ -50,6 +50,7 @@ public class ClientAppointmentFragment extends Fragment {
     private MediatorInterface mMediatorInterface;
     private Context mContext;
 
+    TextView emptyAppointment;
     public ClientAppointmentFragment() {
         // Required empty public constructor
     }
@@ -75,6 +76,7 @@ public class ClientAppointmentFragment extends Fragment {
         mFirebaseUser = mAuth.getCurrentUser();
         BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
         navBar.setVisibility(View.GONE);
+        emptyAppointment = parentView.findViewById(R.id.empty);
         recyclerView = parentView.findViewById(R.id.tv_appointment);
         ImageButton ibLeft = parentView.findViewById(R.id.ib_left);
         ImageButton ibRight = parentView.findViewById(R.id.ib_right);
@@ -120,7 +122,7 @@ public class ClientAppointmentFragment extends Fragment {
     private void readAppointmentFromDB() {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        myRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Clients_Appointments);
+        myRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.History_Order);
         // Read from the mDatabase
 
         myRef.addValueEventListener(new ValueEventListener() {
@@ -129,7 +131,16 @@ public class ClientAppointmentFragment extends Fragment {
                 appointmentArray.clear();
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     ClientsAppointmentModel appointment = d.getValue(ClientsAppointmentModel.class);
-                    appointmentArray.add(appointment);
+
+                    if(appointmentArray== null){
+                        recyclerView.setVisibility(View.GONE);
+                        emptyAppointment.setVisibility(View.VISIBLE);
+                    }else {
+                        emptyAppointment.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        appointmentArray.add(appointment);
+
+                    }
 
                 }
                 mAdapter.update(appointmentArray);

@@ -201,14 +201,14 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
     private void addAppointmentToDB(AppointmentModel model) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference salonRef;
-
+/*
         salonRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(offerID.getSalonOwnerId())
-                .child(Constants.Clients_Appointments);
+                .child(Constants.Client_Cart);*/
         DatabaseReference clientRef;
 
         clientRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid())
-                .child(Constants.Clients_Appointments);
-        String appointmentId = salonRef.push().getKey();
+                .child(Constants.Client_Cart);
+        String appointmentId = clientRef.push().getKey();
         ClientsAppointmentModel clientsAppointment = new ClientsAppointmentModel();
         clientsAppointment.setAppointmentID(appointmentId);
         clientsAppointment.setUserId(mFirebaseUser.getUid());
@@ -226,7 +226,7 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
         clientsAppointment.setPrice(offerID.getCurrentPrice());
         clientsAppointment.setClientPhone(userPhone);
 
-        salonRef.child(appointmentId).setValue(clientsAppointment);
+        //salonRef.child(appointmentId).setValue(clientsAppointment);
         clientRef.child(appointmentId).setValue(clientsAppointment);
 
         showConfirmationDialog();

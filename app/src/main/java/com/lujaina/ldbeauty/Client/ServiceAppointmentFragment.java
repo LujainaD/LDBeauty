@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -217,13 +218,13 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference salonRef;
 
-        salonRef =  database.getReference(Constants.Users).child(Constants.Salon_Owner).child(serviceInfo.getOwnerId())
-                .child(Constants.Clients_Appointments);
+        /*salonRef =  database.getReference(Constants.Users).child(Constants.Salon_Owner).child(serviceInfo.getOwnerId())
+                .child(Constants.Client_Cart);*/
         DatabaseReference clientRef;
 
         clientRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid())
-                .child(Constants.Clients_Appointments);
-        String appointmentId = salonRef.push().getKey();
+                .child(Constants.Client_Cart);
+        String appointmentId = clientRef.push().getKey();
         ClientsAppointmentModel clientsAppointment = new ClientsAppointmentModel();
         clientsAppointment.setAppointmentID(appointmentId);
         clientsAppointment.setUserId(mFirebaseUser.getUid());
@@ -241,8 +242,8 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
         clientsAppointment.setPrice(serviceInfo.getServicePrice());
         clientsAppointment.setClientPhone(userPhone);
 
-        salonRef.child(appointmentId).setValue(clientsAppointment);
-        clientRef.child(appointmentId).setValue(clientsAppointment);
+        //salonRef.child(appointmentId).setValue(clientsAppointment);
+         clientRef.child(appointmentId).setValue(clientsAppointment);
 
         showConfirmationDialog();
 
@@ -346,7 +347,10 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
                 public void onClick(View v) {
 
                     addAppointmentToDB(model);
-                    addSelectItemAsBooked(model);
+                   // addSelectItemAsBooked(model);
+                    //readTimeFromHistoryOrder(model);
+
+
                 }
             });
         }else{
@@ -359,6 +363,52 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
         selectedTime = model.getPickedTime();
         mAdapter.notifyDataSetChanged();
     }
+
+/*
+    private void readTimeFromHistoryOrder(final AppointmentModel model) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef;
+        myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(serviceInfo.getOwnerId())
+                .child(Constants.History_Order).child(model.getRecordId());
+
+        String time = model.getPickedTime();
+        Log.w("recordId:"+ model.getRecordId(), "time:"+ time);
+
+        myRef.child("appointmentTime").equalTo(time).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                changePickedTime(model);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
+*/
+
+    private void changePickedTime(AppointmentModel model) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef;
+        myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(serviceInfo.getOwnerId())
+                .child(Constants.Salon_Category).child(serviceInfo.getIdCategory()).child(Constants.Salon_Service).child(serviceInfo.getServiceId()).child(Constants.Service_Appointment).child(model.getRecordId());
+
+
+        myRef.child("isSelected").setValue(model.isSelected());
+        myRef.child("appointmentDate").setValue(pickedDate.getText().toString());
+        myRef.child("categoryId").setValue(serviceInfo.getIdCategory());
+        myRef.child("ownerId").setValue(serviceInfo.getOwnerId());
+        myRef.child("pickedTime").setValue(selectedTime);
+        myRef.child("recordId").setValue(model.getRecordId());
+        myRef.child("serviceId").setValue(serviceInfo.getServiceId());
+        myRef.child("isChosen").setValue("yes");
+    }
+
 
     private void addSelectItemAsBooked(AppointmentModel model) {
 
@@ -375,7 +425,8 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
    myRef.child("pickedTime").setValue(selectedTime);
    myRef.child("recordId").setValue(model.getRecordId());
    myRef.child("serviceId").setValue(serviceInfo.getServiceId());
-   myRef.child("isChosen").setValue("yes");
+  // myRef.child("isChosen").setValue("yes");
+
 
     }
 }

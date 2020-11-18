@@ -10,7 +10,7 @@ public class Constants {
     public static final String Service_Appointment = "Service_Appointment";
     public static final String Salon_Location = "Salon_Location";
     public static final String Salon_Offers = "Salon_Offers";
-    public static final String Clients_Appointments = "Clients_Appointments";
+    public static final String Client_Cart = "Client_Cart";
     public static final String All_Users= "All_Users";
     public static final String Client = "Client";
     public static final String Comments = "Comments";

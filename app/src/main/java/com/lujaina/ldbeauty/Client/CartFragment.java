@@ -1,8 +1,11 @@
 package com.lujaina.ldbeauty.Client;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +56,7 @@ public class CartFragment extends Fragment {
     TextView tv_total;
     TextView emptyservice;
     RecyclerView service_rv;
-
+    String ownerId;
     public CartFragment() {
         // Required empty public constructor
     }
@@ -88,7 +92,6 @@ public class CartFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
 
-
         tv_total = parentView.findViewById(R.id.tv_totalPrice);
 
         ibBack.setOnClickListener(new View.OnClickListener() {
@@ -108,27 +111,41 @@ public class CartFragment extends Fragment {
 
         readClientServiceAppointmentDB();
 
-
         serviceAdapter.setonClickListener(new CartServicesAdapter.onDeleteListener() {
             @Override
             public void onDelete(ClientsAppointmentModel model) {
                 deleteServiceAppointmentFromCart(model);
-
             }
         });
 
-        pay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mMediatorInterface != null){
-                    PaymentFragment paymentFragment = new PaymentFragment();
-                    paymentFragment.setTotalPrice(tv_total.getText().toString(), mFirebaseUser.getUid(), serviceArray);
-                    mMediatorInterface.changeFragmentTo(paymentFragment, PayPalFragment.class.getSimpleName());
+            pay.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("ResourceAsColor")
+                @Override
+                public void onClick(View v) {
+                    if (tv_total.getText().toString().equals("0")) {
+
+                        TextView title = new TextView(mContext);
+                        title.setText("Cart Warning");
+                        title.setBackgroundColor(Color.parseColor("#DA6EA4"));
+                       // title.setPadding(10, 15, 15, 10);
+                        title.setGravity(Gravity.CENTER);
+                        title.setTextColor(Color.WHITE);
+                        title.setTextSize(22);
+
+                        AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
+                        alertDialog.setCustomTitle(title);
+                        alertDialog.setMessage("Your cart is empty");
+                        alertDialog.show();
+
+                    }else {
+                        if (mMediatorInterface != null) {
+                            PaymentFragment paymentFragment = new PaymentFragment();
+                            paymentFragment.setTotalPrice(tv_total.getText().toString(), serviceArray, ownerId);
+                            mMediatorInterface.changeFragmentTo(paymentFragment, PayPalFragment.class.getSimpleName());
+                        }
+                    }
                 }
-
-            }
-        });
-
+            });
 
         return parentView;
     }
@@ -137,17 +154,13 @@ public class CartFragment extends Fragment {
     private void deleteServiceAppointmentFromCart(ClientsAppointmentModel model) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid())
-                .child(Constants.Clients_Appointments).child(model.getAppointmentID());
-        DatabaseReference salonRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(model.getOwnerId())
-                .child(Constants.Clients_Appointments).child(model.getAppointmentID());
+                .child(Constants.Client_Cart).child(model.getAppointmentID());
         myRef.removeValue();
-        salonRef.removeValue();
     }
-
 
     private void readClientServiceAppointmentDB() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Clients_Appointments);
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Client_Cart);
         // Read from the mDatabase
 
         myRef.addValueEventListener(new ValueEventListener() {
@@ -161,6 +174,7 @@ public class CartFragment extends Fragment {
                     int price = Integer.parseInt(appointment.getPrice());
                     sum += price;
                     String sumOfService = String.valueOf(sum);
+                     ownerId = appointment.getOwnerId();
                     if (serviceArray.isEmpty()) {
                         emptyservice.setVisibility(View.VISIBLE);
                         service_rv.setVisibility(View.GONE);
@@ -188,7 +202,6 @@ public class CartFragment extends Fragment {
             }
         });
     }
-
 
     private void setupRecyclerView(RecyclerView recyclerView) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);

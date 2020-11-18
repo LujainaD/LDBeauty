@@ -45,30 +45,18 @@ import java.util.Calendar;
 import java.util.Locale;
 
 
-public class OrderDialog extends DialogFragment {
+public class OrderFragment extends Fragment {
     FirebaseUser mFirebaseUser;
     private DatabaseReference myRef;
 
     private OrderAdapter serviceAdapter;
     ArrayList<ClientsAppointmentModel> serviceArray;
+    private String ownerId;
 
-    public OrderDialog() {
+    public OrderFragment() {
         // Required empty public constructor
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Dialog dialog = getDialog();
-        if (dialog != null) {
-            int width = ViewGroup.LayoutParams.WRAP_CONTENT;
-            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            dialog.getWindow().setLayout(width, height);
-            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.setCanceledOnTouchOutside(false);
-
-        }
-    }
 
   @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -96,7 +84,6 @@ public class OrderDialog extends DialogFragment {
               saveOrderInHistory();
               Intent i = new Intent(getContext(), HomeActivity.class);
               startActivity(i);
-              dismiss();
           }
       });
 
@@ -105,14 +92,25 @@ public class OrderDialog extends DialogFragment {
 
     private void saveOrderInHistory() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.History_Order);
+        DatabaseReference clientOrderRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.History_Order);
+        DatabaseReference salonOrderRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(ownerId).child(Constants.History_Order);
+
+        for(ClientsAppointmentModel model : serviceArray){
+
+            clientOrderRef.push().setValue(model);
+            salonOrderRef.push().setValue(model);
+
+        }
+        DatabaseReference cartRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Client_Cart);
+
+        cartRef.setValue(null);
 
     }
 
     private void readClientOrderFromFirebaseDB() {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Clients_Appointments);
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Client_Cart);
 
 
         myRef.addValueEventListener(new ValueEventListener() {
@@ -161,4 +159,7 @@ public class OrderDialog extends DialogFragment {
 
     }
 
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
 }

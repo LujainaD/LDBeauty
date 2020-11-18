@@ -5,8 +5,7 @@
     android:background="#FFF"
     android:id="@+id/frameLayout4"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".SP.AddCategoriesFragment">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/imageView4"
@@ -235,6 +234,8 @@
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
+        android:visibility="gone"
+
         app:layout_constraintBottom_toBottomOf="@+id/view3"
         app:layout_constraintEnd_toStartOf="@+id/ib_right"
         app:layout_constraintStart_toEndOf="@+id/ib_left"
@@ -269,4 +270,17 @@
         app:layout_constraintStart_toStartOf="@+id/view3"
         app:layout_constraintTop_toTopOf="@+id/view3"
         app:layout_constraintVertical_bias="0.375" />
+
+    <TextView
+        android:id="@+id/empty"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="No Appointment yet"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/view3"
+        app:layout_constraintEnd_toStartOf="@+id/ib_right"
+        app:layout_constraintStart_toEndOf="@+id/ib_left"
+        app:layout_constraintTop_toTopOf="@+id/view3" />
 </androidx.constraintlayout.widget.ConstraintLayout>

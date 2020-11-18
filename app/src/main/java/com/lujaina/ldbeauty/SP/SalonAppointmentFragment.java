@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,6 +47,7 @@ public class SalonAppointmentFragment extends Fragment {
     RecyclerView recyclerView;
     private SalonAppointmentAdapter mAdapter;
     ArrayList<ClientsAppointmentModel> salonAppointmentArray;
+    TextView emptyAppointment;
 
     public SalonAppointmentFragment() {
         // Required empty public constructor
@@ -70,6 +72,7 @@ public class SalonAppointmentFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
+        emptyAppointment = parentView.findViewById(R.id.empty);
         recyclerView = parentView.findViewById(R.id.rv_confirm);
         salonAppointmentArray = new ArrayList<>();
 
@@ -103,7 +106,7 @@ public class SalonAppointmentFragment extends Fragment {
     private void readSalonAppointmentFromFireBaseDB() {
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Clients_Appointments);
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.History_Order);
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setCancelable(true);
         progressDialog.show();
@@ -117,6 +120,15 @@ public class SalonAppointmentFragment extends Fragment {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     ClientsAppointmentModel salon = d.getValue(ClientsAppointmentModel.class);
                     salonAppointmentArray.add(salon);
+
+                    if(salonAppointmentArray== null){
+                        recyclerView.setVisibility(View.GONE);
+                        emptyAppointment.setVisibility(View.VISIBLE);
+                    }else {
+                        emptyAppointment.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                    }
+
                 }
                 progressDialog.dismiss();
                 mAdapter.update(salonAppointmentArray);
