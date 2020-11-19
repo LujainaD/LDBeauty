@@ -66,27 +66,17 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 		holder.card.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-               // btnConfirm.setEnabled(true);
-               // btnConfirm.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
                 mListener.onItemSelected(position,previousSelectedItem, model);
 			}
 		});
 
-
-
 		if(model.isSelected()){
-
 			previousSelectedItem = position;
 			holder.card.getCardBackgroundColor();
 			ColorStateList.valueOf(Color.parseColor("#FFFFFF"));
 			holder.card.setCardBackgroundColor(Color.parseColor("#DA6EA4"));
 			holder.time.setTextColor(Color.parseColor("#FFFFFF"));
-           // btnConfirm.setEnabled(true);
-          //  btnConfirm.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
-
 		}else {
-          //  btnConfirm.setEnabled(false);
-            //btnConfirm.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.lightGray), PorterDuff.Mode.MULTIPLY);
             holder.card.getCardBackgroundColor();
 			ColorStateList.valueOf(Color.parseColor("#DA6EA4"));
 			holder.card.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -102,7 +92,6 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     public void setonClickListener(AppointmentAdapter.onTimePickedListener listener){
         mListener = listener;
     }
-
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         TextView time;

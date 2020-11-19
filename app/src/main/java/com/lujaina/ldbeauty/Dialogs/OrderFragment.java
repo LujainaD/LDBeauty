@@ -62,22 +62,25 @@ public class OrderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-      View parentView = inflater.inflate(R.layout.fragment_order_dialog, container, false);
+     // View parentView = inflater.inflate(R.layout.fragment_order_dialog, container, false);
+      //View parentView = inflater.inflate(R.layout.order_confirmation, container, false);
+      View parentView = inflater.inflate(R.layout.order_confirm3, container, false);
+
       Button btn_dismiss = parentView.findViewById(R.id.btn_dismiss);
-      TextView tv_date = parentView.findViewById(R.id.tv_date);
-      TextView tv_time = parentView.findViewById(R.id.tv_time);
+     // TextView tv_date = parentView.findViewById(R.id.tv_date);
+    //  TextView tv_time = parentView.findViewById(R.id.tv_time);
 
       FirebaseAuth mAuth= FirebaseAuth.getInstance();
       mFirebaseUser = mAuth.getCurrentUser();
-      RecyclerView recyclerView = parentView.findViewById(R.id.rv_order);
+     // RecyclerView recyclerView = parentView.findViewById(R.id.rv_order);
       serviceArray = new ArrayList<>();
       serviceAdapter = new OrderAdapter(getContext());
-      recyclerView.setAdapter(serviceAdapter);
-      setupRecyclerView(recyclerView);
+      //recyclerView.setAdapter(serviceAdapter);
+     // setupRecyclerView(recyclerView);
       readClientOrderFromFirebaseDB();
 
-      tv_time.setText(getCurrentTime());
-      tv_date.setText(currentDate());
+//      tv_time.setText(getCurrentTime());
+     // tv_date.setText(currentDate());
       btn_dismiss.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -99,7 +102,6 @@ public class OrderFragment extends Fragment {
 
             clientOrderRef.push().setValue(model);
             salonOrderRef.push().setValue(model);
-
         }
         DatabaseReference cartRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Client_Cart);
 

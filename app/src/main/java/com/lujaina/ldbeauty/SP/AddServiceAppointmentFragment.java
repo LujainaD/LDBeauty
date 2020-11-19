@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,6 +34,7 @@ import com.lujaina.ldbeauty.Adapters.TimeAdapter;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.AppointmentModel;
+import com.lujaina.ldbeauty.Models.ClientsAppointmentModel;
 import com.lujaina.ldbeauty.Models.OfferModel;
 import com.lujaina.ldbeauty.Models.ServiceModel;
 import com.lujaina.ldbeauty.R;
@@ -313,6 +316,30 @@ public class AddServiceAppointmentFragment extends Fragment {
 
                 }
                 mAdapter.update(timeList);
+                checkIfTimeAlreadyPicked();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
+
+    }
+
+
+    private void checkIfTimeAlreadyPicked() {
+        final String datePicked = pickedDate.getText().toString().trim();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef;
+
+        myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.History_Order).child(mFirebaseUser.getUid());
+
+        myRef.child("appointmentDate").equalTo(datePicked).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    String time = dataSnapshot.child("appointmentTime").getValue(String.class);
+                   checkFromSalonServiceAppointment(time);
 
             }
 
@@ -321,6 +348,52 @@ public class AddServiceAppointmentFragment extends Fragment {
                 // Failed to read value
             }
         });
+
+
+
+    }
+
+    private void checkFromSalonServiceAppointment(final String time) {
+        final String datePicked = pickedDate.getText().toString().trim();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category)
+                .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId()).child(Constants.Service_Appointment);
+        dbRef.orderByChild("appointmentDate").equalTo(datePicked).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String salonTime = dataSnapshot.child("pickedTime").getValue(String.class);
+                String recordId = dataSnapshot.child("recordId").getValue(String.class);
+                  /*  if(salonTime.equals(time)){
+                        changeDataInSalonAppointment(recordId);
+                    }*/
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
+
+    }
+
+    private void changeDataInSalonAppointment(String recordId) {
+
+        appointmentModel = new AppointmentModel();
+        appointmentModel.setAppointmentDate(pickedDate.getText().toString().trim());
+        appointmentModel.setPickedTime(pickedTime.getText().toString().trim());
+        appointmentModel.setCategoryId(mService.getIdCategory());
+        appointmentModel.setOwnerId(mService.getOwnerId());
+        appointmentModel.setServiceId(mService.getServiceId());
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category)
+                .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId()).child(Constants.Service_Appointment);
+        appointmentModel.setIsChosen("yes");
+        String id = dbRef.push().getKey();
+        appointmentModel.setRecordId(id);
+        dbRef.child(recordId).setValue(appointmentModel);
 
     }
 

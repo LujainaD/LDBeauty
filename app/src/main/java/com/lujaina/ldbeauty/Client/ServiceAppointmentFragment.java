@@ -57,7 +57,6 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
     private DatabaseReference myRef;
 
     private MediatorInterface mMediatorInterface;
-
     private Context mContext;
 
     RecyclerView recyclerView;
@@ -65,31 +64,18 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
     Button btnConfirm;
 
     private TextView pickedDate;
-    private TextView pickedTime;
-    private Calendar calendar;
     private int mYear;
     private int mMonth;
     private int mDay;
-    private int hour;
-    private int minutes;
-
-    String timeNew;
 
     private ArrayList<AppointmentModel> timeList;
     private SAppointmentAdapter mAdapter;
 
-    String sDay;
-    String sMonth;
-    String sYear;
-
-    private SPRegistrationModel ownerId;
-    private OfferModel offerID;
     private String userName;
     private String userPhone;
 
-    String selectedTime;
+    private String selectedTime;
     private ServiceModel serviceInfo;
-
 
     public ServiceAppointmentFragment() {
         // Required empty public constructor
@@ -105,8 +91,6 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
         }
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -124,8 +108,6 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
         recyclerView 	= parentView.findViewById(R.id.rv_time);
         btnConfirm 	=	parentView.findViewById(R.id.btn_confirm);
         pickedDate = parentView.findViewById(R.id.et_date);
-        pickedTime = parentView.findViewById(R.id.et_time);
-
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
@@ -135,13 +117,10 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
         getCurrentDate();
         showPreviousAppointments();
 
-
-
         timeList = new ArrayList<>();
         mAdapter = new SAppointmentAdapter(mContext, this);
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
-
 
         ibCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,11 +134,8 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
                 if(mMediatorInterface != null){
                     mMediatorInterface.onBackPressed();
                 }
-
             }
         });
-
-
 
         if(serviceInfo != null ){
             serviceTitle.setText(serviceInfo.getServiceTitle());
@@ -174,7 +150,6 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
                 } else {
                     recyclerView.smoothScrollToPosition(0);
                 }
-
             }
         });
 
@@ -185,11 +160,8 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
             }
         });
 
-
         return parentView;
     }
-
-
 
     private void getUserInfo() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -216,10 +188,6 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
 
     private void addAppointmentToDB(AppointmentModel model) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference salonRef;
-
-        /*salonRef =  database.getReference(Constants.Users).child(Constants.Salon_Owner).child(serviceInfo.getOwnerId())
-                .child(Constants.Client_Cart);*/
         DatabaseReference clientRef;
 
         clientRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid())
@@ -241,9 +209,7 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
         clientsAppointment.setServiceType("Service");
         clientsAppointment.setPrice(serviceInfo.getServicePrice());
         clientsAppointment.setClientPhone(userPhone);
-
-        //salonRef.child(appointmentId).setValue(clientsAppointment);
-         clientRef.child(appointmentId).setValue(clientsAppointment);
+        clientRef.child(appointmentId).setValue(clientsAppointment);
 
         showConfirmationDialog();
 
@@ -255,22 +221,45 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
     }
 
     private void showDateDialog() {
-
         DatePickerDialog.OnDateSetListener selectListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
                 pickedDate.setText(selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear);
-                sDay = String.valueOf(selectedDay);
-                sMonth= String.valueOf(selectedMonth);
-                sYear= String.valueOf(selectedYear);
-
                 showPreviousAppointments();
-
+               //checkIfTimeAlreadyPicked();
             }
         };
-
         DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, selectListener, mYear, mMonth, mDay);
         datePickerDialog.show();
+
+    }
+
+    private void checkIfTimeAlreadyPicked() {
+        final String datePicked = pickedDate.getText().toString().trim();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef;
+myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(serviceInfo.getOwnerId())
+                .child(Constants.Salon_Category).child(serviceInfo.getIdCategory()).child(Constants.Salon_Service).child(serviceInfo.getServiceId()).child(Constants.Service_Appointment);
+
+        myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(Constants.History_Order).child(serviceInfo.getOwnerId());
+
+        myRef.orderByChild("appointmentDate").equalTo(datePicked).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String time = dataSnapshot.getValue(ClientsAppointmentModel.class).getAppointmentTime();
+                if(time.equals(selectedTime)){
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
+
+
+
     }
 
     private void showPreviousAppointments() {
@@ -280,7 +269,6 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
         myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(serviceInfo.getOwnerId())
                 .child(Constants.Salon_Category).child(serviceInfo.getIdCategory()).child(Constants.Salon_Service).child(serviceInfo.getServiceId()).child(Constants.Service_Appointment);
 
-
         myRef.orderByChild("appointmentDate").equalTo(datePicked).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -288,6 +276,7 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     AppointmentModel appointmentModel = d.getValue(AppointmentModel.class);
                     timeList.add(appointmentModel);
+
                 }
                 mAdapter.update(timeList);
             }
@@ -301,11 +290,9 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {
-
         lineralayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(lineralayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
     }
 
     private String currentDate() {
@@ -350,7 +337,6 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
                    // addSelectItemAsBooked(model);
                     //readTimeFromHistoryOrder(model);
 
-
                 }
             });
         }else{
@@ -363,34 +349,6 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
         selectedTime = model.getPickedTime();
         mAdapter.notifyDataSetChanged();
     }
-
-/*
-    private void readTimeFromHistoryOrder(final AppointmentModel model) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef;
-        myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(serviceInfo.getOwnerId())
-                .child(Constants.History_Order).child(model.getRecordId());
-
-        String time = model.getPickedTime();
-        Log.w("recordId:"+ model.getRecordId(), "time:"+ time);
-
-        myRef.child("appointmentTime").equalTo(time).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                changePickedTime(model);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
-    }
-*/
 
     private void changePickedTime(AppointmentModel model) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -408,7 +366,6 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
         myRef.child("serviceId").setValue(serviceInfo.getServiceId());
         myRef.child("isChosen").setValue("yes");
     }
-
 
     private void addSelectItemAsBooked(AppointmentModel model) {
 
@@ -429,4 +386,5 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
 
 
     }
+
 }
