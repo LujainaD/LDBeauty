@@ -30,11 +30,6 @@ import com.lujaina.ldbeauty.R;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SalonFeddbackFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SalonFeddbackFragment extends Fragment {
 
     FirebaseAuth mAuth;
@@ -88,8 +83,6 @@ public class SalonFeddbackFragment extends Fragment {
                 }
             }
         });
-
-
 
         return parentView;
     }

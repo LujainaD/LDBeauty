@@ -47,7 +47,6 @@ public class SalonProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
