@@ -167,8 +167,14 @@ public class PaymentFragment extends Fragment {
                 }
             }
         } else if (resultCode == Activity.RESULT_CANCELED) {
+            if(mMediatorCallback != null){
+                mMediatorCallback.changeFragmentTo(new CancelOrderFragment() , CancelOrderFragment.class.getSimpleName());
+            }
             Log.i("sampleapp", "The user canceled.");
         } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+            if(mMediatorCallback != null){
+                mMediatorCallback.changeFragmentTo(new CancelOrderFragment() , CancelOrderFragment.class.getSimpleName());
+            }
             Log.i("sampleapp", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
         }
     }
