@@ -48,6 +48,7 @@ public class ClientProfileFragment extends Fragment {
         navBar.setVisibility(View.VISIBLE);
 
         TextView appointment = parentView.findViewById(R.id.tv_appointment);
+        TextView feedback = parentView.findViewById(R.id.tv_feedback);
 
         appointment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +59,14 @@ public class ClientProfileFragment extends Fragment {
             }
         });
 
+        feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mMediatorInterface != null){
+                    mMediatorInterface.changeFragmentTo(new ClientFeedBackFragment(), ClientFeedBackFragment.class.getSimpleName());
+                }
+            }
+        });
         return parentView;
     }
 }

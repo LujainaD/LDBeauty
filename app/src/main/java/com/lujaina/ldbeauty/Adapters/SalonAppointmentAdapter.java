@@ -49,15 +49,14 @@ public class SalonAppointmentAdapter extends RecyclerView.Adapter<SalonAppointme
     @Override
     public void onBindViewHolder(@NonNull SalonAppointmentAdapter.MyViewHolder holder, int position) {
         final ClientsAppointmentModel names = mNames.get(position);
-        holder.salonName.setText(names.getSalonName());
-        /*if (names.getStatusType().equals("Confirm")) {
-            holder.status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.confirm));
-        } else if (names.getStatusType().equals("Cancel")) {
-            holder.status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.cancel));
-        } else if (names.getStatusType().equals("new")) {
-            holder.status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.grayconfirm));
 
-        }*/
+        if(names.getServiceType().equals("Service")){
+            holder.salonName.setText(names.getSpecialList());
+
+        }else {
+            holder.salonName.setText(names.getOfferTitle());
+        }
+
 
 
         holder.appointmentDetails.setOnClickListener(new View.OnClickListener() {

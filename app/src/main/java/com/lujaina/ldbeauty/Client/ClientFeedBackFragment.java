@@ -1,4 +1,4 @@
-package com.lujaina.ldbeauty.User;
+package com.lujaina.ldbeauty.Client;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,26 +24,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Adapters.ClientFeedbackAdapter;
-import com.lujaina.ldbeauty.Adapters.InfoAdapter;
-import com.lujaina.ldbeauty.Adapters.RatingAdapter;
-import com.lujaina.ldbeauty.Adapters.UserOfferAdapter;
-import com.lujaina.ldbeauty.Client.OfferAppointmentFragment;
 import com.lujaina.ldbeauty.Constants;
-import com.lujaina.ldbeauty.Dialogs.NoLoginDialogFragment;
-import com.lujaina.ldbeauty.Dialogs.RatingDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Interfaces.RecyclerItemTouchHelperListener;
-import com.lujaina.ldbeauty.Models.AddInfoModel;
 import com.lujaina.ldbeauty.Models.CommentModel;
-import com.lujaina.ldbeauty.Models.OfferModel;
-import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 import com.lujaina.ldbeauty.RecyclerItemTouchHelperFeedback;
 
 import java.util.ArrayList;
 
 
-public class RatingFragment extends Fragment  implements RecyclerItemTouchHelperListener {
+public class ClientFeedBackFragment extends Fragment implements RecyclerItemTouchHelperListener {
     FirebaseAuth mAuth;
     FirebaseUser mFirebaseUser;
     private DatabaseReference myRef;
@@ -54,12 +44,10 @@ public class RatingFragment extends Fragment  implements RecyclerItemTouchHelper
     private ProgressDialog progressDialog;
 
     private ArrayList<CommentModel> commentArray;
-    private RatingAdapter mAdapter;
-    private SPRegistrationModel salonInfo;
-    String userRole;
-    RecyclerView recyclerView;
-    ItemTouchHelper.SimpleCallback item;
-    public RatingFragment() {
+    private ClientFeedbackAdapter mAdapter;
+    String ownerId;
+
+    public ClientFeedBackFragment() {
         // Required empty public constructor
     }
 
@@ -74,41 +62,21 @@ public class RatingFragment extends Fragment  implements RecyclerItemTouchHelper
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View parentView = inflater.inflate(R.layout.fragment_rating, container, false);
+        View parentView = inflater.inflate(R.layout.fragment_client_feed_back, container, false);
         ImageButton back = parentView.findViewById(R.id.ib_back);
-        FloatingActionButton add = parentView.findViewById(R.id.add_button);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
-        if(mFirebaseUser!= null){
-            checkUserRole(mFirebaseUser.getUid());
-        }
-         recyclerView = parentView.findViewById(R.id.rv_comment);
+
+        RecyclerView recyclerView = parentView.findViewById(R.id.rv_comment);
         commentArray = new ArrayList<>();
-        mAdapter = new RatingAdapter(mContext);
+        mAdapter = new ClientFeedbackAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
         readSalonInfoFromFirebaseDB();
-
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mFirebaseUser == null || userRole.equals("Salon Owner")){
-                    NoLoginDialogFragment dialog = new NoLoginDialogFragment();
-                    dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
-                }else{
-                    if(mMediatorInterface != null){
-                        RatingDialogFragment dialogFragment = new RatingDialogFragment();
-                        dialogFragment.setSalonInfo(salonInfo);
-                        dialogFragment.show(getChildFragmentManager(), RatingDialogFragment.class.getSimpleName());
-                    }
-                }
-            }
-        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,8 +87,33 @@ public class RatingFragment extends Fragment  implements RecyclerItemTouchHelper
             }
         });
 
-        item = new RecyclerItemTouchHelperFeedback(0, ItemTouchHelper.LEFT, this) ;
 
+/*        ItemTouchHelper.SimpleCallback item = new RecyclerItemTouchHelperFeedback(0, ItemTouchHelper.LEFT, this) {
+
+        };
+        new ItemTouchHelper(item).attachToRecyclerView(recyclerView);*/
+
+      /*  mAdapter.setOnSwipeListener(new ClientFeedbackAdapter.onSwipeListener() {
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position, CommentModel commentModel) {
+                if (viewHolder instanceof ClientFeedbackAdapter.MyViewHolder) {
+                    String commentId = commentArray.get(position).getCommentId();
+                    int position1 = viewHolder.getAdapterPosition();
+                    mAdapter.removeItem(position1);
+                    FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = mDatabase.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid())
+                            .child(Constants.Comments)
+                            .child(commentId);
+                    DatabaseReference salonRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner).child(commentModel.getOwnerId())
+                            .child(Constants.Comments)
+                            .child(commentId);
+                    myRef.removeValue();
+                    salonRef.removeValue();
+
+                }
+            }
+        });
+*/
 
         return parentView;
     }
@@ -131,48 +124,11 @@ public class RatingFragment extends Fragment  implements RecyclerItemTouchHelper
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
     }
-    private void checkUserRole(String uid) {
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef;
-        myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.All_Users).child(uid);
-
-        myRef.orderByChild(uid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-
-                SPRegistrationModel model = snapshot.getValue(SPRegistrationModel.class);
-                model.getUserType();
-                mAuth.getCurrentUser();
-                if(mAuth!=null) {
-                    //Get Currrent User info from Firebase Database
-                    SPRegistrationModel currentUser = SPRegistrationModel.getInstance();
-                    currentUser.setUserName(model.getUserName());
-                    currentUser.setUserEmail(model.getUserEmail());
-                    currentUser.setUserId(model.getUserId());
-                    currentUser.setUserType(model.getUserType());
-                    userRole = model.getUserType();
-
-                }
-                if(mFirebaseUser == null || userRole.equals("Client")){
-
-                    new ItemTouchHelper(item).attachToRecyclerView(recyclerView);
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
 
     private void readSalonInfoFromFirebaseDB() {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(salonInfo.getUserId()).child(Constants.Comments);
+        myRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Comments);
         // Read from the mDatabase
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setCancelable(true);
@@ -187,6 +143,7 @@ public class RatingFragment extends Fragment  implements RecyclerItemTouchHelper
                     CommentModel commentModel = d.getValue(CommentModel.class);
                     commentArray.add(commentModel);
 
+                     ownerId = commentModel.getOwnerId();
                 }
                 progressDialog.dismiss();
                 mAdapter.update(commentArray);
@@ -199,28 +156,22 @@ public class RatingFragment extends Fragment  implements RecyclerItemTouchHelper
             }
         });
     }
-
-    public void setSalonFeedback(SPRegistrationModel salonInfo) {
-       this.salonInfo = salonInfo;
-    }
-
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        if (viewHolder instanceof RatingAdapter.MyViewHolder) {
+        if (viewHolder instanceof ClientFeedbackAdapter.MyViewHolder) {
             String commentId = commentArray.get(position).getCommentId();
             int position1 = viewHolder.getAdapterPosition();
             mAdapter.removeItem(position1);
             FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = mDatabase.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid())
+             DatabaseReference myRef = mDatabase.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid())
                     .child(Constants.Comments)
                     .child(commentId);
-            DatabaseReference salonRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner).child(salonInfo.getUserId())
+            DatabaseReference salonRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner).child(ownerId)
                     .child(Constants.Comments)
                     .child(commentId);
             myRef.removeValue();
             salonRef.removeValue();
 
         }
-
     }
 }

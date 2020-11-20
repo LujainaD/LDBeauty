@@ -10,7 +10,15 @@ public class CommentModel {
     private String ownerId;
     private String commentDate;
     private boolean isShrink = true;
+    private boolean showMenu = false;
 
+    public boolean isShowMenu() {
+        return showMenu;
+    }
+
+    public void setShowMenu(boolean showMenu) {
+        this.showMenu = showMenu;
+    }
 
     public float getNumStars() {
         return numStars;

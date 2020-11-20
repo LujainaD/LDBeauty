@@ -67,6 +67,8 @@ public class SPProfileFragment extends Fragment {
         navBar.setVisibility(View.VISIBLE);
         final CircleImageView profileImag = parentView.findViewById(R.id.civ_profile);
         TextView salonAppointment = parentView.findViewById(R.id.tv_appointment);
+        TextView salonFeedback = parentView.findViewById(R.id.tv_feedback);
+
         TextView salonPages = parentView.findViewById(R.id.tv_salonPages);
         final TextView ownerName = parentView.findViewById(R.id.tv_title);
 
@@ -79,6 +81,16 @@ public class SPProfileFragment extends Fragment {
             public void onClick(View v) {
                 if (mMediatorInterface !=null){
                     mMediatorInterface.changeFragmentTo(new SalonProfileFragment(), SalonProfileFragment.class.getSimpleName());
+                }
+
+            }
+        });
+
+        salonFeedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mMediatorInterface !=null){
+                    mMediatorInterface.changeFragmentTo(new SalonFeddbackFragment(), SalonFeddbackFragment.class.getSimpleName());
                 }
 
             }
