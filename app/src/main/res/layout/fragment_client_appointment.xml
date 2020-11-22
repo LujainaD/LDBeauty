@@ -235,13 +235,11 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:visibility="gone"
-
         app:layout_constraintBottom_toBottomOf="@+id/view3"
         app:layout_constraintEnd_toStartOf="@+id/ib_right"
         app:layout_constraintStart_toEndOf="@+id/ib_left"
         app:layout_constraintTop_toTopOf="@+id/view3"
-        tools:listitem="@layout/list_view_appointment_sections"
-        >
+        tools:listitem="@layout/list_view_appointment_sections">
 
 
     </androidx.recyclerview.widget.RecyclerView>

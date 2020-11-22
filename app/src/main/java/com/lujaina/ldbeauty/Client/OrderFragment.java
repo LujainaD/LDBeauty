@@ -1,4 +1,4 @@
-package com.lujaina.ldbeauty.Dialogs;
+package com.lujaina.ldbeauty.Client;
 
 import android.app.Dialog;
 import android.content.Intent;

@@ -59,7 +59,7 @@ public class ClientAppointmentAdapter extends RecyclerView.Adapter<ClientAppoint
 
         }else {
             holder.dateAndTime.setText(appointment.getAppointmentDate() + " , "+ appointment.getAppointmentTime());
-            holder.tv_service.setText("Offer Services");
+            holder.tv_service.setText("Offer Services & Price");
             holder.serviceTitle.setText(appointment.getOfferServices() + " , " + appointment.getPrice()+" R.O") ;
             holder.tv_specialist .setText("Salon Name");
             holder.specialist.setText(appointment.getSalonName()) ;
@@ -67,15 +67,10 @@ public class ClientAppointmentAdapter extends RecyclerView.Adapter<ClientAppoint
         }
     }
 
-    private int limit = 2;
     @Override
     public int getItemCount() {
-        if(clientsAppointment.size() > limit){
-            return limit;
-
-        }else {
             return clientsAppointment.size();
-        }
+
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
