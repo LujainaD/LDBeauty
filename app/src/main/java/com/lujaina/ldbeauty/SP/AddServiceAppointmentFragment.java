@@ -23,6 +23,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -207,7 +209,6 @@ public class AddServiceAppointmentFragment extends Fragment {
                 .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId()).child(Constants.Service_Appointment);
         String recordID = dbRef.push().getKey();
         appointmentModel.setRecordId(recordID);
-        appointmentModel.setIsChosen("no");
         dbRef.child(Objects.requireNonNull(recordID)).setValue(appointmentModel);
 
 
@@ -315,7 +316,7 @@ public class AddServiceAppointmentFragment extends Fragment {
                     timeList.add(category);
 
                 }
-                mAdapter.update(timeList);
+               // mAdapter.update(timeList);
                 checkIfTimeAlreadyPicked();
             }
 
@@ -333,14 +334,25 @@ public class AddServiceAppointmentFragment extends Fragment {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef;
 
-        myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.History_Order).child(mFirebaseUser.getUid());
+        myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.History_Order);
 
-        myRef.child("appointmentDate").equalTo(datePicked).addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.orderByChild("appointmentDate").equalTo(datePicked).addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                    String time = dataSnapshot.child("appointmentTime").getValue(String.class);
-                   checkFromSalonServiceAppointment(time);
-
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String time = snapshot.child("appointmentTime").getValue(String.class);
+                    //checkFromSalonServiceAppointment(time);
+                    for(AppointmentModel model: timeList){
+                        if(model.getPickedTime().equals(time)){
+                            int positon = timeList.indexOf(model);
+                            model.setBooked(true);
+                            timeList.set(positon,model);
+                           // checkFromSalonServiceAppointment(time);
+                        }
+                    }
+                }
+                mAdapter.update(timeList);
             }
 
             @Override
@@ -353,20 +365,32 @@ public class AddServiceAppointmentFragment extends Fragment {
 
     }
 
+/*
     private void checkFromSalonServiceAppointment(final String time) {
         final String datePicked = pickedDate.getText().toString().trim();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category)
                 .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId()).child(Constants.Service_Appointment);
-        dbRef.orderByChild("appointmentDate").equalTo(datePicked).addListenerForSingleValueEvent(new ValueEventListener() {
+        dbRef.orderByChild("appointmentDate").equalTo(datePicked).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String salonTime = dataSnapshot.child("pickedTime").getValue(String.class);
-                String recordId = dataSnapshot.child("recordId").getValue(String.class);
-                  /*  if(salonTime.equals(time)){
-                        changeDataInSalonAppointment(recordId);
-                    }*/
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String salonTime = snapshot.child("pickedTime").getValue(String.class);
+                    String recordId = snapshot.child("recordId").getValue(String.class);
+                    String date = snapshot.child("appointmentDate").getValue(String.class);
+                    String time = snapshot.child("pickedTime").getValue(String.class);
+
+
+                        for (AppointmentModel model : timeList) {
+                            if (model.isBooked()== true) {
+                                changeDataInSalonAppointment(recordId,date,time);
+                            }
+
+                    }
+
+                }
+
 
             }
 
@@ -377,25 +401,51 @@ public class AddServiceAppointmentFragment extends Fragment {
         });
 
     }
+*/
 
-    private void changeDataInSalonAppointment(String recordId) {
+/*
+    private void changeDataInSalonAppointment(String id, String date, String time) {
 
         appointmentModel = new AppointmentModel();
-        appointmentModel.setAppointmentDate(pickedDate.getText().toString().trim());
+        */
+/*appointmentModel.setAppointmentDate(pickedDate.getText().toString().trim());
         appointmentModel.setPickedTime(pickedTime.getText().toString().trim());
         appointmentModel.setCategoryId(mService.getIdCategory());
         appointmentModel.setOwnerId(mService.getOwnerId());
         appointmentModel.setServiceId(mService.getServiceId());
+*//*
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category)
-                .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId()).child(Constants.Service_Appointment);
-        appointmentModel.setIsChosen("yes");
+                .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId()).child(Constants.Service_Appointment).child(id);
+      */
+/*  appointmentModel.setIsChosen("yes");
         String id = dbRef.push().getKey();
-        appointmentModel.setRecordId(id);
-        dbRef.child(recordId).setValue(appointmentModel);
+        appointmentModel.setRecordId(id);*//*
+
+        dbRef.child("categoryId").setValue(mService.getIdCategory());
+        dbRef.child("serviceId").setValue(mService.getServiceId());
+        dbRef.child("ownerId").setValue(mService.getOwnerId());
+        dbRef.child("pickedTime").setValue(time);
+        dbRef.child("appointmentDate").setValue(date);
+        dbRef.child("recordId").setValue(id);
+        appointmentModel.setIsChosen("yes");
+
+
+        dbRef.setValue(appointmentModel).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+
+                    Toast.makeText(getContext(), "success", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(),"fail", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
+*/
 
 
     private void setupRecyclerView(RecyclerView recyclerView) {

@@ -323,7 +323,8 @@ public class AddOffersAppointmentFragment extends Fragment {
                     timeList.add(category);
 
                 }
-                mAdapter.update(timeList);
+               // mAdapter.update(timeList);
+                checkIfTimeAlreadyPicked();
 
             }
 
@@ -334,6 +335,43 @@ public class AddOffersAppointmentFragment extends Fragment {
         });
 
     }
+
+    private void checkIfTimeAlreadyPicked() {
+        final String datePicked = pickedDate.getText().toString().trim();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef;
+
+        myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.History_Order);
+
+        myRef.orderByChild("appointmentDate").equalTo(datePicked).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String time = snapshot.child("appointmentTime").getValue(String.class);
+                    //checkFromSalonServiceAppointment(time);
+                    for(AppointmentModel model: timeList){
+                        if(model.getPickedTime().equals(time)){
+                            int positon = timeList.indexOf(model);
+                            model.setBooked(true);
+                            timeList.set(positon,model);
+                            // checkFromSalonServiceAppointment(time);
+                        }
+                    }
+                }
+                mAdapter.update(timeList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
+
+
+
+    }
+
 
     private void setupRecyclerView(RecyclerView recyclerView) {
 

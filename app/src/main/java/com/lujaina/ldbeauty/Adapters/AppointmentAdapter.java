@@ -81,6 +81,12 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 			ColorStateList.valueOf(Color.parseColor("#DA6EA4"));
 			holder.card.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
 			holder.time.setTextColor(Color.parseColor("#000000"));
+
+            if(model.isBooked()== true){
+                holder.card.setEnabled(false);
+                holder.time.setTextColor(Color.parseColor("#FFFFFF"));
+                holder.card.getBackground().setTint(Color.parseColor("#E6E7E8"));
+            }
         }
     }
 

@@ -239,19 +239,25 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef;
 myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(serviceInfo.getOwnerId())
-                .child(Constants.Salon_Category).child(serviceInfo.getIdCategory()).child(Constants.Salon_Service).child(serviceInfo.getServiceId()).child(Constants.Service_Appointment);
+                .child(Constants.History_Order);
 
-        myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(Constants.History_Order).child(serviceInfo.getOwnerId());
-
-        myRef.orderByChild("appointmentDate").equalTo(datePicked).addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.orderByChild("appointmentDate").equalTo(datePicked).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String time = dataSnapshot.getValue(ClientsAppointmentModel.class).getAppointmentTime();
-                if(time.equals(selectedTime)){
-
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String time = snapshot.child("appointmentTime").getValue(String.class);
+                    //checkFromSalonServiceAppointment(time);
+                    for(AppointmentModel model: timeList){
+                        if(model.getPickedTime().equals(time)){
+                            int positon = timeList.indexOf(model);
+                            model.setBooked(true);
+                            timeList.set(positon,model);
+                            // checkFromSalonServiceAppointment(time);
+                        }
+                    }
                 }
+                mAdapter.update(timeList);
             }
-
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
@@ -275,10 +281,12 @@ myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constan
                 timeList.clear();
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     AppointmentModel appointmentModel = d.getValue(AppointmentModel.class);
+
                     timeList.add(appointmentModel);
 
                 }
-                mAdapter.update(timeList);
+               // mAdapter.update(timeList);
+                checkIfTimeAlreadyPicked();
             }
 
             @Override

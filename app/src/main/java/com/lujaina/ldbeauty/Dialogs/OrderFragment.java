@@ -100,6 +100,7 @@ public class OrderFragment extends Fragment {
 
         for(ClientsAppointmentModel model : serviceArray){
 
+
             clientOrderRef.push().setValue(model);
             salonOrderRef.push().setValue(model);
         }

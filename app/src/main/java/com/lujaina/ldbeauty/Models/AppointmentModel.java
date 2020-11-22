@@ -10,6 +10,7 @@ public class AppointmentModel {
     private String appointmentDate;
 	private String salonName;
 	private String isChosen;
+	private boolean isBooked;
 
 
 	private boolean isSelected;
@@ -94,5 +95,13 @@ public class AppointmentModel {
 
 	public void setIsChosen(String isChosen) {
 		this.isChosen = isChosen;
+	}
+
+	public boolean isBooked() {
+		return isBooked;
+	}
+
+	public void setBooked(boolean booked) {
+		isBooked = booked;
 	}
 }

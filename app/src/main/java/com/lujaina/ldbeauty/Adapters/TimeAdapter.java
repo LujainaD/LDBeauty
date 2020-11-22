@@ -54,17 +54,18 @@ public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.MyViewHolder>{
 
         }
 
-        @SuppressLint("UseCompatLoadingForDrawables")
+        @SuppressLint({"UseCompatLoadingForDrawables", "ResourceAsColor"})
         @Override
         public void onBindViewHolder(@NonNull TimeAdapter.MyViewHolder holder, int position) {
             final AppointmentModel appointment = mAppointment.get(position);
             holder.time.setText(appointment.getPickedTime());
 
-            if(appointment.getIsChosen().equals("yes")){
+            if(appointment.isBooked()== true){
                 holder.delete.setVisibility(View.GONE);
+                holder.time.setTextColor(Color.parseColor("#FFFFFF"));
                 holder.card.getBackground().setTint(Color.parseColor("#E6E7E8"));
 
-            }else {
+            } else {
 
                 holder.delete.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -105,6 +106,8 @@ public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.MyViewHolder>{
 
                 time = itemView.findViewById(R.id.itv_time);
                 delete = itemView.findViewById(R.id.iv_delete);
+                card = itemView.findViewById(R.id.card);
+
             }
         }
     }
