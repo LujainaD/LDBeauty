@@ -171,7 +171,7 @@ public class SalonsHomeFragment extends Fragment {
         progressDialog.setContentView(R.layout.progress_bar);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         // Read from the database
-        myRef.orderByChild("statusType").equalTo("Confirm").addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.orderByChild("statusType").equalTo("Confirm").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // base on myRef, dataSnapshot is array of

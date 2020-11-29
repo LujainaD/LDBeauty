@@ -38,7 +38,6 @@ public class SPProfileFragment extends Fragment {
     private MediatorInterface mMediatorInterface;
 
     private ProgressDialog progressDialog;
-    private SPRegistrationModel mCurrentUser;
 
 
     public SPProfileFragment() {
@@ -68,6 +67,7 @@ public class SPProfileFragment extends Fragment {
         final CircleImageView profileImag = parentView.findViewById(R.id.civ_profile);
         TextView salonAppointment = parentView.findViewById(R.id.tv_appointment);
         TextView salonFeedback = parentView.findViewById(R.id.tv_feedback);
+        TextView editSalonProfile = parentView.findViewById(R.id.tv_editSalonFile);
 
         TextView salonPages = parentView.findViewById(R.id.tv_salonPages);
         final TextView ownerName = parentView.findViewById(R.id.tv_title);
@@ -81,6 +81,16 @@ public class SPProfileFragment extends Fragment {
             public void onClick(View v) {
                 if (mMediatorInterface !=null){
                     mMediatorInterface.changeFragmentTo(new SalonProfileFragment(), SalonProfileFragment.class.getSimpleName());
+                }
+
+            }
+        });
+
+        editSalonProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mMediatorInterface !=null){
+                    mMediatorInterface.changeFragmentTo(new EditSalonProfileFragment(), EditSalonProfileFragment.class.getSimpleName());
                 }
 
             }
@@ -138,7 +148,4 @@ public class SPProfileFragment extends Fragment {
         return parentView;
     }
 
-    public void setOwnerName(SPRegistrationModel user) {
-        mCurrentUser = user;
-    }
 }

@@ -11,7 +11,6 @@ public class ClientsAppointmentModel {
     private String salonName;
     private String clientPhone;
 
-
     private String offerId;
     private String serviceId;
 
@@ -22,15 +21,12 @@ public class ClientsAppointmentModel {
     private String serviceTitle;
     private String offerTitle;
 
-
-
     private String appointmentTime;
     private String appointmentDate;
     private String appointmentStatus;
 
     private String orderDate;
     private String appointmentID;
-
 
     public String getUserId() {
         return userId;

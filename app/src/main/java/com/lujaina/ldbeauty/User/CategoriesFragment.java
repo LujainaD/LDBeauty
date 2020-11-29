@@ -26,8 +26,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Adapters.CategoryAdapter;
+import com.lujaina.ldbeauty.Client.CartFragment;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Dialogs.AddCategoriesDialogFragment;
+import com.lujaina.ldbeauty.Dialogs.NoLoginDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.CategoryModel;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
@@ -39,7 +41,7 @@ import java.util.ArrayList;
 
 
 public class CategoriesFragment extends Fragment {
-
+    private FirebaseAuth mAuth;
     FirebaseUser mFirebaseUser;
     private DatabaseReference myRef;
 
@@ -52,6 +54,8 @@ public class CategoriesFragment extends Fragment {
     private SPRegistrationModel ownerId;
     RecyclerView recyclerView;
     TextView empty;
+    String userRole;
+
     public CategoriesFragment() {
         // Required empty public constructor
     }
@@ -72,19 +76,41 @@ public class CategoriesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_categories, container, false);
+        mAuth = FirebaseAuth.getInstance();
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
         empty = parentView.findViewById(R.id.tv_empty);
-
+        TextView cart = parentView.findViewById(R.id.tv_cart);
+        cart.setVisibility(View.VISIBLE);
         add.setVisibility(View.INVISIBLE);
         ImageButton back = parentView.findViewById(R.id.ib_back);
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
+        if(mFirebaseUser!= null){
+            checkUserRole(mFirebaseUser.getUid());
+        }
         recyclerView = parentView.findViewById(R.id.rv_categories);
         categoryList = new ArrayList<>();
         mAdapter = new CategoryAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
         readSalonInfoFromFirebaseDB();
+
+        cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mFirebaseUser != null && !userRole.equals("Salon Owner")){
+                    if(mMediatorInterface != null){
+                        mMediatorInterface.changeFragmentTo(new CartFragment(), CartFragment.class.getSimpleName());
+                    }
+                }else{
+                    NoLoginDialogFragment dialog = new NoLoginDialogFragment();
+                    dialog.showText(2);
+                    dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
+                }
+
+
+            }
+        });
+
 
         mAdapter.setonClickListener(new CategoryAdapter.onClickListener() {
             @Override
@@ -117,6 +143,39 @@ public class CategoriesFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
+    }
+
+    private void checkUserRole(String uid) {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef;
+        myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.All_Users).child(uid);
+
+        myRef.orderByChild(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                SPRegistrationModel model = snapshot.getValue(SPRegistrationModel.class);
+                model.getUserType();
+                mAuth.getCurrentUser();
+                if(mAuth!=null) {
+                    //Get Currrent User info from Firebase Database
+                    SPRegistrationModel currentUser = SPRegistrationModel.getInstance();
+                    currentUser.setUserName(model.getUserName());
+                    currentUser.setUserEmail(model.getUserEmail());
+                    currentUser.setUserId(model.getUserId());
+                    currentUser.setUserType(model.getUserType());
+                    userRole = model.getUserType();
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void readSalonInfoFromFirebaseDB() {

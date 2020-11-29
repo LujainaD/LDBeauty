@@ -101,8 +101,10 @@ public class OrderFragment extends Fragment {
         for(ClientsAppointmentModel model : serviceArray){
 
 
-            clientOrderRef.push().setValue(model);
-            salonOrderRef.push().setValue(model);
+            String id = clientOrderRef.push().getKey();
+            model.setAppointmentID(id);
+            clientOrderRef.child(id).setValue(model);
+            salonOrderRef.child(id).setValue(model);
         }
         DatabaseReference cartRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Client_Cart);
 

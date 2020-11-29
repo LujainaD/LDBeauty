@@ -218,8 +218,6 @@ public class ClientSignUpFragment extends Fragment {
                         userEmail.setError("Please enter a valid email address");
                     } else if (!PHONENUMBER_PATTERN.matcher(phoneNumber).matches()) {
                         userPhone.setError("Your phone number must contain at least 8 digit");
-                    } else if (userImageUri == null) {
-                        Toast.makeText(mContext, "please add your profile picture", Toast.LENGTH_SHORT).show();
                     }else {
                         if (password.equals(verifyPassword)) {
                             progressDialog = new ProgressDialog(mContext);
@@ -357,7 +355,12 @@ public class ClientSignUpFragment extends Fragment {
                             registration.setPhoneNumber(phoneNumber);
                             registration.setUserType(userType);
                             registration.setRegistrationDate(getCurrentDate());
-                            uploadUserImageToStorage(registration);
+                            if(userImageUri == null){
+                                addUserInfoToDB(registration);
+
+                            }else{
+                                uploadUserImageToStorage(registration);
+                            }
 
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());

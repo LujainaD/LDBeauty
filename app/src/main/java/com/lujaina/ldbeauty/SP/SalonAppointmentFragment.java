@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,6 +29,7 @@ import com.lujaina.ldbeauty.Adapters.SalonAppointmentAdapter;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Dialogs.AppointmentDialog;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
+import com.lujaina.ldbeauty.Models.AppointmentModel;
 import com.lujaina.ldbeauty.Models.ClientsAppointmentModel;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
@@ -35,7 +37,7 @@ import com.lujaina.ldbeauty.R;
 import java.util.ArrayList;
 
 
-public class SalonAppointmentFragment extends Fragment {
+public class SalonAppointmentFragment extends Fragment{
     FirebaseAuth mAuth;
     FirebaseUser mFirebaseUser;
     private FirebaseDatabase mDatabase;
@@ -79,17 +81,26 @@ public class SalonAppointmentFragment extends Fragment {
         setupRecyclerView(recyclerView);
         readSalonAppointmentFromFireBaseDB();
         mAdapter = new SalonAppointmentAdapter(mContext);
-        recyclerView.setAdapter(mAdapter);
-
         mAdapter.setupOnItemClickListener(new SalonAppointmentAdapter.onItemClickListener() {
             @Override
-            public void onItemClick(ClientsAppointmentModel info) {
-
+            public void onItemClick(ClientsAppointmentModel salonsDetails) {
                 AppointmentDialog dialog = new AppointmentDialog();
-                dialog.setInfo(info);
+                dialog.setInfo(salonsDetails);
                 dialog.show(getChildFragmentManager(), AppointmentDialog.class.getSimpleName());
             }
+
+            @Override
+            public void onConfirm(ClientsAppointmentModel confirm) {
+                confirmAppointment(confirm);
+            }
+
+            @Override
+            public void onDecline(ClientsAppointmentModel decline) {
+               declineAppointment(decline);
+
+            }
         });
+        recyclerView.setAdapter(mAdapter);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +114,154 @@ public class SalonAppointmentFragment extends Fragment {
         return parentView;
     }
 
+    private void declineAppointment(ClientsAppointmentModel decline) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference().child(Constants.Users).child(Constants.Salon_Owner).child(decline.getOwnerId()).child(Constants.History_Order).child(decline.getAppointmentID());
+        DatabaseReference clientRef = database.getReference().child(Constants.Users).child(Constants.Client).child(decline.getUserId()).child(Constants.History_Order).child(decline.getAppointmentID());
+
+        if(decline.getServiceType()=="Service"){
+            myRef.child("appointmentDate").setValue(decline.getAppointmentDate());
+            myRef.child("appointmentID").setValue(decline.getAppointmentID());
+            myRef.child("appointmentStatus").setValue("Decline");
+            myRef.child("appointmentTime").setValue(decline.getAppointmentTime());
+            myRef.child("clientName").setValue(decline.getClientName());
+            myRef.child("clientPhone").setValue(decline.getClientPhone());
+            myRef.child("orderDate").setValue(decline.getOrderDate());
+            myRef.child("ownerId").setValue(decline.getOwnerId());
+            myRef.child("price").setValue(decline.getPrice());
+            myRef.child("salonName").setValue(decline.getSalonName());
+            myRef.child("serviceId").setValue(decline.getServiceId());
+            myRef.child("serviceTitle").setValue(decline.getServiceTitle());
+            myRef.child("serviceType").setValue(decline.getServiceType());
+            myRef.child("specialList").setValue(decline.getSpecialList());
+            myRef.child("userId").setValue(decline.getUserId());
+
+            clientRef.child("appointmentDate").setValue(decline.getAppointmentDate());
+            clientRef.child("appointmentID").setValue(decline.getAppointmentID());
+            clientRef.child("appointmentStatus").setValue("Decline");
+            clientRef.child("appointmentTime").setValue(decline.getAppointmentTime());
+            clientRef.child("clientName").setValue(decline.getClientName());
+            clientRef.child("clientPhone").setValue(decline.getClientPhone());
+            clientRef.child("orderDate").setValue(decline.getOrderDate());
+            clientRef.child("ownerId").setValue(decline.getOwnerId());
+            clientRef.child("price").setValue(decline.getPrice());
+            clientRef.child("salonName").setValue(decline.getSalonName());
+            clientRef.child("serviceId").setValue(decline.getServiceId());
+            clientRef.child("serviceTitle").setValue(decline.getServiceTitle());
+            clientRef.child("serviceType").setValue(decline.getServiceType());
+            clientRef.child("specialList").setValue(decline.getSpecialList());
+            clientRef.child("userId").setValue(decline.getUserId());
+        }else {
+            myRef.child("appointmentDate").setValue(decline.getAppointmentDate());
+            myRef.child("appointmentID").setValue(decline.getAppointmentID());
+            myRef.child("appointmentStatus").setValue("Decline");
+            myRef.child("appointmentTime").setValue(decline.getAppointmentTime());
+            myRef.child("clientName").setValue(decline.getClientName());
+            myRef.child("clientPhone").setValue(decline.getClientPhone());
+            myRef.child("orderDate").setValue(decline.getOrderDate());
+            myRef.child("ownerId").setValue(decline.getOwnerId());
+            myRef.child("price").setValue(decline.getPrice());
+            myRef.child("salonName").setValue(decline.getSalonName());
+            myRef.child("offerId").setValue(decline.getOfferId());
+            myRef.child("offerServices").setValue(decline.getOfferServices());
+            myRef.child("serviceType").setValue(decline.getServiceType());
+            myRef.child("offerTitle").setValue(decline.getOfferTitle());
+            myRef.child("userId").setValue(decline.getUserId());
+
+            clientRef.child("appointmentDate").setValue(decline.getAppointmentDate());
+            clientRef.child("appointmentID").setValue(decline.getAppointmentID());
+            clientRef.child("appointmentStatus").setValue("Decline");
+            clientRef.child("appointmentTime").setValue(decline.getAppointmentTime());
+            clientRef.child("clientName").setValue(decline.getClientName());
+            clientRef.child("clientPhone").setValue(decline.getClientPhone());
+            clientRef.child("orderDate").setValue(decline.getOrderDate());
+            clientRef.child("ownerId").setValue(decline.getOwnerId());
+            clientRef.child("price").setValue(decline.getPrice());
+            clientRef.child("salonName").setValue(decline.getSalonName());
+            clientRef.child("offerId").setValue(decline.getOfferId());
+            clientRef.child("offerServices").setValue(decline.getOfferServices());
+            clientRef.child("serviceType").setValue(decline.getServiceType());
+            clientRef.child("offerTitle").setValue(decline.getOfferTitle());
+            clientRef.child("userId").setValue(decline.getUserId());
+        }
+
+    }
+
+    private void confirmAppointment(ClientsAppointmentModel confirm) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference().child(Constants.Users).child(Constants.Salon_Owner).child(confirm.getOwnerId()).child(Constants.History_Order).child(confirm.getAppointmentID());
+        DatabaseReference clientRef = database.getReference().child(Constants.Users).child(Constants.Client).child(confirm.getUserId()).child(Constants.History_Order).child(confirm.getAppointmentID());
+
+        if(confirm.getServiceType()=="Service"){
+            myRef.child("appointmentDate").setValue(confirm.getAppointmentDate());
+            myRef.child("appointmentID").setValue(confirm.getAppointmentID());
+            myRef.child("appointmentStatus").setValue("Confirm");
+            myRef.child("appointmentTime").setValue(confirm.getAppointmentTime());
+            myRef.child("clientName").setValue(confirm.getClientName());
+            myRef.child("clientPhone").setValue(confirm.getClientPhone());
+            myRef.child("orderDate").setValue(confirm.getOrderDate());
+            myRef.child("ownerId").setValue(confirm.getOwnerId());
+            myRef.child("price").setValue(confirm.getPrice());
+            myRef.child("salonName").setValue(confirm.getSalonName());
+            myRef.child("serviceId").setValue(confirm.getServiceId());
+            myRef.child("serviceTitle").setValue(confirm.getServiceTitle());
+            myRef.child("serviceType").setValue(confirm.getServiceType());
+            myRef.child("specialList").setValue(confirm.getSpecialList());
+            myRef.child("userId").setValue(confirm.getUserId());
+
+
+            clientRef.child("appointmentDate").setValue(confirm.getAppointmentDate());
+            clientRef.child("appointmentID").setValue(confirm.getAppointmentID());
+            clientRef.child("appointmentStatus").setValue("Confirm");
+            clientRef.child("appointmentTime").setValue(confirm.getAppointmentTime());
+            clientRef.child("clientName").setValue(confirm.getClientName());
+            clientRef.child("clientPhone").setValue(confirm.getClientPhone());
+            clientRef.child("orderDate").setValue(confirm.getOrderDate());
+            clientRef.child("ownerId").setValue(confirm.getOwnerId());
+            clientRef.child("price").setValue(confirm.getPrice());
+            clientRef.child("salonName").setValue(confirm.getSalonName());
+            clientRef.child("serviceId").setValue(confirm.getServiceId());
+            clientRef.child("serviceTitle").setValue(confirm.getServiceTitle());
+            clientRef.child("serviceType").setValue(confirm.getServiceType());
+            clientRef.child("specialList").setValue(confirm.getSpecialList());
+            clientRef.child("userId").setValue(confirm.getUserId());
+
+        }else {
+            myRef.child("appointmentDate").setValue(confirm.getAppointmentDate());
+            myRef.child("appointmentID").setValue(confirm.getAppointmentID());
+            myRef.child("appointmentStatus").setValue("Confirm");
+            myRef.child("appointmentTime").setValue(confirm.getAppointmentTime());
+            myRef.child("clientName").setValue(confirm.getClientName());
+            myRef.child("clientPhone").setValue(confirm.getClientPhone());
+            myRef.child("orderDate").setValue(confirm.getOrderDate());
+            myRef.child("ownerId").setValue(confirm.getOwnerId());
+            myRef.child("price").setValue(confirm.getPrice());
+            myRef.child("salonName").setValue(confirm.getSalonName());
+            myRef.child("offerId").setValue(confirm.getOfferId());
+            myRef.child("offerServices").setValue(confirm.getOfferServices());
+            myRef.child("serviceType").setValue(confirm.getServiceType());
+            myRef.child("offerTitle").setValue(confirm.getOfferTitle());
+            myRef.child("userId").setValue(confirm.getUserId());
+
+            clientRef.child("appointmentDate").setValue(confirm.getAppointmentDate());
+            clientRef.child("appointmentID").setValue(confirm.getAppointmentID());
+            clientRef.child("appointmentStatus").setValue("Confirm");
+            clientRef.child("appointmentTime").setValue(confirm.getAppointmentTime());
+            clientRef.child("clientName").setValue(confirm.getClientName());
+            clientRef.child("clientPhone").setValue(confirm.getClientPhone());
+            clientRef.child("orderDate").setValue(confirm.getOrderDate());
+            clientRef.child("ownerId").setValue(confirm.getOwnerId());
+            clientRef.child("price").setValue(confirm.getPrice());
+            clientRef.child("salonName").setValue(confirm.getSalonName());
+            clientRef.child("offerId").setValue(confirm.getOfferId());
+            clientRef.child("offerServices").setValue(confirm.getOfferServices());
+            clientRef.child("serviceType").setValue(confirm.getServiceType());
+            clientRef.child("offerTitle").setValue(confirm.getOfferTitle());
+            clientRef.child("userId").setValue(confirm.getUserId());
+
+        }
+    }
+
     private void readSalonAppointmentFromFireBaseDB() {
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -113,7 +272,7 @@ public class SalonAppointmentFragment extends Fragment {
         progressDialog.setContentView(R.layout.progress_bar);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 salonAppointmentArray = new ArrayList<>();
@@ -150,5 +309,4 @@ public class SalonAppointmentFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
     }
-
 }

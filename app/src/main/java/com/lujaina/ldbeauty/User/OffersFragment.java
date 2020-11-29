@@ -101,6 +101,7 @@ public class OffersFragment extends Fragment {
                     }
                 }else{
                     NoLoginDialogFragment dialog = new NoLoginDialogFragment();
+                    dialog.showText(2);
                     dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
                 }
 
@@ -113,6 +114,7 @@ public class OffersFragment extends Fragment {
             public void onClick(OfferModel offerModel) {
                 if(mFirebaseUser == null || userRole.equals("Salon Owner")){
                     NoLoginDialogFragment dialog = new NoLoginDialogFragment();
+                    dialog.showText(2);
                     dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
                 }else{
                     if(mMediatorInterface != null){

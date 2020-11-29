@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
@@ -26,6 +27,7 @@ import com.lujaina.ldbeauty.SignUpFragment;
 public class NoLoginDialogFragment extends DialogFragment {
     private MediatorInterface mMediatorInterface;
     private Context mContext;
+    private int i;
 
 
     public NoLoginDialogFragment() {
@@ -64,6 +66,13 @@ public class NoLoginDialogFragment extends DialogFragment {
         View parentView = inflater.inflate(R.layout.fragment_no_login_dialog, container, false);
         Button login = parentView.findViewById(R.id.btn_login);
         Button signUp = parentView.findViewById(R.id.btn_signUp);
+        TextView textView = parentView.findViewById(R.id.tv_text);
+
+        if(i== 1){
+            textView.setText("You need to Login/Sign up");
+        }else {
+
+        }
 
 
 
@@ -93,5 +102,9 @@ public class NoLoginDialogFragment extends DialogFragment {
 
 
         return parentView;
+    }
+
+    public void showText(int i) {
+        this.i = i;
     }
 }

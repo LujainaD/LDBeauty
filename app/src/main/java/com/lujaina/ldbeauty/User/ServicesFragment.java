@@ -111,6 +111,7 @@ public class ServicesFragment extends Fragment {
             public void onBookClick(ServiceModel service) {
                 if(mFirebaseUser == null || userRole.equals("Salon Owner")){
                     NoLoginDialogFragment dialog = new NoLoginDialogFragment();
+                    dialog.showText(2);
                     dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
                 }else{
                     if(mMediatorCallback != null){

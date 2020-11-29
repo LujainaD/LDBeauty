@@ -2,6 +2,7 @@ package com.lujaina.ldbeauty.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,7 @@ public class SalonAppointmentAdapter extends RecyclerView.Adapter<SalonAppointme
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
-    public void onBindViewHolder(@NonNull SalonAppointmentAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final SalonAppointmentAdapter.MyViewHolder holder, int position) {
         final ClientsAppointmentModel names = mNames.get(position);
 
         if(names.getServiceType().equals("Service")){
@@ -57,6 +58,18 @@ public class SalonAppointmentAdapter extends RecyclerView.Adapter<SalonAppointme
             holder.salonName.setText(names.getOfferTitle());
         }
 
+        if(names.getAppointmentStatus().equals("Confirm")){
+            holder.decline.setVisibility(View.GONE);
+            holder.confirm.setVisibility(View.GONE);
+            holder.status.setVisibility(View.VISIBLE);
+            holder.status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.confirm));
+
+        }else if (names.getAppointmentStatus().equals("Decline")){
+            holder.decline.setVisibility(View.GONE);
+            holder.confirm.setVisibility(View.GONE);
+            holder.status.setVisibility(View.VISIBLE);
+            holder.status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.cancel));
+        }
 
 
         holder.appointmentDetails.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +81,25 @@ public class SalonAppointmentAdapter extends RecyclerView.Adapter<SalonAppointme
             }
         });
 
+        holder.confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.onConfirm(names);
+
+                }
+            }
+        });
+
+        holder.decline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.onDecline(names);
+
+                }
+            }
+        });
     }
 
     @Override
@@ -77,6 +109,8 @@ public class SalonAppointmentAdapter extends RecyclerView.Adapter<SalonAppointme
 
     public interface onItemClickListener {
         void onItemClick(ClientsAppointmentModel salonsDetails);
+        void onConfirm(ClientsAppointmentModel confirm);
+        void onDecline(ClientsAppointmentModel decline);
     }
 
     private SalonAppointmentAdapter.onItemClickListener mListener;
@@ -90,6 +124,7 @@ public class SalonAppointmentAdapter extends RecyclerView.Adapter<SalonAppointme
         TextView appointmentDetails;
         Button confirm;
         Button decline;
+        ImageView status;
         public RelativeLayout viewForground, viewBackground;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -100,6 +135,7 @@ public class SalonAppointmentAdapter extends RecyclerView.Adapter<SalonAppointme
             appointmentDetails = itemView.findViewById(R.id.tv_details);
             confirm = itemView.findViewById(R.id.btn_confirm);
             decline = itemView.findViewById(R.id.btn_cancel);
+            status = itemView.findViewById(R.id.iv_status);
 
         }
     }

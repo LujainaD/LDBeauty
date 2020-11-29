@@ -99,6 +99,7 @@ public class RatingFragment extends Fragment  implements RecyclerItemTouchHelper
             public void onClick(View v) {
                 if(mFirebaseUser == null || userRole.equals("Salon Owner")){
                     NoLoginDialogFragment dialog = new NoLoginDialogFragment();
+                    dialog.showText(2);
                     dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
                 }else{
                     if(mMediatorInterface != null){

@@ -123,6 +123,7 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
                         progressDialog.dismiss();
                         Toast.makeText(HomeActivity.this, "not registered", Toast.LENGTH_SHORT).show();
                         NoLoginDialogFragment dialog = new NoLoginDialogFragment();
+                        dialog.showText(1);
                         dialog.show(getSupportFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
                     return true;
                 }
@@ -130,6 +131,7 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
                     progressDialog.dismiss();
                     Toast.makeText(HomeActivity.this, "not registered", Toast.LENGTH_SHORT).show();
                     NoLoginDialogFragment dialog = new NoLoginDialogFragment();
+                    dialog.showText(1);
                     dialog.show(getSupportFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
                     return true;
                 }
@@ -229,6 +231,7 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
 
             case R.id.log_out_menu:
             case R.id.not_login: {
+
                 changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
                 break;
             }
