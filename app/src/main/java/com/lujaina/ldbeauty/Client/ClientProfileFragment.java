@@ -28,6 +28,7 @@ import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.LoginChoicesFragment;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
+import com.lujaina.ldbeauty.User.RatingFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -86,7 +87,7 @@ public class ClientProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(mMediatorInterface != null){
-                    mMediatorInterface.changeFragmentTo(new ClientFeedBackFragment(), ClientFeedBackFragment.class.getSimpleName());
+                    mMediatorInterface.changeFragmentTo(new ClientFeedbackFragment(), ClientFeedbackFragment.class.getSimpleName());
                 }
             }
         });

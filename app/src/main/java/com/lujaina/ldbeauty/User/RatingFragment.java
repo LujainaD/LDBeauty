@@ -24,27 +24,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.lujaina.ldbeauty.Adapters.ClientFeedbackAdapter;
-import com.lujaina.ldbeauty.Adapters.InfoAdapter;
 import com.lujaina.ldbeauty.Adapters.RatingAdapter;
-import com.lujaina.ldbeauty.Adapters.UserOfferAdapter;
-import com.lujaina.ldbeauty.Client.OfferAppointmentFragment;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Dialogs.NoLoginDialogFragment;
 import com.lujaina.ldbeauty.Dialogs.RatingDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
-import com.lujaina.ldbeauty.Interfaces.RecyclerItemTouchHelperListener;
-import com.lujaina.ldbeauty.Models.AddInfoModel;
 import com.lujaina.ldbeauty.Models.CommentModel;
-import com.lujaina.ldbeauty.Models.OfferModel;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
-import com.lujaina.ldbeauty.RecyclerItemTouchHelperFeedback;
 
 import java.util.ArrayList;
 
 
-public class RatingFragment extends Fragment  implements RecyclerItemTouchHelperListener {
+public class RatingFragment extends Fragment  {
     FirebaseAuth mAuth;
     FirebaseUser mFirebaseUser;
     private DatabaseReference myRef;
@@ -120,8 +112,6 @@ public class RatingFragment extends Fragment  implements RecyclerItemTouchHelper
             }
         });
 
-        item = new RecyclerItemTouchHelperFeedback(0, ItemTouchHelper.LEFT, this) ;
-
 
         return parentView;
     }
@@ -153,11 +143,6 @@ public class RatingFragment extends Fragment  implements RecyclerItemTouchHelper
                     currentUser.setUserId(model.getUserId());
                     currentUser.setUserType(model.getUserType());
                     userRole = model.getUserType();
-
-                }
-                if(mFirebaseUser == null || userRole.equals("Client")){
-
-                    new ItemTouchHelper(item).attachToRecyclerView(recyclerView);
 
                 }
 
@@ -203,25 +188,5 @@ public class RatingFragment extends Fragment  implements RecyclerItemTouchHelper
 
     public void setSalonFeedback(SPRegistrationModel salonInfo) {
        this.salonInfo = salonInfo;
-    }
-
-    @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        if (viewHolder instanceof RatingAdapter.MyViewHolder) {
-            String commentId = commentArray.get(position).getCommentId();
-            int position1 = viewHolder.getAdapterPosition();
-            mAdapter.removeItem(position1);
-            FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = mDatabase.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid())
-                    .child(Constants.Comments)
-                    .child(commentId);
-            DatabaseReference salonRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner).child(salonInfo.getUserId())
-                    .child(Constants.Comments)
-                    .child(commentId);
-            myRef.removeValue();
-            salonRef.removeValue();
-
-        }
-
     }
 }

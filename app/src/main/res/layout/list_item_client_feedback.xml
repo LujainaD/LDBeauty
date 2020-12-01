@@ -70,6 +70,7 @@
                     android:layout_marginTop="10dp"
                     android:isIndicator="true"
                     android:numStars="5"
+                    android:stepSize="0.5"
                     android:outlineAmbientShadowColor="@color/colorPrimary"
                     android:outlineSpotShadowColor="@color/lightGray"
                     app:layout_constraintStart_toStartOf="parent"
