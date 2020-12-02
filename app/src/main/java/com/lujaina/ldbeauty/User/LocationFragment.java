@@ -70,17 +70,16 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     private MapView mMapView;
     private MediatorInterface mMediatorCallback;
 
-
     private FloatingActionButton btnGetUserLocation;
-    FloatingActionButton togoogleMap;
-
     private Marker selectedLocation;
-    private Marker salonLocation;
-    Location locationOfSalon;
-    Location locationOfuser;
 
     private SPRegistrationModel ownerId;
 
+    Location locationOfuser;
+    Location locationOfSalon;
+
+    LatLng userLocation;
+    LatLng locationFB;
 
     public LocationFragment() {
         // Required empty public constructor
@@ -101,9 +100,8 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_location, container, false);
         ImageButton ibBack = parentView.findViewById(R.id.ib_back);
-        btnGetUserLocation = parentView.findViewById(R.id.fab_info);
-         togoogleMap = parentView.findViewById(R.id.fab_googleMap);
-
+         btnGetUserLocation = parentView.findViewById(R.id.fab_info);
+        final FloatingActionButton zoomOutUserLocation = parentView.findViewById(R.id.fab_zoomout);
 
         if (isPermissionGranted()) {  // in order to display map in fragment
             mMapView = parentView.findViewById(R.id.map);
@@ -114,19 +112,6 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
 
            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
 
-            btnGetUserLocation.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    getLastLocation();
-                }
-            });
-
-            togoogleMap.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    openGoogleMapApp();
-                }
-            });
         } else {
             requestRuntimePermission();
         }
@@ -138,6 +123,30 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
                     mMediatorCallback.onBackPressed();
                 }
 
+            }
+        });
+
+        btnGetUserLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                 float zoomIn= 16f;
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(zoomIn), 1000, null);
+                if(zoomIn==16f){
+                    zoomOutUserLocation.setVisibility(View.VISIBLE);
+                    btnGetUserLocation.setVisibility(View.GONE);
+
+                }
+            }
+        });
+        zoomOutUserLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final float zoomIn= 8f;
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(zoomIn), 1000, null);
+                if(zoomIn==8f){
+                    btnGetUserLocation.setVisibility(View.VISIBLE);
+                    zoomOutUserLocation.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -188,6 +197,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
 
         }
     }
+
     private void requestRuntimePermission() {
         String permissions[] = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
         ActivityCompat.requestPermissions(getActivity(), permissions, KEY_PERMISSION_REQUEST_ID);
@@ -236,7 +246,6 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         return callback;
     }
 
-
     private void showSalonLocation() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(ownerId.getUserId()).child(Constants.Salon_Location);
@@ -269,13 +278,6 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    private void openGoogleMapApp() {
-        String uri = String.format(Locale.ENGLISH, "geo:%f,%f", latDouble, longDouble);
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-        getContext().startActivity(intent);
-
-    }
-
     private void getLocationName(double lang, double latt) {
 
         try {
@@ -292,27 +294,26 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    private void setSalonLocationPen(double lat , double lang, String fullAddress ) {
+    private void setSalonLocationPen(double salonLat , double lang, String fullAddress ) {
         //put marker depend on lat and lon from firebase data
-        LatLng locationFB = new LatLng(lat, lang);
+         locationFB = new LatLng(salonLat, lang);
 
         locationOfSalon = new Location(latitudeFB);
-        locationOfSalon.setLatitude(lat);
+        locationOfSalon.setLatitude(salonLat);
         locationOfSalon.setLongitude(lang);
 
-        salonLocation = mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lang)).title(ownerId.getSalonName()));// add marker non the location
+        Marker salonLocation = mMap.addMarker(new MarkerOptions().position(new LatLng(salonLat, lang)).title(ownerId.getSalonName()));// add marker non the location
         mMap.moveCamera(CameraUpdateFactory.newLatLng(locationFB)); //move camera up,bottom, left, right
         //to zoom to selected location
         mMap.animateCamera(CameraUpdateFactory.zoomTo(16f), 1000, null);
 
     }
 
-    private void setUserLocationPen(double lat , double lang, String fullAddress ) {
-        LatLng userLocation = new LatLng(lat, lang);
+    private void setUserLocationPen(final double lat , final double lang, final String fullAddress ) {
+         userLocation = new LatLng(lat, lang);
         if (selectedLocation != null) {
             selectedLocation.remove();
         }
-
         locationOfuser = new Location(String.valueOf(userLocation));
         locationOfuser.setLatitude(lat);
         locationOfuser.setLongitude(lang);
@@ -322,14 +323,19 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         ;// add marker non the location
         mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation)); //move camera up,bottom, left, right
         //to zoom to selected location
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(16f), 1000, null);
 
+
+        if(btnGetUserLocation.getVisibility() ==View.VISIBLE){
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(8f), 1000, null);
+        }
+
+        showDistance();
     }
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-// default location
+        // default location
         showSalonLocation();
         getLastLocation();
 
@@ -338,9 +344,13 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
             public void onMapClick(LatLng latLng) {
                 //latLng is the location  that the user clicked
                 getLocationName(latLng.latitude,latLng.longitude );
-
             }
         });
+    }
+
+    public void showDistance(){
+        float distanceInMeters = locationOfSalon.distanceTo(locationOfuser);
+
     }
 
     public void setSalonLocation(SPRegistrationModel section) {
