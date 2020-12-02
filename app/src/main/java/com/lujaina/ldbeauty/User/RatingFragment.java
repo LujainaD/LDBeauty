@@ -130,8 +130,6 @@ public class RatingFragment extends Fragment  {
         myRef.orderByChild(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-
                 SPRegistrationModel model = snapshot.getValue(SPRegistrationModel.class);
                 model.getUserType();
                 mAuth.getCurrentUser();
@@ -143,7 +141,6 @@ public class RatingFragment extends Fragment  {
                     currentUser.setUserId(model.getUserId());
                     currentUser.setUserType(model.getUserType());
                     userRole = model.getUserType();
-
                 }
 
             }

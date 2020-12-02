@@ -87,7 +87,7 @@ public class RatingDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 String userComment = comment.getText().toString().trim();
-                int rating = (int) ratingbar.getRating();
+                float rating = (float) ratingbar.getRating();
                 if(userComment.isEmpty()){
                     comment.setError("you need to write a comment");
                 }else {
@@ -108,7 +108,7 @@ public class RatingDialogFragment extends DialogFragment {
         return parentView;
     }
 
-    private void addCommentToFB(String userComment, int rating) {
+    private void addCommentToFB(String userComment, float rating) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference clientRef;
         DatabaseReference ownertRef;
