@@ -21,6 +21,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -29,6 +31,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessagingService;
 import com.lujaina.ldbeauty.Adapters.CartServicesAdapter;
 import com.lujaina.ldbeauty.Adapters.OrderAdapter;
 import com.lujaina.ldbeauty.Adapters.ServiceAdapter;
@@ -45,7 +50,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 
-public class OrderFragment extends Fragment {
+public class OrderFragment extends Fragment  {
     FirebaseUser mFirebaseUser;
     private DatabaseReference myRef;
 
@@ -105,12 +110,18 @@ public class OrderFragment extends Fragment {
             model.setAppointmentID(id);
             clientOrderRef.child(id).setValue(model);
             salonOrderRef.child(id).setValue(model);
+           // sendNotificationToSalonOwner(ownerId);
         }
         DatabaseReference cartRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Client_Cart);
 
         cartRef.setValue(null);
 
     }
+
+    private void sendNotificationToSalonOwner(final String ownerId) {
+
+        }
+
 
     private void readClientOrderFromFirebaseDB() {
 

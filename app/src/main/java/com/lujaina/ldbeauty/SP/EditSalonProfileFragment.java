@@ -35,6 +35,9 @@ import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -50,7 +53,6 @@ public class EditSalonProfileFragment extends Fragment {
     private SPRegistrationModel currentUserInfo;
 
     private FirebaseAuth mAuth;
-    EditText salonName;
 
     public EditSalonProfileFragment() {
         // Required empty public constructor
@@ -78,7 +80,9 @@ public class EditSalonProfileFragment extends Fragment {
         });
         profileImg = parentView.findViewById(R.id.profile_img);
         final Button save = parentView.findViewById(R.id.btn_save);
-         salonName =parentView.findViewById(R.id.et_salonName);
+         final EditText salonName =parentView.findViewById(R.id.et_salonName);
+        final EditText salonCity =parentView.findViewById(R.id.et_city);
+        final EditText salonPhone =parentView.findViewById(R.id.et_phone);
 
 
         profileImg.setOnClickListener(new View.OnClickListener() {
@@ -92,8 +96,13 @@ public class EditSalonProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String nameSalon = salonName.getText().toString().trim();
+                String city = salonCity.getText().toString().trim();
+                String phone = salonPhone.getText().toString().trim();
+
                 SPRegistrationModel model = currentUserInfo;
                 model.setSalonName(nameSalon);
+                model.setSalonCity(nameSalon);
+                model.setSalonPhoneNumber(nameSalon);
 
                 if (salonImageUri == null) {
                     updatSalonInfo(model);
@@ -112,12 +121,9 @@ public class EditSalonProfileFragment extends Fragment {
 
     private void uploadSalonImageToStorage(final SPRegistrationModel model) {
         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
-
         //generate unique id for the image
         String imageId = UUID.randomUUID().toString();
-
         final StorageReference ownerImageRef = mStorageRef.child("images/" + imageId + ".jpg");
-
         ownerImageRef.putFile(salonImageUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -151,9 +157,9 @@ public class EditSalonProfileFragment extends Fragment {
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mAuth.getUid());
 
         myRef.child("ownerImageURL").setValue(currentUserInfo.getOwnerImageURL());
-        myRef.child("phoneNumber").setValue(currentUserInfo.getPhoneNumber());
+        myRef.child("phoneNumber").setValue(update.getSalonPhoneNumber());
         myRef.child("registrationDate").setValue(currentUserInfo.getRegistrationDate());
-        myRef.child("salonCity").setValue(currentUserInfo.getSalonCity());
+        myRef.child("salonCity").setValue(update.getSalonCity());
         myRef.child("salonName").setValue(update.getSalonName());
         myRef.child("salonPhoneNumber").setValue(currentUserInfo.getSalonPhoneNumber());
         myRef.child("statusType").setValue(currentUserInfo.getStatusType());
@@ -161,6 +167,7 @@ public class EditSalonProfileFragment extends Fragment {
         myRef.child("userId").setValue(currentUserInfo.getUserId());
         myRef.child("userName").setValue(currentUserInfo.getUserName());
         myRef.child("userType").setValue(currentUserInfo.getUserType());
+        myRef.child("updatedDate").setValue(getCurrentDate());
         myRef.child("salonImageURL").setValue(update.getSalonImageURL()).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -174,6 +181,12 @@ public class EditSalonProfileFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private String getCurrentDate() {
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd/MMM/yyyy");
+        return df.format(c);
     }
 
 

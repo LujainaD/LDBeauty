@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
     android:id="@+id/frameLayout17"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SP.EditSalonProfileFragment">
@@ -36,7 +36,7 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="16dp"
         android:gravity="start"
-        android:text="Edit Salon's Profile"
+        android:text="Edit My Profile"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -76,9 +76,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView20"
         android:layout_width="409dp"
-        android:layout_height="135dp"
+        android:layout_height="180dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="1dp"
@@ -90,6 +89,29 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <View
+                android:id="@+id/v"
+                style="@style/Divider.Horizontal"
+                android:layout_width="match_parent"
+                android:background="@color/lightGray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <EditText
+                android:id="@+id/et_email"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="17dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Name"
+                app:layout_constraintBottom_toBottomOf="@+id/email"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/et_phone"
+                app:layout_constraintTop_toTopOf="@+id/email"
+                app:layout_constraintVertical_bias="0.0" />
 
             <EditText
                 android:id="@+id/et_phone"
@@ -125,6 +147,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view1" />
 
+            <View
+                android:id="@+id/view3"
+                style="@style/Divider.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_marginTop="45dp"
+                android:background="@color/lightGray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view2" />
+
             <TextView
                 android:id="@+id/Name"
                 android:layout_width="wrap_content"
@@ -155,9 +187,20 @@
                 android:text="Phone Number"
                 android:textColor="@color/pink_text"
                 android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/view3"
                 app:layout_constraintStart_toStartOf="@+id/city"
                 app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="Email"
+                android:textColor="@color/pink_text"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="@+id/number"
+                app:layout_constraintTop_toBottomOf="@+id/view3" />
 
             <EditText
                 android:id="@+id/et_salonName"
@@ -188,23 +231,12 @@
                 app:layout_constraintTop_toTopOf="@+id/city" />
 
             <View
-                android:id="@+id/v"
+                android:id="@+id/vi"
                 style="@style/Divider.Horizontal"
                 android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:background="@color/lightGray"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <View
-                android:id="@+id/view3"
-                style="@style/Divider.Horizontal"
-                android:layout_width="match_parent"
-                android:background="@color/lightGray"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
@@ -216,23 +248,4 @@
         android:src="@drawable/halfrose"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Last Update:"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView20" />
-
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/textView17"
-        app:layout_constraintStart_toEndOf="@+id/textView17"
-        app:layout_constraintTop_toTopOf="@+id/textView17" />
 </androidx.constraintlayout.widget.ConstraintLayout>
