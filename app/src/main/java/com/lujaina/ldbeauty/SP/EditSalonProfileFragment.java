@@ -1,5 +1,6 @@
 package com.lujaina.ldbeauty.SP;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,12 +35,15 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.lujaina.ldbeauty.Constants;
+import com.lujaina.ldbeauty.Dialogs.GreetingDialogFragment;
+import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -53,9 +59,20 @@ public class EditSalonProfileFragment extends Fragment {
     private SPRegistrationModel currentUserInfo;
 
     private FirebaseAuth mAuth;
+    private MediatorInterface mMediatorInterface;
 
     public EditSalonProfileFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof MediatorInterface) {
+            mMediatorInterface = (MediatorInterface) context;
+        } else {
+            throw new RuntimeException(context.toString() + "must implement MediatorInterface");
+        }
     }
 
     @Override
@@ -67,10 +84,29 @@ public class EditSalonProfileFragment extends Fragment {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mAuth.getUid());
 
+        profileImg = parentView.findViewById(R.id.profile_img);
+        final Button save = parentView.findViewById(R.id.btn_save);
+        final EditText salonName =parentView.findViewById(R.id.et_salonName);
+        final EditText salonCity =parentView.findViewById(R.id.et_city);
+        final EditText salonPhone =parentView.findViewById(R.id.et_phone);
+        final TextView updateDate =parentView.findViewById(R.id.date);
+        final TextView registerDate =parentView.findViewById(R.id.registerDate);
+
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 currentUserInfo = snapshot.getValue(SPRegistrationModel.class);
+                if(currentUserInfo!= null){
+                    salonName.setText(currentUserInfo.getSalonName());
+                    salonCity.setText(currentUserInfo.getSalonCity());
+                    salonPhone.setText(currentUserInfo.getSalonPhoneNumber());
+                    registerDate.setText(currentUserInfo.getRegistrationDate());
+                    if(currentUserInfo.getUpdatedDate() == null){
+                        updateDate.setText("--");
+                    }
+                    updateDate.setText(currentUserInfo.getUpdatedDate());
+                    Glide.with(Objects.requireNonNull(getContext())).load(currentUserInfo.getSalonImageURL()).into(profileImg);
+                }
             }
 
             @Override
@@ -78,11 +114,6 @@ public class EditSalonProfileFragment extends Fragment {
 
             }
         });
-        profileImg = parentView.findViewById(R.id.profile_img);
-        final Button save = parentView.findViewById(R.id.btn_save);
-         final EditText salonName =parentView.findViewById(R.id.et_salonName);
-        final EditText salonCity =parentView.findViewById(R.id.et_city);
-        final EditText salonPhone =parentView.findViewById(R.id.et_phone);
 
 
         profileImg.setOnClickListener(new View.OnClickListener() {
@@ -101,8 +132,9 @@ public class EditSalonProfileFragment extends Fragment {
 
                 SPRegistrationModel model = currentUserInfo;
                 model.setSalonName(nameSalon);
-                model.setSalonCity(nameSalon);
-                model.setSalonPhoneNumber(nameSalon);
+                model.setSalonCity(city);
+                model.setSalonPhoneNumber(phone);
+                model.setUpdatedDate(getCurrentDate());
 
                 if (salonImageUri == null) {
                     updatSalonInfo(model);
@@ -112,10 +144,7 @@ public class EditSalonProfileFragment extends Fragment {
             }
         });
 
-
         return parentView;
-
-
     }
 
 
@@ -157,7 +186,7 @@ public class EditSalonProfileFragment extends Fragment {
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mAuth.getUid());
 
         myRef.child("ownerImageURL").setValue(currentUserInfo.getOwnerImageURL());
-        myRef.child("phoneNumber").setValue(update.getSalonPhoneNumber());
+        myRef.child("phoneNumber").setValue(currentUserInfo.getPhoneNumber());
         myRef.child("registrationDate").setValue(currentUserInfo.getRegistrationDate());
         myRef.child("salonCity").setValue(update.getSalonCity());
         myRef.child("salonName").setValue(update.getSalonName());
@@ -167,15 +196,13 @@ public class EditSalonProfileFragment extends Fragment {
         myRef.child("userId").setValue(currentUserInfo.getUserId());
         myRef.child("userName").setValue(currentUserInfo.getUserName());
         myRef.child("userType").setValue(currentUserInfo.getUserType());
-        myRef.child("updatedDate").setValue(getCurrentDate());
+        myRef.child("updatedDate").setValue(update.getUpdatedDate());
         myRef.child("salonImageURL").setValue(update.getSalonImageURL()).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
 
-
-                    Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
-                    getActivity().finish();
+                    showGreetingDialog();
                 } else {
                     Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
                 }
@@ -189,6 +216,42 @@ public class EditSalonProfileFragment extends Fragment {
         return df.format(c);
     }
 
+    private void showGreetingDialog() {
+        GreetingDialogFragment dialogFragment = new GreetingDialogFragment();
+        dialogFragment.getDialogText(2);
+        dialogFragment.show(getChildFragmentManager(), GreetingDialogFragment.class.getSimpleName());
+        final int[] status = {0};
+        final Handler handler = new Handler();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (status[0] < 200) {
+
+                    status[0] += 1;
+
+                    try {
+                        Thread.sleep(23);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            if (status[0] == 100) {
+                                backToProfile();
+                            }
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+
+    private void backToProfile() {
+        mMediatorInterface.changeFragmentTo(new SPProfileFragment(), SPProfileFragment.class.getSimpleName());
+    }
 
     private void openGallery(int requestCode) {
         Intent i = new Intent();

@@ -134,6 +134,7 @@ public class RatingDialogFragment extends DialogFragment {
 
     private void showGreetingDialog() {
         GreetingDialogFragment dialogFragment = new GreetingDialogFragment();
+        dialogFragment.getDialogText(1);
         dialogFragment.show(getChildFragmentManager(), GreetingDialogFragment.class.getSimpleName());
         final int[] status = {0};
         final Handler handler = new Handler();

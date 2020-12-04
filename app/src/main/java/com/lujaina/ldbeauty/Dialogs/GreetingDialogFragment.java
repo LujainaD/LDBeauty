@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.lujaina.ldbeauty.R;
 
@@ -19,6 +20,7 @@ import com.lujaina.ldbeauty.R;
 public class GreetingDialogFragment extends DialogFragment {
     private int status = 0;
     Handler handler = new Handler();
+    private int i;
 
     public GreetingDialogFragment() {
         // Required empty public constructor
@@ -39,35 +41,73 @@ public class GreetingDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_greeting_dialog, container, false);
+        TextView greetingText = parentView.findViewById(R.id.tv_greetingText);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (status < 200) {
+        if(i==1){
+            greetingText.setText("Thank you for your comment");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (status < 200) {
 
-                    status += 1;
+                        status += 1;
 
-                    try {
-                        Thread.sleep(20);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                        try {
+                            Thread.sleep(20);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
 
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
 
-                            if (status == 100) {
+                                if (status == 100) {
                                 /*if(mListener != null){
                                     mListener.closeDialog(1);
                                 }*/
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
-            }
-        }).start();
+            }).start();
+        }else {
+            greetingText.setText("Your Changes are saved successfully");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (status < 200) {
+
+                        status += 1;
+
+                        try {
+                            Thread.sleep(23);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                if (status == 100) {
+                                /*if(mListener != null){
+                                    mListener.closeDialog(1);
+                                }*/
+                                }
+                            }
+                        });
+                    }
+                }
+            }).start();
+        }
+
+
         return parentView;
     }
 
+    public void getDialogText(int i) {
+        this.i= i;
+    }
 }
