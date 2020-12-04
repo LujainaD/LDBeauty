@@ -61,6 +61,7 @@ public class EditSpProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_sp_profile, container, false);
+        View parentView = inflater.inflate(R.layout.fragment_edit_sp_profile, container, false);
+        return parentView;
     }
 }
