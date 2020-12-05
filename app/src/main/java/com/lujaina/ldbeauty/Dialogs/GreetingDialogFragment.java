@@ -72,8 +72,37 @@ public class GreetingDialogFragment extends DialogFragment {
                     }
                 }
             }).start();
-        }else {
+        }else if (i==2){
             greetingText.setText("Your Changes are saved successfully");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (status < 200) {
+
+                        status += 1;
+
+                        try {
+                            Thread.sleep(23);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                if (status == 100) {
+                                /*if(mListener != null){
+                                    mListener.closeDialog(1);
+                                }*/
+                                }
+                            }
+                        });
+                    }
+                }
+            }).start();
+        }else {
+            greetingText.setText("your password is changed successfully");
             new Thread(new Runnable() {
                 @Override
                 public void run() {

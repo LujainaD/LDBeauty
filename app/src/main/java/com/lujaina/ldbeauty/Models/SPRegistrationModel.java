@@ -20,6 +20,7 @@ public class SPRegistrationModel {
     private String registrationDate;
     private String statusType;
     private String updatedDate;
+    private String updatedDateSalon;
 
     private String salonSection;
 
@@ -154,5 +155,13 @@ public class SPRegistrationModel {
 
     public void setSalonSection(String salonSection) {
         this.salonSection = salonSection;
+    }
+
+    public String getUpdatedDateSalon() {
+        return updatedDateSalon;
+    }
+
+    public void setUpdatedDateSalon(String updatedDateSalon) {
+        this.updatedDateSalon = updatedDateSalon;
     }
 }

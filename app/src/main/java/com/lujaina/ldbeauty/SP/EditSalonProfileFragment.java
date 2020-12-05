@@ -1,5 +1,6 @@
 package com.lujaina.ldbeauty.SP;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +63,9 @@ public class EditSalonProfileFragment extends Fragment {
     private FirebaseAuth mAuth;
     private MediatorInterface mMediatorInterface;
 
+    private ProgressDialog progressDialog;
+    private int status = 0;
+    Handler handler = new Handler();
     public EditSalonProfileFragment() {
         // Required empty public constructor
     }
@@ -83,6 +88,7 @@ public class EditSalonProfileFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mAuth.getUid());
+        ImageButton back = parentView.findViewById(R.id.ib_back);
 
         profileImg = parentView.findViewById(R.id.profile_img);
         final Button save = parentView.findViewById(R.id.btn_save);
@@ -91,7 +97,14 @@ public class EditSalonProfileFragment extends Fragment {
         final EditText salonPhone =parentView.findViewById(R.id.et_phone);
         final TextView updateDate =parentView.findViewById(R.id.date);
         final TextView registerDate =parentView.findViewById(R.id.registerDate);
+        final TextView tv_changeImg =parentView.findViewById(R.id.tv_changeImg);
 
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMediatorInterface.onBackPressed();
+            }
+        });
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -101,10 +114,10 @@ public class EditSalonProfileFragment extends Fragment {
                     salonCity.setText(currentUserInfo.getSalonCity());
                     salonPhone.setText(currentUserInfo.getSalonPhoneNumber());
                     registerDate.setText(currentUserInfo.getRegistrationDate());
-                    if(currentUserInfo.getUpdatedDate() == null){
+                    if(currentUserInfo.getUpdatedDateSalon() == null){
                         updateDate.setText("--");
                     }
-                    updateDate.setText(currentUserInfo.getUpdatedDate());
+                    updateDate.setText(currentUserInfo.getUpdatedDateSalon());
                     Glide.with(Objects.requireNonNull(getContext())).load(currentUserInfo.getSalonImageURL()).into(profileImg);
                 }
             }
@@ -116,7 +129,7 @@ public class EditSalonProfileFragment extends Fragment {
         });
 
 
-        profileImg.setOnClickListener(new View.OnClickListener() {
+        tv_changeImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openGallery(PICK_SALON_IMAGE);
@@ -134,13 +147,52 @@ public class EditSalonProfileFragment extends Fragment {
                 model.setSalonName(nameSalon);
                 model.setSalonCity(city);
                 model.setSalonPhoneNumber(phone);
-                model.setUpdatedDate(getCurrentDate());
+                model.setUpdatedDateSalon(getCurrentDate());
 
                 if (salonImageUri == null) {
                     updatSalonInfo(model);
                 } else {
                     uploadSalonImageToStorage(model);
                 }
+
+                progressDialog = new ProgressDialog(getContext());
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+                progressDialog.setContentView(R.layout.custom_progress_dialog);
+                final TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
+                final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
+                progressText.setText("Updating ...");
+                progressText.setVisibility(View.VISIBLE);
+                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (status < 100) {
+
+                            status += 1;
+
+                            try {
+                                Thread.sleep(200);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    progressDialog.setProgress(status);
+                                    progressPercentage.setText(String.valueOf(status)+"%");
+
+                                    if (status == 100) {
+                                        progressDialog.dismiss();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }).start();
             }
         });
 
@@ -196,14 +248,16 @@ public class EditSalonProfileFragment extends Fragment {
         myRef.child("userId").setValue(currentUserInfo.getUserId());
         myRef.child("userName").setValue(currentUserInfo.getUserName());
         myRef.child("userType").setValue(currentUserInfo.getUserType());
-        myRef.child("updatedDate").setValue(update.getUpdatedDate());
+        myRef.child("updatedDate").setValue(currentUserInfo.getUpdatedDate());
+        myRef.child("updatedDateSalon").setValue(update.getUpdatedDateSalon());
         myRef.child("salonImageURL").setValue(update.getSalonImageURL()).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-
+                    progressDialog.dismiss();
                     showGreetingDialog();
                 } else {
+                    progressDialog.dismiss();
                     Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -263,13 +317,14 @@ public class EditSalonProfileFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_SALON_IMAGE){
+        if (requestCode == PICK_SALON_IMAGE) {
             if (data == null) {
                 Toast.makeText(getContext(), "Unexpected Error Happened while selecting  picture!", Toast.LENGTH_SHORT).show();
+            } else {
+                Uri salonImgUri = data.getData();//1
+                salonImageUri = salonImgUri;
+                profileImg.setImageURI(salonImgUri);
             }
-            Uri salonImgUri = data.getData();//1
-            salonImageUri = salonImgUri;
-            profileImg.setImageURI(salonImgUri);
         }
     }
 
