@@ -58,6 +58,7 @@ public class EditSpProfileFragment extends Fragment {
     private static final int PICK_SALON_IMAGE = 1002;
     private static final int STORAGE_PERMISSION_REQUEST = 300;
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^" + "(?=.*[A-Z])" + ".{6,20}");
+    private static final Pattern PHONENUMBER_PATTERN = Pattern.compile("^" + ".{8,20}");
 
     private Uri ownerImageUri;
     private CircleImageView profileImg;
@@ -155,20 +156,31 @@ public class EditSpProfileFragment extends Fragment {
                 model.setPhoneNumber(phone);
                 model.setUpdatedDate(getCurrentDate());
 
-                if (ownerImageUri == null) {
-                    updatOwnerInfo(model);
-                } else {
-                    uploadOwnerImageToStorage(model);
-                }
 
                 progressDialog = new ProgressDialog(getContext());
                 progressDialog.setCancelable(false);
-                progressDialog.show();
                 progressDialog.setContentView(R.layout.custom_progress_dialog);
                 final TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
                 final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
                 progressText.setText("Updating ...");
                 progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+                if (name.isEmpty()) {
+                    ownerName.setError("Enter User Name");
+                } else if (phone.isEmpty()) {
+                    ownerPhone.setError("Enter your phone number");
+                } else if (!PHONENUMBER_PATTERN.matcher(phone).matches()) {
+                    ownerPhone.setError("Your phone number must contain at least 8 digit");
+                }else{
+                    if (ownerImageUri == null) {
+                        progressDialog.show();
+                        updatOwnerInfo(model);
+                    } else {
+                        progressDialog.show();
+                        uploadOwnerImageToStorage(model);
+                    }
+                }
+
 
                 new Thread(new Runnable() {
                     @Override

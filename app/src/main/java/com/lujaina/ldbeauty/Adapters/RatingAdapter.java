@@ -17,6 +17,7 @@ import com.lujaina.ldbeauty.Models.CommentModel;
 import com.lujaina.ldbeauty.R;
 
 import java.util.ArrayList;
+@SuppressWarnings("unchecked")
 
 public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.MyViewHolder>  {
 

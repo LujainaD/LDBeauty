@@ -70,9 +70,19 @@ public class ClientProfileFragment extends Fragment {
         myRef = FirebaseDatabase.getInstance().getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid());
 
         final TextView userName = parentView.findViewById(R.id.tv_title);
+        TextView editProfile = parentView.findViewById(R.id.tv_editProfile);
         TextView appointment = parentView.findViewById(R.id.tv_appointment);
         TextView feedback = parentView.findViewById(R.id.tv_feedback);
         final CircleImageView profileImag = parentView.findViewById(R.id.civ_profile);
+
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mMediatorInterface != null){
+                    mMediatorInterface.changeFragmentTo(new EditClientProfileFragment(), EditClientProfileFragment.class.getSimpleName());
+                }
+            }
+        });
 
         appointment.setOnClickListener(new View.OnClickListener() {
             @Override
