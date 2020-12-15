@@ -153,11 +153,13 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
                             Toast.makeText(HomeActivity.this, userRole, Toast.LENGTH_SHORT).show();
                            changeFragmentTo(new ClientProfileFragment(), ClientProfileFragment.class.getSimpleName());
 
+                           return true;
 
                        } else{
                            progressDialog.dismiss();
                            Toast.makeText(HomeActivity.this, userRole, Toast.LENGTH_SHORT).show();
                            changeFragmentTo(new SPProfileFragment(), SPProfileFragment.class.getSimpleName());
+                           return true;
 
                        }
                 } else {
@@ -166,7 +168,7 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
                         NoLoginDialogFragment dialog = new NoLoginDialogFragment();
                         dialog.showText(1);
                         dialog.show(getSupportFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
-                    return true;
+                    break;
                 }
             }else {
                     progressDialog.dismiss();
@@ -174,10 +176,8 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
                     NoLoginDialogFragment dialog = new NoLoginDialogFragment();
                     dialog.showText(1);
                     dialog.show(getSupportFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
-                    return true;
+                    break;
                 }
-
-
 
             }
             case R.id.nav_app: {
