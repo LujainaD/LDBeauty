@@ -46,6 +46,7 @@ import com.lujaina.ldbeauty.Dialogs.NoLoginDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.SP.SPProfileFragment;
+import com.lujaina.ldbeauty.User.AboutAppFragment;
 import com.lujaina.ldbeauty.User.SalonsHomeFragment;
 import com.lujaina.ldbeauty.User.SelectedSalonFragment;
 
@@ -181,9 +182,7 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
             }
             case R.id.nav_app: {
                 progressDialog.dismiss();
-/*
-                changeFragmentTo(new AppProfileFragment(), AppProfileFragment.class.getSimpleName());
-*/
+                changeFragmentTo(new AboutAppFragment(), AboutAppFragment.class.getSimpleName());
                 return true;
             }
 
