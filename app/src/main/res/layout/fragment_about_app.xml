@@ -43,32 +43,29 @@
 
     <ImageView
         android:id="@+id/imageView27"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="186dp"
+        android:layout_height="234dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="100dp"
         android:src="@drawable/transparent_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/halfrose"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <TextView
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
         android:text="LD Beauty is an application that connect salons to their customers. Also, it allow customers to search for salons which provide the services that they need, book an appointment online, and it is allows customers to rate the salon services that they get served at.
-Moreover, the application let the Salon’s owner to add their services, pictures, offers, location so the customers can check.
 "
-        android:textSize="13sp"
         android:textColor="#000000"
-        android:padding="10dp"
+        android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
@@ -78,13 +75,14 @@ Moreover, the application let the Salon’s owner to add their services, picture
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
-        android:padding="10dp"
-        android:textSize="13sp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:text="If you have any questions or suggestions please contact us on :"
         android:textColor="@color/pink_text"
-        android:text="If You Have Any Questions Or Suggestions Please Contact Us On :"
+        android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView18"
-        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+        app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
     <TextView
         android:id="@+id/tv_email"
@@ -114,6 +112,20 @@ Moreover, the application let the Salon’s owner to add their services, picture
         app:layout_constraintStart_toStartOf="@+id/tv_email"
         app:layout_constraintTop_toBottomOf="@+id/tv_email" />
 
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:text="Moreover, the application let the Salon’s owner to add their services, pictures, offers, location so the customers can check.
+"
+        android:textColor="#000000"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView18"
+        app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
