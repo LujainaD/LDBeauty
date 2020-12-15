@@ -1,53 +1,52 @@
 package com.lujaina.ldbeauty.Client;
 
-import android.app.Dialog;
+import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.fragment.app.Fragment;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessagingService;
-import com.lujaina.ldbeauty.Adapters.CartServicesAdapter;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.lujaina.ldbeauty.Adapters.OrderAdapter;
-import com.lujaina.ldbeauty.Adapters.ServiceAdapter;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.HomeActivity;
 import com.lujaina.ldbeauty.Models.ClientsAppointmentModel;
-import com.lujaina.ldbeauty.Models.PayPalModel;
-import com.lujaina.ldbeauty.Models.ServiceModel;
 import com.lujaina.ldbeauty.R;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.RequestBody;
 
-import java.text.SimpleDateFormat;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class OrderFragment extends Fragment  {
@@ -58,6 +57,7 @@ public class OrderFragment extends Fragment  {
     ArrayList<ClientsAppointmentModel> serviceArray;
     private String ownerId;
 
+    private BroadcastReceiver broadcastReceiver;
     public OrderFragment() {
         // Required empty public constructor
     }
@@ -67,25 +67,16 @@ public class OrderFragment extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-     // View parentView = inflater.inflate(R.layout.fragment_order_dialog, container, false);
-      //View parentView = inflater.inflate(R.layout.order_confirmation, container, false);
       View parentView = inflater.inflate(R.layout.order_confirm3, container, false);
 
       Button btn_dismiss = parentView.findViewById(R.id.btn_dismiss);
-     // TextView tv_date = parentView.findViewById(R.id.tv_date);
-    //  TextView tv_time = parentView.findViewById(R.id.tv_time);
 
       FirebaseAuth mAuth= FirebaseAuth.getInstance();
       mFirebaseUser = mAuth.getCurrentUser();
-     // RecyclerView recyclerView = parentView.findViewById(R.id.rv_order);
       serviceArray = new ArrayList<>();
       serviceAdapter = new OrderAdapter(getContext());
-      //recyclerView.setAdapter(serviceAdapter);
-     // setupRecyclerView(recyclerView);
-      readClientOrderFromFirebaseDB();
+     readClientOrderFromFirebaseDB();
 
-//      tv_time.setText(getCurrentTime());
-     // tv_date.setText(currentDate());
       btn_dismiss.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -105,29 +96,73 @@ public class OrderFragment extends Fragment  {
 
         for(ClientsAppointmentModel model : serviceArray){
 
-
             String id = clientOrderRef.push().getKey();
             model.setAppointmentID(id);
             clientOrderRef.child(id).setValue(model);
             salonOrderRef.child(id).setValue(model);
-           // sendNotificationToSalonOwner(ownerId);
+
         }
         DatabaseReference cartRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Client_Cart);
 
         cartRef.setValue(null);
+        readSalonOwnerToken(ownerId);
 
     }
 
-    private void sendNotificationToSalonOwner(final String ownerId) {
+    private void readSalonOwnerToken(String ownerId) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference(Constants.Users).child("UsersToken").child(ownerId);
 
-        }
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String tokenId = snapshot.child("tokenId").getValue(String.class);
+                sendTokenToServer(tokenId);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void sendTokenToServer(final String salonOwnerToken) {
+        String firebaseURL = "https://fcm.googleapis.com/fcm/send";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, firebaseURL, new
+                Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("token", salonOwnerToken);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(stringRequest);
+
+    }
 
 
     private void readClientOrderFromFirebaseDB() {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Client_Cart);
-
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -146,32 +181,6 @@ public class OrderFragment extends Fragment  {
                 // Failed to read value
             }
         });
-
-    }
-
-    private String currentDate() {
-        //Get current date of device
-        Calendar c = Calendar.getInstance();
-
-        int mYear = c.get(Calendar.YEAR);
-        int mMonth = c.get(Calendar.MONTH);
-        int mDay = c.get(Calendar.DAY_OF_MONTH);
-
-        return mDay + "/" + (mMonth + 1) + "/" + mYear;
-    }
-
-    private String  getCurrentTime() {
-        SimpleDateFormat serverFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
-        String timeNow = serverFormat.format(Calendar.getInstance().getTime());
-        return timeNow;
-    }
-    private void setupRecyclerView(RecyclerView recyclerView) {
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), layoutManager.getOrientation());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(dividerItemDecoration);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
     }
 
