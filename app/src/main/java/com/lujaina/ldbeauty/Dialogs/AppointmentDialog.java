@@ -65,7 +65,7 @@ public class AppointmentDialog extends DialogFragment {
             if(appointmentInfo.getServiceType().equals("Service")){
                 clientName.setText(appointmentInfo.getClientName());
                 clientPhone.setText(appointmentInfo.getClientPhone());
-                date.setText(appointmentInfo.getAppointmentDate());
+                date.setText(appointmentInfo.getAppointmentDate()+" , "+ appointmentInfo.getAppointmentTime());
                 specialist.setText(appointmentInfo.getSpecialList());
                 service.setText(appointmentInfo.getServiceTitle());
                 price.setText(appointmentInfo.getPrice()+" R.O");
@@ -73,7 +73,7 @@ public class AppointmentDialog extends DialogFragment {
             }else{
                 clientName.setText(appointmentInfo.getClientName());
                 clientPhone.setText(appointmentInfo.getClientPhone());
-                date.setText(appointmentInfo.getAppointmentDate());
+                date.setText(appointmentInfo.getAppointmentDate()+" , "+ appointmentInfo.getAppointmentTime());
                 tv_spec.setText("Offer Title");
                 specialist.setText(appointmentInfo.getOfferTitle());
                 tv_ser.setText("Offer Services");

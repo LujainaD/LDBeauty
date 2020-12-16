@@ -67,6 +67,7 @@ public class SPProfileFragment extends Fragment {
         TextView salonFeedback = parentView.findViewById(R.id.tv_feedback);
         TextView editSalonProfile = parentView.findViewById(R.id.tv_editSalonFile);
         TextView editOwnerProfile = parentView.findViewById(R.id.tv_editSPFile);
+        TextView calendar = parentView.findViewById(R.id.tv_calendar);
 
         TextView salonPages = parentView.findViewById(R.id.tv_salonPages);
         final TextView ownerName = parentView.findViewById(R.id.tv_title);
@@ -120,6 +121,16 @@ public class SPProfileFragment extends Fragment {
             public void onClick(View v) {
                 if (mMediatorInterface !=null){
                     mMediatorInterface.changeFragmentTo(new SalonAppointmentFragment(), SalonAppointmentFragment.class.getSimpleName());
+                }
+
+            }
+        });
+
+        calendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mMediatorInterface !=null){
+                    mMediatorInterface.changeFragmentTo(new SpCalenderFragment(), SpCalenderFragment.class.getSimpleName());
                 }
 
             }
