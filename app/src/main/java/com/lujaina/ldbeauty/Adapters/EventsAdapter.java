@@ -7,12 +7,14 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.lujaina.ldbeauty.Client.OfferAppointmentFragment;
 import com.lujaina.ldbeauty.Models.ClientsAppointmentModel;
 import com.lujaina.ldbeauty.R;
@@ -65,12 +67,24 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
             }
         });
 
-        if(model.getAppointmentStatus()=="Confirm" ){
-            holder.card.setCardBackgroundColor(Color.parseColor("#FD0DED6A"));
+        if(model.getAppointmentStatus().equals("Confirm")){
+            holder.card.getCardBackgroundColor();
+            ColorStateList.valueOf(Color.parseColor("#FFFFFF"));
+            holder.card.setCardBackgroundColor(Color.parseColor("#00C853"));
             holder.details.setTextColor(Color.parseColor("#FFFFFF"));
-        }else if(model.getAppointmentStatus()=="Decline"){
-            holder.card.setCardBackgroundColor(Color.parseColor("#9ED50000"));
+            holder.img.setImageDrawable(mContext.getResources().getDrawable(R.drawable.confirm));
+        }else if(model.getAppointmentStatus().equals("Decline")){
+            holder.card.getCardBackgroundColor();
+            ColorStateList.valueOf(Color.parseColor("#FFFFFF"));
+            holder.img.setImageDrawable(mContext.getResources().getDrawable(R.drawable.cancel));
+            holder.card.setCardBackgroundColor(Color.RED);
             holder.details.setTextColor(Color.parseColor("#FFFFFF"));
+        }else{
+
+            holder.card.getCardBackgroundColor();
+            holder.card.setCardBackgroundColor(Color.parseColor("#E6E7E8"));
+            holder.details.setTextColor(Color.parseColor("#000000"));
+            holder.img.setVisibility(View.GONE);
         }
       
     }
@@ -92,12 +106,14 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView details;
         CardView card;
+        ImageView img;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             details = itemView.findViewById(R.id.tv_details);
             card = itemView.findViewById(R.id.card);
+            img = itemView.findViewById(R.id.iv_status);
         }
 
 
