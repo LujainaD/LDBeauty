@@ -1,5 +1,6 @@
 package com.lujaina.ldbeauty.SP;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +29,7 @@ import com.lujaina.ldbeauty.Adapters.EventsAdapter;
 import com.lujaina.ldbeauty.Adapters.SalonAppointmentAdapter;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Dialogs.AppointmentDialog;
+import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.AppointmentModel;
 import com.lujaina.ldbeauty.Models.ClientsAppointmentModel;
 import com.lujaina.ldbeauty.R;
@@ -37,29 +41,53 @@ public class SpCalenderFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;
 
+    private MediatorInterface mMediatorInterface;
+
     private ArrayList<ClientsAppointmentModel> eventList;
     private EventsAdapter mAdapter;
-
+    TextView noAppointment;
+    RecyclerView recyclerView;
     public SpCalenderFragment() {
         // Required empty public constructor
     }
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof MediatorInterface) {
+            mMediatorInterface = (MediatorInterface) context;
+        } else {
+            throw new RuntimeException(context.toString() + "must implement MediatorInterface");
+        }
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView =  inflater.inflate(R.layout.fragment_sp_calender, container, false);
+        ImageButton back = parentView.findViewById(R.id.ib_back);
+         noAppointment = parentView.findViewById(R.id.textView24);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
 
         CalendarView calendarView = parentView.findViewById(R.id.calendarView);
         calendarView.setFirstDayOfWeek(Calendar.SATURDAY);
-        RecyclerView recyclerView = parentView.findViewById(R.id.rv_events);
+         recyclerView = parentView.findViewById(R.id.rv_events);
 
         eventList = new ArrayList<>();
         mAdapter = new EventsAdapter(getContext());
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mMediatorInterface != null){
+                    mMediatorInterface.onBackPressed();
+                }
+            }
+        });
 
         mAdapter.setupOnItemClickListener(new EventsAdapter.onItemClickListener() {
             @Override
@@ -103,7 +131,16 @@ public class SpCalenderFragment extends Fragment {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     ClientsAppointmentModel appointmentModel = d.getValue(ClientsAppointmentModel.class);
                     eventList.add(appointmentModel);
+                    if (eventList.isEmpty()) {
+                        noAppointment.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
 
+
+                    } else {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        noAppointment.setVisibility(View.GONE);
+
+                    }
                 }
                 mAdapter.update(eventList);
             }

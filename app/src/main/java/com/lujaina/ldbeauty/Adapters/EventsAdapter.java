@@ -57,7 +57,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
     @Override
     public void onBindViewHolder(@NonNull final EventsAdapter.MyViewHolder holder, final int position) {
         final ClientsAppointmentModel model = mTime.get(position);
-        holder.details.setText(model.getClientName()+ "at: "+ model.getAppointmentTime());
+        holder.details.setText(model.getClientName()+ "  at: "+ model.getAppointmentTime());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

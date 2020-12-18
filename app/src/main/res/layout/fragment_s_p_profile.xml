@@ -156,11 +156,11 @@
 
     <ImageView
         android:id="@+id/imageView88"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
         android:layout_marginTop="14dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imageView6"
+        app:layout_constraintStart_toStartOf="@+id/imageView6"
         app:layout_constraintTop_toTopOf="@+id/tv_calendar"
         app:srcCompat="@drawable/calendar_today_24" />
 
