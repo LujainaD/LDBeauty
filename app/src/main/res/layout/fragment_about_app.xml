@@ -65,7 +65,7 @@
         android:text="LD Beauty is an application that connect salons to their customers. Also, it allow customers to search for salons which provide the services that they need, book an appointment online, and it is allows customers to rate the salon services that they get served at.
 "
         android:textColor="#000000"
-        android:textSize="13sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
@@ -79,7 +79,7 @@
         android:paddingStart="10dp"
         android:text="If you have any questions or suggestions please contact us on :"
         android:textColor="@color/pink_text"
-        android:textSize="13sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView18"
         app:layout_constraintTop_toBottomOf="@+id/textView21" />
@@ -90,7 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
         android:text="Lujaina.95me@gmail.com"
-        android:textSize="13sp"
+        android:textSize="16sp"
         android:textColor="#144EEF"
         android:paddingEnd="10dp"
         android:paddingStart="10dp"
@@ -103,7 +103,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
-        android:textSize="13sp"
+        android:textSize="16sp"
         android:textColor="#000000"
         android:paddingEnd="10dp"
         android:paddingStart="10dp"
@@ -122,7 +122,7 @@
         android:text="Moreover, the application let the Salon’s owner to add their services, pictures, offers, location so the customers can check.
 "
         android:textColor="#000000"
-        android:textSize="13sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView18"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />

@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@android:color/transparent"
-            android:hint="Title"
+            android:hint="Category Title"
             android:paddingStart="20dp"
             android:text=""
             android:textColor="#000000"
@@ -37,13 +37,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="10dp"
-        android:textAlignment="textStart"
+        android:gravity="left"
         android:text="@string/add"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cv_title" />
+        app:layout_constraintTop_toBottomOf="@+id/cv_title"
+         />
 
     <Button
         android:id="@+id/btn_cancel"

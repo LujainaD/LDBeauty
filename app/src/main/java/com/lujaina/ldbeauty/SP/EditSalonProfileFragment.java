@@ -57,7 +57,7 @@ public class EditSalonProfileFragment extends Fragment {
     private static final int STORAGE_PERMISSION_REQUEST = 300;
 
     private Uri salonImageUri;
-    private CircleImageView profileImg;
+    private ImageView profileImg;
     private SPRegistrationModel currentUserInfo;
 
     private FirebaseAuth mAuth;

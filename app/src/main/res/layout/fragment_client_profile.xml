@@ -57,7 +57,7 @@
         android:layout_marginTop="10dp"
         android:background="#FFFFFF"
         android:drawablePadding="5dp"
-        android:paddingStart="40dp"
+        android:paddingStart="45dp"
         android:paddingTop="15dp"
         android:text="Edit My Profile"
         android:textAlignment="textStart"
@@ -73,7 +73,7 @@
         android:layout_height="50dp"
         android:background="#FFFFFF"
         android:drawablePadding="5dp"
-        android:paddingStart="40dp"
+        android:paddingStart="45dp"
         android:paddingTop="15dp"
         android:text="My Appointments"
         android:textAlignment="textStart"
@@ -88,13 +88,13 @@
         android:id="@+id/tv_feedback"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:background="#91FFFFFF"
+        android:background="@color/colorAccent"
         android:drawablePadding="5dp"
-        android:paddingStart="40dp"
+        android:paddingStart="45dp"
         android:paddingTop="15dp"
         android:text="My Feedback"
         android:textAlignment="textStart"
-        android:textColor="@color/pink_text"
+        android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -138,10 +138,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="14dp"
         app:layout_constraintStart_toStartOf="@+id/tv_feedback"
         app:layout_constraintTop_toTopOf="@+id/tv_feedback"
-        app:srcCompat="@drawable/outline_feedback" />
+        app:srcCompat="@drawable/outline_feedback"
+ />
 
     <ImageView
         android:id="@+id/imageView9"
@@ -161,7 +162,8 @@
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_editProfile"
-        app:srcCompat="@drawable/ic_arrow" />
+        app:srcCompat="@drawable/ic_arrow"
+        />
 
     <ImageView
         android:id="@+id/imageView11"
