@@ -5,8 +5,7 @@
     android:background="@color/white"
     android:id="@+id/frameLayout17"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".SP.EditSalonProfileFragment">
+    android:layout_height="match_parent">
 
     <!-- TODO: Update blank fragment layout -->
 

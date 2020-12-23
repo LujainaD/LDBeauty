@@ -510,8 +510,8 @@ public class SPSignUpFragment extends Fragment {
 
                 if (mMediatorInterface != null) {
                     progressDialog.dismiss();
-                    mMediatorInterface.changeFragmentTo(new SalonsHomeFragment(),SalonsHomeFragment.class.getSimpleName());
-
+                    Intent i = new Intent(getActivity(), HomeActivity.class);
+                    startActivity(i);
 
                 } else {
                     Toast.makeText(mContext, "failed ", Toast.LENGTH_SHORT).show();

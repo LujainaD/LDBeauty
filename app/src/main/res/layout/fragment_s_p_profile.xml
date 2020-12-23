@@ -57,7 +57,7 @@
         android:layout_marginTop="10dp"
         android:background="#FFFFFF"
         android:drawablePadding="5dp"
-        android:paddingStart="40dp"
+        android:paddingStart="45dp"
         android:paddingTop="15dp"
         android:text="Edit My Profile"
         android:textAlignment="textStart"
@@ -73,7 +73,7 @@
         android:layout_height="50dp"
         android:background="#FFFFFF"
         android:drawablePadding="5dp"
-        android:paddingStart="40dp"
+        android:paddingStart="45dp"
         android:paddingTop="15dp"
         android:text="Salon's Appointments"
         android:textAlignment="textStart"
@@ -88,13 +88,13 @@
         android:id="@+id/tv_editSalonFile"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:background="#91FFFFFF"
+        android:background="@color/colorAccent"
+        android:textColor="@color/white"
+        android:paddingStart="45dp"
         android:paddingTop="15dp"
         android:text="Edit Salon's Profile"
         android:drawablePadding="5dp"
         android:textAlignment="textStart"
-        android:textColor="@color/pink_text"
-        android:paddingStart="40dp"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -108,7 +108,7 @@
         android:layout_height="50dp"
         android:background="#91FFFFFF"
         android:drawablePadding="5dp"
-        android:paddingStart="40dp"
+        android:paddingStart="45dp"
         android:paddingTop="15dp"
         android:text="Salon's Feeddback"
         android:textAlignment="textStart"
@@ -123,13 +123,13 @@
         android:id="@+id/tv_salonPages"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:background="#FFFFFF"
+        android:background="@color/colorAccent"
+        android:textColor="@color/white"
+        android:paddingStart="45dp"
         android:drawablePadding="5dp"
-        android:paddingStart="40dp"
         android:paddingTop="15dp"
         android:text="Salon Pages"
         android:textAlignment="textStart"
-        android:textColor="@color/pink_text"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -140,13 +140,13 @@
         android:id="@+id/tv_calendar"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:background="#FFFFFF"
         android:drawablePadding="5dp"
-        android:paddingStart="40dp"
+        android:background="@color/colorAccent"
+        android:textColor="@color/white"
+        android:paddingStart="45dp"
         android:paddingTop="15dp"
         android:text="Calendar"
         android:textAlignment="textStart"
-        android:textColor="@color/pink_text"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -162,7 +162,8 @@
         app:layout_constraintEnd_toEndOf="@+id/imageView6"
         app:layout_constraintStart_toStartOf="@+id/imageView6"
         app:layout_constraintTop_toTopOf="@+id/tv_calendar"
-        app:srcCompat="@drawable/calendar_today_24" />
+        app:srcCompat="@drawable/calendar_today_24"
+        app:tint="@color/white" />
 
     <ImageView
         android:id="@+id/imageView99"
@@ -172,7 +173,9 @@
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="@+id/tv_editSPFile"
         app:layout_constraintTop_toTopOf="@+id/tv_calendar"
-        app:srcCompat="@drawable/ic_arrow" />
+        app:srcCompat="@drawable/ic_arrow"
+        app:tint="@color/white" />
+
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
@@ -201,7 +204,8 @@
         android:layout_marginTop="14dp"
         app:layout_constraintStart_toStartOf="@+id/tv_editSalonFile"
         app:layout_constraintTop_toBottomOf="@+id/tv_editSPFile"
-        app:srcCompat="@drawable/outline_settings" />
+        app:srcCompat="@drawable/outline_settings"
+        app:tint="@color/white" />
 
     <ImageView
         android:id="@+id/imageView6"
@@ -232,7 +236,8 @@
         android:layout_marginTop="14dp"
         app:layout_constraintStart_toStartOf="@+id/tv_salonPages"
         app:layout_constraintTop_toTopOf="@+id/tv_salonPages"
-        app:srcCompat="@drawable/list" />
+        app:srcCompat="@drawable/list"
+        app:tint="@color/white" />
 
     <ImageView
         android:id="@+id/imageView9"
@@ -252,7 +257,8 @@
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_editSPFile"
-        app:srcCompat="@drawable/ic_arrow" />
+        app:srcCompat="@drawable/ic_arrow"
+        app:tint="@color/white" />
 
     <ImageView
         android:id="@+id/imageView11"
@@ -282,5 +288,7 @@
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_salonPages"
-        app:srcCompat="@drawable/ic_arrow" />
+        app:srcCompat="@drawable/ic_arrow"
+        app:tint="@color/white" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

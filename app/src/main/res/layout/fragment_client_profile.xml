@@ -142,7 +142,7 @@
         app:layout_constraintStart_toStartOf="@+id/tv_feedback"
         app:layout_constraintTop_toTopOf="@+id/tv_feedback"
         app:srcCompat="@drawable/outline_feedback"
- />
+        app:tint="@color/white" />
 
     <ImageView
         android:id="@+id/imageView9"
@@ -163,7 +163,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_editProfile"
         app:srcCompat="@drawable/ic_arrow"
-        />
+        app:tint="#FFFFFF" />
 
     <ImageView
         android:id="@+id/imageView11"

@@ -37,6 +37,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.lujaina.ldbeauty.Constants;
+import com.lujaina.ldbeauty.HomeActivity;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.LoginChoicesFragment;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
@@ -446,8 +447,8 @@ public class ClientSignUpFragment extends Fragment {
 
                 if (mMediatorInterface != null) {
                     progressDialog.dismiss();
-                    mMediatorInterface.changeFragmentTo(new SalonsHomeFragment(),SalonsHomeFragment.class.getSimpleName());
-
+                    Intent i = new Intent(getActivity(), HomeActivity.class);
+                    startActivity(i);
 
                 } else {
                     Toast.makeText(mContext, "failed ", Toast.LENGTH_SHORT).show();

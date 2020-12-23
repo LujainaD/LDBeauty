@@ -1,5 +1,6 @@
 package com.lujaina.ldbeauty.Client;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +40,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Dialogs.GreetingDialogFragment;
+import com.lujaina.ldbeauty.HomeActivity;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
@@ -89,6 +91,7 @@ public class EditClientProfileFragment extends Fragment {
         }
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -113,12 +116,16 @@ public class EditClientProfileFragment extends Fragment {
         final TextView registerDate =parentView.findViewById(R.id.registerDate);
         final TextView tv_changeImg =parentView.findViewById(R.id.tv_changeImg);
 
+        updateDate.setText("--");
+        profileImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.profile));
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mMediatorInterface.onBackPressed();
             }
         });
+
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -128,9 +135,6 @@ public class EditClientProfileFragment extends Fragment {
                     userEmail.setText(currentUserInfo.getUserEmail());
                     userPhone.setText(currentUserInfo.getPhoneNumber());
                     registerDate.setText(currentUserInfo.getRegistrationDate());
-                    if(currentUserInfo.getUpdatedDate() == null){
-                        updateDate.setText("--");
-                    }
                     updateDate.setText(currentUserInfo.getUpdatedDate());
                     Glide.with(Objects.requireNonNull(getContext())).load(currentUserInfo.getOwnerImageURL()).into(profileImg);
                 }
@@ -141,7 +145,6 @@ public class EditClientProfileFragment extends Fragment {
 
             }
         });
-
 
         tv_changeImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,11 +166,8 @@ public class EditClientProfileFragment extends Fragment {
 
                 progressDialog = new ProgressDialog(getContext());
                 progressDialog.setCancelable(false);
-                progressDialog.setContentView(R.layout.custom_progress_dialog);
-                final TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
-                final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
+                progressDialog.setContentView(R.layout.progress_bar);
                 progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                progressText.setText("Updating ...");
 
                 if (name.isEmpty()) {
                     userName.setError("Enter User Name");
@@ -185,6 +185,7 @@ public class EditClientProfileFragment extends Fragment {
                     }
                 }
 
+/*
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -203,7 +204,7 @@ public class EditClientProfileFragment extends Fragment {
                                 public void run() {
 
                                     progressDialog.setProgress(status);
-                                    progressPercentage.setText(String.valueOf(status)+"%");
+                                   // progressPercentage.setText(String.valueOf(status)+"%");
 
                                     if (status == 100) {
                                         progressDialog.dismiss();
@@ -213,6 +214,7 @@ public class EditClientProfileFragment extends Fragment {
                         }
                     }
                 }).start();
+*/
             }
         });
 
@@ -285,6 +287,7 @@ public class EditClientProfileFragment extends Fragment {
                 }
             }
         });
+
         return parentView;
     }
 
