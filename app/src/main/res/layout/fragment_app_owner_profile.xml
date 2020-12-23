@@ -54,13 +54,13 @@
         android:id="@+id/tv_confirm"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:background="#FFFFFF"
+        android:background="@color/colorAccent"
+        android:textColor="@color/white"
+        android:paddingStart="45dp"
         android:drawablePadding="5dp"
-        android:paddingStart="40dp"
         android:paddingTop="15dp"
         android:text="Confirm Salons"
         android:textAlignment="textStart"
-        android:textColor="@color/pink_text"
         android:textSize="16sp"
 
         app:layout_constraintEnd_toEndOf="parent"
@@ -76,7 +76,9 @@
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="@+id/tv_confirm"
         app:layout_constraintTop_toTopOf="@+id/tv_confirm"
-        app:srcCompat="@drawable/ic_arrow" />
+        app:srcCompat="@drawable/ic_arrow"
+        app:tint="@color/white" />
+
     <ImageView
         android:id="@+id/iv_confirm2"
         android:layout_width="wrap_content"
@@ -85,7 +87,9 @@
         android:layout_marginTop="14dp"
         app:layout_constraintStart_toStartOf="@+id/tv_confirm"
         app:layout_constraintTop_toTopOf="@+id/tv_confirm"
-        app:srcCompat="@drawable/ic_settings" />
+        app:srcCompat="@drawable/ic_settings"
+        app:tint="@color/white" />
+
 
 
     <TextView
