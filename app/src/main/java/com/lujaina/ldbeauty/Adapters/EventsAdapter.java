@@ -70,14 +70,14 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
         if(model.getAppointmentStatus().equals("Confirm")){
             holder.card.getCardBackgroundColor();
             ColorStateList.valueOf(Color.parseColor("#FFFFFF"));
-            holder.card.setCardBackgroundColor(Color.parseColor("#00C853"));
+            holder.card.setCardBackgroundColor(Color.parseColor("#6CE123"));
             holder.details.setTextColor(Color.parseColor("#FFFFFF"));
             holder.img.setImageDrawable(mContext.getResources().getDrawable(R.drawable.confirm));
         }else if(model.getAppointmentStatus().equals("Decline")){
             holder.card.getCardBackgroundColor();
             ColorStateList.valueOf(Color.parseColor("#FFFFFF"));
             holder.img.setImageDrawable(mContext.getResources().getDrawable(R.drawable.cancel));
-            holder.card.setCardBackgroundColor(Color.RED);
+            holder.card.setCardBackgroundColor(Color.parseColor("#FF0202"));
             holder.details.setTextColor(Color.parseColor("#FFFFFF"));
         }else{
 

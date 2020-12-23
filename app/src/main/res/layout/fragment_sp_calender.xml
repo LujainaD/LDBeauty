@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".SP.SpCalenderFragment">
+    >
 
 
     <androidx.appcompat.widget.Toolbar
@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@color/white"
-        tools:ignore="MissingConstraints" />
+         />
 
     <TextView
         android:id="@+id/tv_toolbar"
@@ -46,13 +46,26 @@
         app:srcCompat="@drawable/ic_back_arrow" />
 
 
-    <CalendarView
+    <com.applandeo.materialcalendarview.CalendarView
         android:id="@+id/calendarView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="325dp"
+        app:headerLabelColor="@color/white"
+        app:headerColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:todayLabelColor="@color/colorAccent"
+        app:selectionLabelColor="@color/white"
+        app:selectionColor="@color/colorAccent"
+        app:type="one_day_picker"
+        app:eventsEnabled="true"
+        app:abbreviationsBarColor="@color/colorAccent"
+        app:abbreviationsLabelsColor="#FFFFFF"
+        app:daysLabelsColor="#AD000000"
+        app:pagesColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+
 
     <TextView
         android:id="@+id/tv"

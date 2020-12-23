@@ -40,6 +40,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.lujaina.ldbeauty.AppOwner.AppOwnerProfileFragment;
 import com.lujaina.ldbeauty.Client.CartFragment;
 import com.lujaina.ldbeauty.Client.ClientProfileFragment;
 import com.lujaina.ldbeauty.Dialogs.NoLoginDialogFragment;
@@ -155,13 +156,19 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
 
                            return true;
 
-                       } else{
+                       } else if(userRole.equals("Salon Owner")){
                            progressDialog.dismiss();
                            Toast.makeText(HomeActivity.this, userRole, Toast.LENGTH_SHORT).show();
                            changeFragmentTo(new SPProfileFragment(), SPProfileFragment.class.getSimpleName());
                            return true;
 
+                       }else {
+                           progressDialog.dismiss();
+                           Toast.makeText(HomeActivity.this, userRole, Toast.LENGTH_SHORT).show();
+                           changeFragmentTo(new AppOwnerProfileFragment(), AppOwnerProfileFragment.class.getSimpleName());
+                           return true;
                        }
+
                 } else {
                         progressDialog.dismiss();
                         Toast.makeText(HomeActivity.this, "not registered", Toast.LENGTH_SHORT).show();

@@ -86,7 +86,9 @@ public class LoginChoicesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(mMediatorInterface != null){
-                    mMediatorInterface.changeFragmentTo(new AOLoginFragment(), AOLoginFragment.class.getSimpleName());
+                    LoginFragment usertype= new LoginFragment();
+                    usertype.setUserType("App Owner");
+                    mMediatorInterface.changeFragmentTo(usertype, LoginFragment.class.getSimpleName());
                 }
             }
         });

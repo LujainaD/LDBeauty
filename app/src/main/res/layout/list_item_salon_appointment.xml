@@ -142,7 +142,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/btn_rectangle"
-                    android:backgroundTint="#62D519"
+                    android:backgroundTint="#6CE123"
                     android:text="Confirm"
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -178,6 +178,5 @@
 
         </androidx.cardview.widget.CardView>
     </RelativeLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

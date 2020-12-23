@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -70,6 +71,8 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView= inflater.inflate(R.layout.fragment_ao_confirm_salons, container, false);
+        BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+        navBar.setVisibility(View.GONE);
         ImageButton back = parentView.findViewById(R.id.ib_back);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
