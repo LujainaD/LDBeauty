@@ -117,8 +117,6 @@ public class EditClientProfileFragment extends Fragment {
         final TextView tv_changeImg =parentView.findViewById(R.id.tv_changeImg);
 
         updateDate.setText("--");
-        profileImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.profile));
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
