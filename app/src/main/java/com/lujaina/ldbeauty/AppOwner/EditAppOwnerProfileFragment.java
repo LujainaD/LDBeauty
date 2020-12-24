@@ -293,7 +293,7 @@ public class EditAppOwnerProfileFragment extends Fragment {
     }
 */
 
-    private void changeEmail(SPRegistrationModel update) {
+    private void changeEmail(final SPRegistrationModel update) {
         mFirebaseUser = mAuth.getCurrentUser();
         Toast.makeText(getContext(), "hello", Toast.LENGTH_SHORT).show();
         mFirebaseUser.updateEmail(update.getUserEmail())
