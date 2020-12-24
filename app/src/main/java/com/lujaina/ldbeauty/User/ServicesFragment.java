@@ -57,6 +57,8 @@ public class ServicesFragment extends Fragment {
     private ServiceModel service;
     private CategoryModel category;
     String userRole;
+    TextView empty;
+    RecyclerView recyclerView;
 
     public ServicesFragment() {
         // Required empty public constructor
@@ -76,11 +78,11 @@ public class ServicesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_services, container, false);
+        empty = parentView.findViewById(R.id.tv_empty);
         ImageView img = parentView.findViewById(R.id.iv_category);
         ImageButton back = parentView.findViewById(R.id.ib_back);
         TextView categoryTitle = parentView.findViewById(R.id.tv_categoryTitle);
-
-        RecyclerView recyclerView = parentView.findViewById(R.id.recyclerView);
+         recyclerView = parentView.findViewById(R.id.recyclerView);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         if(mFirebaseUser!= null){
@@ -137,6 +139,9 @@ public class ServicesFragment extends Fragment {
         progressDialog.setCancelable(true);
         progressDialog.setContentView(R.layout.progress_bar);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        recyclerView.setVisibility(View.GONE);
+        empty.setVisibility(View.VISIBLE);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -144,7 +149,8 @@ public class ServicesFragment extends Fragment {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     service = d.getValue(ServiceModel.class);
                     serviceList.add(service);
-
+                    recyclerView.setVisibility(View.VISIBLE);
+                    empty.setVisibility(View.GONE);
                 }
                 progressDialog.dismiss();
                 mAdapter.update(serviceList);

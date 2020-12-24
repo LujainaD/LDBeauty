@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -49,6 +50,8 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
     ProgressDialog progressDialog;
 
     RecyclerView recyclerView;
+    TextView empty;
+
     private ConfirmAdapter mAdapter;
     ArrayList<SPRegistrationModel> salonNamesArray;
     public AoConfirmSalonsFragment() {
@@ -71,6 +74,7 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView= inflater.inflate(R.layout.fragment_ao_confirm_salons, container, false);
+        empty = parentView.findViewById(R.id.tv_empty);
         BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
         navBar.setVisibility(View.GONE);
         ImageButton back = parentView.findViewById(R.id.ib_back);
@@ -120,6 +124,9 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
             progressDialog.setContentView(R.layout.progress_bar);
             progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
+        recyclerView.setVisibility(View.GONE);
+        empty.setVisibility(View.VISIBLE);
+
             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -127,6 +134,8 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
                     for (DataSnapshot d : dataSnapshot.getChildren()) {
                         SPRegistrationModel salon = d.getValue(SPRegistrationModel.class);
                         salonNamesArray.add(salon);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        empty.setVisibility(View.GONE);
                     }
                     progressDialog.dismiss();
                     mAdapter.update(salonNamesArray);

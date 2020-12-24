@@ -136,7 +136,11 @@ public class EditClientProfileFragment extends Fragment {
                     userPhone.setText(currentUserInfo.getPhoneNumber());
                     registerDate.setText(currentUserInfo.getRegistrationDate());
                     updateDate.setText(currentUserInfo.getUpdatedDate());
-                    Glide.with(Objects.requireNonNull(getContext())).load(currentUserInfo.getOwnerImageURL()).into(profileImg);
+                    Glide.with(Objects.requireNonNull(getContext()))
+                            .load(currentUserInfo.getSalonImageURL())
+                            .error(R.drawable.profile)
+                            .into(profileImg);
+
                 }
             }
 
@@ -166,7 +170,11 @@ public class EditClientProfileFragment extends Fragment {
 
                 progressDialog = new ProgressDialog(getContext());
                 progressDialog.setCancelable(false);
-                progressDialog.setContentView(R.layout.progress_bar);
+                progressDialog.show();
+                progressDialog.setContentView(R.layout.custom_progress_dialog);
+                final TextView progressText = progressDialog.findViewById(R.id.tv_bar);
+                final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
+                progressText.setText("Updating ...");
                 progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
                 if (name.isEmpty()) {
@@ -185,7 +193,6 @@ public class EditClientProfileFragment extends Fragment {
                     }
                 }
 
-/*
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -204,7 +211,7 @@ public class EditClientProfileFragment extends Fragment {
                                 public void run() {
 
                                     progressDialog.setProgress(status);
-                                   // progressPercentage.setText(String.valueOf(status)+"%");
+                                    progressPercentage.setText(String.valueOf(status)+"%");
 
                                     if (status == 100) {
                                         progressDialog.dismiss();
@@ -214,7 +221,6 @@ public class EditClientProfileFragment extends Fragment {
                         }
                     }
                 }).start();
-*/
             }
         });
 

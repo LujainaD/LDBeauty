@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,6 +49,9 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
     private ArrayList<AddInfoModel> infoArray;
     private InfoAdapter mAdapter;
 
+    RecyclerView recyclerView;
+    TextView empty;
+
     public AddInfoFragment() {
         // Required empty public constructor
     }
@@ -68,10 +72,12 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_info, container, false);
         ImageButton back = parentView.findViewById(R.id.ib_back);
+        empty = parentView.findViewById(R.id.tv_empty);
+
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
-        RecyclerView recyclerView = parentView.findViewById(R.id.add_rv);
+         recyclerView = parentView.findViewById(R.id.add_rv);
         infoArray = new ArrayList<>();
         mAdapter = new InfoAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
@@ -128,6 +134,9 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
         progressDialog.show();
         progressDialog.setContentView(R.layout.progress_bar);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        recyclerView.setVisibility(View.GONE);
+        empty.setVisibility(View.VISIBLE);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -135,7 +144,8 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     AddInfoModel aboutModel = d.getValue(AddInfoModel.class);
                     infoArray.add(aboutModel);
-
+                    recyclerView.setVisibility(View.VISIBLE);
+                    empty.setVisibility(View.GONE);
                 }
                 progressDialog.dismiss();
                 mAdapter.update(infoArray);

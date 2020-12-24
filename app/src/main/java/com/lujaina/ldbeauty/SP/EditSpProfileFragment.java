@@ -159,6 +159,7 @@ public class EditSpProfileFragment extends Fragment {
 
                 progressDialog = new ProgressDialog(getContext());
                 progressDialog.setCancelable(false);
+                progressDialog.show();
                 progressDialog.setContentView(R.layout.custom_progress_dialog);
                 final TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
                 final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
@@ -173,7 +174,6 @@ public class EditSpProfileFragment extends Fragment {
                     ownerPhone.setError("Your phone number must contain at least 8 digit");
                 }else{
                     if (ownerImageUri == null) {
-                        progressDialog.show();
                         updatOwnerInfo(model);
                     } else {
                         progressDialog.show();

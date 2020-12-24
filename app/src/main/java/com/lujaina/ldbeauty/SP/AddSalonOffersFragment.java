@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,7 +49,8 @@ public class AddSalonOffersFragment extends Fragment implements RecyclerItemTouc
 
     private OfferModel offer;
     private String salonName;
-
+    TextView empty;
+    RecyclerView recyclerView;
     public AddSalonOffersFragment() {
         // Required empty public constructor
     }
@@ -68,11 +70,13 @@ public class AddSalonOffersFragment extends Fragment implements RecyclerItemTouc
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_salon_offers, container, false);
+        empty = parentView.findViewById(R.id.tv_empty);
+
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
         ImageButton back = parentView.findViewById(R.id.ib_back);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
-        RecyclerView recyclerView = parentView.findViewById(R.id.recyclerView);
+         recyclerView = parentView.findViewById(R.id.recyclerView);
         offersList = new ArrayList<>();
         mAdapter = new OfferAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
@@ -121,6 +125,10 @@ public class AddSalonOffersFragment extends Fragment implements RecyclerItemTouc
         progressDialog.setCancelable(true);
         progressDialog.setContentView(R.layout.progress_bar);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        recyclerView.setVisibility(View.GONE);
+        empty.setVisibility(View.VISIBLE);
+
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -128,7 +136,8 @@ public class AddSalonOffersFragment extends Fragment implements RecyclerItemTouc
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     offer = d.getValue(OfferModel.class);
                     offersList.add(offer);
-
+                    recyclerView.setVisibility(View.VISIBLE);
+                    empty.setVisibility(View.GONE);
                 }
                 progressDialog.dismiss();
                 mAdapter.update(offersList);

@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,6 +51,7 @@ public class RatingFragment extends Fragment  {
     private SPRegistrationModel salonInfo;
     String userRole;
     RecyclerView recyclerView;
+    TextView empty;
     ItemTouchHelper.SimpleCallback item;
     public RatingFragment() {
         // Required empty public constructor
@@ -72,6 +74,7 @@ public class RatingFragment extends Fragment  {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_rating, container, false);
+        empty = parentView.findViewById(R.id.tv_empty);
         ImageButton back = parentView.findViewById(R.id.ib_back);
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
         mAuth = FirebaseAuth.getInstance();
@@ -162,6 +165,10 @@ public class RatingFragment extends Fragment  {
         progressDialog.show();
         progressDialog.setContentView(R.layout.progress_bar);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        recyclerView.setVisibility(View.GONE);
+        empty.setVisibility(View.VISIBLE);
+
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -169,7 +176,8 @@ public class RatingFragment extends Fragment  {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     CommentModel commentModel = d.getValue(CommentModel.class);
                     commentArray.add(commentModel);
-
+                    recyclerView.setVisibility(View.VISIBLE);
+                    empty.setVisibility(View.GONE);
                 }
                 progressDialog.dismiss();
                 mAdapter.update(commentArray);

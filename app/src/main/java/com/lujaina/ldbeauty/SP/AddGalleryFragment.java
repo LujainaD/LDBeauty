@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,8 +41,10 @@ public class AddGalleryFragment extends Fragment {
     private Context mContext;
     private ProgressDialog progressDialog;
 
+    RecyclerView recyclerView;
     private ArrayList<GalleryModel> galleryList;
     private GalleryAdapter mAdapter;
+    TextView empty;
 
     public AddGalleryFragment() {
         // Required empty public constructor
@@ -64,10 +67,11 @@ public class AddGalleryFragment extends Fragment {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_gallery, container, false);
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
+        empty = parentView.findViewById(R.id.tv_empty);
         ImageButton back = parentView.findViewById(R.id.ib_back);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
-        RecyclerView recyclerView = parentView.findViewById(R.id.rv_Gallery);
+         recyclerView = parentView.findViewById(R.id.rv_Gallery);
         galleryList = new ArrayList<>();
         mAdapter = new GalleryAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
@@ -121,6 +125,9 @@ public class AddGalleryFragment extends Fragment {
         progressDialog.setCancelable(true);
         progressDialog.setContentView(R.layout.progress_bar);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        recyclerView.setVisibility(View.GONE);
+        empty.setVisibility(View.VISIBLE);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -128,7 +135,8 @@ public class AddGalleryFragment extends Fragment {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     GalleryModel category = d.getValue(GalleryModel.class);
                     galleryList.add(category);
-
+                    recyclerView.setVisibility(View.VISIBLE);
+                    empty.setVisibility(View.GONE);
                 }
                 progressDialog.dismiss();
                 mAdapter.update(galleryList);

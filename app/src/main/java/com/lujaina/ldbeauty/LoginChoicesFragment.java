@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.lujaina.ldbeauty.AppOwner.AOLoginFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 
 

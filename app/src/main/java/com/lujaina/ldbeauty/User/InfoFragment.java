@@ -74,7 +74,7 @@ public class InfoFragment extends Fragment {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_info, container, false);
         TextView salonName = parentView.findViewById(R.id.tv_toolbar);
-
+        empty = parentView.findViewById(R.id.tv_empty);
         ImageButton back = parentView.findViewById(R.id.ib_back);
         add = parentView.findViewById(R.id.add_button);
         add.setVisibility(View.GONE);
@@ -118,6 +118,10 @@ public class InfoFragment extends Fragment {
         progressDialog.show();
         progressDialog.setContentView(R.layout.progress_bar);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        recyclerView.setVisibility(View.GONE);
+        empty.setVisibility(View.VISIBLE);
+
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -125,7 +129,8 @@ public class InfoFragment extends Fragment {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     AddInfoModel aboutModel = d.getValue(AddInfoModel.class);
                     infoArray.add(aboutModel);
-
+                    recyclerView.setVisibility(View.VISIBLE);
+                    empty.setVisibility(View.GONE);
 
                 }
                 progressDialog.dismiss();

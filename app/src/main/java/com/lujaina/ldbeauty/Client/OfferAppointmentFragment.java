@@ -67,6 +67,7 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
 
     RecyclerView recyclerView;
     LinearLayoutManager lineralayoutManager;
+    TextView empty;
 
     Button btnConfirm;
     String sDay;
@@ -101,6 +102,8 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_offer_appointment, container, false);
+        empty = parentView.findViewById(R.id.tv_empty);
+
         TextView offerTitle = parentView.findViewById(R.id.tv_service);
         TextView services = parentView.findViewById(R.id.tv_specialist);
         TextView curPrice = parentView.findViewById(R.id.tv_price);
@@ -277,7 +280,8 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
         myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(offerID.getSalonOwnerId())
                 .child(Constants.Salon_Offers).child(offerID.getOfferId()).child(Constants.Service_Appointment);
 
-
+        recyclerView.setVisibility(View.GONE);
+        empty.setVisibility(View.VISIBLE);
         myRef.orderByChild("appointmentDate").equalTo(datePicked).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -285,6 +289,8 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     AppointmentModel appointmentModel = d.getValue(AppointmentModel.class);
                     timeList.add(appointmentModel);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    empty.setVisibility(View.GONE);
                 }
                // mAdapter.update(timeList);
                 checkIfTimeAlreadyPicked();

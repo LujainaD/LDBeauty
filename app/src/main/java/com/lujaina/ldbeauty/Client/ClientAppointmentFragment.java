@@ -124,7 +124,8 @@ public class ClientAppointmentFragment extends Fragment {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.History_Order);
         // Read from the mDatabase
-
+            recyclerView.setVisibility(View.GONE);
+            emptyAppointment.setVisibility(View.VISIBLE);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -132,15 +133,11 @@ public class ClientAppointmentFragment extends Fragment {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     ClientsAppointmentModel appointment = d.getValue(ClientsAppointmentModel.class);
 
-                    if(appointmentArray== null){
-                        recyclerView.setVisibility(View.GONE);
-                        emptyAppointment.setVisibility(View.VISIBLE);
-                    }else {
+
                         emptyAppointment.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.VISIBLE);
                         appointmentArray.add(appointment);
 
-                    }
 
                 }
                 mAdapter.update(appointmentArray);

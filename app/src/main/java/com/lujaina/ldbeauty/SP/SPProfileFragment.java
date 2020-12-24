@@ -62,6 +62,12 @@ public class SPProfileFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
         navBar.setVisibility(View.VISIBLE);
+        progressDialog = new ProgressDialog(mContext);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.progress_bar);
+        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
         final CircleImageView profileImag = parentView.findViewById(R.id.civ_profile);
         TextView salonAppointment = parentView.findViewById(R.id.tv_appointment);
         TextView salonFeedback = parentView.findViewById(R.id.tv_feedback);
@@ -136,11 +142,7 @@ public class SPProfileFragment extends Fragment {
             }
         });
 
-        progressDialog = new ProgressDialog(mContext);
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-        progressDialog.setContentView(R.layout.progress_bar);
-        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

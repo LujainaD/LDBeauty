@@ -54,7 +54,8 @@ public class OffersFragment extends Fragment {
     private SPRegistrationModel ownerId;
 
     String userRole;
-
+    RecyclerView recyclerView;
+    TextView empty;
     public OffersFragment() {
         // Required empty public constructor
     }
@@ -74,6 +75,7 @@ public class OffersFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_salon_offers, container, false);
+        empty = parentView.findViewById(R.id.tv_empty);
         mAuth = FirebaseAuth.getInstance();
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
         TextView cart = parentView.findViewById(R.id.tv_cart);
@@ -85,7 +87,7 @@ public class OffersFragment extends Fragment {
         if(mFirebaseUser!= null){
             checkUserRole(mFirebaseUser.getUid());
         }
-        RecyclerView recyclerView = parentView.findViewById(R.id.recyclerView);
+         recyclerView = parentView.findViewById(R.id.recyclerView);
         offersList = new ArrayList<>();
         mAdapter = new UserOfferAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
@@ -156,6 +158,10 @@ public class OffersFragment extends Fragment {
         progressDialog.setCancelable(true);
         progressDialog.setContentView(R.layout.progress_bar);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        recyclerView.setVisibility(View.GONE);
+        empty.setVisibility(View.VISIBLE);
+
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -163,7 +169,8 @@ public class OffersFragment extends Fragment {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     offer = d.getValue(OfferModel.class);
                     offersList.add(offer);
-
+                    recyclerView.setVisibility(View.VISIBLE);
+                    empty.setVisibility(View.GONE);
                 }
                 progressDialog.dismiss();
                 mAdapter.update(offersList);

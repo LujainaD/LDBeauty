@@ -188,6 +188,10 @@ public class CategoriesFragment extends Fragment {
         progressDialog.show();
         progressDialog.setContentView(R.layout.progress_bar);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        recyclerView.setVisibility(View.GONE);
+        empty.setVisibility(View.VISIBLE);
+
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -195,11 +199,10 @@ public class CategoriesFragment extends Fragment {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     CategoryModel category = d.getValue(CategoryModel.class);
                     categoryList.add(category);
-
+                    recyclerView.setVisibility(View.VISIBLE);
+                    empty.setVisibility(View.GONE);
                 }
                 progressDialog.dismiss();
-                recyclerView.setVisibility(View.VISIBLE);
-                empty.setVisibility(View.INVISIBLE);
                 mAdapter.update(categoryList);
             }
 

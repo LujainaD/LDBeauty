@@ -135,6 +135,9 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
         progressDialog.show();
         progressDialog.setContentView(R.layout.progress_bar);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        recyclerView.setVisibility(View.GONE);
+        empty.setVisibility(View.VISIBLE);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -146,7 +149,7 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
                 }
                 progressDialog.dismiss();
                 recyclerView.setVisibility(View.VISIBLE);
-                empty.setVisibility(View.INVISIBLE);
+                empty.setVisibility(View.GONE);
                 mAdapter.update(categoryList);
             }
 

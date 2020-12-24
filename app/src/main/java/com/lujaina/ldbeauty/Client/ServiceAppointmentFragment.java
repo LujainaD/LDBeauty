@@ -62,6 +62,7 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
     RecyclerView recyclerView;
     LinearLayoutManager lineralayoutManager;
     Button btnConfirm;
+    TextView empty;
 
     private TextView pickedDate;
     private int mYear;
@@ -97,6 +98,7 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_service_appointment, container, false);
+        empty = parentView.findViewById(R.id.tv_empty);
 
         TextView serviceTitle 	= parentView.findViewById(R.id.tv_service);
         TextView specialist = parentView.findViewById(R.id.tv_specialist);
@@ -275,6 +277,8 @@ myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constan
         myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(serviceInfo.getOwnerId())
                 .child(Constants.Salon_Category).child(serviceInfo.getIdCategory()).child(Constants.Salon_Service).child(serviceInfo.getServiceId()).child(Constants.Service_Appointment);
 
+        recyclerView.setVisibility(View.GONE);
+        empty.setVisibility(View.VISIBLE);
         myRef.orderByChild("appointmentDate").equalTo(datePicked).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -283,7 +287,8 @@ myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constan
                     AppointmentModel appointmentModel = d.getValue(AppointmentModel.class);
 
                     timeList.add(appointmentModel);
-
+                    recyclerView.setVisibility(View.VISIBLE);
+                    empty.setVisibility(View.GONE);
                 }
                // mAdapter.update(timeList);
                 checkIfTimeAlreadyPicked();

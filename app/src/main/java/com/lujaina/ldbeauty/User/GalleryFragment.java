@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,6 +45,8 @@ public class GalleryFragment extends Fragment {
     private GalleryAdapter mAdapter;
     private SPRegistrationModel ownerId;
 
+    RecyclerView recyclerView;
+    TextView empty;
 
     public GalleryFragment() {
         // Required empty public constructor
@@ -66,11 +69,11 @@ public class GalleryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_salon_gallery, container, false);
-
+        empty = parentView.findViewById(R.id.tv_empty);
         ImageButton back = parentView.findViewById(R.id.ib_back);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
-        RecyclerView recyclerView = parentView.findViewById(R.id.rv_Gallery);
+         recyclerView = parentView.findViewById(R.id.rv_Gallery);
         galleryList = new ArrayList<>();
         mAdapter = new GalleryAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
@@ -117,6 +120,9 @@ public class GalleryFragment extends Fragment {
         progressDialog.setCancelable(true);
         progressDialog.setContentView(R.layout.progress_bar);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        recyclerView.setVisibility(View.GONE);
+        empty.setVisibility(View.VISIBLE);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -124,7 +130,8 @@ public class GalleryFragment extends Fragment {
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     GalleryModel category = d.getValue(GalleryModel.class);
                     galleryList.add(category);
-
+                    recyclerView.setVisibility(View.VISIBLE);
+                    empty.setVisibility(View.GONE);
                 }
                 progressDialog.dismiss();
                 mAdapter.update(galleryList);

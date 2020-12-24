@@ -74,6 +74,7 @@ public class AddServiceAppointmentFragment extends Fragment {
     private int minutes;
     private ArrayList<AppointmentModel> timeList;
     private TimeAdapter mAdapter;
+    TextView empty;
 
     public AddServiceAppointmentFragment() {
         // Required empty public constructor
@@ -95,6 +96,8 @@ public class AddServiceAppointmentFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_appointment, container, false);
+        empty = parentView.findViewById(R.id.tv_empty);
+
         TextView service = parentView.findViewById(R.id.tv_service);
         TextView specialist = parentView.findViewById(R.id.tv_specialist);
         TextView price = parentView.findViewById(R.id.tv_price);
@@ -306,6 +309,8 @@ public class AddServiceAppointmentFragment extends Fragment {
         myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category).child(mService.getIdCategory()).child(Constants.Salon_Service)
                 .child(mService.getServiceId()).child(Constants.Service_Appointment);
 
+        recyclerView.setVisibility(View.GONE);
+        empty.setVisibility(View.VISIBLE);
 
         myRef.orderByChild("appointmentDate").equalTo(datePicked).addValueEventListener(new ValueEventListener() {
             @Override
@@ -315,6 +320,8 @@ public class AddServiceAppointmentFragment extends Fragment {
                     AppointmentModel category = d.getValue(AppointmentModel.class);
                     timeList.add(category);
 
+                    recyclerView.setVisibility(View.VISIBLE);
+                    empty.setVisibility(View.GONE);
                 }
                // mAdapter.update(timeList);
                 checkIfTimeAlreadyPicked();

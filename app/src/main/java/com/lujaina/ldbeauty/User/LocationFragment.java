@@ -329,7 +329,6 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
             mMap.animateCamera(CameraUpdateFactory.zoomTo(8f), 1000, null);
         }
 
-        showDistance();
     }
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -348,10 +347,6 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
-    public void showDistance(){
-        float distanceInMeters = locationOfSalon.distanceTo(locationOfuser);
-
-    }
 
     public void setSalonLocation(SPRegistrationModel section) {
         ownerId = section;

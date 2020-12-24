@@ -57,7 +57,7 @@
         android:id="@+id/profile_img"
         android:layout_width="0dp"
         android:layout_height="83dp"
-        android:scaleType="center"
+        android:scaleType="fitXY"
         android:src="@drawable/spa"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

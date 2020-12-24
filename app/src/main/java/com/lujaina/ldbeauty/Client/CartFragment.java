@@ -81,7 +81,6 @@ public class CartFragment extends Fragment {
         BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
         navBar.setVisibility(View.GONE);
         progressDialog = new ProgressDialog(mContext);
-        progressDialog.show();
         progressDialog.setCancelable(true);
         progressDialog.setContentView(R.layout.progress_bar);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -163,7 +162,11 @@ public class CartFragment extends Fragment {
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Client_Cart);
         // Read from the mDatabase
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        progressDialog.show();
+            emptyservice.setVisibility(View.VISIBLE);
+            service_rv.setVisibility(View.GONE);
+
+            myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 serviceArray.clear();
@@ -175,16 +178,9 @@ public class CartFragment extends Fragment {
                     sum += price;
                     String sumOfService = String.valueOf(sum);
                      ownerId = appointment.getOwnerId();
-                    if (serviceArray.isEmpty()) {
-                        emptyservice.setVisibility(View.VISIBLE);
-                        service_rv.setVisibility(View.GONE);
 
-
-                    } else {
                         service_rv.setVisibility(View.VISIBLE);
                         emptyservice.setVisibility(View.GONE);
-
-                    }
 
                     tv_total.setText("Total: " + sumOfService + " R.O");
 

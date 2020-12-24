@@ -78,6 +78,7 @@ public class AddOffersAppointmentFragment extends Fragment {
     String sMonth;
     String sYear;
     private String salonName;
+    TextView empty;
 
 
     public AddOffersAppointmentFragment() {
@@ -100,6 +101,8 @@ public class AddOffersAppointmentFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_offers_appointment, container, false);
+        empty = parentView.findViewById(R.id.tv_empty);
+
         TextView offerTitle 	= parentView.findViewById(R.id.tv_service);
         TextView services = parentView.findViewById(R.id.tv_specialist);
         TextView curPrice 		= parentView.findViewById(R.id.tv_price);
@@ -313,6 +316,8 @@ public class AddOffersAppointmentFragment extends Fragment {
         myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid())
                 .child(Constants.Salon_Offers).child(mOffer.getOfferId()).child(Constants.Service_Appointment);
 
+        recyclerView.setVisibility(View.GONE);
+        empty.setVisibility(View.VISIBLE);
 
         myRef.orderByChild("appointmentDate").equalTo(datePicked).addValueEventListener(new ValueEventListener() {
             @Override
@@ -322,6 +327,9 @@ public class AddOffersAppointmentFragment extends Fragment {
                     AppointmentModel category = d.getValue(AppointmentModel.class);
                     timeList.add(category);
 
+
+                    recyclerView.setVisibility(View.VISIBLE);
+                    empty.setVisibility(View.GONE);
                 }
                // mAdapter.update(timeList);
                 checkIfTimeAlreadyPicked();
