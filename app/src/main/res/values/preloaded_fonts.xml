@@ -2,7 +2,5 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/alex_brush</item>
-        <item>@font/bonbon</item>
-        <item>@font/butterfly_kids</item>
     </array>
 </resources>
