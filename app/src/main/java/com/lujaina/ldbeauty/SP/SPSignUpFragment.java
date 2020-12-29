@@ -404,6 +404,14 @@ public class SPSignUpFragment extends Fragment {
                             registration.setStatusType("new");
                             registration.setRegistrationDate(getCurrentDate());
                             uploadUserImageToStorage(registration);
+                            mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        Toast.makeText(getContext(), "please check your email to verify your email registration ", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
 
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -412,11 +420,6 @@ public class SPSignUpFragment extends Fragment {
                             progressDialog.dismiss();
                         }
                     }
-              /*  }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, "onFailure: "+e.getLocalizedMessage());
-                }*/
         });
 
     }

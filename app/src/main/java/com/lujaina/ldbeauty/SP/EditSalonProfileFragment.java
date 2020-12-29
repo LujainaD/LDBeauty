@@ -47,6 +47,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -55,6 +56,7 @@ import static android.content.ContentValues.TAG;
 public class EditSalonProfileFragment extends Fragment {
     private static final int PICK_SALON_IMAGE = 1002;
     private static final int STORAGE_PERMISSION_REQUEST = 300;
+    private static final Pattern PHONENUMBER_PATTERN = Pattern.compile("^[+]?[0-9]{8,20}$");
 
     private Uri salonImageUri;
     private ImageView profileImg;
@@ -163,7 +165,9 @@ public class EditSalonProfileFragment extends Fragment {
                     salonName.setError("Enter Salon Name");
                 } else if (phone.isEmpty()) {
                     salonPhone.setError("Enter your phone number");
-                } else if (city.isEmpty()) {
+                } else if (!PHONENUMBER_PATTERN.matcher(phone).matches()) {
+                    salonPhone.setError("Your phone number must contain at least 8 digit");
+                }else if (city.isEmpty()) {
                     salonCity.setError("Enter Salon city");
                 }else{
                     if (salonImageUri == null) {

@@ -115,19 +115,21 @@ public class OffersFragment extends Fragment {
         mAdapter.setonClickListener(new UserOfferAdapter.onClickListener() {
             @Override
             public void onClick(OfferModel offerModel) {
-                if(!mFirebaseUser.isEmailVerified()) {
-                    Toast.makeText(mContext, "Please verify your email address first", Toast.LENGTH_SHORT).show();
-                }
                 if(mFirebaseUser == null || userRole.equals("Salon Owner")){
                     NoLoginDialogFragment dialog = new NoLoginDialogFragment();
                     dialog.showText(2);
                     dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
                 }else{
                     if(mMediatorInterface != null){
-                        OfferAppointmentFragment offerAppointmentFragment = new OfferAppointmentFragment();
-                        offerAppointmentFragment.setOfferId(offerModel);
-                        mMediatorInterface.changeFragmentTo(offerAppointmentFragment, OfferAppointmentFragment.class.getSimpleName());
-                    }
+                        if( mFirebaseUser.isEmailVerified()) {
+                            OfferAppointmentFragment offerAppointmentFragment = new OfferAppointmentFragment();
+                            offerAppointmentFragment.setOfferId(offerModel);
+                            mMediatorInterface.changeFragmentTo(offerAppointmentFragment, OfferAppointmentFragment.class.getSimpleName());
+
+                        }else {
+                            Toast.makeText(mContext, "Please verify your email address first", Toast.LENGTH_SHORT).show();
+                        }
+                        }
                 }
 
             }

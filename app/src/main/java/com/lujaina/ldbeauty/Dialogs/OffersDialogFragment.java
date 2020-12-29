@@ -102,6 +102,8 @@ public class OffersDialogFragment extends DialogFragment {
                     previousPrice.setError("you should write the previous price)");
                 }else if (current.isEmpty()) {
                     currentPrice.setError("you should write the current price)");
+                }else if(Integer.parseInt(current) >= Integer.parseInt(price)) {
+                    currentPrice.setError("new price should be less than previous price");
                 }else {
 
 

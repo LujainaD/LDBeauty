@@ -97,7 +97,6 @@ public class EditSpProfileFragment extends Fragment {
         ImageButton back = parentView.findViewById(R.id.ib_back);
         profileImg = parentView.findViewById(R.id.profile_img);
         final Button save = parentView.findViewById(R.id.btn_save);
-        final Button editPassword = parentView.findViewById(R.id.btn_password);
 
         final EditText ownerName =parentView.findViewById(R.id.et_name);
         final TextView ownerEmail =parentView.findViewById(R.id.et_email);
@@ -150,6 +149,7 @@ public class EditSpProfileFragment extends Fragment {
             public void onClick(View v) {
                 String name = ownerName.getText().toString().trim();
                 String phone = ownerPhone.getText().toString().trim();
+                final String newPassword = password.getText().toString();
 
                 SPRegistrationModel model = currentUserInfo;
                 model.setUserName(name);
@@ -172,12 +172,14 @@ public class EditSpProfileFragment extends Fragment {
                     ownerPhone.setError("Enter your phone number");
                 } else if (!PHONENUMBER_PATTERN.matcher(phone).matches()) {
                     ownerPhone.setError("Your phone number must contain at least 8 digit");
-                }else{
+                }else if(!newPassword.isEmpty() &&!PASSWORD_PATTERN.matcher(newPassword).matches()) {
+                    password.setError("weak password(must contain a digit ,uppercase characters and at least 6 characters)");
+                }
+                else{
                     if (ownerImageUri == null) {
-                        updatOwnerInfo(model);
+                        updatOwnerInfo(model,newPassword);
                     } else {
-                        progressDialog.show();
-                        uploadOwnerImageToStorage(model);
+                        uploadOwnerImageToStorage(model,newPassword);
                     }
                 }
 
@@ -213,6 +215,7 @@ public class EditSpProfileFragment extends Fragment {
             }
         });
 
+/*
         editPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -280,10 +283,11 @@ public class EditSpProfileFragment extends Fragment {
                 }
             }
         });
+*/
         return parentView;
     }
 
-    private void uploadOwnerImageToStorage(final SPRegistrationModel model) {
+    private void uploadOwnerImageToStorage(final SPRegistrationModel model, String newPassword) {
         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
         //generate unique id for the image
         String imageId = UUID.randomUUID().toString();
@@ -296,7 +300,7 @@ public class EditSpProfileFragment extends Fragment {
                             @Override
                             public void onSuccess(Uri firebaseImageUri) {
                                 model.setOwnerImageURL(firebaseImageUri.toString());
-                                updatOwnerInfo(model);
+                                updatOwnerInfo(model, newPassword);
 
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -315,7 +319,8 @@ public class EditSpProfileFragment extends Fragment {
         });
     }
 
-    private void updatOwnerInfo(SPRegistrationModel update) {
+    private void updatOwnerInfo(SPRegistrationModel update, String newPassword) {
+        mFirebaseUser = mAuth.getCurrentUser();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mAuth.getUid());
@@ -336,8 +341,25 @@ public class EditSpProfileFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    progressDialog.dismiss();
-                    showGreetingDialog();
+                    if(!newPassword.isEmpty()) {
+                        mFirebaseUser.updatePassword(newPassword)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            progressDialog.dismiss();
+                                            showGreetingDialog();
+                                        } else {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(getContext(),"Failed", Toast.LENGTH_SHORT).show();
+                                            Log.d("password-error", task.getException().toString());
+                                        }
+                                    }
+                                });
+                    }else {
+                        progressDialog.dismiss();
+                        showGreetingDialog();
+                    }
                 } else {
                     progressDialog.dismiss();
                     Toast.makeText(getContext(), "Failed updating your info", Toast.LENGTH_SHORT).show();
@@ -355,39 +377,6 @@ public class EditSpProfileFragment extends Fragment {
     private void showGreetingDialog() {
         GreetingDialogFragment dialogFragment = new GreetingDialogFragment();
         dialogFragment.getDialogText(2);
-        dialogFragment.show(getChildFragmentManager(), GreetingDialogFragment.class.getSimpleName());
-        final int[] status = {0};
-        final Handler handler = new Handler();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (status[0] < 200) {
-
-                    status[0] += 1;
-
-                    try {
-                        Thread.sleep(23);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            if (status[0] == 100) {
-                                backToProfile();
-                            }
-                        }
-                    });
-                }
-            }
-        }).start();
-    }
-
-    private void showGreetingPasswordDialog() {
-        GreetingDialogFragment dialogFragment = new GreetingDialogFragment();
-        dialogFragment.getDialogText(3);
         dialogFragment.show(getChildFragmentManager(), GreetingDialogFragment.class.getSimpleName());
         final int[] status = {0};
         final Handler handler = new Handler();

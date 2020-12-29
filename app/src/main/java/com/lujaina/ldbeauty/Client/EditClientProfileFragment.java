@@ -40,11 +40,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Dialogs.GreetingDialogFragment;
-import com.lujaina.ldbeauty.HomeActivity;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
-import com.lujaina.ldbeauty.SP.SPProfileFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -63,7 +61,8 @@ public class EditClientProfileFragment extends Fragment {
     private static final int PICK_SALON_IMAGE = 1002;
     private static final int STORAGE_PERMISSION_REQUEST = 300;
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^" + "(?=.*[A-Z])" + ".{6,20}");
-    private static final Pattern PHONENUMBER_PATTERN = Pattern.compile("^" + ".{8,20}");
+    private static final Pattern PHONENUMBER_PATTERN = Pattern.compile("^[+]?[0-9]{8,20}$");
+            //("^" + ".{8,20}");
 
     private Uri userImageUri;
     private CircleImageView profileImg;
@@ -106,7 +105,7 @@ public class EditClientProfileFragment extends Fragment {
         ImageButton back = parentView.findViewById(R.id.ib_back);
         profileImg = parentView.findViewById(R.id.profile_img);
         final Button save = parentView.findViewById(R.id.btn_save);
-        final Button editPassword = parentView.findViewById(R.id.btn_password);
+      //  final Button editPassword = parentView.findViewById(R.id.btn_password);
 
         final EditText userName =parentView.findViewById(R.id.et_name);
         final TextView userEmail =parentView.findViewById(R.id.et_email);
@@ -160,6 +159,7 @@ public class EditClientProfileFragment extends Fragment {
             public void onClick(View v) {
                 String name = userName.getText().toString().trim();
                 String phone = userPhone.getText().toString().trim();
+                final String newPassword = password.getText().toString();
 
                 SPRegistrationModel model = currentUserInfo;
                 model.setUserName(name);
@@ -181,14 +181,18 @@ public class EditClientProfileFragment extends Fragment {
                     userPhone.setError("Enter your phone number");
                 } else if (!PHONENUMBER_PATTERN.matcher(phone).matches()) {
                     userPhone.setError("Your phone number must contain at least 8 digit");
-                }else{
+                }else if(!newPassword.isEmpty() &&!PASSWORD_PATTERN.matcher(newPassword).matches()) {
+                        password.setError("weak password(must contain a digit ,uppercase characters and at least 6 characters)");
+                }
+                else{
                     if (userImageUri == null) {
-                        progressDialog.show();
-                        updatUserInfo(model);
+                       // progressDialog.show();
+                        updatUserInfo(model,newPassword);
                     } else {
-                        progressDialog.show();
-                        uploadUserImageToStorage(model);
+                       // progressDialog.show();
+                        uploadUserImageToStorage(model,newPassword);
                     }
+
                 }
 
                 new Thread(new Runnable() {
@@ -222,6 +226,7 @@ public class EditClientProfileFragment extends Fragment {
             }
         });
 
+/*
         editPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -291,12 +296,13 @@ public class EditClientProfileFragment extends Fragment {
                 }
             }
         });
+*/
 
         return parentView;
     }
 
 
-    private void uploadUserImageToStorage(final SPRegistrationModel model) {
+    private void uploadUserImageToStorage(final SPRegistrationModel model, String newPassword) {
         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
         //generate unique id for the image
         String imageId = UUID.randomUUID().toString();
@@ -309,7 +315,7 @@ public class EditClientProfileFragment extends Fragment {
                             @Override
                             public void onSuccess(Uri firebaseImageUri) {
                                 model.setOwnerImageURL(firebaseImageUri.toString());
-                                updatUserInfo(model);
+                                updatUserInfo(model, newPassword);
 
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -328,7 +334,8 @@ public class EditClientProfileFragment extends Fragment {
         });
     }
 
-    private void updatUserInfo(SPRegistrationModel update) {
+    private void updatUserInfo(SPRegistrationModel update, String newPassword) {
+        mFirebaseUser = mAuth.getCurrentUser();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Client).child(mAuth.getUid());
@@ -345,8 +352,26 @@ public class EditClientProfileFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    progressDialog.dismiss();
-                    showGreetingDialog();
+                    if(!newPassword.isEmpty()) {
+                        mFirebaseUser.updatePassword(newPassword)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            progressDialog.dismiss();
+                                            showGreetingDialog();
+                                        } else {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(getContext(),"Failed", Toast.LENGTH_SHORT).show();
+                                            Log.d("password-error", task.getException().toString());
+                                        }
+                                    }
+                                });
+                    }else {
+                        progressDialog.dismiss();
+                        showGreetingDialog();
+                    }
+
                 } else {
                     progressDialog.dismiss();
                     Toast.makeText(getContext(), "Failed updating your info", Toast.LENGTH_SHORT).show();
@@ -394,39 +419,6 @@ public class EditClientProfileFragment extends Fragment {
         }).start();
     }
 
-    private void showGreetingPasswordDialog() {
-        GreetingDialogFragment dialogFragment = new GreetingDialogFragment();
-        dialogFragment.getDialogText(3);
-        dialogFragment.show(getChildFragmentManager(), GreetingDialogFragment.class.getSimpleName());
-        final int[] status = {0};
-        final Handler handler = new Handler();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (status[0] < 200) {
-
-                    status[0] += 1;
-
-                    try {
-                        Thread.sleep(23);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            if (status[0] == 100) {
-                                backToProfile();
-                            }
-                        }
-                    });
-                }
-            }
-        }).start();
-    }
-
     private void backToProfile() {
         mMediatorInterface.changeFragmentTo(new ClientProfileFragment(), ClientProfileFragment.class.getSimpleName());
     }
@@ -443,7 +435,7 @@ public class EditClientProfileFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_SALON_IMAGE){
             if (data == null) {
-                Toast.makeText(getContext(), "Unexpected Error Happened while selecting  picture!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT).show();
             }else {
                 Uri salonImgUri = data.getData();//1
                 userImageUri = salonImgUri;

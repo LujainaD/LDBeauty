@@ -112,18 +112,21 @@ public class ServicesFragment extends Fragment {
         mAdapter.setOnBookClickListener(new UserServiceAdapter.onBookClickListener() {
             @Override
             public void onBookClick(ServiceModel service) {
-                if(!mFirebaseUser.isEmailVerified()) {
-                    Toast.makeText(mContext, "Please verify your email address first", Toast.LENGTH_SHORT).show();
-                }if(mFirebaseUser == null || userRole.equals("Salon Owner")){
+                if(mFirebaseUser == null || userRole.equals("Salon Owner")){
                     NoLoginDialogFragment dialog = new NoLoginDialogFragment();
                     dialog.showText(2);
                     dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
                 }else {
                     if(mMediatorCallback != null){
-                        ServiceAppointmentFragment serviceAppointmentFragment = new ServiceAppointmentFragment();
-                        serviceAppointmentFragment.setServiceID(service);
-                        mMediatorCallback.changeFragmentTo(serviceAppointmentFragment, OfferAppointmentFragment.class.getSimpleName());
-                    }
+                        if( mFirebaseUser.isEmailVerified()) {
+                            ServiceAppointmentFragment serviceAppointmentFragment = new ServiceAppointmentFragment();
+                            serviceAppointmentFragment.setServiceID(service);
+                            mMediatorCallback.changeFragmentTo(serviceAppointmentFragment, OfferAppointmentFragment.class.getSimpleName());
+
+                        }else {
+                            Toast.makeText(mContext, "Please verify your email address first", Toast.LENGTH_SHORT).show();
+                        }
+                       }
                 }
             }
         });
