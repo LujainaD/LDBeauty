@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -111,11 +112,13 @@ public class ServicesFragment extends Fragment {
         mAdapter.setOnBookClickListener(new UserServiceAdapter.onBookClickListener() {
             @Override
             public void onBookClick(ServiceModel service) {
-                if(mFirebaseUser == null || userRole.equals("Salon Owner")){
+                if(!mFirebaseUser.isEmailVerified()) {
+                    Toast.makeText(mContext, "Please verify your email address first", Toast.LENGTH_SHORT).show();
+                }if(mFirebaseUser == null || userRole.equals("Salon Owner")){
                     NoLoginDialogFragment dialog = new NoLoginDialogFragment();
                     dialog.showText(2);
                     dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
-                }else{
+                }else {
                     if(mMediatorCallback != null){
                         ServiceAppointmentFragment serviceAppointmentFragment = new ServiceAppointmentFragment();
                         serviceAppointmentFragment.setServiceID(service);

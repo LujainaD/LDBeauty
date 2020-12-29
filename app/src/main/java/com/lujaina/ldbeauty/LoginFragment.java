@@ -241,7 +241,7 @@ public class LoginFragment extends Fragment {
                     currentUser.setUserEmail(model.getUserEmail());
                     currentUser.setUserId(model.getUserId());
                     currentUser.setUserType(model.getUserType());
-                    Toast.makeText(mContext, model.getUserType(), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(mContext, model.getUserType(), Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                     Intent i = new Intent(getActivity(), HomeActivity.class);
                     startActivity(i);

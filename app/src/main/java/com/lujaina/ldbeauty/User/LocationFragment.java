@@ -154,6 +154,23 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // default location
+        showSalonLocation();
+        getLastLocation();
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                //latLng is the location  that the user clicked
+                getLocationName(latLng.latitude,latLng.longitude );
+            }
+        });
+    }
+
     private boolean isPermissionGranted() {
         return ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
@@ -330,23 +347,6 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         }
 
     }
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        // default location
-        showSalonLocation();
-        getLastLocation();
-
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                //latLng is the location  that the user clicked
-                getLocationName(latLng.latitude,latLng.longitude );
-            }
-        });
-    }
-
 
     public void setSalonLocation(SPRegistrationModel section) {
         ownerId = section;

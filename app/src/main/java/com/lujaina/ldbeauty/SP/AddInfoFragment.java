@@ -33,6 +33,8 @@ import com.lujaina.ldbeauty.Models.AddInfoModel;
 import com.lujaina.ldbeauty.R;
 import com.lujaina.ldbeauty.RecyclerItemTouchHelperInfo;
 import com.lujaina.ldbeauty.Interfaces.RecyclerItemTouchHelperListener;
+import com.lujaina.ldbeauty.SP.Instruction.InsAddInfoFragment;
+import com.lujaina.ldbeauty.SP.Instruction.TestInstructionFragment;
 
 import java.util.ArrayList;
 
@@ -75,9 +77,11 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
         empty = parentView.findViewById(R.id.tv_empty);
 
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
+        FloatingActionButton instruction = parentView.findViewById(R.id.instruction_button);
+
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
-         recyclerView = parentView.findViewById(R.id.add_rv);
+        recyclerView = parentView.findViewById(R.id.add_rv);
         infoArray = new ArrayList<>();
         mAdapter = new InfoAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
@@ -112,6 +116,17 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
             public void onClick(View v) {
                 AddInfoDialogFragment dialogColor = new AddInfoDialogFragment();
                 dialogColor.show(getChildFragmentManager(), AddInfoDialogFragment.class.getSimpleName());
+            }
+        });
+
+        instruction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                   /* InsAddInfoFragment dialog = new InsAddInfoFragment();
+                    dialog.show(getChildFragmentManager(), AddInfoDialogFragment.class.getSimpleName());*/
+
+                      TestInstructionFragment dialog = new TestInstructionFragment();
+                    dialog.show(getChildFragmentManager(), TestInstructionFragment.class.getSimpleName());
             }
         });
         return parentView;

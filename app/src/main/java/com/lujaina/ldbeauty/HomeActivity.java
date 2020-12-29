@@ -150,28 +150,35 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
                 if (user != null) {
                     if (userRole != null) {
                        if (userRole.equals("Client")) {
-                           progressDialog.dismiss();
-                            Toast.makeText(HomeActivity.this, userRole, Toast.LENGTH_SHORT).show();
-                           changeFragmentTo(new ClientProfileFragment(), ClientProfileFragment.class.getSimpleName());
+                           if(user.isEmailVerified()){
+                               progressDialog.dismiss();
+                               changeFragmentTo(new ClientProfileFragment(), ClientProfileFragment.class.getSimpleName());
+                           }else{
+                               progressDialog.dismiss();
+                               Toast.makeText(getApplicationContext(), "Please verify your email address", Toast.LENGTH_SHORT).show();
+                           }
+
 
                            return true;
 
                        } else if(userRole.equals("Salon Owner")){
-                           progressDialog.dismiss();
-                           Toast.makeText(HomeActivity.this, userRole, Toast.LENGTH_SHORT).show();
+                           if(user.isEmailVerified()){
+                               progressDialog.dismiss();
                            changeFragmentTo(new SPProfileFragment(), SPProfileFragment.class.getSimpleName());
+                           }else{
+                               progressDialog.dismiss();
+                               Toast.makeText(getApplicationContext(), "Please verify your email address", Toast.LENGTH_SHORT).show();
+                           }
                            return true;
 
                        }else {
                            progressDialog.dismiss();
-                           Toast.makeText(HomeActivity.this, userRole, Toast.LENGTH_SHORT).show();
                            changeFragmentTo(new AppOwnerProfileFragment(), AppOwnerProfileFragment.class.getSimpleName());
                            return true;
                        }
 
                 } else {
                         progressDialog.dismiss();
-                        Toast.makeText(HomeActivity.this, "not registered", Toast.LENGTH_SHORT).show();
                         NoLoginDialogFragment dialog = new NoLoginDialogFragment();
                         dialog.showText(1);
                         dialog.show(getSupportFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
@@ -179,7 +186,6 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
                 }
             }else {
                     progressDialog.dismiss();
-                    Toast.makeText(HomeActivity.this, "not registered", Toast.LENGTH_SHORT).show();
                     NoLoginDialogFragment dialog = new NoLoginDialogFragment();
                     dialog.showText(1);
                     dialog.show(getSupportFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
@@ -250,7 +256,7 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
 
         if (user != null) {
             if(userRole != null) {
-                if (userRole.equals("Client")) {
+                if (userRole.equals("Client") && user.isEmailVerified()) {
                     menu.getItem(0).setVisible(true);
                     menu.getItem(1).setVisible(false);
                     menu.getItem(2).setVisible(true);

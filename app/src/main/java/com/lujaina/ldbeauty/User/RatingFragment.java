@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -92,15 +93,22 @@ public class RatingFragment extends Fragment  {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mFirebaseUser == null || userRole.equals("Salon Owner")){
+
+             if(mFirebaseUser == null || userRole.equals("Salon Owner")){
                     NoLoginDialogFragment dialog = new NoLoginDialogFragment();
                     dialog.showText(2);
                     dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
-                }else{
+                }else {
                     if(mMediatorInterface != null){
-                        RatingDialogFragment dialogFragment = new RatingDialogFragment();
-                        dialogFragment.setSalonInfo(salonInfo);
-                        dialogFragment.show(getChildFragmentManager(), RatingDialogFragment.class.getSimpleName());
+                        if( mFirebaseUser.isEmailVerified()) {
+                            RatingDialogFragment dialogFragment = new RatingDialogFragment();
+                            dialogFragment.setSalonInfo(salonInfo);
+                            dialogFragment.show(getChildFragmentManager(), RatingDialogFragment.class.getSimpleName());
+                        }else {
+                            Toast.makeText(mContext, "Please verify your email address first", Toast.LENGTH_SHORT).show();
+
+                        }
+
                     }
                 }
             }

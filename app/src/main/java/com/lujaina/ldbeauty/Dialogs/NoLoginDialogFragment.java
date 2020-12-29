@@ -69,7 +69,7 @@ public class NoLoginDialogFragment extends DialogFragment {
         TextView textView = parentView.findViewById(R.id.tv_text);
 
         if(i== 1){
-            textView.setText("You need to Login/Sign up");
+            textView.setText("Please login or signup for accessing your profile");
         }else {
 
         }

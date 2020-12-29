@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -114,6 +115,9 @@ public class OffersFragment extends Fragment {
         mAdapter.setonClickListener(new UserOfferAdapter.onClickListener() {
             @Override
             public void onClick(OfferModel offerModel) {
+                if(!mFirebaseUser.isEmailVerified()) {
+                    Toast.makeText(mContext, "Please verify your email address first", Toast.LENGTH_SHORT).show();
+                }
                 if(mFirebaseUser == null || userRole.equals("Salon Owner")){
                     NoLoginDialogFragment dialog = new NoLoginDialogFragment();
                     dialog.showText(2);

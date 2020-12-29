@@ -356,12 +356,22 @@ public class ClientSignUpFragment extends Fragment {
                             registration.setPhoneNumber(phoneNumber);
                             registration.setUserType(userType);
                             registration.setRegistrationDate(getCurrentDate());
-                            if(userImageUri == null){
-                                addUserInfoToDB(registration);
 
-                            }else{
-                                uploadUserImageToStorage(registration);
-                            }
+                            mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        Toast.makeText(getContext(), "please check your email to verify your email registration ", Toast.LENGTH_SHORT).show();
+                                        if(userImageUri == null){
+                                            addUserInfoToDB(registration);
+
+                                        }else{
+                                            uploadUserImageToStorage(registration);
+                                        }
+
+                                    }
+                                }
+                            });
 
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
