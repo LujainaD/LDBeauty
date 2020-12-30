@@ -226,7 +226,7 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
         inflater.inflate(R.menu.side_menu, menu);
         if (user != null) {
             if(userRole != null){
-                if(userRole.equals("Client")){
+                if (userRole.equals("Client") && user.isEmailVerified()) {
                     menu.getItem(0).setVisible(true);
                     menu.getItem(1).setVisible(false);
                     menu.getItem(2).setVisible(true);
