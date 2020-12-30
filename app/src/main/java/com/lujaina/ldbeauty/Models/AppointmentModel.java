@@ -12,6 +12,9 @@ public class AppointmentModel {
 	private String isChosen;
 	private boolean isBooked;
 
+	private String duration;
+	private String appointmentStartTime;
+	private String appointmentEndTime;
 
 	private boolean isSelected;
 
@@ -103,5 +106,29 @@ public class AppointmentModel {
 
 	public void setBooked(boolean booked) {
 		isBooked = booked;
+	}
+
+	public String getDuration() {
+		return duration;
+	}
+
+	public void setDuration(String duration) {
+		this.duration = duration;
+	}
+
+	public String getAppointmentStartTime() {
+		return appointmentStartTime;
+	}
+
+	public void setAppointmentStartTime(String appointmentStartTime) {
+		this.appointmentStartTime = appointmentStartTime;
+	}
+
+	public String getAppointmentEndTime() {
+		return appointmentEndTime;
+	}
+
+	public void setAppointmentEndTime(String appointmentEndTime) {
+		this.appointmentEndTime = appointmentEndTime;
 	}
 }

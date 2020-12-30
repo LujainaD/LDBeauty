@@ -18,7 +18,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -34,20 +33,26 @@ import com.lujaina.ldbeauty.Dialogs.GreetingDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
-import com.lujaina.ldbeauty.SP.SPProfileFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 
 public class EditAppOwnerProfileFragment extends Fragment {
 
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^" + "(?=.*[A-Z])" + ".{6,20}");
-    private static final Pattern PHONENUMBER_PATTERN = Pattern.compile("^" + ".{8,20}");
-
+    private static final Pattern PHONENUMBER_PATTERN = Pattern.compile("^[+]?[0-9]{8,20}$");
+    public static final Pattern EMAIL_ADDRESS_PATTERN = Pattern.compile(
+            "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+                    "\\@" +
+                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+                    "(" +
+                    "\\." +
+                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+                    ")+"
+    );
     private FirebaseAuth mAuth;
     private MediatorInterface mMediatorInterface;
     FirebaseUser mFirebaseUser;
@@ -84,12 +89,11 @@ public class EditAppOwnerProfileFragment extends Fragment {
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.All_Users).child(mAuth.getUid());
         ImageButton back = parentView.findViewById(R.id.ib_back);
         final Button save = parentView.findViewById(R.id.btn_save);
-        final Button editPassword = parentView.findViewById(R.id.btn_password);
 
         final EditText appOwnerName =parentView.findViewById(R.id.et_name);
         final EditText appOwnerEmail =parentView.findViewById(R.id.et_email);
         final EditText appOwnerPhone =parentView.findViewById(R.id.et_phone);
-        final TextView password =parentView.findViewById(R.id.et_pass);
+        final EditText password =parentView.findViewById(R.id.et_pass);
         final TextView updateDate =parentView.findViewById(R.id.date);
 
 
@@ -121,6 +125,7 @@ public class EditAppOwnerProfileFragment extends Fragment {
             }
         });
 
+/*
         editPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,6 +193,7 @@ public class EditAppOwnerProfileFragment extends Fragment {
                 }
             }
         });
+*/
 
 
 
@@ -197,6 +203,7 @@ public class EditAppOwnerProfileFragment extends Fragment {
                 String name = appOwnerName.getText().toString().trim();
                 String phone = appOwnerPhone.getText().toString().trim();
                 String newEmail = appOwnerEmail.getText().toString().trim();
+                final String newPassword = password.getText().toString();
 
                 SPRegistrationModel model = currentUserInfo;
                 model.setUserName(name);
@@ -217,9 +224,14 @@ public class EditAppOwnerProfileFragment extends Fragment {
                     appOwnerPhone.setError("Enter your phone number");
                 } else if (!PHONENUMBER_PATTERN.matcher(phone).matches()) {
                     appOwnerPhone.setError("Your phone number must contain at least 8 digit");
-                } else {
+                }else if(!newPassword.isEmpty() &&!PASSWORD_PATTERN.matcher(newPassword).matches()) {
+                    password.setError("weak password(must contain a digit ,uppercase characters and at least 6 characters)");
+                } else if (!EMAIL_ADDRESS_PATTERN.matcher(newEmail).matches()) {
+                    appOwnerEmail.setError("Please enter a valid email address");
+                }else {
                     progressDialog.show();
-                    changeEmail(model);
+                    updatInfoInDB(model,newPassword,newEmail);
+
                 }
 
 
@@ -293,15 +305,16 @@ public class EditAppOwnerProfileFragment extends Fragment {
     }
 */
 
-    private void changeEmail(final SPRegistrationModel update) {
+    private void changeEmail(SPRegistrationModel update, String newEmail, String newPassword) {
         mFirebaseUser = mAuth.getCurrentUser();
-        Toast.makeText(getContext(), "hello", Toast.LENGTH_SHORT).show();
         mFirebaseUser.updateEmail(update.getUserEmail())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            updatInfoInDB(update);
+                           // updatInfoInDB(update, newPassword, newEmail);
+
+                            changePassword(newPassword);
                         } else {
                             progressDialog.dismiss();
                             Toast.makeText(getContext(),"Failed", Toast.LENGTH_SHORT).show();
@@ -311,7 +324,31 @@ public class EditAppOwnerProfileFragment extends Fragment {
                 });
     }
 
-    private void updatInfoInDB(SPRegistrationModel update) {
+    private void changePassword(String newPassword) {
+        if(!newPassword.isEmpty()) {
+            mFirebaseUser.updatePassword(newPassword)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                progressDialog.dismiss();
+                                showGreetingDialog();
+                            } else {
+                                progressDialog.dismiss();
+                                Toast.makeText(getContext(),"Failed", Toast.LENGTH_SHORT).show();
+                                Log.d("password-error", task.getException().toString());
+                            }
+                        }
+                    });
+        }else {
+            progressDialog.dismiss();
+            showGreetingDialog();
+        }
+
+
+    }
+
+    private void updatInfoInDB(SPRegistrationModel update, String newPassword, String newEmail) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.All_Users).child(mAuth.getUid());
 
@@ -324,8 +361,9 @@ public class EditAppOwnerProfileFragment extends Fragment {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
-                        progressDialog.dismiss();
-                        showGreetingDialog();
+                       /* progressDialog.dismiss();
+                        showGreetingDialog();*/
+                       changeEmail(update,newEmail,newPassword);
                     } else {
                         progressDialog.dismiss();
                         Toast.makeText(getContext(), "Failed updating your info", Toast.LENGTH_SHORT).show();

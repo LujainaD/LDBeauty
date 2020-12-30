@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -65,7 +66,9 @@ public class AddServiceAppointmentFragment extends Fragment {
     private Context mContext;
     private ServiceModel mService;
     private TextView pickedDate;
-    private TextView pickedTime;
+  //  private TextView pickedTime;
+  TextView startTime;
+    TextView endTime ;
     private Calendar calendar;
     private int mYear;
     private int mMonth;
@@ -102,15 +105,21 @@ public class AddServiceAppointmentFragment extends Fragment {
         TextView specialist = parentView.findViewById(R.id.tv_specialist);
         TextView price = parentView.findViewById(R.id.tv_price);
         ImageButton ibCalendar = parentView.findViewById(R.id.ib_calender);
-        ImageButton ibTimeButton = parentView.findViewById(R.id.ib_time);
+       // ImageButton ibTimeButton = parentView.findViewById(R.id.ib_time);
+        ImageButton ibTimeStart = parentView.findViewById(R.id.ib_srartTime);
+        ImageButton ibTimeEnd = parentView.findViewById(R.id.ib_endTime);
+
         ImageButton ibBack = parentView.findViewById(R.id.ib_back);
         ImageButton ibLeft = parentView.findViewById(R.id.btn_left);
         ImageButton ibRight = parentView.findViewById(R.id.btn_right);
         recyclerView = parentView.findViewById(R.id.rv_time);
         Button btnAdd = parentView.findViewById(R.id.btn_addTime);
+        EditText duration = parentView.findViewById(R.id.tv_duration);
+         startTime = parentView.findViewById(R.id.tv_start);
+         endTime = parentView.findViewById(R.id.tv_endTime);
 
         pickedDate = parentView.findViewById(R.id.et_date);
-        pickedTime = parentView.findViewById(R.id.et_time);
+        //pickedTime = parentView.findViewById(R.id.et_time);
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -119,6 +128,7 @@ public class AddServiceAppointmentFragment extends Fragment {
 
         getCurrentDate();
         getCurrentTime();
+        getCurrentEndTime();
         showPreviousAppointments();
 
 
@@ -148,17 +158,39 @@ public class AddServiceAppointmentFragment extends Fragment {
 
             }
         });
-        ibTimeButton.setOnClickListener(new View.OnClickListener() {
+        /*ibTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showTimeDialog();
+                showTimeStartDialog();
+            }
+        });
+*/
+        ibTimeStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTimeStartDialog();
             }
         });
 
+        ibTimeEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTimeEndDialog();
+            }
+        });
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addAnAppointment();
+                String dur= duration.getText().toString().trim();
+                String start= startTime.getText().toString().trim();
+                String end= endTime.getText().toString().trim();
+
+
+                /*for(int i=Integer.parseInt(start); i<=Integer.parseInt(end);i=i+Integer.parseInt(dur)){
+                    addTimeAppointment(dur,start,end, i);
+                }*/
+
+              //  addAnAppointment();
             }
         });
 
@@ -168,6 +200,7 @@ public class AddServiceAppointmentFragment extends Fragment {
             specialist.setText(mService.getServiceSpecialist());
             price.setText(mService.getServicePrice());
         }
+        
         ibLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -190,6 +223,25 @@ public class AddServiceAppointmentFragment extends Fragment {
         return parentView;
     }
 
+    private void addTimeAppointment(String dur, String start, String end,int time) {
+        appointmentModel = new AppointmentModel();
+        appointmentModel.setAppointmentDate(pickedDate.getText().toString().trim());
+        appointmentModel.setPickedTime(String.valueOf(time));
+        appointmentModel.setCategoryId(mService.getIdCategory());
+        appointmentModel.setOwnerId(mService.getOwnerId());
+        appointmentModel.setServiceId(mService.getServiceId());
+        appointmentModel.setDuration(dur);
+        appointmentModel.setAppointmentStartTime(start);
+        appointmentModel.setAppointmentEndTime(end);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category)
+                .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId()).child(Constants.Service_Appointment);
+        String recordID = dbRef.push().getKey();
+        appointmentModel.setRecordId(recordID);
+        dbRef.child(Objects.requireNonNull(recordID)).setValue(appointmentModel);
+
+    }
+
     private void deleteTime(AppointmentModel category) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -202,7 +254,7 @@ public class AddServiceAppointmentFragment extends Fragment {
     private void addAnAppointment() {
         appointmentModel = new AppointmentModel();
         appointmentModel.setAppointmentDate(pickedDate.getText().toString().trim());
-        appointmentModel.setPickedTime(pickedTime.getText().toString().trim());
+       // appointmentModel.setPickedTime(pickedTime.getText().toString().trim());
         appointmentModel.setCategoryId(mService.getIdCategory());
         appointmentModel.setOwnerId(mService.getOwnerId());
         appointmentModel.setServiceId(mService.getServiceId());
@@ -254,7 +306,7 @@ public class AddServiceAppointmentFragment extends Fragment {
 //		returnDate.set(returnYear, returnMonth, returnDay);
     }
 
-    private void showTimeDialog() {
+    private void showTimeStartDialog() {
 
         TimePickerDialog.OnTimeSetListener timeListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -285,7 +337,7 @@ public class AddServiceAppointmentFragment extends Fragment {
                 } else {
                     minute = selectMinute + "";
                 }
-                pickedTime.setText(hour + ":" + minute + " " + time);
+                startTime.setText(hour + ":" + minute + " " + time);
             }
         };
         TimePickerDialog timePickerDialog = new TimePickerDialog(mContext, R.style.MyTimePickerWidgetStyle, timeListener, hour, minutes, false);
@@ -299,7 +351,56 @@ public class AddServiceAppointmentFragment extends Fragment {
     private void getCurrentTime() {
         SimpleDateFormat serverFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
         String timeNow = serverFormat.format(Calendar.getInstance().getTime());
-        pickedTime.setText(timeNow);
+        startTime.setText(timeNow);
+    }
+
+    private void showTimeEndDialog() {
+
+        TimePickerDialog.OnTimeSetListener timeListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectMinute) {
+                String time;
+                int h;
+                String hour;
+                String minute;
+                //to convert hours from 24-hours to 12-hours system
+                if (selectedHour >= 13) {
+                    time = "PM";
+                    h = selectedHour - 12;
+                } else {
+                    time = "AM";
+                    h = selectedHour;
+                }
+
+                // add zero to select hour if it is equal or less than 9
+                if (h <= 9) {
+                    hour = "0" + h;
+                } else {
+                    hour = h + "";
+                }
+
+                // add zero to select minute if it is equal or less than 9
+                if (selectMinute <= 9) {
+                    minute = "0" + selectMinute;
+                } else {
+                    minute = selectMinute + "";
+                }
+                endTime.setText(hour + ":" + minute + " " + time);
+            }
+        };
+        TimePickerDialog timePickerDialog = new TimePickerDialog(mContext, R.style.MyTimePickerWidgetStyle, timeListener, hour, minutes, false);
+        WindowManager.LayoutParams windowManager = new WindowManager.LayoutParams();
+        windowManager.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        windowManager.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        timePickerDialog.getWindow().setAttributes(windowManager);
+        timePickerDialog.show();
+    }
+
+
+    private void getCurrentEndTime() {
+        SimpleDateFormat serverFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+        String timeNow = serverFormat.format(Calendar.getInstance().getTime());
+        endTime.setText(timeNow);
     }
 
     private void showPreviousAppointments() {
@@ -371,89 +472,6 @@ public class AddServiceAppointmentFragment extends Fragment {
 
 
     }
-
-/*
-    private void checkFromSalonServiceAppointment(final String time) {
-        final String datePicked = pickedDate.getText().toString().trim();
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category)
-                .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId()).child(Constants.Service_Appointment);
-        dbRef.orderByChild("appointmentDate").equalTo(datePicked).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String salonTime = snapshot.child("pickedTime").getValue(String.class);
-                    String recordId = snapshot.child("recordId").getValue(String.class);
-                    String date = snapshot.child("appointmentDate").getValue(String.class);
-                    String time = snapshot.child("pickedTime").getValue(String.class);
-
-
-                        for (AppointmentModel model : timeList) {
-                            if (model.isBooked()== true) {
-                                changeDataInSalonAppointment(recordId,date,time);
-                            }
-
-                    }
-
-                }
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-            }
-        });
-
-    }
-*/
-
-/*
-    private void changeDataInSalonAppointment(String id, String date, String time) {
-
-        appointmentModel = new AppointmentModel();
-        */
-/*appointmentModel.setAppointmentDate(pickedDate.getText().toString().trim());
-        appointmentModel.setPickedTime(pickedTime.getText().toString().trim());
-        appointmentModel.setCategoryId(mService.getIdCategory());
-        appointmentModel.setOwnerId(mService.getOwnerId());
-        appointmentModel.setServiceId(mService.getServiceId());
-*//*
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category)
-                .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId()).child(Constants.Service_Appointment).child(id);
-      */
-/*  appointmentModel.setIsChosen("yes");
-        String id = dbRef.push().getKey();
-        appointmentModel.setRecordId(id);*//*
-
-        dbRef.child("categoryId").setValue(mService.getIdCategory());
-        dbRef.child("serviceId").setValue(mService.getServiceId());
-        dbRef.child("ownerId").setValue(mService.getOwnerId());
-        dbRef.child("pickedTime").setValue(time);
-        dbRef.child("appointmentDate").setValue(date);
-        dbRef.child("recordId").setValue(id);
-        appointmentModel.setIsChosen("yes");
-
-
-        dbRef.setValue(appointmentModel).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-
-                    Toast.makeText(getContext(), "success", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(),"fail", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-    }
-*/
-
 
     private void setupRecyclerView(RecyclerView recyclerView) {
 

@@ -153,7 +153,6 @@ public class EditSalonProfileFragment extends Fragment {
 
                 progressDialog = new ProgressDialog(getContext());
                 progressDialog.setCancelable(false);
-                progressDialog.show();
                 progressDialog.setContentView(R.layout.custom_progress_dialog);
                 final TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
                 final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
@@ -171,8 +170,10 @@ public class EditSalonProfileFragment extends Fragment {
                     salonCity.setError("Enter Salon city");
                 }else{
                     if (salonImageUri == null) {
+                        progressDialog.show();
                         updatSalonInfo(model);
                     } else {
+                        progressDialog.show();
                         uploadSalonImageToStorage(model);
                     }
                 }

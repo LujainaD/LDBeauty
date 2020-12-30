@@ -28,6 +28,7 @@ import com.lujaina.ldbeauty.Adapters.ConfirmAdapter;
 import com.lujaina.ldbeauty.Adapters.SalonAppointmentAdapter;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Dialogs.AppointmentDialog;
+import com.lujaina.ldbeauty.Dialogs.ConfirmDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.AppointmentModel;
 import com.lujaina.ldbeauty.Models.ClientsAppointmentModel;
@@ -37,7 +38,7 @@ import com.lujaina.ldbeauty.R;
 import java.util.ArrayList;
 
 
-public class SalonAppointmentFragment extends Fragment{
+public class SalonAppointmentFragment extends Fragment implements ConfirmDialogFragment.selectedButton{
     FirebaseAuth mAuth;
     FirebaseUser mFirebaseUser;
     private FirebaseDatabase mDatabase;
@@ -91,13 +92,17 @@ public class SalonAppointmentFragment extends Fragment{
 
             @Override
             public void onConfirm(ClientsAppointmentModel confirm) {
-                confirmAppointment(confirm);
+                ConfirmDialogFragment dialogFragment = new ConfirmDialogFragment(SalonAppointmentFragment.this);
+                dialogFragment.sendInfo(confirm);
+                dialogFragment.show(getChildFragmentManager(),ConfirmDialogFragment.class.getSimpleName() );
+                //confirmAppointment(confirm);
             }
 
             @Override
             public void onDecline(ClientsAppointmentModel decline) {
-               declineAppointment(decline);
-
+                ConfirmDialogFragment dialogFragment = new ConfirmDialogFragment(SalonAppointmentFragment.this);
+                dialogFragment.sendInfo(decline);
+                dialogFragment.show(getChildFragmentManager(),ConfirmDialogFragment.class.getSimpleName() );
             }
         });
         recyclerView.setAdapter(mAdapter);
@@ -308,5 +313,14 @@ public class SalonAppointmentFragment extends Fragment{
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
+    }
+    @Override
+    public void onButtonSelected(int confirmOrDecline, ClientsAppointmentModel information) {
+        if(confirmOrDecline == 1){
+            confirmAppointment(information);
+
+        }else {
+            declineAppointment(information);
+        }
     }
 }

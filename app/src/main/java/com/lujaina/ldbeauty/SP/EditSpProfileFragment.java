@@ -58,7 +58,7 @@ public class EditSpProfileFragment extends Fragment {
     private static final int PICK_SALON_IMAGE = 1002;
     private static final int STORAGE_PERMISSION_REQUEST = 300;
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^" + "(?=.*[A-Z])" + ".{6,20}");
-    private static final Pattern PHONENUMBER_PATTERN = Pattern.compile("^" + ".{8,20}");
+    private static final Pattern PHONENUMBER_PATTERN = Pattern.compile("^[+]?[0-9]{8,20}$");
 
     private Uri ownerImageUri;
     private CircleImageView profileImg;
@@ -101,7 +101,7 @@ public class EditSpProfileFragment extends Fragment {
         final EditText ownerName =parentView.findViewById(R.id.et_name);
         final TextView ownerEmail =parentView.findViewById(R.id.et_email);
         final EditText ownerPhone =parentView.findViewById(R.id.et_phone);
-        final TextView password =parentView.findViewById(R.id.et_pass);
+        final EditText password =parentView.findViewById(R.id.et_pass);
 
         final TextView updateDate =parentView.findViewById(R.id.date);
         final TextView registerDate =parentView.findViewById(R.id.registerDate);
@@ -159,7 +159,7 @@ public class EditSpProfileFragment extends Fragment {
 
                 progressDialog = new ProgressDialog(getContext());
                 progressDialog.setCancelable(false);
-                progressDialog.show();
+                //progressDialog.show();
                 progressDialog.setContentView(R.layout.custom_progress_dialog);
                 final TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
                 final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
@@ -177,8 +177,10 @@ public class EditSpProfileFragment extends Fragment {
                 }
                 else{
                     if (ownerImageUri == null) {
+                        progressDialog.show();
                         updatOwnerInfo(model,newPassword);
                     } else {
+                        progressDialog.show();
                         uploadOwnerImageToStorage(model,newPassword);
                     }
                 }

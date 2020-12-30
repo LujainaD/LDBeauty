@@ -40,6 +40,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Dialogs.GreetingDialogFragment;
+import com.lujaina.ldbeauty.Dialogs.PreviousLoginDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
@@ -56,7 +57,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static android.content.ContentValues.TAG;
 
 
-public class EditClientProfileFragment extends Fragment {
+public class EditClientProfileFragment extends Fragment{
 
     private static final int PICK_SALON_IMAGE = 1002;
     private static final int STORAGE_PERMISSION_REQUEST = 300;
@@ -110,7 +111,7 @@ public class EditClientProfileFragment extends Fragment {
         final EditText userName =parentView.findViewById(R.id.et_name);
         final TextView userEmail =parentView.findViewById(R.id.et_email);
         final EditText userPhone =parentView.findViewById(R.id.et_phone);
-        final TextView password =parentView.findViewById(R.id.et_pass);
+        final EditText password =parentView.findViewById(R.id.et_pass);
         final TextView updateDate =parentView.findViewById(R.id.date);
         final TextView registerDate =parentView.findViewById(R.id.registerDate);
         final TextView tv_changeImg =parentView.findViewById(R.id.tv_changeImg);
@@ -168,7 +169,7 @@ public class EditClientProfileFragment extends Fragment {
 
                 progressDialog = new ProgressDialog(getContext());
                 progressDialog.setCancelable(false);
-                progressDialog.show();
+               // progressDialog.show();
                 progressDialog.setContentView(R.layout.custom_progress_dialog);
                 final TextView progressText = progressDialog.findViewById(R.id.tv_bar);
                 final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
@@ -186,10 +187,10 @@ public class EditClientProfileFragment extends Fragment {
                 }
                 else{
                     if (userImageUri == null) {
-                       // progressDialog.show();
+                        progressDialog.show();
                         updatUserInfo(model,newPassword);
                     } else {
-                       // progressDialog.show();
+                        progressDialog.show();
                         uploadUserImageToStorage(model,newPassword);
                     }
 

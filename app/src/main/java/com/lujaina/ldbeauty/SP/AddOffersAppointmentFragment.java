@@ -20,6 +20,7 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -163,7 +164,9 @@ public class AddOffersAppointmentFragment extends Fragment {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addAnAppointment();
+                checkIfTimeAlreadyAdded(pickedTime.getText().toString().trim());
+
+                //addAnAppointment();
             }
         });
 
@@ -193,6 +196,38 @@ public class AddOffersAppointmentFragment extends Fragment {
         });
 
         return parentView;
+    }
+
+    private void checkIfTimeAlreadyAdded(String pickedTime) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Offers)
+                .child(mOffer.getOfferId()).child(Constants.Service_Appointment);
+
+        dbRef.orderByChild("appointmentDate").equalTo(pickedDate.getText().toString()).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String time = snapshot.child("pickedTime").getValue(String.class);
+                    if(time.equals(pickedTime)){
+                        Toast.makeText(mContext, "you already added this time", Toast.LENGTH_SHORT).show();
+                    }else {
+                        addAnAppointment();
+
+                    }
+                }
+
+            }
+
+
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
+
+
     }
 
     private void deleteTime(AppointmentModel category) {
