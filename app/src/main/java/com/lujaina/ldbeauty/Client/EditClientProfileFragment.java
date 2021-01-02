@@ -461,6 +461,11 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
                 Uri salonImgUri = data.getData();//1
                 userImageUri = salonImgUri;
                 profileImg.setImageURI(salonImgUri);
+                Glide.with(Objects.requireNonNull(getContext()))
+                        .load(userImageUri)
+                        .error(R.drawable.profile)
+                        .into(profileImg);
+
             }
 
         }
