@@ -17,7 +17,7 @@ public class AppointmentModel {
 	private String appointmentEndTime;
 
 	private boolean isSelected;
-
+	private CharSequence time;
 
 	public boolean isSelected() {
 		return isSelected;
@@ -130,5 +130,13 @@ public class AppointmentModel {
 
 	public void setAppointmentEndTime(String appointmentEndTime) {
 		this.appointmentEndTime = appointmentEndTime;
+	}
+
+	public CharSequence getTime() {
+		return time;
+	}
+
+	public void setTime(CharSequence time) {
+		this.time = time;
 	}
 }

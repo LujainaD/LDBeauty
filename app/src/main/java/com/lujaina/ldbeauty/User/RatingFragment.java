@@ -2,6 +2,7 @@ package com.lujaina.ldbeauty.User;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +85,8 @@ public class RatingFragment extends Fragment  {
         if(mFirebaseUser!= null){
             checkUserRole(mFirebaseUser.getUid());
         }
-         recyclerView = parentView.findViewById(R.id.rv_comment);
+
+        recyclerView = parentView.findViewById(R.id.rv_comment);
         commentArray = new ArrayList<>();
         mAdapter = new RatingAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
@@ -101,9 +104,8 @@ public class RatingFragment extends Fragment  {
                 }else {
                     if(mMediatorInterface != null){
                         if( mFirebaseUser.isEmailVerified()) {
-                            RatingDialogFragment dialogFragment = new RatingDialogFragment();
-                            dialogFragment.setSalonInfo(salonInfo);
-                            dialogFragment.show(getChildFragmentManager(), RatingDialogFragment.class.getSimpleName());
+                            countOrderChildren();
+
                         }else {
                             Toast.makeText(mContext, "Please verify your email address first", Toast.LENGTH_SHORT).show();
 
@@ -123,8 +125,61 @@ public class RatingFragment extends Fragment  {
             }
         });
 
-
         return parentView;
+    }
+
+    private void countOrderChildren() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference clientOrderRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.History_Order);
+        clientOrderRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    snapshot.getChildrenCount();
+                    String countedOrder = String.valueOf(snapshot.getChildrenCount());
+                    if (Integer.parseInt(countedOrder) == 0) {
+                        Toast.makeText(mContext, "you need to book appointment to add feedback", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                       // Log.w("countedFeedback", countedOrder);
+                        checkFeedbackChildren(countedOrder);
+                    }
+
+
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    private void checkFeedbackChildren(String counted) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        myRef  = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Comments);
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String  numberofFeedback = String.valueOf(snapshot.getChildrenCount());
+                    int countFeedback = Integer.parseInt(numberofFeedback);
+                    if(Integer.parseInt(counted)==countFeedback){
+                        Toast.makeText(mContext, "equal you need to book appointment to add feedback", Toast.LENGTH_SHORT).show();
+                    }else if(Integer.parseInt(counted)>Integer.parseInt(numberofFeedback)){
+                        RatingDialogFragment dialogFragment = new RatingDialogFragment();
+                        dialogFragment.setSalonInfo(salonInfo);
+                        dialogFragment.show(getChildFragmentManager(), RatingDialogFragment.class.getSimpleName());
+                       //Toast.makeText(mContext, "appointment more than feedback", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {
@@ -133,6 +188,7 @@ public class RatingFragment extends Fragment  {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
     }
+
     private void checkUserRole(String uid) {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef;

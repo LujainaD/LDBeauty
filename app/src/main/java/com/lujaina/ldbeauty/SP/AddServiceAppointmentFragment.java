@@ -3,9 +3,11 @@ package com.lujaina.ldbeauty.SP;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -43,8 +45,11 @@ import com.lujaina.ldbeauty.Models.ServiceModel;
 import com.lujaina.ldbeauty.R;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
@@ -179,6 +184,7 @@ public class AddServiceAppointmentFragment extends Fragment {
             }
         });
         btnAdd.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 String dur= duration.getText().toString().trim();
@@ -186,11 +192,27 @@ public class AddServiceAppointmentFragment extends Fragment {
                 String end= endTime.getText().toString().trim();
 
 
+                int gapInMinutes =  30 ;  // Define your span-of-time.
+                int loops = ( (int) Duration.ofHours( 12 ).toMinutes() / gapInMinutes ) ;
+                List<LocalTime> times = new ArrayList<>( loops ) ;
+
+                LocalTime time = LocalTime.MIN ;  // '00:00'
+                for( int i = 1 ; i <= loops ; i ++ ) {
+                    times.add( time ) ;
+                    // Set up next loop.
+                    time = time.plusMinutes( gapInMinutes ) ;
+                }
+
+               // Toast.makeText(mContext, (CharSequence) times, Toast.LENGTH_SHORT).show();
+                //System.out.println( times.size() + " time slots: " ) ;
+               // System.out.println( times ) ;
                 /*for(int i=Integer.parseInt(start); i<=Integer.parseInt(end);i=i+Integer.parseInt(dur)){
                     addTimeAppointment(dur,start,end, i);
                 }*/
 
               //  addAnAppointment();
+                addTimeAppointment(dur,start,end, times);
+
             }
         });
 
@@ -200,7 +222,7 @@ public class AddServiceAppointmentFragment extends Fragment {
             specialist.setText(mService.getServiceSpecialist());
             price.setText(mService.getServicePrice());
         }
-        
+
         ibLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -223,10 +245,9 @@ public class AddServiceAppointmentFragment extends Fragment {
         return parentView;
     }
 
-    private void addTimeAppointment(String dur, String start, String end,int time) {
+    private void addTimeAppointment(String dur, String start, String end, List<LocalTime> time) {
         appointmentModel = new AppointmentModel();
         appointmentModel.setAppointmentDate(pickedDate.getText().toString().trim());
-        appointmentModel.setPickedTime(String.valueOf(time));
         appointmentModel.setCategoryId(mService.getIdCategory());
         appointmentModel.setOwnerId(mService.getOwnerId());
         appointmentModel.setServiceId(mService.getServiceId());
@@ -238,7 +259,8 @@ public class AddServiceAppointmentFragment extends Fragment {
                 .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId()).child(Constants.Service_Appointment);
         String recordID = dbRef.push().getKey();
         appointmentModel.setRecordId(recordID);
-        dbRef.child(Objects.requireNonNull(recordID)).setValue(appointmentModel);
+        dbRef.child(Objects.requireNonNull(recordID)).setValue(time, appointmentModel);
+
 
     }
 

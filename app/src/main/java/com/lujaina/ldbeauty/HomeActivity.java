@@ -281,7 +281,8 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
         FirebaseUser user = mAuth.getCurrentUser();
         switch (item.getItemId()) {
 
-            case R.id.log_out_menu:
+            case R.id.log_out_menu:{
+            }
             case R.id.not_login: {
 
                 changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
