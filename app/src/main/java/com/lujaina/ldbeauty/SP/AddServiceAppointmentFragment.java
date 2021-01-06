@@ -191,8 +191,11 @@ public class AddServiceAppointmentFragment extends Fragment {
                 String start= startTime.getText().toString().trim();
                 String end= endTime.getText().toString().trim();
 
+                //long durationbetween = LocalTime.parse(""),LocalTime.parse(""));
 
-                int gapInMinutes =  30 ;  // Define your span-of-time.
+               // long numOfDaysBetween = ChronoUnit.DAYS.between(startDate, endDate);
+
+                int gapInMinutes =  Integer.parseInt(dur) ;  // Define your span-of-time.
                 int loops = ( (int) Duration.ofHours( 12 ).toMinutes() / gapInMinutes ) ;
                 List<LocalTime> times = new ArrayList<>( loops ) ;
 

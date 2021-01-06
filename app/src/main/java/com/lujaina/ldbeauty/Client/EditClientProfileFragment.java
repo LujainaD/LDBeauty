@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,6 +75,7 @@ import static android.content.ContentValues.TAG;
 
 public class EditClientProfileFragment extends Fragment implements ImageDialogFragment.ChooseDialogInterface{
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int MY_CAMERA_REQUEST_CODE = 1;
 
     private static final int PICK_SALON_IMAGE = 1002;
     private static final int STORAGE_PERMISSION_REQUEST = 300;
@@ -82,7 +84,7 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
             //("^" + ".{8,20}");
 
     private Uri userImageUri;
-    private CircleImageView profileImg;
+    private ImageView profileImg;
     private SPRegistrationModel currentUserInfo;
 
     private FirebaseAuth mAuth;
@@ -151,10 +153,10 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
                     userPhone.setText(currentUserInfo.getPhoneNumber());
                     registerDate.setText(currentUserInfo.getRegistrationDate());
                     updateDate.setText(currentUserInfo.getUpdatedDate());
-                    Glide.with(Objects.requireNonNull(getContext()))
+                   /* Glide.with(Objects.requireNonNull(getContext()))
                             .load(currentUserInfo.getSalonImageURL())
                             .error(R.drawable.profile)
-                            .into(profileImg);
+                            .into(profileImg);*/
 
                 }
             }
@@ -468,12 +470,52 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
 
             }
 
-        }
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
+        }else if (requestCode == MY_CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
+           // Bundle extras = data.getExtras();
+            galleryAddPic();
+           /* Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
             profileImg.setImageBitmap(imageBitmap);
+            Glide.with(Objects.requireNonNull(getContext()))
+                    .load(userImageUri)
+                    .error(R.drawable.profile)
+                    .into(profileImg);*/
         }
+    }
+
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(currentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        //sendBroadcast(mediaScanIntent);
+        setPic();
+    }
+
+    private void setPic() {
+        // Get the dimensions of the View
+        int targetW = profileImg.getWidth();
+        int targetH = profileImg.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+
+        BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.max(1, Math.min(photoW/targetW, photoH/targetH));
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+       // bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+        profileImg.setLayerType(View.LAYER_TYPE_SOFTWARE , null);
+        profileImg.setImageBitmap(bitmap);
     }
 
 
@@ -486,15 +528,15 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
     @Override
     public void onCameraButtonClick() {
         if (isPermissionGranted()) {
-            Camera();
+            dispatchTakePictureIntent();
         } else {
             showRunTimePermission();
         }
     }
 
-    private void Camera() {
+    /*private void Camera() {
         dispatchTakePictureIntent();
-    }
+    }*/
 
     String currentPhotoPath;
 
@@ -531,13 +573,13 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
                         "com.lujaina.ldbeauty.fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                startActivityForResult(takePictureIntent, MY_CAMERA_REQUEST_CODE);
             }
         }
     }
 
     private boolean isPermissionGranted() {
-        return ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        return ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
 
     public void showRunTimePermission() {
@@ -546,7 +588,24 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
         // put all permissions you need in this Screen into string array
         String[] permissionsArray = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
+        requestPermissions(new String[]{Manifest.permission.CAMERA},
+                MY_CAMERA_REQUEST_CODE );
+
         //here we requet the permission
-        requestPermissions(permissionsArray, STORAGE_PERMISSION_REQUEST);
+       // requestPermissions(permissionsArray, STORAGE_PERMISSION_REQUEST);
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_CAMERA_REQUEST_CODE :
+
+                onCameraButtonClick();
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 }

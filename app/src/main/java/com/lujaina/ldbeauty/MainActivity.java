@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements MediatorInterface
 
     }
 
+
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
