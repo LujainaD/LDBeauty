@@ -10,10 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -39,11 +36,10 @@ import com.lujaina.ldbeauty.Adapters.TimeAdapter;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.AppointmentModel;
-import com.lujaina.ldbeauty.Models.ClientsAppointmentModel;
-import com.lujaina.ldbeauty.Models.OfferModel;
 import com.lujaina.ldbeauty.Models.ServiceModel;
 import com.lujaina.ldbeauty.R;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalTime;
@@ -57,7 +53,7 @@ import java.util.TimeZone;
 public class AddServiceAppointmentFragment extends Fragment {
     public static final String DATE_FORMAT = "dd/MM/yyyy";
     RecyclerView recyclerView;
-    LinearLayoutManager lineralayoutManager;
+    GridLayoutManager lineralayoutManager;
     String timeNew;
     AppointmentModel appointmentModel;
     String sDay;
@@ -190,11 +186,9 @@ public class AddServiceAppointmentFragment extends Fragment {
                 String dur= duration.getText().toString().trim();
                 String start= startTime.getText().toString().trim();
                 String end= endTime.getText().toString().trim();
-
-                //long durationbetween = LocalTime.parse(""),LocalTime.parse(""));
-
-               // long numOfDaysBetween = ChronoUnit.DAYS.between(startDate, endDate);
-
+                if(dur.isEmpty()){
+                    duration.setError("you need to add duration");
+                }
                 int gapInMinutes =  Integer.parseInt(dur) ;  // Define your span-of-time.
                 int loops = ( (int) Duration.ofHours( 12 ).toMinutes() / gapInMinutes ) ;
                 List<LocalTime> times = new ArrayList<>( loops ) ;
@@ -206,6 +200,35 @@ public class AddServiceAppointmentFragment extends Fragment {
                     time = time.plusMinutes( gapInMinutes ) ;
                 }
 
+                int endTimeIn24hoursFormat = 22;
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:MM a");
+                try {
+                    Calendar startCalendar = Calendar.getInstance();
+                    startCalendar.setTime(sdf.parse(start));
+                    //        if (startCalendar.get(Calendar.MINUTE) < splitGap) {
+                    //            startCalendar.set(Calendar.MINUTE, splitGap);
+                    //        } else {
+                    //            startCalendar.add(Calendar.MINUTE, splitGap); // overstep hour and clear minutes
+                    //            startCalendar.clear(Calendar.MINUTE);
+                    //        }
+                    Calendar endCalendar = Calendar.getInstance();
+                    endCalendar.setTime(startCalendar.getTime());
+                    endCalendar.add(Calendar.HOUR_OF_DAY, endTimeIn24hoursFormat - startCalendar.get(Calendar.HOUR_OF_DAY));
+                    endCalendar.clear(Calendar.MINUTE);
+                    endCalendar.clear(Calendar.SECOND);
+                    endCalendar.clear(Calendar.MILLISECOND);
+                    SimpleDateFormat slotTime = new SimpleDateFormat("hh:mm a");
+                    while (endCalendar.after(startCalendar)) {
+                        startCalendar.add(Calendar.MINUTE, Integer.parseInt(dur));
+                        String timeslots = slotTime.format(startCalendar.getTime());
+                       // System.err.println(Timeslots);
+                        addTimeAppointment(dur,start,end, timeslots);
+
+                    }
+                } catch (ParseException e) {
+                    // date in wrong format
+                }
+
                // Toast.makeText(mContext, (CharSequence) times, Toast.LENGTH_SHORT).show();
                 //System.out.println( times.size() + " time slots: " ) ;
                // System.out.println( times ) ;
@@ -214,7 +237,7 @@ public class AddServiceAppointmentFragment extends Fragment {
                 }*/
 
               //  addAnAppointment();
-                addTimeAppointment(dur,start,end, times);
+                //addTimeAppointment(dur,start,end, times);
 
             }
         });
@@ -248,13 +271,14 @@ public class AddServiceAppointmentFragment extends Fragment {
         return parentView;
     }
 
-    private void addTimeAppointment(String dur, String start, String end, List<LocalTime> time) {
+    private void addTimeAppointment(String dur, String start, String end, String time) {
         appointmentModel = new AppointmentModel();
         appointmentModel.setAppointmentDate(pickedDate.getText().toString().trim());
         appointmentModel.setCategoryId(mService.getIdCategory());
         appointmentModel.setOwnerId(mService.getOwnerId());
         appointmentModel.setServiceId(mService.getServiceId());
         appointmentModel.setDuration(dur);
+        appointmentModel.setPickedTime(time);
         appointmentModel.setAppointmentStartTime(start);
         appointmentModel.setAppointmentEndTime(end);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -262,7 +286,7 @@ public class AddServiceAppointmentFragment extends Fragment {
                 .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId()).child(Constants.Service_Appointment);
         String recordID = dbRef.push().getKey();
         appointmentModel.setRecordId(recordID);
-        dbRef.child(Objects.requireNonNull(recordID)).setValue(time, appointmentModel);
+        dbRef.child(Objects.requireNonNull(recordID)).setValue( appointmentModel);
 
 
     }
@@ -315,6 +339,8 @@ public class AddServiceAppointmentFragment extends Fragment {
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, selectListener, mYear, mMonth, mDay);
         datePickerDialog.show();
+        showPreviousAppointments();
+
     }
 
     private void getCurrentDate() {
@@ -500,7 +526,7 @@ public class AddServiceAppointmentFragment extends Fragment {
 
     private void setupRecyclerView(RecyclerView recyclerView) {
 
-        lineralayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
+        lineralayoutManager = new GridLayoutManager(mContext, 2);
         recyclerView.setLayoutManager(lineralayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
