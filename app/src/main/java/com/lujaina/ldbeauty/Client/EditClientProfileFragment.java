@@ -84,7 +84,7 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
             //("^" + ".{8,20}");
 
     private Uri userImageUri;
-    private ImageView profileImg;
+    private CircleImageView profileImg;
     private SPRegistrationModel currentUserInfo;
 
     private FirebaseAuth mAuth;
@@ -95,6 +95,7 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
     private int status = 0;
     Handler handler = new Handler();
     private String mImagePath;
+    private SPRegistrationModel info;
 
     public EditClientProfileFragment() {
         // Required empty public constructor
@@ -135,7 +136,7 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
         final TextView registerDate =parentView.findViewById(R.id.registerDate);
         final TextView tv_changeImg =parentView.findViewById(R.id.tv_changeImg);
 
-        updateDate.setText("--");
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,11 +154,10 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
                     userPhone.setText(currentUserInfo.getPhoneNumber());
                     registerDate.setText(currentUserInfo.getRegistrationDate());
                     updateDate.setText(currentUserInfo.getUpdatedDate());
-                   /* Glide.with(Objects.requireNonNull(getContext()))
-                            .load(currentUserInfo.getSalonImageURL())
+                    Glide.with(Objects.requireNonNull(getContext()))
+                            .load(currentUserInfo.getOwnerImageURL())
                             .error(R.drawable.profile)
-                            .into(profileImg);*/
-
+                            .into(profileImg);
                 }
             }
 
@@ -463,10 +463,10 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
                 Uri salonImgUri = data.getData();//1
                 userImageUri = salonImgUri;
                 profileImg.setImageURI(salonImgUri);
-                Glide.with(Objects.requireNonNull(getContext()))
+                /*Glide.with(Objects.requireNonNull(getContext()))
                         .load(userImageUri)
                         .error(R.drawable.profile)
-                        .into(profileImg);
+                        .into(profileImg);*/
 
             }
 
@@ -486,7 +486,8 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File f = new File(currentPhotoPath);
         Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
+        userImageUri = contentUri;
+        mediaScanIntent.setData(userImageUri);
         //sendBroadcast(mediaScanIntent);
         setPic();
     }
@@ -607,5 +608,9 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+    }
+
+    public void setInfo(SPRegistrationModel u) {
+        info = u;
     }
 }
