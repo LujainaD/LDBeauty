@@ -3,17 +3,21 @@ package com.lujaina.ldbeauty.SP;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,8 +54,10 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
 
+import static android.view.View.VISIBLE;
+
 public class AddServiceAppointmentFragment extends Fragment {
-    public static final String DATE_FORMAT = "dd/MM/yyyy";
+    public static final String DATE_FORMAT = "d/MM/yyyy";
     RecyclerView recyclerView;
     GridLayoutManager lineralayoutManager;
     String timeNew;
@@ -79,7 +85,7 @@ public class AddServiceAppointmentFragment extends Fragment {
     private ArrayList<AppointmentModel> timeList;
     private TimeAdapter mAdapter;
     TextView empty;
-
+    Button btnAdd;
     public AddServiceAppointmentFragment() {
         // Required empty public constructor
     }
@@ -114,7 +120,7 @@ public class AddServiceAppointmentFragment extends Fragment {
         ImageButton ibLeft = parentView.findViewById(R.id.btn_left);
         ImageButton ibRight = parentView.findViewById(R.id.btn_right);
         recyclerView = parentView.findViewById(R.id.rv_time);
-        Button btnAdd = parentView.findViewById(R.id.btn_addTime);
+         btnAdd = parentView.findViewById(R.id.btn_addTime);
         EditText duration = parentView.findViewById(R.id.tv_duration);
          startTime = parentView.findViewById(R.id.tv_start);
          endTime = parentView.findViewById(R.id.tv_endTime);
@@ -188,58 +194,44 @@ public class AddServiceAppointmentFragment extends Fragment {
                 String end= endTime.getText().toString().trim();
                 if(dur.isEmpty()){
                     duration.setError("you need to add duration");
-                }
-                int gapInMinutes =  Integer.parseInt(dur) ;  // Define your span-of-time.
-                int loops = ( (int) Duration.ofHours( 12 ).toMinutes() / gapInMinutes ) ;
-                List<LocalTime> times = new ArrayList<>( loops ) ;
+                }else{
+                    int gapInMinutes =  Integer.parseInt(dur) ;  // Define your span-of-time.
+                    int loops = ( (int) Duration.ofHours( 12 ).toMinutes() / gapInMinutes ) ;
+                    List<LocalTime> times = new ArrayList<>( loops ) ;
 
-                LocalTime time = LocalTime.MIN ;  // '00:00'
-                for( int i = 1 ; i <= loops ; i ++ ) {
-                    times.add( time ) ;
-                    // Set up next loop.
-                    time = time.plusMinutes( gapInMinutes ) ;
-                }
-
-                int endTimeIn24hoursFormat = 22;
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:MM a");
-                try {
-                    Calendar startCalendar = Calendar.getInstance();
-                    startCalendar.setTime(sdf.parse(start));
-                    //        if (startCalendar.get(Calendar.MINUTE) < splitGap) {
-                    //            startCalendar.set(Calendar.MINUTE, splitGap);
-                    //        } else {
-                    //            startCalendar.add(Calendar.MINUTE, splitGap); // overstep hour and clear minutes
-                    //            startCalendar.clear(Calendar.MINUTE);
-                    //        }
-                    Calendar endCalendar = Calendar.getInstance();
-                    endCalendar.setTime(startCalendar.getTime());
-                    endCalendar.add(Calendar.HOUR_OF_DAY, endTimeIn24hoursFormat - startCalendar.get(Calendar.HOUR_OF_DAY));
-                    endCalendar.clear(Calendar.MINUTE);
-                    endCalendar.clear(Calendar.SECOND);
-                    endCalendar.clear(Calendar.MILLISECOND);
-                    SimpleDateFormat slotTime = new SimpleDateFormat("hh:mm a");
-                    while (endCalendar.after(startCalendar)) {
-                        startCalendar.add(Calendar.MINUTE, Integer.parseInt(dur));
-                        String timeslots = slotTime.format(startCalendar.getTime());
-                       // System.err.println(Timeslots);
-                        addTimeAppointment(dur,start,end, timeslots);
-
+                    LocalTime time = LocalTime.MIN ;  // '00:00'
+                    for( int i = 1 ; i <= loops ; i ++ ) {
+                        times.add( time ) ;
+                        // Set up next loop.
+                        time = time.plusMinutes( gapInMinutes ) ;
                     }
-                } catch (ParseException e) {
-                    // date in wrong format
+
+                    int endTimeIn24hoursFormat = 22;
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH:MM a");
+                    try {
+                        Calendar startCalendar = Calendar.getInstance();
+                        startCalendar.setTime(sdf.parse(start));
+                        Calendar endCalendar = Calendar.getInstance();
+                        endCalendar.setTime(startCalendar.getTime());
+                        endCalendar.add(Calendar.HOUR_OF_DAY, endTimeIn24hoursFormat - startCalendar.get(Calendar.HOUR_OF_DAY));
+                        endCalendar.clear(Calendar.MINUTE);
+                        endCalendar.clear(Calendar.SECOND);
+                        endCalendar.clear(Calendar.MILLISECOND);
+                        SimpleDateFormat slotTime = new SimpleDateFormat("hh:mm a");
+                        while (endCalendar.after(startCalendar)) {
+                            startCalendar.add(Calendar.MINUTE, Integer.parseInt(dur));
+                            String timeslots = slotTime.format(startCalendar.getTime());
+                            addTimeAppointment(dur,start,end, timeslots);
+
+                        }
+                    } catch (ParseException e) {
+                        // date in wrong format
+                    }
+
+
+                }
                 }
 
-               // Toast.makeText(mContext, (CharSequence) times, Toast.LENGTH_SHORT).show();
-                //System.out.println( times.size() + " time slots: " ) ;
-               // System.out.println( times ) ;
-                /*for(int i=Integer.parseInt(start); i<=Integer.parseInt(end);i=i+Integer.parseInt(dur)){
-                    addTimeAppointment(dur,start,end, i);
-                }*/
-
-              //  addAnAppointment();
-                //addTimeAppointment(dur,start,end, times);
-
-            }
         });
 
 
@@ -462,7 +454,9 @@ public class AddServiceAppointmentFragment extends Fragment {
                 .child(mService.getServiceId()).child(Constants.Service_Appointment);
 
         recyclerView.setVisibility(View.GONE);
-        empty.setVisibility(View.VISIBLE);
+        empty.setVisibility(VISIBLE);
+        btnAdd.setEnabled(true);
+        btnAdd.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
 
         myRef.orderByChild("appointmentDate").equalTo(datePicked).addValueEventListener(new ValueEventListener() {
             @Override
@@ -470,10 +464,17 @@ public class AddServiceAppointmentFragment extends Fragment {
                 timeList.clear();
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
                     AppointmentModel category = d.getValue(AppointmentModel.class);
+
+                    recyclerView.setVisibility(VISIBLE);
+                    if(recyclerView.getVisibility() == VISIBLE){
+                        btnAdd.setEnabled(false);
+                        btnAdd.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.lightGray), PorterDuff.Mode.MULTIPLY);
+                    }
+
+                    empty.setVisibility(View.GONE);
                     timeList.add(category);
 
-                    recyclerView.setVisibility(View.VISIBLE);
-                    empty.setVisibility(View.GONE);
+
                 }
                // mAdapter.update(timeList);
                 checkIfTimeAlreadyPicked();
@@ -507,6 +508,7 @@ public class AddServiceAppointmentFragment extends Fragment {
                             int positon = timeList.indexOf(model);
                             model.setBooked(true);
                             timeList.set(positon,model);
+
                            // checkFromSalonServiceAppointment(time);
                         }
                     }
