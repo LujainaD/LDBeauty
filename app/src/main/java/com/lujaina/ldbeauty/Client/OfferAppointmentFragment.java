@@ -108,7 +108,6 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
         TextView services = parentView.findViewById(R.id.tv_specialist);
         TextView curPrice = parentView.findViewById(R.id.tv_price);
         ImageButton ibCalendar = parentView.findViewById(R.id.ib_calender);
-        ImageButton ibTimeButton = parentView.findViewById(R.id.ib_time);
         ImageButton ibBack = parentView.findViewById(R.id.ib_back);
         ImageButton ibLeft = parentView.findViewById(R.id.btn_left);
         ImageButton ibRight = parentView.findViewById(R.id.btn_right);
