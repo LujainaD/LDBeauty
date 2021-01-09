@@ -60,6 +60,10 @@ public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.MyViewHolder>{
             final AppointmentModel appointment = mAppointment.get(position);
             holder.time.setText(appointment.getPickedTime());
 
+            holder.delete.setVisibility(View.VISIBLE);
+            holder.time.setTextColor(Color.parseColor("#000000"));
+            holder.card.getBackground().setTint(Color.parseColor("#FFFFFF"));
+
             if(appointment.isBooked()== true){
                 holder.delete.setVisibility(View.GONE);
                 holder.time.setTextColor(Color.parseColor("#FFFFFF"));

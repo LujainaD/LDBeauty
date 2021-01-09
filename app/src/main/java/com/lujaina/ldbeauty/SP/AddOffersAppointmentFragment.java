@@ -89,7 +89,7 @@ public class AddOffersAppointmentFragment extends Fragment {
     Button btnAdd;
     private OfferModel mOffer;
     private String salonName;
-
+    EditText duration;
     public AddOffersAppointmentFragment() {
         // Required empty public constructor
     }
@@ -125,7 +125,7 @@ public class AddOffersAppointmentFragment extends Fragment {
         ImageButton ibRight = parentView.findViewById(R.id.btn_right);
         recyclerView = parentView.findViewById(R.id.rv_time);
         btnAdd = parentView.findViewById(R.id.btn_addTime);
-        EditText duration = parentView.findViewById(R.id.tv_duration);
+         duration = parentView.findViewById(R.id.tv_duration);
         startTime = parentView.findViewById(R.id.tv_start);
         endTime = parentView.findViewById(R.id.tv_endTime);
 
@@ -186,7 +186,9 @@ public class AddOffersAppointmentFragment extends Fragment {
                 String start= startTime.getText().toString().trim();
                 String end= endTime.getText().toString().trim();
                 if(dur.isEmpty()){
-                    duration.setError("you need to add duration");
+                    duration.setError("you need to add duration in minutes");
+                }else if(end.isEmpty()){
+                    endTime.setError("you need to add end time of services");
                 }else{
                     int gapInMinutes =  Integer.parseInt(dur) ;  // Define your span-of-time.
                     int loops = ( (int) Duration.ofHours( 12 ).toMinutes() / gapInMinutes ) ;
@@ -364,12 +366,9 @@ public class AddOffersAppointmentFragment extends Fragment {
 
     private void addTimeAppointment(String dur, String start, String end, String timeslots) {
         appointmentModel = new AppointmentModel();
-
         appointmentModel.setAppointmentDate(pickedDate.getText().toString().trim());
         appointmentModel.setOfferId(mOffer.getOfferId());
         appointmentModel.setOwnerId(mOffer.getSalonOwnerId());
-
-        appointmentModel = new AppointmentModel();
         appointmentModel.setDuration(dur);
         appointmentModel.setPickedTime(timeslots);
         appointmentModel.setAppointmentStartTime(start);
@@ -435,6 +434,8 @@ public class AddOffersAppointmentFragment extends Fragment {
         recyclerView.setVisibility(View.GONE);
         empty.setVisibility(View.VISIBLE);
         btnAdd.setEnabled(true);
+        duration.setEnabled(true);
+
         btnAdd.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
 
         myRef.orderByChild("appointmentDate").equalTo(datePicked).addValueEventListener(new ValueEventListener() {
@@ -451,6 +452,7 @@ public class AddOffersAppointmentFragment extends Fragment {
 
                     if(recyclerView.getVisibility() == VISIBLE){
                         btnAdd.setEnabled(false);
+                        duration.setEnabled(false);
                         btnAdd.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.lightGray), PorterDuff.Mode.MULTIPLY);
                     }
 

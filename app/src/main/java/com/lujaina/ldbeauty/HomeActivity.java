@@ -282,10 +282,19 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
         switch (item.getItemId()) {
 
             case R.id.log_out_menu:{
+                FirebaseAuth.getInstance().signOut();
+
             }
             case R.id.not_login: {
 
-                changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
+                //changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.fl_host, new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
+                ft.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                ft.remove(new LoginChoicesFragment());
+                ft.commit();
+                fm.popBackStack();
                 break;
             }
             case R.id.my_cart: {
@@ -301,6 +310,7 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
     }
     @Override
     public void onBackPressed() {
+
         if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             finish();
         } else {

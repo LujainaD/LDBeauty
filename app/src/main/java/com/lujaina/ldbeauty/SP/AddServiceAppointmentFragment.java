@@ -74,7 +74,7 @@ public class AddServiceAppointmentFragment extends Fragment {
     private ServiceModel mService;
     private TextView pickedDate;
   //  private TextView pickedTime;
-  TextView startTime;
+    TextView startTime;
     TextView endTime ;
     private Calendar calendar;
     private int mYear;
@@ -86,6 +86,7 @@ public class AddServiceAppointmentFragment extends Fragment {
     private TimeAdapter mAdapter;
     TextView empty;
     Button btnAdd;
+    EditText duration;
     public AddServiceAppointmentFragment() {
         // Required empty public constructor
     }
@@ -121,7 +122,7 @@ public class AddServiceAppointmentFragment extends Fragment {
         ImageButton ibRight = parentView.findViewById(R.id.btn_right);
         recyclerView = parentView.findViewById(R.id.rv_time);
          btnAdd = parentView.findViewById(R.id.btn_addTime);
-        EditText duration = parentView.findViewById(R.id.tv_duration);
+         duration = parentView.findViewById(R.id.tv_duration);
          startTime = parentView.findViewById(R.id.tv_start);
          endTime = parentView.findViewById(R.id.tv_endTime);
 
@@ -135,7 +136,6 @@ public class AddServiceAppointmentFragment extends Fragment {
 
         getCurrentDate();
         getCurrentTime();
-        getCurrentEndTime();
         showPreviousAppointments();
 
 
@@ -172,6 +172,7 @@ public class AddServiceAppointmentFragment extends Fragment {
             }
         });
 */
+
         ibTimeStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,6 +186,7 @@ public class AddServiceAppointmentFragment extends Fragment {
                 showTimeEndDialog();
             }
         });
+
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -193,7 +195,9 @@ public class AddServiceAppointmentFragment extends Fragment {
                 String start= startTime.getText().toString().trim();
                 String end= endTime.getText().toString().trim();
                 if(dur.isEmpty()){
-                    duration.setError("you need to add duration");
+                    duration.setError("you need to add duration in minutes");
+                }else if(end.isEmpty()){
+                    endTime.setError("you need to add end time of services");
                 }else{
                     int gapInMinutes =  Integer.parseInt(dur) ;  // Define your span-of-time.
                     int loops = ( (int) Duration.ofHours( 12 ).toMinutes() / gapInMinutes ) ;
@@ -456,6 +460,7 @@ public class AddServiceAppointmentFragment extends Fragment {
         recyclerView.setVisibility(View.GONE);
         empty.setVisibility(VISIBLE);
         btnAdd.setEnabled(true);
+        duration.setEnabled(true);
         btnAdd.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
 
         myRef.orderByChild("appointmentDate").equalTo(datePicked).addValueEventListener(new ValueEventListener() {
@@ -468,6 +473,7 @@ public class AddServiceAppointmentFragment extends Fragment {
                     recyclerView.setVisibility(VISIBLE);
                     if(recyclerView.getVisibility() == VISIBLE){
                         btnAdd.setEnabled(false);
+                        duration.setEnabled(false);
                         btnAdd.getBackground().setColorFilter(ContextCompat.getColor(mContext, R.color.lightGray), PorterDuff.Mode.MULTIPLY);
                     }
 
@@ -509,7 +515,6 @@ public class AddServiceAppointmentFragment extends Fragment {
                             model.setBooked(true);
                             timeList.set(positon,model);
 
-                           // checkFromSalonServiceAppointment(time);
                         }
                     }
                 }
