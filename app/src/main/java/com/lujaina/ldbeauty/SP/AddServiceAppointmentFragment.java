@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -57,7 +59,7 @@ import java.util.TimeZone;
 import static android.view.View.VISIBLE;
 
 public class AddServiceAppointmentFragment extends Fragment {
-    public static final String DATE_FORMAT = "d/MM/yyyy";
+    public static final String DATE_FORMAT = "d/M/yyyy";
     RecyclerView recyclerView;
     GridLayoutManager lineralayoutManager;
     String timeNew;
@@ -69,7 +71,6 @@ public class AddServiceAppointmentFragment extends Fragment {
     private FirebaseUser mFirebaseUser;
     private FirebaseDatabase mDatabase;
     private DatabaseReference myRef;
-    private MediatorInterface mMediatorInterface;
     private Context mContext;
     private ServiceModel mService;
     private TextView pickedDate;
@@ -87,6 +88,8 @@ public class AddServiceAppointmentFragment extends Fragment {
     TextView empty;
     Button btnAdd;
     EditText duration;
+    NavController navController;
+
     public AddServiceAppointmentFragment() {
         // Required empty public constructor
     }
@@ -95,11 +98,11 @@ public class AddServiceAppointmentFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
+       /* if (context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         } else {
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+        }*/
     }
 
     @Override
@@ -107,6 +110,14 @@ public class AddServiceAppointmentFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_appointment, container, false);
+
+
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+        mService = (ServiceModel) getArguments().getSerializable("ServiceModel");
+
+
         empty = parentView.findViewById(R.id.tv_empty);
 
         TextView service = parentView.findViewById(R.id.tv_service);
@@ -159,9 +170,7 @@ public class AddServiceAppointmentFragment extends Fragment {
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface != null) {
-                    mMediatorInterface.onBackPressed();
-                }
+                navController.popBackStack();
 
             }
         });
@@ -293,25 +302,6 @@ public class AddServiceAppointmentFragment extends Fragment {
         DatabaseReference dbRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category)
                 .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId()).child(Constants.Service_Appointment).child(category.getRecordId());
         dbRef.removeValue();
-    }
-
-
-    private void addAnAppointment() {
-        appointmentModel = new AppointmentModel();
-        appointmentModel.setAppointmentDate(pickedDate.getText().toString().trim());
-       // appointmentModel.setPickedTime(pickedTime.getText().toString().trim());
-        appointmentModel.setCategoryId(mService.getIdCategory());
-        appointmentModel.setOwnerId(mService.getOwnerId());
-        appointmentModel.setServiceId(mService.getServiceId());
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Category)
-                .child(mService.getIdCategory()).child(Constants.Salon_Service).child(mService.getServiceId()).child(Constants.Service_Appointment);
-        String recordID = dbRef.push().getKey();
-        appointmentModel.setRecordId(recordID);
-        dbRef.child(Objects.requireNonNull(recordID)).setValue(appointmentModel);
-
-
     }
 
     public void setAddAppointmentFragment(ServiceModel service) {

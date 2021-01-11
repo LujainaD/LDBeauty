@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -51,7 +54,7 @@ import com.lujaina.ldbeauty.User.AboutAppFragment;
 import com.lujaina.ldbeauty.User.SalonsHomeFragment;
 import com.lujaina.ldbeauty.User.SelectedSalonFragment;
 
-public class HomeActivity extends AppCompatActivity implements MediatorInterface, BottomNavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements /*MediatorInterface,*/ BottomNavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "fcm";
     private static final String CHANNEL_ID = "Booking";
@@ -61,7 +64,7 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
     FirebaseUser user;
     String userRole;
     ProgressDialog progressDialog;
-
+     NavController navController;
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +72,12 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
         setContentView(R.layout.activity_home);
         bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setOnNavigationItemSelectedListener(this);
-        changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
+       // changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
         createNotificationChannel();
+
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+         navController = navHostFragment.getNavController();
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -141,7 +148,7 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
         switch (item.getItemId()) {
             case R.id.nav_search: {
                 progressDialog.dismiss();
-                changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
+              //  changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
                 return true;
 
             }
@@ -152,7 +159,7 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
                        if (userRole.equals("Client")) {
                            if(user.isEmailVerified()){
                                progressDialog.dismiss();
-                               changeFragmentTo(new ClientProfileFragment(), ClientProfileFragment.class.getSimpleName());
+                              // changeFragmentTo(new ClientProfileFragment(), ClientProfileFragment.class.getSimpleName());
                            }else{
                                progressDialog.dismiss();
                                Toast.makeText(getApplicationContext(), "Please verify your email address", Toast.LENGTH_SHORT).show();
@@ -164,7 +171,8 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
                        } else if(userRole.equals("Salon Owner")){
                            if(user.isEmailVerified()){
                                progressDialog.dismiss();
-                           changeFragmentTo(new SPProfileFragment(), SPProfileFragment.class.getSimpleName());
+
+                               navController.navigate(R.id.action_salonsHomeFragment2_to_SPProfileFragment2);
                            }else{
                                progressDialog.dismiss();
                                Toast.makeText(getApplicationContext(), "Please verify your email address", Toast.LENGTH_SHORT).show();
@@ -173,7 +181,7 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
 
                        }else {
                            progressDialog.dismiss();
-                           changeFragmentTo(new AppOwnerProfileFragment(), AppOwnerProfileFragment.class.getSimpleName());
+                          // changeFragmentTo(new AppOwnerProfileFragment(), AppOwnerProfileFragment.class.getSimpleName());
                            return true;
                        }
 
@@ -195,7 +203,7 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
             }
             case R.id.nav_app: {
                 progressDialog.dismiss();
-                changeFragmentTo(new AboutAppFragment(), AboutAppFragment.class.getSimpleName());
+               // changeFragmentTo(new AboutAppFragment(), AboutAppFragment.class.getSimpleName());
                 return true;
             }
 
@@ -206,7 +214,7 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
 
     }
 
-    @Override
+   /* @Override
     public void changeFragmentTo(Fragment fragmentToDisplay, String fragmentTag) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -216,7 +224,7 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
             ft.addToBackStack(fragmentTag);
         }
         ft.commit();
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -288,17 +296,17 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
             case R.id.not_login: {
 
                 //changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
-                FragmentManager fm = getSupportFragmentManager();
+               /* FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 ft.replace(R.id.fl_host, new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
                 ft.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 ft.remove(new LoginChoicesFragment());
                 ft.commit();
-                fm.popBackStack();
+                fm.popBackStack();*/
                 break;
             }
             case R.id.my_cart: {
-                changeFragmentTo(new CartFragment(), CartFragment.class.getSimpleName());
+               // changeFragmentTo(new CartFragment(), CartFragment.class.getSimpleName());
                 break;
 
             }
@@ -308,7 +316,7 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
         return super.onOptionsItemSelected(item);
 
     }
-    @Override
+   /* @Override
     public void onBackPressed() {
 
         if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
@@ -316,7 +324,7 @@ public class HomeActivity extends AppCompatActivity implements MediatorInterface
         } else {
             super.onBackPressed();
         }
-    }
+    }*/
 
 
     private void createNotificationChannel() {

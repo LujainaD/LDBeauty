@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,7 +51,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class OfferAppointmentFragment extends Fragment implements AppointmentAdapter.onTimePickedListener {
-    public static final String DATE_FORMAT = "dd/MM/yyyy";
+    public static final String DATE_FORMAT = "d/M/yyyy";
     private static final String TAG = "OfferAppointmentFragmen";
 
     private FirebaseAuth mAuth;
@@ -341,7 +342,7 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
 
     private void setupRecyclerView(RecyclerView recyclerView) {
 
-        lineralayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
+        lineralayoutManager = new GridLayoutManager(mContext, 2);
         recyclerView.setLayoutManager(lineralayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 

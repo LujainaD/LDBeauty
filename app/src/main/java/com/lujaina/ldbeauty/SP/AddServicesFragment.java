@@ -6,11 +6,15 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,15 +47,15 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
     private ArrayList<ServiceModel> serviceList;
     private ServiceAdapter mAdapter;
 
-    private MediatorInterface mMediatorInterface;
     private Context mContext;
     private ProgressDialog progressDialog;
 
     private ServiceModel service;
     private CategoryModel category;
-    private String salonName;
+    //private String salonName;
     RecyclerView recyclerView;
     TextView empty;
+    NavController navController;
 
     public AddServicesFragment() {
         // Required empty public constructor
@@ -59,11 +63,11 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
+       /* if (context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         } else {
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+        }*/
     }
 
     @Override
@@ -71,6 +75,13 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_services, container, false);
+
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+        String salonName = getArguments().getString("salonName");
+        category = (CategoryModel) getArguments().getSerializable("CategoryModel");
+
         empty = parentView.findViewById(R.id.tv_empty);
 
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
@@ -84,10 +95,12 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
         setupRecyclerView(recyclerView);
         readSalonInfoFromFirebaseDB();
 
+
+        //Log.w("category",categoryModel.categoryId);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMediatorInterface.onBackPressed();
+                navController.popBackStack();
             }
         });
 
@@ -145,11 +158,11 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
             });
         }
 
-    public void setService(CategoryModel categoryList, String salonName) {
+   /* public void setService(CategoryModel categoryList, String salonName) {
         category = categoryList;
         this.salonName = salonName;
 
-    }
+    }*/
     private void setupRecyclerView(RecyclerView recyclerView) {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
@@ -173,11 +186,17 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
                     myRef.removeValue();
                     break;
                 case ItemTouchHelper.RIGHT:
-                    if(mMediatorInterface != null){
+                   /* if(mMediatorInterface != null){
                         AddServiceAppointmentFragment appointment = new AddServiceAppointmentFragment();
                         appointment.setAddAppointmentFragment(swipedService);
                         mMediatorInterface.changeFragmentTo(appointment, AddServiceAppointmentFragment.class.getSimpleName());
                     }
+*/
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("ServiceModel", swipedService);
+                    //Navigation.findNavController(parentView).navigate(R.id.action_addCategoriesFragment_to_addServicesFragment2, bundle);
+                    navController.navigate(R.id.action_addServicesFragment_to_addServiceAppointmentFragment22, bundle);
+
                     break;
 
                 }

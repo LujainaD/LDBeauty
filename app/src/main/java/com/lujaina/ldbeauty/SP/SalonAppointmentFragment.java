@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,7 +46,6 @@ public class SalonAppointmentFragment extends Fragment implements ConfirmDialogF
     private FirebaseDatabase mDatabase;
 
     private Context mContext;
-    private MediatorInterface mMediatorInterface;
     ProgressDialog progressDialog;
 
     RecyclerView recyclerView;
@@ -59,11 +60,11 @@ public class SalonAppointmentFragment extends Fragment implements ConfirmDialogF
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
+       /* if (context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         } else {
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+        }*/
     }
 
     @Override
@@ -71,6 +72,9 @@ public class SalonAppointmentFragment extends Fragment implements ConfirmDialogF
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_salon_appointment, container, false);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavController navController = navHostFragment.getNavController();
         ImageButton back = parentView.findViewById(R.id.ib_back);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
@@ -110,9 +114,7 @@ public class SalonAppointmentFragment extends Fragment implements ConfirmDialogF
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface != null) {
-                    mMediatorInterface.onBackPressed();
-                }
+               navController.popBackStack();
             }
         });
 

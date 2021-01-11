@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.os.Looper;
 import android.provider.Settings;
@@ -81,7 +83,6 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     private GoogleMap mMap;
     private MapView mMapView;
     private Context mContext;
-    private MediatorInterface mMediatorInterface;
     private TextView tvLocationName;
     private TextView tvLat;
     private TextView tvLng;
@@ -100,11 +101,11 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
+       /* if (context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         } else {
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+        }*/
     }
 
     @Override
@@ -115,6 +116,9 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavController navController = navHostFragment.getNavController();
         ImageButton ibBack = parentView.findViewById(R.id.ib_back);
         tvLocationName = parentView.findViewById(R.id.tv_place);
         tvLat = parentView.findViewById(R.id.tv_lat);
@@ -168,9 +172,7 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface != null) {
-                    mMediatorInterface.onBackPressed();
-                }
+                navController.popBackStack();
 
             }
         });

@@ -67,21 +67,16 @@ public class SAppointmentAdapter extends RecyclerView.Adapter<SAppointmentAdapte
     @SuppressLint({"UseCompatLoadingForDrawables", "ResourceAsColor"})
     @Override
     public void onBindViewHolder(@NonNull final SAppointmentAdapter.MyViewHolder holder, final int position) {
+        holder.setIsRecyclable(false);
         final AppointmentModel model = mTime.get(position);
         holder.time.setText(model.getPickedTime());
-
-       /* if(model.isBooked()==true){
-            holder.card.setEnabled(false);
-            holder.time.setTextColor(Color.parseColor("#FFFFFF"));
-            holder.card.getBackground().setTint(Color.parseColor("#E6E7E8"));
-        }else {*/
-            holder.card.setOnClickListener(new View.OnClickListener() {
+        holder.card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mListener.onItemSelected(position,previousSelectedItem, model);
                 }
             });
-       // }
+
 
         if(model.isSelected()){
 
@@ -91,17 +86,17 @@ public class SAppointmentAdapter extends RecyclerView.Adapter<SAppointmentAdapte
             holder.card.setCardBackgroundColor(Color.parseColor("#DA6EA4"));
             holder.time.setTextColor(Color.parseColor("#FFFFFF"));
 
-        }else {
-
+        }else{
             holder.card.getCardBackgroundColor();
             ColorStateList.valueOf(Color.parseColor("#DA6EA4"));
             holder.card.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
-           holder.time.setTextColor(Color.parseColor("#000000"));
-            if(model.isBooked()== true){
-                holder.card.setEnabled(false);
-                holder.time.setTextColor(Color.parseColor("#FFFFFF"));
-                holder.card.getBackground().setTint(Color.parseColor("#E6E7E8"));
-            }
+            holder.time.setTextColor(Color.parseColor("#000000"));
+        }
+
+        if(model.isBooked()== true){
+            holder.card.setEnabled(false);
+            holder.time.setTextColor(Color.parseColor("#FFFFFF"));
+            holder.card.getBackground().setTint(Color.parseColor("#E6E7E8"));
         }
 
     }

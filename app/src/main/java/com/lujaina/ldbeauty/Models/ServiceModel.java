@@ -1,6 +1,8 @@
 package com.lujaina.ldbeauty.Models;
 
-public class ServiceModel {
+import java.io.Serializable;
+
+public class ServiceModel implements Serializable {
     public String ownerId;
     public String idCategory;
     public String serviceId;

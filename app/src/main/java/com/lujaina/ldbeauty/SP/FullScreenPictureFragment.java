@@ -31,7 +31,6 @@ import com.lujaina.ldbeauty.R;
 public class FullScreenPictureFragment extends DialogFragment {
     private FirebaseUser mFirebaseUser;
 
-    private MediatorInterface mMediatorInterface;
     private Context mContext;
 
     private GalleryModel mGallery;
@@ -44,11 +43,11 @@ public class FullScreenPictureFragment extends DialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
+        /*if (context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         } else {
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+        }*/
     }
     @Override
     public void onStart() {

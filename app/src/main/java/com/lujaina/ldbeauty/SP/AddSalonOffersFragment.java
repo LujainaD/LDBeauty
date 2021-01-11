@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,6 +31,7 @@ import com.lujaina.ldbeauty.Adapters.OfferAdapter;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Dialogs.OffersDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
+import com.lujaina.ldbeauty.Models.CategoryModel;
 import com.lujaina.ldbeauty.Models.OfferModel;
 import com.lujaina.ldbeauty.R;
 import com.lujaina.ldbeauty.Interfaces.RecyclerItemTouchHelperListener;
@@ -43,7 +46,6 @@ public class AddSalonOffersFragment extends Fragment implements RecyclerItemTouc
     private ArrayList<OfferModel> offersList;
     private OfferAdapter mAdapter;
 
-    private MediatorInterface mMediatorInterface;
     private Context mContext;
     private ProgressDialog progressDialog;
 
@@ -51,6 +53,8 @@ public class AddSalonOffersFragment extends Fragment implements RecyclerItemTouc
     private String salonName;
     TextView empty;
     RecyclerView recyclerView;
+    NavController navController;
+
     public AddSalonOffersFragment() {
         // Required empty public constructor
     }
@@ -58,11 +62,11 @@ public class AddSalonOffersFragment extends Fragment implements RecyclerItemTouc
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
+        /*if (context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         } else {
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+        }*/
     }
 
     @Override
@@ -70,6 +74,12 @@ public class AddSalonOffersFragment extends Fragment implements RecyclerItemTouc
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_salon_offers, container, false);
+
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+         salonName = getArguments().getString("salonName");
+
         empty = parentView.findViewById(R.id.tv_empty);
 
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
@@ -86,7 +96,7 @@ public class AddSalonOffersFragment extends Fragment implements RecyclerItemTouc
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMediatorInterface.onBackPressed();
+                navController.popBackStack();
             }
         });
 
@@ -168,11 +178,17 @@ public class AddSalonOffersFragment extends Fragment implements RecyclerItemTouc
                     myRef.removeValue();
                     break;
                 case ItemTouchHelper.RIGHT:
-                    if (mMediatorInterface != null) {
+                   /* if (mMediatorInterface != null) {
                         AddOffersAppointmentFragment appointment = new AddOffersAppointmentFragment();
                         appointment.setAddAppointmentFragment(swipedService, salonName);
                         mMediatorInterface.changeFragmentTo(appointment, AddOffersAppointmentFragment.class.getSimpleName());
-                    }
+                    }*/
+
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("OfferModel", swipedService);
+                    //Navigation.findNavController(parentView).navigate(R.id.action_addCategoriesFragment_to_addServicesFragment2, bundle);
+                    navController.navigate(R.id.action_addSalonOffersFragment_to_addOffersAppointmentFragment2, bundle);
+
                     break;
 
             }
@@ -180,8 +196,4 @@ public class AddSalonOffersFragment extends Fragment implements RecyclerItemTouc
         }
     }
 
-
-    public void setSalonInfo(String salonName) {
-        this.salonName =salonName;
-    }
 }

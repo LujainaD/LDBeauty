@@ -1,6 +1,8 @@
 package com.lujaina.ldbeauty.Models;
 
-public class CategoryModel {
+import java.io.Serializable;
+
+public class CategoryModel implements Serializable {
     public String ownerId;
     public String categoryId;
     public String categoryURL;

@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,7 +61,6 @@ public class SpCalenderFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;
 
-    private MediatorInterface mMediatorInterface;
 
     private ArrayList<ClientsAppointmentModel> eventList;
     private EventsAdapter mAdapter;
@@ -69,7 +70,7 @@ public class SpCalenderFragment extends Fragment {
     com.applandeo.materialcalendarview.CalendarView calendarView;
     public SpCalenderFragment() {
         // Required empty public constructor
-    }
+    }/*
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -78,7 +79,7 @@ public class SpCalenderFragment extends Fragment {
         } else {
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
         }
-    }
+    }*/
 
 
     @Override
@@ -86,6 +87,9 @@ public class SpCalenderFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_sp_calender, container, false);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavController navController = navHostFragment.getNavController();
         ImageButton back = parentView.findViewById(R.id.ib_back);
         noAppointment = parentView.findViewById(R.id.textView24);
         mAuth = FirebaseAuth.getInstance();
@@ -140,9 +144,7 @@ public class SpCalenderFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
-                    mMediatorInterface.onBackPressed();
-                }
+                navController.popBackStack();
             }
         });
 

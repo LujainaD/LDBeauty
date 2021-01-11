@@ -1,6 +1,8 @@
 package com.lujaina.ldbeauty.Models;
 
-public class OfferModel {
+import java.io.Serializable;
+
+public class OfferModel implements Serializable {
     private String salonOwnerId;
     private String salonName;
 

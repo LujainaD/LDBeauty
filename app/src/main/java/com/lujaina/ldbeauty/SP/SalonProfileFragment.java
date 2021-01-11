@@ -7,6 +7,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,11 +40,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SalonProfileFragment extends Fragment {
     private Context mContext;
-    private MediatorInterface mMediatorInterface;
 
     DatabaseReference myRef;
 
     ProgressDialog progressDialog;
+    NavController navController;
 
     public SalonProfileFragment() {
         // Required empty public constructor
@@ -51,12 +54,12 @@ public class SalonProfileFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if(context instanceof MediatorInterface) {
+        /*if(context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         }
         else{
             throw new RuntimeException(context.toString()+ "must implement MediatorInterface");
-        }
+        }*/
     }
 
     @Override
@@ -66,6 +69,10 @@ public class SalonProfileFragment extends Fragment {
         View parentView = inflater.inflate(R.layout.fragment_salon_profile, container, false);
         BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
         navBar.setVisibility(View.GONE);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+
         TextView aboutPage = parentView.findViewById(R.id.tv_AboutPage);
         final CircleImageView profileImag = parentView.findViewById(R.id.civ_profile);
         ImageButton back = parentView.findViewById(R.id.ib_back);
@@ -83,57 +90,79 @@ public class SalonProfileFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
+                /*if(mMediatorInterface != null){
                     mMediatorInterface.onBackPressed();
-                }
+                }*/
+
+                navController.popBackStack();
             }
         });
 
     categoryPage.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (mMediatorInterface !=null){
+            /*if (mMediatorInterface !=null){
                 AddCategoriesFragment salonInfo = new AddCategoriesFragment();
                 salonInfo.setSalonInfo(salonName.getText().toString());
                 mMediatorInterface.changeFragmentTo(salonInfo, AddCategoriesFragment.class.getSimpleName());
-            }
+            }*/
+            Bundle bundle = new Bundle();
+            bundle.putString("salonName", salonName.getText().toString().trim());
+            //Navigation.findNavController(parentView).navigate(R.id.action_salonProfileFragment_to_addCategoriesFragment2, bundle);
+            navController.navigate(R.id.action_salonProfileFragment_to_addCategoriesFragment2, bundle);
+
         }
     });
         aboutPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface !=null){
+                /*if (mMediatorInterface !=null){
                     mMediatorInterface.changeFragmentTo(new AddInfoFragment(), AddInfoFragment.class.getSimpleName());
-                }
+                }*/
+
+                navController.navigate(R.id.action_salonProfileFragment_to_addInfoFragment2);
+
             }
         });
 
         galleryPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface !=null){
+                /*if (mMediatorInterface !=null){
                     mMediatorInterface.changeFragmentTo(new AddGalleryFragment(), AddGalleryFragment.class.getSimpleName());
-                }
+                }*/
+
+                navController.navigate(R.id.action_salonProfileFragment_to_addGalleryFragment2);
+
             }
         });
 
         locationPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface !=null){
+                /*if (mMediatorInterface !=null){
                     AddSalonLocationFragment location = new AddSalonLocationFragment();
                     mMediatorInterface.changeFragmentTo(new AddSalonLocationFragment(), AddSalonLocationFragment.class.getSimpleName());
-                }
+                }*/
+
+                navController.navigate(R.id.action_salonProfileFragment_to_addSalonLocationFragment2);
+
             }
         });
         offerPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface !=null){
+                /*if (mMediatorInterface !=null){
                     AddSalonOffersFragment salonInfo = new AddSalonOffersFragment();
                     salonInfo.setSalonInfo(salonName.getText().toString());
                     mMediatorInterface.changeFragmentTo(salonInfo, AddSalonOffersFragment.class.getSimpleName());
-                }
+                }*/
+
+                Bundle bundle = new Bundle();
+                bundle.putString("salonName", salonName.getText().toString().trim());
+                //Navigation.findNavController(parentView).navigate(R.id.action_salonProfileFragment_to_addCategoriesFragment2, bundle);
+                navController.navigate(R.id.action_salonProfileFragment_to_addSalonOffersFragment2, bundle);
+
             }
         });
 
@@ -154,9 +183,7 @@ public class SalonProfileFragment extends Fragment {
 
                 } else {
                     progressDialog.dismiss();
-                    if(mMediatorInterface!= null){
-                        mMediatorInterface.changeFragmentTo(new LoginChoicesFragment(),LoginChoicesFragment.class.getSimpleName());
-                    }
+
                 }
             }
 

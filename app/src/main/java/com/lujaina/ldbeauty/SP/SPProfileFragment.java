@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.lujaina.ldbeauty.Client.EditClientProfileFragment;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.LoginChoicesFragment;
@@ -33,10 +36,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SPProfileFragment extends Fragment {
     private Context mContext;
-    private MediatorInterface mMediatorInterface;
 
     private ProgressDialog progressDialog;
-
+    NavController navController;
 
     public SPProfileFragment() {
         // Required empty public constructor
@@ -46,12 +48,12 @@ public class SPProfileFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if(context instanceof MediatorInterface) {
+        /*if(context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         }
         else{
             throw new RuntimeException(context.toString()+ "must implement MediatorInterface");
-        }
+        }*/
     }
 
     @Override
@@ -62,6 +64,11 @@ public class SPProfileFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
         navBar.setVisibility(View.VISIBLE);
+
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+          navController = navHostFragment.getNavController();
+
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -85,9 +92,10 @@ public class SPProfileFragment extends Fragment {
         salonPages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface !=null){
-                    mMediatorInterface.changeFragmentTo(new SalonProfileFragment(), SalonProfileFragment.class.getSimpleName());
-                }
+                   // mMediatorInterface.changeFragmentTo(new SalonProfileFragment(), SalonProfileFragment.class.getSimpleName());
+                    navController.navigate(R.id.action_SPProfileFragment_to_salonProfileFragment);
+
+
 
             }
         });
@@ -95,9 +103,8 @@ public class SPProfileFragment extends Fragment {
         editOwnerProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface !=null){
-                    mMediatorInterface.changeFragmentTo(new EditSpProfileFragment(), EditSpProfileFragment.class.getSimpleName());
-                }
+                navController.navigate(R.id.action_SPProfileFragment_to_editSpProfileFragment3);
+
 
             }
         });
@@ -105,9 +112,8 @@ public class SPProfileFragment extends Fragment {
         editSalonProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface !=null){
-                    mMediatorInterface.changeFragmentTo(new EditSalonProfileFragment(), EditSalonProfileFragment.class.getSimpleName());
-                }
+                navController.navigate(R.id.action_SPProfileFragment_to_editSalonProfileFragment);
+
 
             }
         });
@@ -115,9 +121,8 @@ public class SPProfileFragment extends Fragment {
         salonFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface !=null){
-                    mMediatorInterface.changeFragmentTo(new SalonFeedbackFragment(), SalonFeedbackFragment.class.getSimpleName());
-                }
+                navController.navigate(R.id.action_SPProfileFragment_to_salonFeedbackFragment);
+
 
             }
         });
@@ -125,9 +130,8 @@ public class SPProfileFragment extends Fragment {
         salonAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface !=null){
-                    mMediatorInterface.changeFragmentTo(new SalonAppointmentFragment(), SalonAppointmentFragment.class.getSimpleName());
-                }
+
+                navController.navigate(R.id.action_SPProfileFragment_to_salonAppointmentFragment);
 
             }
         });
@@ -135,9 +139,8 @@ public class SPProfileFragment extends Fragment {
         calendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface !=null){
-                    mMediatorInterface.changeFragmentTo(new SpCalenderFragment(), SpCalenderFragment.class.getSimpleName());
-                }
+                navController.navigate(R.id.action_SPProfileFragment_to_spCalenderFragment);
+
 
             }
         });
@@ -155,9 +158,7 @@ public class SPProfileFragment extends Fragment {
 
                 } else {
                     progressDialog.dismiss();
-                    if (mMediatorInterface !=null){
-                        mMediatorInterface.changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
-                    }
+
                 }
             }
 

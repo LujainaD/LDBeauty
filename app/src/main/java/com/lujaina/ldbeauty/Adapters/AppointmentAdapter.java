@@ -70,7 +70,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 			}
 		});
 
-		if(model.isSelected()){
+        if(model.isSelected()){
 			previousSelectedItem = position;
 			holder.card.getCardBackgroundColor();
 			ColorStateList.valueOf(Color.parseColor("#FFFFFF"));

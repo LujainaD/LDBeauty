@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuAdapter;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -64,6 +66,7 @@ public class SalonsHomeFragment extends Fragment {
 
     private HomeAdapter mAdapter;
     ArrayList<SPRegistrationModel> salonNamesArray;
+    NavController navController;
 
     public SalonsHomeFragment() {
         // Required empty public constructor
@@ -73,11 +76,11 @@ public class SalonsHomeFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
+        /*if (context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         } else {
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+        }*/
     }
 
     @Override
@@ -88,6 +91,11 @@ public class SalonsHomeFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
         navBar.setVisibility(View.VISIBLE);
+
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
@@ -107,7 +115,7 @@ public class SalonsHomeFragment extends Fragment {
                 if(mMediatorInterface != null){
                     SelectedSalonFragment section = new SelectedSalonFragment();
                     section.setSection(salon);
-                    mMediatorInterface.changeFragmentTo(section ,SelectedSalonFragment.class.getSimpleName());
+                    //mMediatorInterface.changeFragmentTo(section ,SelectedSalonFragment.class.getSimpleName());
 
                 }
 

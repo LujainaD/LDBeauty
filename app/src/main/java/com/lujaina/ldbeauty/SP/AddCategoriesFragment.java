@@ -6,11 +6,16 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,12 +46,11 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
     RecyclerView recyclerView;
     TextView empty;
     private DatabaseReference myRef;
-    private MediatorInterface mMediatorInterface;
     private Context mContext;
     private ProgressDialog progressDialog;
     private ArrayList<CategoryModel> categoryList;
     private CategoryAdapter mAdapter;
-    private String salonName;
+    NavController navController;
 
     public AddCategoriesFragment() {
         // Required empty public constructor
@@ -56,11 +60,11 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
+        /*if (context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         } else {
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+        }*/
     }
 
     @Override
@@ -68,6 +72,11 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_categories, container, false);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+
+
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
         empty = parentView.findViewById(R.id.tv_empty);
         ImageButton back = parentView.findViewById(R.id.ib_back);
@@ -80,16 +89,27 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
         setupRecyclerView(recyclerView);
         readSalonInfoFromFirebaseDB();
 
+        String salonName = getArguments().getString("salonName");
+
         mAdapter.setonClickListener(new CategoryAdapter.onClickListener() {
             @Override
             public void onClick(CategoryModel category) {
-                if (mMediatorInterface != null) {
+                /*if (mMediatorInterface != null) {
                     AddServicesFragment service = new AddServicesFragment();
                     service.setService(category, salonName);
                     mMediatorInterface.changeFragmentTo(service, AddServicesFragment.class.getSimpleName());
 
-                }
+                }*/
+
+                Bundle bundle = new Bundle();
+                bundle.putString("salonName", salonName);
+                bundle.putSerializable("CategoryModel", category);
+                //Navigation.findNavController(parentView).navigate(R.id.action_addCategoriesFragment_to_addServicesFragment2, bundle);
+                navController.navigate(R.id.action_addCategoriesFragment_to_addServicesFragment2, bundle);
+
             }
+
+
         });
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,9 +128,8 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface != null) {
-                    mMediatorInterface.onBackPressed();
-                }
+                navController.popBackStack();
+
             }
         });
 
@@ -176,7 +195,5 @@ public class AddCategoriesFragment extends Fragment implements RecyclerItemTouch
         }
     }
 
-    public void setSalonInfo(String salonInfo) {
-        salonName = salonInfo;
-    }
+
 }

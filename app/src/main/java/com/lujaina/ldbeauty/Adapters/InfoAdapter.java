@@ -32,14 +32,14 @@ import java.util.ArrayList;
 public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.MyViewHolder> {
 
 	public Context mContext;
-	public MediatorInterface mMidiatorCallback;
+	//public MediatorInterface mMidiatorCallback;
 	private ArrayList<AddInfoModel> mUpdate;
 	private onClickListener mListener;
 
 	public InfoAdapter(Context mContext) {
 		mUpdate = new ArrayList<>();
 		this.mContext = mContext;
-		mMidiatorCallback = (MediatorInterface) mContext;
+	//	mMidiatorCallback = (MediatorInterface) mContext;
 	}
 
 	public void update(int position, AddInfoModel aboutSalon) {

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,7 +50,7 @@ import java.util.TimeZone;
 
 
 public class ServiceAppointmentFragment extends Fragment implements SAppointmentAdapter.onTimePickedListener{
-    public static final String DATE_FORMAT    = "dd/MM/yyyy";
+    public static final String DATE_FORMAT    = "d/M/yyyy";
 
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;
@@ -86,11 +87,11 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
+        /*if (context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         } else {
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+        }*/
     }
 
     @Override
@@ -236,40 +237,6 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
 
     }
 
-    private void checkIfTimeAlreadyPicked() {
-        final String datePicked = pickedDate.getText().toString().trim();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef;
-myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(serviceInfo.getOwnerId())
-                .child(Constants.History_Order);
-
-        myRef.orderByChild("appointmentDate").equalTo(datePicked).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String time = snapshot.child("appointmentTime").getValue(String.class);
-                    //checkFromSalonServiceAppointment(time);
-                    for(AppointmentModel model: timeList){
-                        if(model.getPickedTime().equals(time)){
-                            int positon = timeList.indexOf(model);
-                            model.setBooked(true);
-                            timeList.set(positon,model);
-                            // checkFromSalonServiceAppointment(time);
-                        }
-                    }
-                }
-                mAdapter.update(timeList);
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-            }
-        });
-
-
-
-    }
-
     private void showPreviousAppointments() {
         String datePicked = pickedDate.getText().toString().trim();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -290,7 +257,7 @@ myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constan
                     recyclerView.setVisibility(View.VISIBLE);
                     empty.setVisibility(View.GONE);
                 }
-               // mAdapter.update(timeList);
+                // mAdapter.update(timeList);
                 checkIfTimeAlreadyPicked();
             }
 
@@ -302,8 +269,41 @@ myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constan
 
     }
 
+    private void checkIfTimeAlreadyPicked() {
+        final String datePicked = pickedDate.getText().toString().trim();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef;
+        myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(serviceInfo.getOwnerId())
+                .child(Constants.History_Order);
+
+        myRef.orderByChild("appointmentDate").equalTo(datePicked).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String time = snapshot.child("appointmentTime").getValue(String.class);
+                    //checkFromSalonServiceAppointment(time);
+                    for(AppointmentModel model: timeList){
+                        if(model.getPickedTime().equals(time)){
+                            int positon = timeList.indexOf(model);
+                            model.setBooked(true);
+                            timeList.set(positon,model);
+                        }
+                    }
+                }
+                mAdapter.update(timeList);
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
+
+
+
+    }
+
     private void setupRecyclerView(RecyclerView recyclerView) {
-        lineralayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL,false);
+        lineralayoutManager = new GridLayoutManager(mContext, 2);
         recyclerView.setLayoutManager(lineralayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
@@ -363,41 +363,5 @@ myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constan
         mAdapter.notifyDataSetChanged();
     }
 
-    private void changePickedTime(AppointmentModel model) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef;
-        myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(serviceInfo.getOwnerId())
-                .child(Constants.Salon_Category).child(serviceInfo.getIdCategory()).child(Constants.Salon_Service).child(serviceInfo.getServiceId()).child(Constants.Service_Appointment).child(model.getRecordId());
-
-
-        myRef.child("isSelected").setValue(model.isSelected());
-        myRef.child("appointmentDate").setValue(pickedDate.getText().toString());
-        myRef.child("categoryId").setValue(serviceInfo.getIdCategory());
-        myRef.child("ownerId").setValue(serviceInfo.getOwnerId());
-        myRef.child("pickedTime").setValue(selectedTime);
-        myRef.child("recordId").setValue(model.getRecordId());
-        myRef.child("serviceId").setValue(serviceInfo.getServiceId());
-        myRef.child("isChosen").setValue("yes");
-    }
-
-    private void addSelectItemAsBooked(AppointmentModel model) {
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef;
-        myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(serviceInfo.getOwnerId())
-                .child(Constants.Salon_Category).child(serviceInfo.getIdCategory()).child(Constants.Salon_Service).child(serviceInfo.getServiceId()).child(Constants.Service_Appointment).child(model.getRecordId());
-
-
-   myRef.child("isSelected").setValue(model.isSelected());
-   myRef.child("appointmentDate").setValue(pickedDate.getText().toString());
-   myRef.child("categoryId").setValue(serviceInfo.getIdCategory());
-   myRef.child("ownerId").setValue(serviceInfo.getOwnerId());
-   myRef.child("pickedTime").setValue(selectedTime);
-   myRef.child("recordId").setValue(model.getRecordId());
-   myRef.child("serviceId").setValue(serviceInfo.getServiceId());
-  // myRef.child("isChosen").setValue("yes");
-
-
-    }
 
 }

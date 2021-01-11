@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -58,7 +60,7 @@ import static android.view.View.VISIBLE;
 
 
 public class AddOffersAppointmentFragment extends Fragment {
-    public static final String DATE_FORMAT = "d/MM/yyyy";
+    public static final String DATE_FORMAT = "d/M/yyyy";
     RecyclerView recyclerView;
     GridLayoutManager lineralayoutManager;
     String timeNew;
@@ -70,9 +72,8 @@ public class AddOffersAppointmentFragment extends Fragment {
     private FirebaseUser mFirebaseUser;
     private FirebaseDatabase mDatabase;
     private DatabaseReference myRef;
-    private MediatorInterface mMediatorInterface;
     private Context mContext;
-    private ServiceModel mService;
+   // private ServiceModel mService;
     private TextView pickedDate;
     //  private TextView pickedTime;
     TextView startTime;
@@ -90,6 +91,8 @@ public class AddOffersAppointmentFragment extends Fragment {
     private OfferModel mOffer;
     private String salonName;
     EditText duration;
+    NavController navController;
+
     public AddOffersAppointmentFragment() {
         // Required empty public constructor
     }
@@ -98,11 +101,11 @@ public class AddOffersAppointmentFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
+       /* if (context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         } else {
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+        }*/
     }
 
     @Override
@@ -110,6 +113,11 @@ public class AddOffersAppointmentFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_offers_appointment, container, false);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+        mOffer = (OfferModel) getArguments().getSerializable("OfferModel");
+
         empty = parentView.findViewById(R.id.tv_empty);
 
         TextView offerTitle 	= parentView.findViewById(R.id.tv_service);
@@ -143,6 +151,7 @@ public class AddOffersAppointmentFragment extends Fragment {
         mAdapter = new TimeAdapter(mContext);
         recyclerView.setAdapter(mAdapter);
         setupRecyclerView(recyclerView);
+
         mAdapter.setonClickListener(new TimeAdapter.onClickListener() {
             @Override
             public void onClick(AppointmentModel category) {
@@ -159,9 +168,8 @@ public class AddOffersAppointmentFragment extends Fragment {
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
-                    mMediatorInterface.onBackPressed();
-                }
+                navController.popBackStack();
+
 
             }
         });
@@ -378,7 +386,7 @@ public class AddOffersAppointmentFragment extends Fragment {
                 .child(mOffer.getOfferId()).child(Constants.Service_Appointment);
         String recordID = dbRef.push().getKey();
         appointmentModel.setRecordId(recordID);
-        appointmentModel.setSalonName(salonName);
+        appointmentModel.setSalonName(mOffer.getSalonName());
 
 
         dbRef.child(Objects.requireNonNull(recordID)).setValue(appointmentModel);
@@ -386,10 +394,10 @@ public class AddOffersAppointmentFragment extends Fragment {
 
     }
 
-    public void setAddAppointmentFragment(OfferModel service, String salonName) {
+    /*public void setAddAppointmentFragment(OfferModel service, String salonName) {
         mOffer = service;
         this.salonName = salonName;
-    }
+    }*/
 
     private void showDateDialog() {
 
