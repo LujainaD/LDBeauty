@@ -56,7 +56,7 @@ import java.util.TimeZone;
 import static java.util.Collections.unmodifiableList;
 
 public class SpCalenderFragment extends Fragment {
-    public static final String DATE_FORMAT    = "d/MM/yyyy";
+    public static final String DATE_FORMAT    = "d/M/yyyy";
 
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;
