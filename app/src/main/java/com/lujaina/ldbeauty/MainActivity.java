@@ -15,17 +15,17 @@ import com.lujaina.ldbeauty.SP.SPSignUpFragment;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements MediatorInterface {
+public class MainActivity extends AppCompatActivity /*implements MediatorInterface */{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        changeFragmentTo(new SignUpFragment(), SignUpFragment.class.getSimpleName());
+       // changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
 
     }
 
-    @Override
+   /* @Override
     public void changeFragmentTo(Fragment fragmentToDisplay, String fragmentTag) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -36,10 +36,10 @@ public class MainActivity extends AppCompatActivity implements MediatorInterface
         }
         ft.commit();
 
-    }
+    }*/
 
 
-    @Override
+   /* @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             finish();
@@ -47,6 +47,6 @@ public class MainActivity extends AppCompatActivity implements MediatorInterface
             super.onBackPressed();
 
         }
-    }
+    }*/
 
 }

@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,7 +48,6 @@ public class ServicesFragment extends Fragment {
     private DatabaseReference myRef;
 
     private CategoryModel serviceId;
-    private MediatorInterface mMediatorCallback;
     private Context mContext;
 
     private ArrayList<ServiceModel> serviceList;
@@ -60,6 +61,7 @@ public class ServicesFragment extends Fragment {
     String userRole;
     TextView empty;
     RecyclerView recyclerView;
+    NavController navController;
 
     public ServicesFragment() {
         // Required empty public constructor
@@ -68,17 +70,22 @@ public class ServicesFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
+        /*if (context instanceof MediatorInterface) {
             mMediatorCallback = (MediatorInterface) context;
         } else {
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+        }*/
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_services, container, false);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+        serviceId = (CategoryModel) getArguments().getSerializable("CategoryModel");
+
         empty = parentView.findViewById(R.id.tv_empty);
         ImageView img = parentView.findViewById(R.id.iv_category);
         ImageButton back = parentView.findViewById(R.id.ib_back);
@@ -98,9 +105,7 @@ public class ServicesFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorCallback != null){
-                    mMediatorCallback.onBackPressed();
-                }
+                navController.popBackStack();
             }
         });
 
@@ -117,16 +122,20 @@ public class ServicesFragment extends Fragment {
                     dialog.showText(2);
                     dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
                 }else {
-                    if(mMediatorCallback != null){
                         if( mFirebaseUser.isEmailVerified()) {
-                            ServiceAppointmentFragment serviceAppointmentFragment = new ServiceAppointmentFragment();
+                            /*ServiceAppointmentFragment serviceAppointmentFragment = new ServiceAppointmentFragment();
                             serviceAppointmentFragment.setServiceID(service);
                             mMediatorCallback.changeFragmentTo(serviceAppointmentFragment, OfferAppointmentFragment.class.getSimpleName());
+*/
 
-                        }else {
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("ServiceModel", service);
+                            navController.navigate(R.id.action_servicesFragment_to_serviceAppointmentFragment, bundle);
+
+                        } else {
                             Toast.makeText(mContext, "Please verify your email address first", Toast.LENGTH_SHORT).show();
                         }
-                       }
+
                 }
             }
         });

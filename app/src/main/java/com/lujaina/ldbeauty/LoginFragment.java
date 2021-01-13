@@ -8,6 +8,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.os.Handler;
 import android.util.Log;
@@ -43,12 +45,12 @@ public class LoginFragment extends Fragment {
     private FirebaseAuth mAuth;
 
     private Context mContext;
-    private MediatorInterface mMediatorInterface;
 
     private ProgressDialog progressDialog;
     private int status = 0;
     Handler handler = new Handler();
     private String userRole;
+    NavController navController;
 
 
     public LoginFragment() {
@@ -59,20 +61,26 @@ public class LoginFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
+        /*if (context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         } else {
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+        }*/
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView =  inflater.inflate(R.layout.fragment_login, container, false);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        /*((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
-        navBar.setVisibility(View.GONE);
+        navBar.setVisibility(View.GONE);*/
+
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+
+        userRole = getArguments().getString("userType");
         final EditText ti_email = parentView.findViewById(R.id.ti_userEmail);
         final EditText ti_password = parentView.findViewById(R.id.ti_password);
         Button login = parentView.findViewById(R.id.btn_login);
@@ -83,11 +91,15 @@ public class LoginFragment extends Fragment {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
+                /*if(mMediatorInterface != null){
                     SignUpFragment signUpFragment = new SignUpFragment();
                     signUpFragment.setViewPager(userRole);
                     mMediatorInterface.changeFragmentTo(signUpFragment, SignUpFragment.class.getSimpleName());
-                }
+                }*/
+                Bundle bundle = new Bundle();
+                bundle.putString("userType", "Client");
+                navController.navigate(R.id.action_loginFragment_to_signUpFragment, bundle);
+
             }
         });
 
@@ -121,7 +133,6 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if (mMediatorInterface != null) {
                     final String email = ti_email.getText().toString();
                     final String password = ti_password.getText().toString();
 
@@ -180,15 +191,14 @@ public class LoginFragment extends Fragment {
                     }
                 }
 
-            }
+
         });
         forget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
                     ResetPasswordDialogFragment dialog =new ResetPasswordDialogFragment();
                     dialog.show(getChildFragmentManager(), ResetPasswordDialogFragment.class.getSimpleName());
-                }
+
             }
         });
 
@@ -272,7 +282,4 @@ public class LoginFragment extends Fragment {
         return matcher.matches();
     }
 
-    public void setUserType(String userRole) {
-        this.userRole = userRole;
-    }
 }

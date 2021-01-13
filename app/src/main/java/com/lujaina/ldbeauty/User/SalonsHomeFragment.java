@@ -50,6 +50,7 @@ import com.lujaina.ldbeauty.LoginChoicesFragment;
 import com.lujaina.ldbeauty.MainActivity;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
+import com.lujaina.ldbeauty.SelectedSalonActivity;
 
 import java.util.ArrayList;
 
@@ -61,7 +62,6 @@ public class SalonsHomeFragment extends Fragment {
     private DatabaseReference myRef;
 
     private Context mContext;
-    private MediatorInterface mMediatorInterface;
     ProgressDialog progressDialog;
 
     private HomeAdapter mAdapter;
@@ -112,12 +112,25 @@ public class SalonsHomeFragment extends Fragment {
         mAdapter.setonClickListener(new HomeAdapter.onClickListener() {
             @Override
             public void onClick(SPRegistrationModel salon) {
-                if(mMediatorInterface != null){
+                /*if(mMediatorInterface != null){
                     SelectedSalonFragment section = new SelectedSalonFragment();
                     section.setSection(salon);
                     //mMediatorInterface.changeFragmentTo(section ,SelectedSalonFragment.class.getSimpleName());
 
-                }
+                }*/
+
+                Intent intent = new Intent(getContext(),SelectedSalonActivity.class);
+                Bundle b = new Bundle();
+                b.putSerializable("SPRegistrationModel", salon);
+                intent.putExtras(b);
+                startActivity(intent);
+                getActivity().finish();
+
+               /* Bundle bundle = new Bundle();
+                bundle.putSerializable("SPRegistrationModel", salon);
+                //Navigation.findNavController(parentView).navigate(R.id.action_addCategoriesFragment_to_addServicesFragment2, bundle);
+                navController.navigate(R.id.action_salonsHomeFragment_to_selectedSalonFragment2, bundle);*/
+
 
             }
         });

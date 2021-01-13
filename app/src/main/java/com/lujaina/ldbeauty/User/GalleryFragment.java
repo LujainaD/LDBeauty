@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,7 +39,6 @@ import java.util.ArrayList;
 public class GalleryFragment extends Fragment {
     FirebaseUser mFirebaseUser;
 
-    private MediatorInterface mMediatorInterface;
     private Context mContext;
     private ProgressDialog progressDialog;
 
@@ -47,6 +48,7 @@ public class GalleryFragment extends Fragment {
 
     RecyclerView recyclerView;
     TextView empty;
+    NavController navController;
 
     public GalleryFragment() {
         // Required empty public constructor
@@ -56,11 +58,6 @@ public class GalleryFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
-            mMediatorInterface = (MediatorInterface) context;
-        } else {
-            throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
     }
 
 
@@ -69,6 +66,11 @@ public class GalleryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_salon_gallery, container, false);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+        ownerId = (SPRegistrationModel) getArguments().getSerializable("info");
+
         empty = parentView.findViewById(R.id.tv_empty);
         ImageButton back = parentView.findViewById(R.id.ib_back);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -82,20 +84,17 @@ public class GalleryFragment extends Fragment {
         mAdapter.setonClickListener(new GalleryAdapter.onClickListener() {
             @Override
             public void onClick(GalleryModel category) {
-                if (mMediatorInterface != null) {
                     FullScreenPictureFragment img = new FullScreenPictureFragment();
                     img.setImg(category , 0);
                     img.show(getChildFragmentManager(), FullScreenPictureFragment.class.getSimpleName());
-                }
+
             }
         });
         readSalonInfoFromFirebaseDB();
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface != null) {
-                    mMediatorInterface.onBackPressed();
-                }
+               navController.popBackStack();
             }
         });
 

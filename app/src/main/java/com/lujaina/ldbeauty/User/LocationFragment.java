@@ -15,6 +15,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.os.Looper;
 import android.provider.Settings;
@@ -48,6 +50,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
+import com.lujaina.ldbeauty.LocationActivity;
 import com.lujaina.ldbeauty.Models.LocationModel;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
@@ -80,29 +83,26 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
 
     LatLng userLocation;
     LatLng locationFB;
-
+    NavController navController;
+    View parentView;
+    FloatingActionButton zoomOutUserLocation;
     public LocationFragment() {
         // Required empty public constructor
-    }
-
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if (context instanceof MediatorInterface) {
-            mMediatorCallback = (MediatorInterface) context;
-        } else {
-            throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View parentView = inflater.inflate(R.layout.fragment_location, container, false);
+         parentView = inflater.inflate(R.layout.fragment_location, container, false);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+        ownerId = (SPRegistrationModel) getArguments().getSerializable("info");
+
         ImageButton ibBack = parentView.findViewById(R.id.ib_back);
          btnGetUserLocation = parentView.findViewById(R.id.fab_info);
-        final FloatingActionButton zoomOutUserLocation = parentView.findViewById(R.id.fab_zoomout);
-
+         zoomOutUserLocation = parentView.findViewById(R.id.fab_zoomout);
         if (isPermissionGranted()) {  // in order to display map in fragment
             mMapView = parentView.findViewById(R.id.map);
             mMapView.onCreate(savedInstanceState);
@@ -112,6 +112,30 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
 
            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
 
+            btnGetUserLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    float zoomIn= 16f;
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(zoomIn), 1000, null);
+                    if(zoomIn==16f){
+                        zoomOutUserLocation.setVisibility(View.VISIBLE);
+                        btnGetUserLocation.setVisibility(View.GONE);
+
+                    }
+                }
+            });
+            zoomOutUserLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final float zoomIn= 8f;
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(zoomIn), 1000, null);
+                    if(zoomIn==8f){
+                        btnGetUserLocation.setVisibility(View.VISIBLE);
+                        zoomOutUserLocation.setVisibility(View.GONE);
+                    }
+                }
+            });
+
         } else {
             requestRuntimePermission();
         }
@@ -119,36 +143,11 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorCallback != null) {
-                    mMediatorCallback.onBackPressed();
-                }
+               navController.popBackStack();
 
             }
         });
 
-        btnGetUserLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                 float zoomIn= 16f;
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(zoomIn), 1000, null);
-                if(zoomIn==16f){
-                    zoomOutUserLocation.setVisibility(View.VISIBLE);
-                    btnGetUserLocation.setVisibility(View.GONE);
-
-                }
-            }
-        });
-        zoomOutUserLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final float zoomIn= 8f;
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(zoomIn), 1000, null);
-                if(zoomIn==8f){
-                    btnGetUserLocation.setVisibility(View.VISIBLE);
-                    zoomOutUserLocation.setVisibility(View.GONE);
-                }
-            }
-        });
 
         return parentView;
     }
@@ -348,7 +347,55 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    public void setSalonLocation(SPRegistrationModel section) {
-        ownerId = section;
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == KEY_PERMISSION_REQUEST_ID) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //user granted the permission
+                afterGrantedPermission();
+
+            } else {
+                // user didn't grant the permission
+                getActivity().finish(); // close the host activity.
+            }
+        }
+    }
+
+    private void afterGrantedPermission() {
+        mMapView = parentView.findViewById(R.id.map);
+       // mMapView.onCreate(savedInstanceState);
+        mMapView.onResume();// display map ASAP
+        MapsInitializer.initialize(getContext());// initialize map
+        mMapView.getMapAsync(LocationFragment.this);// link map view with OnMapReadyCallback
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+
+        btnGetUserLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                float zoomIn= 16f;
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(zoomIn), 1000, null);
+                if(zoomIn==16f){
+                    zoomOutUserLocation.setVisibility(View.VISIBLE);
+                    btnGetUserLocation.setVisibility(View.GONE);
+
+                }
+            }
+        });
+        zoomOutUserLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final float zoomIn= 8f;
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(zoomIn), 1000, null);
+                if(zoomIn==8f){
+                    btnGetUserLocation.setVisibility(View.VISIBLE);
+                    zoomOutUserLocation.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        showSalonLocation();
+        getLastLocation();
     }
 }

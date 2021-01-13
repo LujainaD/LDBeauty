@@ -86,11 +86,11 @@ public class SPLoginFragment extends Fragment {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
+                /*if(mMediatorInterface != null){
                     SignUpFragment signUpFragment = new SignUpFragment();
                     signUpFragment.setViewPager("");
                     mMediatorInterface.changeFragmentTo(signUpFragment, SignUpFragment.class.getSimpleName());
-                }
+                }*/
             }
         });
 

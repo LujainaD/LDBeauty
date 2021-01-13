@@ -50,12 +50,7 @@ public class AppOwnerProfileFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if(context instanceof MediatorInterface) {
-            mMediatorInterface = (MediatorInterface) context;
-        }
-        else{
-            throw new RuntimeException(context.toString()+ "must implement MediatorInterface");
-        }
+
     }
 
     @Override

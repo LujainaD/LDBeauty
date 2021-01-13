@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -45,7 +47,6 @@ public class RatingFragment extends Fragment  {
     FirebaseUser mFirebaseUser;
     private DatabaseReference myRef;
 
-    private MediatorInterface mMediatorInterface;
     private Context mContext;
     private ProgressDialog progressDialog;
 
@@ -56,6 +57,8 @@ public class RatingFragment extends Fragment  {
     RecyclerView recyclerView;
     TextView empty;
     ItemTouchHelper.SimpleCallback item;
+    NavController navController;
+
     public RatingFragment() {
         // Required empty public constructor
     }
@@ -64,11 +67,7 @@ public class RatingFragment extends Fragment  {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
-            mMediatorInterface = (MediatorInterface) context;
-        } else {
-            throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+
     }
 
 
@@ -77,6 +76,12 @@ public class RatingFragment extends Fragment  {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_rating, container, false);
+
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+        salonInfo = (SPRegistrationModel) getArguments().getSerializable("info");
+
         empty = parentView.findViewById(R.id.tv_empty);
         ImageButton back = parentView.findViewById(R.id.ib_back);
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
@@ -102,14 +107,13 @@ public class RatingFragment extends Fragment  {
                     dialog.showText(2);
                     dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
                 }else {
-                    if(mMediatorInterface != null){
                         if( mFirebaseUser.isEmailVerified()) {
                             countOrderChildren();
 
                         }else {
                             Toast.makeText(mContext, "Please verify your email address first", Toast.LENGTH_SHORT).show();
 
-                        }
+
 
                     }
                 }
@@ -119,9 +123,7 @@ public class RatingFragment extends Fragment  {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
-                    mMediatorInterface.onBackPressed();
-                }
+               navController.popBackStack();
             }
         });
 

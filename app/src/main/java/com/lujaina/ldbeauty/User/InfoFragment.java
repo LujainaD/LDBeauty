@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,7 +44,6 @@ public class InfoFragment extends Fragment {
 
     private DatabaseReference myRef;
 
-    private MediatorInterface mMediatorInterface;
     private Context mContext;
     private ProgressDialog progressDialog;
 
@@ -52,6 +53,8 @@ public class InfoFragment extends Fragment {
     private SPRegistrationModel info;
     TextView empty;
     RecyclerView recyclerView;
+    NavController navController;
+
     public InfoFragment() {
         // Required empty public constructor
     }
@@ -60,11 +63,6 @@ public class InfoFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
-            mMediatorInterface = (MediatorInterface) context;
-        } else {
-            throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
     }
 
 
@@ -73,6 +71,13 @@ public class InfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_info, container, false);
+
+
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+        info = (SPRegistrationModel) getArguments().getSerializable("info");
+
         TextView salonName = parentView.findViewById(R.id.tv_toolbar);
         empty = parentView.findViewById(R.id.tv_empty);
         ImageButton back = parentView.findViewById(R.id.ib_back);
@@ -91,9 +96,7 @@ public class InfoFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
-                    mMediatorInterface.onBackPressed();
-                }
+               navController.popBackStack();
             }
         });
 
@@ -148,11 +151,5 @@ public class InfoFragment extends Fragment {
         });
     }
 
-
-
-    public void setInfo(SPRegistrationModel names) {
-        info  = names;
-
-    }
 
 }

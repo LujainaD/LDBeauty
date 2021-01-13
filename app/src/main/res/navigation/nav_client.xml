@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_client"
+    app:startDestination="@id/clientProfileFragment">
+
+    <fragment
+        android:id="@+id/clientFeedbackFragment"
+        android:name="com.lujaina.ldbeauty.Client.ClientFeedbackFragment"
+        tools:layout="@layout/fragment_client_feedback"
+        android:label="fragment_client_feedback" />
+    <fragment
+        android:id="@+id/editClientProfileFragment"
+        android:name="com.lujaina.ldbeauty.Client.EditClientProfileFragment"
+        android:label="EditClientProfileFragment" />
+    <fragment
+        android:id="@+id/clientAppointmentFragment"
+        android:name="com.lujaina.ldbeauty.Client.ClientAppointmentFragment"
+        android:label="ClientAppointmentFragment" />
+    <fragment
+        android:id="@+id/clientProfileFragment"
+        android:name="com.lujaina.ldbeauty.Client.ClientProfileFragment"
+        android:label="ClientProfileFragment">
+        <action
+            android:id="@+id/action_clientProfileFragment_to_clientFeedbackFragment"
+            app:destination="@id/clientFeedbackFragment" />
+        <action
+            android:id="@+id/action_clientProfileFragment_to_clientAppointmentFragment"
+            app:destination="@id/clientAppointmentFragment" />
+        <action
+            android:id="@+id/action_clientProfileFragment_to_editClientProfileFragment"
+            app:destination="@id/editClientProfileFragment" />
+        <action
+            android:id="@+id/action_clientProfileFragment_to_appOwnerProfileFragment"
+            app:destination="@id/appOwnerProfileFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/clientActivity"
+        android:name="com.lujaina.ldbeauty.ClientActivity"
+        android:label="activity_client"
+        tools:layout="@layout/activity_client" />
+</navigation>

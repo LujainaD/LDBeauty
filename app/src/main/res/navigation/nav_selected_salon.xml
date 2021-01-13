@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_client"
+    app:startDestination="@id/selectedSalonFragment2">
+
+    <fragment
+        android:id="@+id/selectedSalonFragment2"
+        android:name="com.lujaina.ldbeauty.User.SelectedSalonFragment"
+        android:label="fragment_selected_salon"
+        tools:layout="@layout/fragment_selected_salon" >
+        <action
+            android:id="@+id/action_selectedSalonFragment2_to_infoFragment"
+            app:destination="@id/infoFragment" />
+        <action
+            android:id="@+id/action_selectedSalonFragment2_to_galleryFragment"
+            app:destination="@id/galleryFragment" />
+        <action
+            android:id="@+id/action_selectedSalonFragment2_to_categoriesFragment"
+            app:destination="@id/categoriesFragment" />
+        <action
+            android:id="@+id/action_selectedSalonFragment2_to_offersFragment"
+            app:destination="@id/offersFragment" />
+        <action
+            android:id="@+id/action_selectedSalonFragment2_to_locationFragment"
+            app:destination="@id/locationFragment" />
+        <action
+            android:id="@+id/action_selectedSalonFragment2_to_ratingFragment"
+            app:destination="@id/ratingFragment" />
+        <action
+            android:id="@+id/action_selectedSalonFragment2_to_salonsHomeFragment"
+            app:destination="@id/salonsHomeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/infoFragment"
+        android:name="com.lujaina.ldbeauty.User.InfoFragment"
+        android:label="InfoFragment" />
+    <fragment
+        android:id="@+id/galleryFragment"
+        android:name="com.lujaina.ldbeauty.User.GalleryFragment"
+        android:label="GalleryFragment" />
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="com.lujaina.ldbeauty.User.CategoriesFragment"
+        android:label="CategoriesFragment" >
+        <action
+            android:id="@+id/action_categoriesFragment_to_cartFragment"
+            app:destination="@id/cartFragment" />
+        <action
+            android:id="@+id/action_categoriesFragment_to_servicesFragment"
+            app:destination="@id/servicesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/offersFragment"
+        android:name="com.lujaina.ldbeauty.User.OffersFragment"
+        android:label="OffersFragment" >
+        <action
+            android:id="@+id/action_offersFragment_to_cartFragment"
+            app:destination="@id/cartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/locationFragment"
+        android:name="com.lujaina.ldbeauty.User.LocationFragment"
+        android:label="LocationFragment" />
+    <activity
+        android:id="@+id/selectedSalonActivity"
+        android:name="com.lujaina.ldbeauty.SelectedSalonActivity"
+        android:label="activity_selected_salon"
+        tools:layout="@layout/activity_selected_salon" />
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.lujaina.ldbeauty.Client.CartFragment"
+        android:label="CartFragment" />
+    <fragment
+        android:id="@+id/servicesFragment"
+        android:name="com.lujaina.ldbeauty.User.ServicesFragment"
+        android:label="fragment_services"
+        tools:layout="@layout/fragment_services" >
+        <action
+            android:id="@+id/action_servicesFragment_to_serviceAppointmentFragment"
+            app:destination="@id/serviceAppointmentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/serviceAppointmentFragment"
+        android:name="com.lujaina.ldbeauty.Client.ServiceAppointmentFragment"
+        android:label="ServiceAppointmentFragment" />
+    <fragment
+        android:id="@+id/ratingFragment"
+        android:name="com.lujaina.ldbeauty.User.RatingFragment"
+        android:label="fragment_rating"
+        tools:layout="@layout/fragment_rating" />
+    <fragment
+        android:id="@+id/salonsHomeFragment"
+        android:name="com.lujaina.ldbeauty.User.SalonsHomeFragment"
+        android:label="SalonsHomeFragment" />
+</navigation>

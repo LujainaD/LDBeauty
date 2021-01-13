@@ -11,6 +11,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,6 +44,7 @@ import com.lujaina.ldbeauty.Models.AppointmentModel;
 import com.lujaina.ldbeauty.Models.ClientsAppointmentModel;
 import com.lujaina.ldbeauty.Models.OfferModel;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
+import com.lujaina.ldbeauty.Models.ServiceModel;
 import com.lujaina.ldbeauty.R;
 
 import java.text.SimpleDateFormat;
@@ -80,7 +83,7 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
     private int mYear;
     private int mMonth;
     private int mDay;
-
+    NavController navController;
 
     public OfferAppointmentFragment() {
         // Required empty public constructor
@@ -90,11 +93,11 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
+       /* if (context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         } else {
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+        }*/
     }
 
     @SuppressLint("ResourceAsColor")
@@ -103,6 +106,11 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_offer_appointment, container, false);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+        offerID = (OfferModel) getArguments().getSerializable("OfferModel");
+
         empty = parentView.findViewById(R.id.tv_empty);
 
         TextView offerTitle = parentView.findViewById(R.id.tv_service);
@@ -142,9 +150,7 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface != null) {
-                    mMediatorInterface.onBackPressed();
-                }
+               navController.popBackStack();
 
             }
         });

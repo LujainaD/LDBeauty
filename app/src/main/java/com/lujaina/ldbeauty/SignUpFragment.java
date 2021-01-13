@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
@@ -23,6 +25,7 @@ public class SignUpFragment extends Fragment {
     private MediatorInterface mMediatorInterface;
     private int mSPposition;
     private String userRole;
+    NavController navController;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -32,11 +35,11 @@ public class SignUpFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
+       /* if (context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         } else {
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+        }*/
     }
 
     @Override
@@ -44,9 +47,13 @@ public class SignUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView =  inflater.inflate(R.layout.fragment_sign_up, container, false);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-        BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
-        navBar.setVisibility(View.GONE);
+
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+
+        userRole = getArguments().getString("userType");
+
         Toolbar toolbar = parentView.findViewById(R.id.toolbar);
         ImageButton back = parentView.findViewById(R.id.ib_back);
         TabLayout tabs = parentView.findViewById(R.id.tab);
@@ -55,9 +62,7 @@ public class SignUpFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
-                    mMediatorInterface.onBackPressed();
-                }
+                navController.popBackStack();
             }
         });
 
@@ -71,14 +76,10 @@ public class SignUpFragment extends Fragment {
             viewPager.setCurrentItem(1);
         }
 
-
         tabs.setupWithViewPager(viewPager);
 
 
         return parentView;
     }
 
-    public void setViewPager(String userRole) {
-        this.userRole = userRole;
-    }
 }

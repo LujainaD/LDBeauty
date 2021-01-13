@@ -8,6 +8,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -54,7 +56,9 @@ import com.lujaina.ldbeauty.User.AboutAppFragment;
 import com.lujaina.ldbeauty.User.SalonsHomeFragment;
 import com.lujaina.ldbeauty.User.SelectedSalonFragment;
 
-public class HomeActivity extends AppCompatActivity implements /*MediatorInterface,*/ BottomNavigationView.OnNavigationItemSelectedListener {
+import static androidx.navigation.ui.NavigationUI.setupActionBarWithNavController;
+
+public class HomeActivity extends AppCompatActivity implements  BottomNavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "fcm";
     private static final String CHANNEL_ID = "Booking";
@@ -71,18 +75,20 @@ public class HomeActivity extends AppCompatActivity implements /*MediatorInterfa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         bottomNav = findViewById(R.id.bottom_nav);
-        bottomNav.setOnNavigationItemSelectedListener(this);
-       // changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
-        createNotificationChannel();
+        // changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
+        // createNotificationChannel();
 
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-         navController = navHostFragment.getNavController();
+        navController = navHostFragment.getNavController();
+
+        //NavigationUI.setupWithNavController(bottomNav, navController);
+        //setupActionBarWithNavController(HomeActivity.this, navController);
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
-        if(user != null){
+        if (user != null) {
             getUserRole();
         }
         FirebaseMessaging.getInstance().getToken()
@@ -101,13 +107,115 @@ public class HomeActivity extends AppCompatActivity implements /*MediatorInterfa
                         // String msg = getString(R.string.msg_token_fmt, token);
                         Log.d(TAG, token);
 
-                        if(user != null){
+                        if (user != null) {
                             saveTokenToDB(token);
                         }
                     }
                 });
+/*
+        bottomNav.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
+            @Override
+            public void onNavigationItemReselected(@NonNull MenuItem item) {
+
+                progressDialog = new ProgressDialog(HomeActivity.this);
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+                progressDialog.setContentView(R.layout.progress_bar);
+                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+                switch (item.getItemId()) {
+                    case R.id.nav_search: {
+                        progressDialog.dismiss();
+                        //  changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
+                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                        startActivity(intent);
+                        break;
+
+                    }
+
+                    case R.id.nav_profile: {
+                        if (user != null) {
+                            if (userRole != null) {
+                                if (userRole.equals("Client")) {
+                                    if (user.isEmailVerified()) {
+                                        progressDialog.dismiss();
+                                        // changeFragmentTo(new ClientProfileFragment(), ClientProfileFragment.class.getSimpleName());
+                                        Intent intent = new Intent(getApplicationContext(), ClientActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                        ;
+                                    } else {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(getApplicationContext(), "Please verify your email address", Toast.LENGTH_SHORT).show();
+                                    }
+
+
+                                    break;
+
+                                } else if (userRole.equals("Salon Owner")) {
+                                    if (user.isEmailVerified()) {
+                                        progressDialog.dismiss();
+
+                                        navController.navigate(R.id.action_salonsHomeFragment2_to_SPProfileFragment2);
+                                    } else {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(getApplicationContext(), "Please verify your email address", Toast.LENGTH_SHORT).show();
+                                    }
+                                    break;
+
+                                } else {
+                                    progressDialog.dismiss();
+                                    navController.navigate(R.id.action_clientProfileFragment_to_appOwnerProfileFragment);
+                                    // changeFragmentTo(new AppOwnerProfileFragment(), AppOwnerProfileFragment.class.getSimpleName());
+                                    break;
+                                }
+
+                            } else {
+                                progressDialog.dismiss();
+                               */
+/* NoLoginDialogFragment dialog = new NoLoginDialogFragment();
+                                dialog.showText(1);
+                                dialog.show(getSupportFragmentManager(), NoLoginDialogFragment.class.getSimpleName());
+*//*
+
+                                Intent intent = new Intent(getApplicationContext(), NoLoginActivity.class);
+                                intent.putExtra("num", 1);
+                                startActivity(intent);
+                                finish();
+                                break;
+                            }
+                        } else {
+                            progressDialog.dismiss();
+                            NoLoginDialogFragment dialog = new NoLoginDialogFragment();
+                            dialog.showText(1);
+                            dialog.show(getSupportFragmentManager(), NoLoginDialogFragment.class.getSimpleName());
+
+
+                            Intent intent = new Intent(getApplicationContext(), NoLoginActivity.class);
+                                intent.putExtra("num", 1);
+                                startActivity(intent);
+                                finish();
+                                break;
+                        }
+
+                    }
+                    case R.id.nav_app: {
+                        progressDialog.dismiss();
+                        // changeFragmentTo(new AboutAppFragment(), AboutAppFragment.class.getSimpleName());
+                       break;
+                    }
+
+
+
+                }
+
+            }
+        });
+*/
 
     }
+
+
 
     private void saveTokenToDB(String token) {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -147,19 +255,28 @@ public class HomeActivity extends AppCompatActivity implements /*MediatorInterfa
 
         switch (item.getItemId()) {
             case R.id.nav_search: {
+
                 progressDialog.dismiss();
+                Toast.makeText(this, "from search", Toast.LENGTH_SHORT).show();
               //  changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
+                Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+                startActivity(intent);
                 return true;
 
             }
 
             case R.id.nav_profile: {
+                Toast.makeText(this, "from profile", Toast.LENGTH_SHORT).show();
+
                 if (user != null) {
                     if (userRole != null) {
                        if (userRole.equals("Client")) {
                            if(user.isEmailVerified()){
                                progressDialog.dismiss();
                               // changeFragmentTo(new ClientProfileFragment(), ClientProfileFragment.class.getSimpleName());
+                               Intent intent = new Intent(getApplicationContext(),ClientActivity.class);
+                               startActivity(intent);
+                               finish();;
                            }else{
                                progressDialog.dismiss();
                                Toast.makeText(getApplicationContext(), "Please verify your email address", Toast.LENGTH_SHORT).show();
@@ -181,22 +298,36 @@ public class HomeActivity extends AppCompatActivity implements /*MediatorInterfa
 
                        }else {
                            progressDialog.dismiss();
-                          // changeFragmentTo(new AppOwnerProfileFragment(), AppOwnerProfileFragment.class.getSimpleName());
+                           navController.navigate(R.id.action_clientProfileFragment_to_appOwnerProfileFragment);
+                           // changeFragmentTo(new AppOwnerProfileFragment(), AppOwnerProfileFragment.class.getSimpleName());
                            return true;
                        }
 
                 } else {
                         progressDialog.dismiss();
-                        NoLoginDialogFragment dialog = new NoLoginDialogFragment();
+                    /*    NoLoginDialogFragment dialog = new NoLoginDialogFragment();
                         dialog.showText(1);
-                        dialog.show(getSupportFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
+                        dialog.show(getSupportFragmentManager(),NoLoginDialogFragment.class.getSimpleName());*/
+                        Toast.makeText(this, "no role", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(getApplicationContext(),NoLoginActivity.class);
+                        intent.putExtra("num",1);
+                        startActivity(intent);
+                        finish();
                     break;
                 }
             }else {
                     progressDialog.dismiss();
-                    NoLoginDialogFragment dialog = new NoLoginDialogFragment();
+                   /* NoLoginDialogFragment dialog = new NoLoginDialogFragment();
                     dialog.showText(1);
                     dialog.show(getSupportFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
+                    */
+                    Toast.makeText(this, "not user", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(getApplicationContext(),NoLoginActivity.class);
+                    intent.putExtra("num",1);
+                    startActivity(intent);
+                    finish();
                     break;
                 }
 
@@ -206,14 +337,10 @@ public class HomeActivity extends AppCompatActivity implements /*MediatorInterfa
                // changeFragmentTo(new AboutAppFragment(), AboutAppFragment.class.getSimpleName());
                 return true;
             }
-
-
-
         }
         return false;
 
     }
-
    /* @Override
     public void changeFragmentTo(Fragment fragmentToDisplay, String fragmentTag) {
         FragmentManager fm = getSupportFragmentManager();
@@ -224,8 +351,8 @@ public class HomeActivity extends AppCompatActivity implements /*MediatorInterfa
             ft.addToBackStack(fragmentTag);
         }
         ft.commit();
-    }*/
-
+    }*//*
+*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         FirebaseUser user = mAuth.getCurrentUser();
@@ -303,18 +430,24 @@ public class HomeActivity extends AppCompatActivity implements /*MediatorInterfa
                 ft.remove(new LoginChoicesFragment());
                 ft.commit();
                 fm.popBackStack();*/
+
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
+                finish();
                 break;
             }
             case R.id.my_cart: {
                // changeFragmentTo(new CartFragment(), CartFragment.class.getSimpleName());
+                navController.navigate(R.id.action_salonsHomeFragment2_to_cartFragment2);
+
                 break;
 
             }
 
         }
 
-        return super.onOptionsItemSelected(item);
-
+        return NavigationUI.onNavDestinationSelected(item, navController)
+                || super.onOptionsItemSelected(item);
     }
    /* @Override
     public void onBackPressed() {

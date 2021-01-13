@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -45,16 +47,16 @@ public class CategoriesFragment extends Fragment {
     FirebaseUser mFirebaseUser;
     private DatabaseReference myRef;
 
-    private MediatorInterface mMediatorInterface;
     private Context mContext;
     private ProgressDialog progressDialog;
 
     private ArrayList<CategoryModel> categoryList;
     private CategoryAdapter mAdapter;
-    private SPRegistrationModel ownerId;
+    private SPRegistrationModel info;
     RecyclerView recyclerView;
     TextView empty;
     String userRole;
+    NavController navController;
 
     public CategoriesFragment() {
         // Required empty public constructor
@@ -64,11 +66,11 @@ public class CategoriesFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
+        /*if (context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         } else {
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+        }*/
     }
 
     @Override
@@ -77,6 +79,11 @@ public class CategoriesFragment extends Fragment {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_categories, container, false);
         mAuth = FirebaseAuth.getInstance();
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+        info = (SPRegistrationModel) getArguments().getSerializable("info");
+
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
         empty = parentView.findViewById(R.id.tv_empty);
         TextView cart = parentView.findViewById(R.id.tv_cart);
@@ -98,9 +105,11 @@ public class CategoriesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(mFirebaseUser != null && !userRole.equals("Salon Owner")){
-                    if(mMediatorInterface != null){
+                    /*if(mMediatorInterface != null){
                         mMediatorInterface.changeFragmentTo(new CartFragment(), CartFragment.class.getSimpleName());
-                    }
+                    }*/
+                    navController.navigate(R.id.action_categoriesFragment_to_cartFragment);
+
                 }else{
                     NoLoginDialogFragment dialog = new NoLoginDialogFragment();
                     dialog.showText(2);
@@ -115,21 +124,23 @@ public class CategoriesFragment extends Fragment {
         mAdapter.setonClickListener(new CategoryAdapter.onClickListener() {
             @Override
             public void onClick(CategoryModel category) {
-                if(mMediatorInterface != null){
+                /*if(mMediatorInterface != null){
                     ServicesFragment service = new ServicesFragment();
                     service.setServiceID(category);
                     mMediatorInterface.changeFragmentTo(service, ServicesFragment.class.getSimpleName());
 
-                }
+                }*/
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("CategoryModel", category);
+                navController.navigate(R.id.action_categoriesFragment_to_servicesFragment, bundle);
+
             }
         });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
-                    mMediatorInterface.onBackPressed();
-                }
+                navController.popBackStack();
             }
         });
 
@@ -181,7 +192,7 @@ public class CategoriesFragment extends Fragment {
     private void readSalonInfoFromFirebaseDB() {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(ownerId.getUserId()).child(Constants.Salon_Category);
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(info.getUserId()).child(Constants.Salon_Category);
         // Read from the mDatabase
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setCancelable(true);
@@ -214,7 +225,4 @@ public class CategoriesFragment extends Fragment {
         });
     }
 
-    public void setSalonCategory(SPRegistrationModel section) {
-        ownerId = section;
-    }
 }

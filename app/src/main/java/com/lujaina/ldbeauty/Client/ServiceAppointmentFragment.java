@@ -8,6 +8,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -57,7 +59,6 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
     private FirebaseDatabase mDatabase;
     private DatabaseReference myRef;
 
-    private MediatorInterface mMediatorInterface;
     private Context mContext;
 
     RecyclerView recyclerView;
@@ -78,6 +79,7 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
 
     private String selectedTime;
     private ServiceModel serviceInfo;
+    NavController navController;
 
     public ServiceAppointmentFragment() {
         // Required empty public constructor
@@ -99,6 +101,12 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_service_appointment, container, false);
+
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+        serviceInfo = (ServiceModel) getArguments().getSerializable("ServiceModel");
+
         empty = parentView.findViewById(R.id.tv_empty);
 
         TextView serviceTitle 	= parentView.findViewById(R.id.tv_service);
@@ -134,9 +142,7 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
-                    mMediatorInterface.onBackPressed();
-                }
+                navController.popBackStack();
             }
         });
 
@@ -331,10 +337,10 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
 
     }
 
-    public void setServiceID(ServiceModel service) {
+   /* public void setServiceID(ServiceModel service) {
         serviceInfo = service;
     }
-
+*/
     @Override
     public void onItemSelected(int position, int previousSelectedPosition, final AppointmentModel model) {
         timeList.get(position).setSelected(!timeList.get(position).isSelected());

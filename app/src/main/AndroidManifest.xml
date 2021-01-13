@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.lujaina.ldbeauty">
-
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -16,6 +14,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/logpict"
@@ -23,6 +22,9 @@
         android:roundIcon="@drawable/logpict"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ClientActivity"></activity>
+        <activity android:name=".NoLoginActivity" />
+        <activity android:name=".SelectedSalonActivity" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -55,28 +57,30 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/img_file_path"
-                tools:replace="android:resource"/>
+                tools:replace="android:resource" />
         </provider>
 
         <activity android:name=".LocationActivity" />
         <activity android:name=".HomeActivity">
 
-          <!--  <intent-filter>
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
-<!--        <service android:name=".Notification.MyFirebaseMessagingService">
+        <!--
+        <service android:name=".Notification.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
-        </service>-->
-
+        </service>
+        -->
         <service android:name=".Notification.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

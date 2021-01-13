@@ -1,6 +1,8 @@
 package com.lujaina.ldbeauty.Models;
 
-public class SPRegistrationModel {
+import java.io.Serializable;
+
+public class SPRegistrationModel implements Serializable {
     private static SPRegistrationModel INSTANCE;
     private static final Object sLock = new Object();
 

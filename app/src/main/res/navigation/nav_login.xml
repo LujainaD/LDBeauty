@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_login"
+    app:startDestination="@id/loginChoicesFragment">
+
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.lujaina.ldbeauty.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/loginChoicesFragment"
+        android:name="com.lujaina.ldbeauty.LoginChoicesFragment"
+        android:label="fragment_login_choices"
+        tools:layout="@layout/fragment_login_choices" >
+        <action
+            android:id="@+id/action_loginChoicesFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_loginChoicesFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.lujaina.ldbeauty.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.lujaina.ldbeauty.SignUpFragment"
+        android:label="SignUpFragment" >
+        <action
+            android:id="@+id/action_signUpFragment_to_clientSignUpFragment"
+            app:destination="@id/clientSignUpFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_SPSignUpFragment"
+            app:destination="@id/SPSignUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/clientSignUpFragment"
+        android:name="com.lujaina.ldbeauty.Client.ClientSignUpFragment"
+        android:label="ClientSignUpFragment" >
+        <action
+            android:id="@+id/action_clientSignUpFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/SPSignUpFragment"
+        android:name="com.lujaina.ldbeauty.SP.SPSignUpFragment"
+        android:label="fragment_s_p_sign_up"
+        tools:layout="@layout/fragment_s_p_sign_up" >
+        <action
+            android:id="@+id/action_SPSignUpFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+</navigation>

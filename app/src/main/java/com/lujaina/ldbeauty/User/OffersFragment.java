@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,7 +49,6 @@ public class OffersFragment extends Fragment {
     private ArrayList<OfferModel> offersList;
     private UserOfferAdapter mAdapter;
 
-    private MediatorInterface mMediatorInterface;
     private Context mContext;
     private ProgressDialog progressDialog;
 
@@ -57,6 +58,8 @@ public class OffersFragment extends Fragment {
     String userRole;
     RecyclerView recyclerView;
     TextView empty;
+    NavController navController;
+
     public OffersFragment() {
         // Required empty public constructor
     }
@@ -64,11 +67,11 @@ public class OffersFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
+       /* if (context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         } else {
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+        }*/
     }
 
     @Override
@@ -76,6 +79,11 @@ public class OffersFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_salon_offers, container, false);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+        ownerId = (SPRegistrationModel) getArguments().getSerializable("info");
+
         empty = parentView.findViewById(R.id.tv_empty);
         mAuth = FirebaseAuth.getInstance();
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
@@ -99,9 +107,12 @@ public class OffersFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(mFirebaseUser != null && !userRole.equals("Salon Owner")){
-                    if(mMediatorInterface != null){
+                    /*if(mMediatorInterface != null){
                         mMediatorInterface.changeFragmentTo(new CartFragment(), CartFragment.class.getSimpleName());
-                    }
+                    }*/
+
+                    navController.navigate(R.id.action_offersFragment_to_cartFragment);
+
                 }else{
                     NoLoginDialogFragment dialog = new NoLoginDialogFragment();
                     dialog.showText(2);
@@ -120,16 +131,18 @@ public class OffersFragment extends Fragment {
                     dialog.showText(2);
                     dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
                 }else{
-                    if(mMediatorInterface != null){
                         if( mFirebaseUser.isEmailVerified()) {
-                            OfferAppointmentFragment offerAppointmentFragment = new OfferAppointmentFragment();
+                           /* OfferAppointmentFragment offerAppointmentFragment = new OfferAppointmentFragment();
                             offerAppointmentFragment.setOfferId(offerModel);
                             mMediatorInterface.changeFragmentTo(offerAppointmentFragment, OfferAppointmentFragment.class.getSimpleName());
-
+*/
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("OfferModel", offerModel);
+                            navController.navigate(R.id.action_servicesFragment_to_serviceAppointmentFragment, bundle);
                         }else {
                             Toast.makeText(mContext, "Please verify your email address first", Toast.LENGTH_SHORT).show();
                         }
-                        }
+
                 }
 
             }
@@ -139,7 +152,7 @@ public class OffersFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMediatorInterface.onBackPressed();
+                navController.popBackStack();
             }
         });
 

@@ -2,6 +2,7 @@ package com.lujaina.ldbeauty.Dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +24,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.LoginChoicesFragment;
 import com.lujaina.ldbeauty.LoginFragment;
+import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 import com.lujaina.ldbeauty.SignUpFragment;
 
@@ -29,6 +33,7 @@ public class NoLoginDialogFragment extends DialogFragment {
     private Context mContext;
     private int i;
 
+    NavController navController;
 
     public NoLoginDialogFragment() {
         // Required empty public constructor
@@ -39,11 +44,7 @@ public class NoLoginDialogFragment extends DialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
-            mMediatorInterface = (MediatorInterface) context;
-        } else {
-            throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+
     }
     @Override
     public void onStart() {
@@ -64,16 +65,22 @@ public class NoLoginDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_no_login_dialog, container, false);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+
+        String num = getArguments().getString("num");
         Button login = parentView.findViewById(R.id.btn_login);
         Button signUp = parentView.findViewById(R.id.btn_signUp);
         TextView textView = parentView.findViewById(R.id.tv_text);
 
-        if(i== 1){
-            textView.setText("Please login or signup for accessing your profile");
-        }else {
+        if (num != null) {
+            if(Integer.parseInt(num) == 1){
+                textView.setText("Please login or signup for accessing your profile");
+            }else {
 
+            }
         }
-
 
 
         login.setOnClickListener(new View.OnClickListener() {
@@ -90,12 +97,12 @@ public class NoLoginDialogFragment extends DialogFragment {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
+               /* if(mMediatorInterface != null){
                     SignUpFragment usertype= new SignUpFragment();
                     usertype.setViewPager("Client");
                     mMediatorInterface.changeFragmentTo(usertype, SignUpFragment.class.getSimpleName());
                     dismiss();
-                }
+                }*/
 
             }
         });

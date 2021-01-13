@@ -35,7 +35,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ClientProfileFragment extends Fragment {
 
-    private MediatorInterface mMediatorInterface;
     private Context mContext;
     DatabaseReference myRef;
     ProgressDialog progressDialog;
@@ -48,11 +47,11 @@ public class ClientProfileFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
+       /* if (context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         } else {
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+        }*/
     }
 
 
@@ -78,27 +77,27 @@ public class ClientProfileFragment extends Fragment {
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
+                /*if(mMediatorInterface != null){
                     mMediatorInterface.changeFragmentTo(new EditClientProfileFragment(), EditClientProfileFragment.class.getSimpleName());
-                }
+                }*/
             }
         });
 
         appointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
+                /*if(mMediatorInterface != null){
                     mMediatorInterface.changeFragmentTo(new ClientAppointmentFragment(), ClientAppointmentFragment.class.getSimpleName());
-                }
+                }*/
             }
         });
 
         feedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
+               /* if(mMediatorInterface != null){
                     mMediatorInterface.changeFragmentTo(new ClientFeedbackFragment(), ClientFeedbackFragment.class.getSimpleName());
-                }
+                }*/
             }
         });
 
@@ -125,9 +124,9 @@ public class ClientProfileFragment extends Fragment {
                     }
                 } else {
                     progressDialog.dismiss();
-                    if(mMediatorInterface!= null){
+                    /*if(mMediatorInterface!= null){
                         mMediatorInterface.changeFragmentTo(new LoginChoicesFragment(),LoginChoicesFragment.class.getSimpleName());
-                    }
+                    }*/
                 }
             }
 

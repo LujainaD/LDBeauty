@@ -224,9 +224,10 @@ public class AddServiceAppointmentFragment extends Fragment {
                     try {
                         Calendar startCalendar = Calendar.getInstance();
                         startCalendar.setTime(sdf.parse(start));
+
                         Calendar endCalendar = Calendar.getInstance();
-                        endCalendar.setTime(startCalendar.getTime());
-                        endCalendar.add(Calendar.HOUR_OF_DAY, endTimeIn24hoursFormat - startCalendar.get(Calendar.HOUR_OF_DAY));
+                        endCalendar.setTime(sdf.parse(end));
+                        endCalendar.add(Calendar.HOUR_OF_DAY, endTimeIn24hoursFormat - endCalendar.get(Calendar.HOUR_OF_DAY));
                         endCalendar.clear(Calendar.MINUTE);
                         endCalendar.clear(Calendar.SECOND);
                         endCalendar.clear(Calendar.MILLISECOND);
@@ -234,7 +235,8 @@ public class AddServiceAppointmentFragment extends Fragment {
                         while (endCalendar.after(startCalendar)) {
                             startCalendar.add(Calendar.MINUTE, Integer.parseInt(dur));
                             String timeslots = slotTime.format(startCalendar.getTime());
-                            addTimeAppointment(dur,start,end, timeslots);
+                            Log.w("timeArray",timeslots);
+                            //addTimeAppointment(dur,start,end, timeslots);
 
                         }
                     } catch (ParseException e) {

@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.os.Handler;
 import android.util.Log;
@@ -83,7 +85,6 @@ public class SPSignUpFragment extends Fragment {
     private int status = 0;
     Handler handler = new Handler();
     private Context mContext;
-    private MediatorInterface mMediatorInterface;
     private ProgressDialog progressDialog;
 
     private CircleImageView ownerImg;
@@ -91,6 +92,7 @@ public class SPSignUpFragment extends Fragment {
 
     private Uri userImageUri;
     private Uri salonImageUri;
+    NavController navController;
 
 
     public SPSignUpFragment() {
@@ -101,11 +103,11 @@ public class SPSignUpFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
+       /* if (context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         } else {
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+        }*/
     }
 
     @Override
@@ -113,6 +115,9 @@ public class SPSignUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_s_p_sign_up, container, false);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
 
         progressDialog = new ProgressDialog(mContext);
         mAuth = FirebaseAuth.getInstance();
@@ -233,9 +238,8 @@ public class SPSignUpFragment extends Fragment {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface != null){
-                    mMediatorInterface.changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
-                }
+                navController.navigate(R.id.action_SPSignUpFragment_to_loginFragment);
+
             }
         });
 
@@ -243,7 +247,6 @@ public class SPSignUpFragment extends Fragment {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface != null) {
                     String name = userName.getText().toString();
                     final String email = userEmail.getText().toString().trim();
                     final String password = userPass.getText().toString().trim();
@@ -331,7 +334,7 @@ public class SPSignUpFragment extends Fragment {
                             userVerify.setError("verify password must be the same as your entered password ");
                             progressDialog.dismiss();
                         }
-                    }
+
                 }
             }
         });
@@ -511,16 +514,9 @@ public class SPSignUpFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
-                if (mMediatorInterface != null) {
                     progressDialog.dismiss();
                     Intent i = new Intent(getActivity(), HomeActivity.class);
                     startActivity(i);
-
-                } else {
-                    Toast.makeText(mContext, "failed ", Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
-
-                }
             }
         });
     }
