@@ -174,11 +174,13 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="0dp"
-        android:layout_height="150dp"
+        android:layout_height="0dp"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         app:cardCornerRadius="14dp"
-        app:layout_constraintEnd_toEndOf="@+id/cv_name"
-        app:layout_constraintStart_toStartOf="@+id/cv_name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/cv_End"
+        app:layout_constraintStart_toStartOf="@+id/ib_srartTime"
         app:layout_constraintTop_toBottomOf="@+id/btn_addTime">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -214,8 +216,8 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
-                android:visibility="visible"
                 android:text="Nothing Added Yet"
+                android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/btn_left"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.502"

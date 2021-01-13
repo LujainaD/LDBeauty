@@ -15,6 +15,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -95,11 +96,13 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
          parentView = inflater.inflate(R.layout.fragment_location, container, false);
+
         NavHostFragment navHostFragment =
                 (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
         ownerId = (SPRegistrationModel) getArguments().getSerializable("info");
-
+        mMapView = parentView.findViewById(R.id.map);
+        mMapView.onCreate(savedInstanceState);
         ImageButton ibBack = parentView.findViewById(R.id.ib_back);
          btnGetUserLocation = parentView.findViewById(R.id.fab_info);
          zoomOutUserLocation = parentView.findViewById(R.id.fab_zoomout);
@@ -216,7 +219,9 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
 
     private void requestRuntimePermission() {
         String permissions[] = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-        ActivityCompat.requestPermissions(getActivity(), permissions, KEY_PERMISSION_REQUEST_ID);
+      //  ActivityCompat.requestPermissions(getActivity(), permissions, KEY_PERMISSION_REQUEST_ID);
+        requestPermissions(permissions, KEY_PERMISSION_REQUEST_ID);
+
     }
 
     private boolean isLocationEnabled() {
@@ -350,22 +355,28 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == KEY_PERMISSION_REQUEST_ID) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //user granted the permission
-                afterGrantedPermission();
+        switch (requestCode) {
+            case KEY_PERMISSION_REQUEST_ID: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-            } else {
-                // user didn't grant the permission
-                getActivity().finish(); // close the host activity.
+                    // permission was granted, yay!
+                    afterGrantedPermission();
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
             }
         }
     }
 
     private void afterGrantedPermission() {
         mMapView = parentView.findViewById(R.id.map);
-       // mMapView.onCreate(savedInstanceState);
-        mMapView.onResume();// display map ASAP
+        //mMapView.onCreate(savedInstanceState);
+       mMapView.onResume();// display map ASAP
         MapsInitializer.initialize(getContext());// initialize map
         mMapView.getMapAsync(LocationFragment.this);// link map view with OnMapReadyCallback
 
@@ -398,4 +409,6 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         showSalonLocation();
         getLastLocation();
     }
+
+
 }

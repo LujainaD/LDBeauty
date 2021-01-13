@@ -209,19 +209,19 @@
     <Button
         android:id="@+id/btn_confirm"
         android:layout_width="127dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="41dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/btn_rectangle"
         android:backgroundTint="@color/lightGray"
+        android:clickable="true"
+        android:enabled="false"
         android:gravity="center"
         android:text="Confirm"
         android:textAllCaps="false"
-        android:clickable="true"
-        android:enabled="false"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
-        app:layout_constraintStart_toStartOf="@+id/cardView"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        app:layout_constraintStart_toStartOf="@+id/cardView" />
 
     <TextView
         android:id="@+id/textView6"
@@ -245,14 +245,16 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="0dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         app:cardCornerRadius="14dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_confirm"
         app:layout_constraintEnd_toEndOf="@+id/ib_calender"
         app:layout_constraintStart_toStartOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/textView7">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
