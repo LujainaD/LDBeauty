@@ -88,6 +88,8 @@ public class LoginFragment extends Fragment {
         TextView forget = parentView.findViewById(R.id.tv_forget);
         mAuth = FirebaseAuth.getInstance();
 
+        Log.w("userRole",userRole);
+
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,10 +98,15 @@ public class LoginFragment extends Fragment {
                     signUpFragment.setViewPager(userRole);
                     mMediatorInterface.changeFragmentTo(signUpFragment, SignUpFragment.class.getSimpleName());
                 }*/
-                Bundle bundle = new Bundle();
+               /* Bundle bundle = new Bundle();
                 bundle.putString("userType", "Client");
                 navController.navigate(R.id.action_loginFragment_to_signUpFragment, bundle);
-
+*/
+                Intent intent = new Intent(getContext(), SignUpActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("userType","Client");
+                startActivity(intent);
+                getActivity().finish();
             }
         });
 

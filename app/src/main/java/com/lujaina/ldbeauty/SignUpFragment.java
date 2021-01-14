@@ -11,6 +11,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,6 @@ public class SignUpFragment extends Fragment {
     private Context mContext;
     private MediatorInterface mMediatorInterface;
     private int mSPposition;
-    private String userRole;
     NavController navController;
 
     public SignUpFragment() {
@@ -52,7 +52,9 @@ public class SignUpFragment extends Fragment {
                 (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
 
-        userRole = getArguments().getString("userType");
+       String userRole = getActivity().getIntent().getStringExtra("userType");
+
+        //bundle.getEcgetString("userType");
 
         Toolbar toolbar = parentView.findViewById(R.id.toolbar);
         ImageButton back = parentView.findViewById(R.id.ib_back);
@@ -69,15 +71,14 @@ public class SignUpFragment extends Fragment {
         SignUpViewAdapter adapter = new SignUpViewAdapter(getChildFragmentManager());
         viewPager.setAdapter(adapter);
 
-        if(userRole.equals("Client")){
+      /*  if(userRole.equals("Client")){
             viewPager.setCurrentItem(0);
         }
         if(userRole.equals("Salon Owner")){
             viewPager.setCurrentItem(1);
-        }
+        }*/
 
         tabs.setupWithViewPager(viewPager);
-
 
         return parentView;
     }

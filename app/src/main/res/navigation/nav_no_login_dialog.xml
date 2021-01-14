@@ -13,5 +13,45 @@
     <dialog
         android:id="@+id/noLoginDialogFragment"
         android:name="com.lujaina.ldbeauty.Dialogs.NoLoginDialogFragment"
-        android:label="NoLoginDialogFragment" />
+        android:label="NoLoginDialogFragment" >
+        <action
+            android:id="@+id/action_noLoginDialogFragment_to_loginChoicesFragment2"
+            app:destination="@id/loginChoicesFragment2" />
+        <action
+            android:id="@+id/action_noLoginDialogFragment_to_signUpFragment2"
+            app:destination="@id/signUpFragment2" />
+    </dialog>
+    <fragment
+        android:id="@+id/loginChoicesFragment2"
+        android:name="com.lujaina.ldbeauty.LoginChoicesFragment"
+        android:label="fragment_login_choices"
+        tools:layout="@layout/fragment_login_choices" >
+        <action
+            android:id="@+id/action_loginChoicesFragment2_to_loginFragment2"
+            app:destination="@id/loginFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment2"
+        android:name="com.lujaina.ldbeauty.LoginFragment"
+        android:label="LoginFragment" />
+    <fragment
+        android:id="@+id/signUpFragment2"
+        android:name="com.lujaina.ldbeauty.SignUpFragment"
+        android:label="SignUpFragment" >
+        <action
+            android:id="@+id/action_signUpFragment2_to_clientSignUpFragment2"
+            app:destination="@id/clientSignUpFragment2" />
+        <action
+            android:id="@+id/action_signUpFragment2_to_SPSignUpFragment2"
+            app:destination="@id/SPSignUpFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/clientSignUpFragment2"
+        android:name="com.lujaina.ldbeauty.Client.ClientSignUpFragment"
+        android:label="ClientSignUpFragment" />
+    <fragment
+        android:id="@+id/SPSignUpFragment2"
+        android:name="com.lujaina.ldbeauty.SP.SPSignUpFragment"
+        android:label="fragment_s_p_sign_up"
+        tools:layout="@layout/fragment_s_p_sign_up" />
 </navigation>

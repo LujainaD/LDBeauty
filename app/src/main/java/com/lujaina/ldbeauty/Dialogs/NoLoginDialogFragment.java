@@ -8,9 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -20,13 +18,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
-import com.lujaina.ldbeauty.LoginChoicesFragment;
-import com.lujaina.ldbeauty.LoginFragment;
-import com.lujaina.ldbeauty.Models.SPRegistrationModel;
+import com.lujaina.ldbeauty.MainActivity;
 import com.lujaina.ldbeauty.R;
-import com.lujaina.ldbeauty.SignUpFragment;
+import com.lujaina.ldbeauty.SignUpActivity;
 
 public class NoLoginDialogFragment extends DialogFragment {
     private MediatorInterface mMediatorInterface;
@@ -69,28 +64,35 @@ public class NoLoginDialogFragment extends DialogFragment {
                 (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
 
-        String num = getArguments().getString("num");
+        Bundle b = getActivity().getIntent().getExtras();
+        int num = b.getInt("num");
+        String checkDirection = b.getString("dialog");
         Button login = parentView.findViewById(R.id.btn_login);
         Button signUp = parentView.findViewById(R.id.btn_signUp);
         TextView textView = parentView.findViewById(R.id.tv_text);
 
-        if (num != null) {
-            if(Integer.parseInt(num) == 1){
+            if(num == 1){
                 textView.setText("Please login or signup for accessing your profile");
             }else {
 
             }
-        }
+
 
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
+                /*if(mMediatorInterface != null){
                     mMediatorInterface.changeFragmentTo(new LoginChoicesFragment(), LoginChoicesFragment.class.getSimpleName());
                     dismiss();
-                }
-
+                }*/
+                /*Bundle bundle = new Bundle();
+                bundle.putString("dialog", checkDirection);
+                navController.navigate(R.id.action_noLoginDialogFragment_to_loginChoicesFragment2);
+*/
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                startActivity(intent);
+                getActivity().finish();
             }
         });
 
@@ -103,7 +105,11 @@ public class NoLoginDialogFragment extends DialogFragment {
                     mMediatorInterface.changeFragmentTo(usertype, SignUpFragment.class.getSimpleName());
                     dismiss();
                 }*/
+                //navController.navigate(R.id.action_noLoginDialogFragment_to_signUpFragment2);
 
+                Intent intent = new Intent(getContext(), SignUpActivity.class);
+                startActivity(intent);
+                getActivity().finish();
             }
         });
 

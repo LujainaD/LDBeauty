@@ -68,7 +68,7 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
     FirebaseUser user;
     String userRole;
     ProgressDialog progressDialog;
-     NavController navController;
+    NavController navController;
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +77,7 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
         bottomNav = findViewById(R.id.bottom_nav);
         // changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
         // createNotificationChannel();
+        bottomNav.setOnNavigationItemSelectedListener(this);
 
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
@@ -215,8 +216,6 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
 
     }
 
-
-
     private void saveTokenToDB(String token) {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference myRef = firebaseDatabase.getReference(Constants.Users).child("UsersToken").child(mAuth.getUid());
@@ -253,11 +252,12 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
         progressDialog.setContentView(R.layout.progress_bar);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
+        item.setCheckable(true);
         switch (item.getItemId()) {
             case R.id.nav_search: {
 
                 progressDialog.dismiss();
-                Toast.makeText(this, "from search", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
               //  changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
                 Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
                 startActivity(intent);
@@ -266,7 +266,7 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
             }
 
             case R.id.nav_profile: {
-                Toast.makeText(this, "from profile", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "profile", Toast.LENGTH_SHORT).show();
 
                 if (user != null) {
                     if (userRole != null) {
@@ -304,16 +304,26 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
                        }
 
                 } else {
-                        progressDialog.dismiss();
-                    /*    NoLoginDialogFragment dialog = new NoLoginDialogFragment();
+                       /* progressDialog.dismiss();
+                    *//*    NoLoginDialogFragment dialog = new NoLoginDialogFragment();
                         dialog.showText(1);
-                        dialog.show(getSupportFragmentManager(),NoLoginDialogFragment.class.getSimpleName());*/
+                        dialog.show(getSupportFragmentManager(),NoLoginDialogFragment.class.getSimpleName());*//*
                         Toast.makeText(this, "no role", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(getApplicationContext(),NoLoginActivity.class);
-                        intent.putExtra("num",1);
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("num",1);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        finish();*/
+
+                        Intent intent = new Intent(getApplicationContext(),NoLoginActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("num",1);
+                        intent.putExtras(bundle);
                         startActivity(intent);
                         finish();
+
                     break;
                 }
             }else {
@@ -322,10 +332,13 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
                     dialog.showText(1);
                     dialog.show(getSupportFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
                     */
-                    Toast.makeText(this, "not user", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(this, "not user", Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(getApplicationContext(),NoLoginActivity.class);
-                    intent.putExtra("num",1);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("num",1);
+                  //  bundle.putString("dialog","dialog");
+                    intent.putExtras(bundle);
                     startActivity(intent);
                     finish();
                     break;
@@ -458,7 +471,6 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
             super.onBackPressed();
         }
     }*/
-
 
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because

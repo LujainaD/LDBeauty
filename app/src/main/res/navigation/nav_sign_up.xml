@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_sign_up"
+    app:startDestination="@id/signUpFragment3">
+    <fragment
+        android:id="@+id/signUpFragment3"
+        android:name="com.lujaina.ldbeauty.SignUpFragment"
+        android:label="SignUpFragment" />
+    <activity
+        android:id="@+id/signUpActivity"
+        android:name="com.lujaina.ldbeauty.SignUpActivity"
+        android:label="activity_sign_up"
+        tools:layout="@layout/activity_sign_up" />
+</navigation>

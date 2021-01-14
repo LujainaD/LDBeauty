@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -50,6 +52,8 @@ public class ClientFeedbackFragment extends Fragment implements RecyclerItemTouc
     String ownerId;
     RecyclerView recyclerView;
     TextView empty;
+    NavController navController;
+
     public ClientFeedbackFragment() {
         // Required empty public constructor
     }
@@ -58,11 +62,6 @@ public class ClientFeedbackFragment extends Fragment implements RecyclerItemTouc
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
-            mMediatorInterface = (MediatorInterface) context;
-        } else {
-            throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
     }
 
     @Override
@@ -70,6 +69,10 @@ public class ClientFeedbackFragment extends Fragment implements RecyclerItemTouc
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_rating, container, false);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+
         empty = parentView.findViewById(R.id.tv_empty);
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
         add.setVisibility(View.GONE);
@@ -87,9 +90,7 @@ public class ClientFeedbackFragment extends Fragment implements RecyclerItemTouc
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
-                    mMediatorInterface.onBackPressed();
-                }
+                navController.popBackStack();
             }
         });
         ItemTouchHelper.SimpleCallback item = new RecyclerItemTouchHelperFeedback(0, ItemTouchHelper.LEFT, this) ;

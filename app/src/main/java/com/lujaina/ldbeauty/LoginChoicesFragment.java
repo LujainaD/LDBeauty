@@ -1,6 +1,7 @@
 package com.lujaina.ldbeauty;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 
 
@@ -43,9 +43,20 @@ public class LoginChoicesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_login_choices, container, false);
+        if(getActivity().getActionBar()!= null){
+            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+
+        }
+      /*  if(getActivity().getActionBar()== null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+
+        }*/
         NavHostFragment navHostFragment =
                 (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
+
+       // Bundle b = getActivity().getIntent().getExtras();
+        //String checkDirection = b.getString("dialog");
 
         Button client = parentView.findViewById(R.id.btn_client);
         Button salonOwner = parentView.findViewById(R.id.btn_salonOwner);
@@ -61,10 +72,16 @@ public class LoginChoicesFragment extends Fragment {
                     usertype.setViewPager("Client");
                     mMediatorInterface.changeFragmentTo(usertype, SignUpFragment.class.getSimpleName());
                 }*/
-                Bundle bundle = new Bundle();
+               /* Bundle bundle = new Bundle();
                 bundle.putString("userType", "Client");
-                navController.navigate(R.id.action_loginChoicesFragment_to_signUpFragment, bundle);
+                navController.navigate(R.id.action_loginChoicesFragment_to_signUpFragment, bundle);*/
 
+                Intent intent = new Intent(getContext(), SignUpActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("userType","Client");
+                intent.putExtras(bundle);
+                startActivity(intent);
+                getActivity().finish();
             }
         });
 
@@ -76,9 +93,23 @@ public class LoginChoicesFragment extends Fragment {
                     usertype.setUserType("Client");
                     mMediatorInterface.changeFragmentTo(usertype, LoginFragment.class.getSimpleName());
                 }*/
+               /*if(checkDirection=="dialog"){
+                   Bundle bundle = new Bundle();
+                   bundle.putString("userType", "Client");
+                   navController.navigate(R.id.action_loginChoicesFragment2_to_loginFragment2, bundle);
+
+               }else{
+                   Bundle bundle = new Bundle();
+                   bundle.putString("userType", "Client");
+                   navController.navigate(R.id.action_loginChoicesFragment_to_loginFragment, bundle);
+               }*/
+
+                /*Intent intent = new Intent(getContext(), MainActivity.class);
+                startActivity(intent);
+                getActivity().finish();*/
                 Bundle bundle = new Bundle();
                 bundle.putString("userType", "Client");
-                navController.navigate(R.id.action_loginChoicesFragment_to_loginFragment, bundle);
+                navController.navigate(R.id.action_loginChoicesFragment_to_loginFragment,bundle);
 
             }
         });
@@ -92,6 +123,16 @@ public class LoginChoicesFragment extends Fragment {
                     mMediatorInterface.changeFragmentTo(usertype, LoginFragment.class.getSimpleName());
                 }*/
 
+              /*  if(checkDirection=="dialog"){
+                    Bundle bundle = new Bundle();
+                    bundle.putString("userType", "Salon Owner");
+                    navController.navigate(R.id.action_loginChoicesFragment2_to_loginFragment2, bundle);
+
+                }
+                Bundle bundle = new Bundle();
+                bundle.putString("userType", "Salon Owner");
+                navController.navigate(R.id.action_loginChoicesFragment_to_loginFragment, bundle);
+*/
                 Bundle bundle = new Bundle();
                 bundle.putString("userType", "Salon Owner");
                 navController.navigate(R.id.action_loginChoicesFragment_to_loginFragment, bundle);
@@ -107,6 +148,16 @@ public class LoginChoicesFragment extends Fragment {
                     mMediatorInterface.changeFragmentTo(usertype, LoginFragment.class.getSimpleName());
                 }*/
 
+                /*if(checkDirection=="dialog"){
+                    Bundle bundle = new Bundle();
+                    bundle.putString("userType", "App Owner");
+                    navController.navigate(R.id.action_loginChoicesFragment2_to_loginFragment2, bundle);
+
+                }
+                Bundle bundle = new Bundle();
+                bundle.putString("userType", "App Owner");
+                navController.navigate(R.id.action_loginChoicesFragment_to_loginFragment, bundle);
+*/
                 Bundle bundle = new Bundle();
                 bundle.putString("userType", "App Owner");
                 navController.navigate(R.id.action_loginChoicesFragment_to_loginFragment, bundle);

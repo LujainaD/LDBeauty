@@ -238,8 +238,10 @@ public class SPSignUpFragment extends Fragment {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navController.navigate(R.id.action_SPSignUpFragment_to_loginFragment);
-
+               // navController.navigate(R.id.action_SPSignUpFragment_to_loginFragment);
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                startActivity(intent);
+                getActivity().finish();
             }
         });
 

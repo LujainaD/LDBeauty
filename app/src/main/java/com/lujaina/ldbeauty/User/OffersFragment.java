@@ -138,7 +138,7 @@ public class OffersFragment extends Fragment {
 */
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("OfferModel", offerModel);
-                            navController.navigate(R.id.action_servicesFragment_to_serviceAppointmentFragment, bundle);
+                            navController.navigate(R.id.action_offersFragment_to_offerAppointmentFragment, bundle);
                         }else {
                             Toast.makeText(mContext, "Please verify your email address first", Toast.LENGTH_SHORT).show();
                         }

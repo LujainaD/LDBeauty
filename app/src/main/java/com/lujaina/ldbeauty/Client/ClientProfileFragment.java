@@ -8,6 +8,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +40,7 @@ public class ClientProfileFragment extends Fragment {
     private Context mContext;
     DatabaseReference myRef;
     ProgressDialog progressDialog;
+    NavController navController;
 
     public ClientProfileFragment() {
         // Required empty public constructor
@@ -61,8 +64,12 @@ public class ClientProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_client_profile, container, false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-        BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
-        navBar.setVisibility(View.VISIBLE);
+       /* BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+        navBar.setVisibility(View.VISIBLE);*/
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+
         FirebaseAuth mAuth= FirebaseAuth.getInstance();
         final FirebaseUser mFirebaseUser = mAuth.getCurrentUser();
 
@@ -80,6 +87,8 @@ public class ClientProfileFragment extends Fragment {
                 /*if(mMediatorInterface != null){
                     mMediatorInterface.changeFragmentTo(new EditClientProfileFragment(), EditClientProfileFragment.class.getSimpleName());
                 }*/
+                navController.navigate(R.id.action_clientProfileFragment_to_editClientProfileFragment);
+
             }
         });
 
@@ -89,6 +98,8 @@ public class ClientProfileFragment extends Fragment {
                 /*if(mMediatorInterface != null){
                     mMediatorInterface.changeFragmentTo(new ClientAppointmentFragment(), ClientAppointmentFragment.class.getSimpleName());
                 }*/
+                navController.navigate(R.id.action_clientProfileFragment_to_clientAppointmentFragment);
+
             }
         });
 
@@ -98,7 +109,10 @@ public class ClientProfileFragment extends Fragment {
                /* if(mMediatorInterface != null){
                     mMediatorInterface.changeFragmentTo(new ClientFeedbackFragment(), ClientFeedbackFragment.class.getSimpleName());
                 }*/
+                navController.navigate(R.id.action_clientProfileFragment_to_clientFeedbackFragment);
+
             }
+
         });
 
         progressDialog = new ProgressDialog(mContext);

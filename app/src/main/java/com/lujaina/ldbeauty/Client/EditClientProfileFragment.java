@@ -17,6 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.os.Environment;
 import android.os.Handler;
@@ -88,7 +90,6 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
     private SPRegistrationModel currentUserInfo;
 
     private FirebaseAuth mAuth;
-    private MediatorInterface mMediatorInterface;
     FirebaseUser mFirebaseUser;
 
     private ProgressDialog progressDialog;
@@ -96,28 +97,24 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
     Handler handler = new Handler();
     private String mImagePath;
     private SPRegistrationModel info;
+    NavController navController;
 
     public EditClientProfileFragment() {
         // Required empty public constructor
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if (context instanceof MediatorInterface) {
-            mMediatorInterface = (MediatorInterface) context;
-        } else {
-            throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
-    }
+
 
     @SuppressLint("UseCompatLoadingForDrawables")
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_edit_client_profile, container, false);
-        BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+       /* BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
         navBar.setVisibility(View.GONE);
+        */NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -140,7 +137,7 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMediatorInterface.onBackPressed();
+                navController.popBackStack();
             }
         });
 
@@ -154,7 +151,7 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
                     userPhone.setText(currentUserInfo.getPhoneNumber());
                     registerDate.setText(currentUserInfo.getRegistrationDate());
                     updateDate.setText(currentUserInfo.getUpdatedDate());
-                    Glide.with(Objects.requireNonNull(getContext()))
+                    Glide.with(getContext())
                             .load(currentUserInfo.getOwnerImageURL())
                             .error(R.drawable.profile)
                             .into(profileImg);
@@ -443,7 +440,7 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
     }
 
     private void backToProfile() {
-        mMediatorInterface.changeFragmentTo(new ClientProfileFragment(), ClientProfileFragment.class.getSimpleName());
+        navController.popBackStack();
     }
 
     private void gallery(int requestCode) {

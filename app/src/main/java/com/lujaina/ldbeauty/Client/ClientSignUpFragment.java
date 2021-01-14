@@ -40,12 +40,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.HomeActivity;
-import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
-import com.lujaina.ldbeauty.LoginChoicesFragment;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
-import com.lujaina.ldbeauty.SP.SPProfileFragment;
-import com.lujaina.ldbeauty.User.SalonsHomeFragment;
+import com.lujaina.ldbeauty.SignUpActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -189,7 +186,13 @@ public class ClientSignUpFragment extends Fragment {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getContext(), SignUpActivity.class);
+                intent.putExtra("userRole","Client");
+                startActivity(intent);
+                getActivity().finish();
+/*
                 navController.navigate(R.id.action_clientSignUpFragment_to_loginFragment);
+*/
             }
         });
 

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,10 +49,11 @@ public class ClientAppointmentFragment extends Fragment {
     LinearLayoutManager lineralayoutManager;
 
 
-    private MediatorInterface mMediatorInterface;
     private Context mContext;
 
     TextView emptyAppointment;
+    NavController navController;
+
     public ClientAppointmentFragment() {
         // Required empty public constructor
     }
@@ -59,11 +62,7 @@ public class ClientAppointmentFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
-            mMediatorInterface = (MediatorInterface) context;
-        } else {
-            throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+
     }
 
     @Override
@@ -71,12 +70,16 @@ public class ClientAppointmentFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_client_appointment, container, false);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+
         ImageButton ibBack = parentView.findViewById(R.id.ib_back);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
-        BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+        /*BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
         navBar.setVisibility(View.GONE);
-        emptyAppointment = parentView.findViewById(R.id.empty);
+        */emptyAppointment = parentView.findViewById(R.id.empty);
         recyclerView = parentView.findViewById(R.id.tv_appointment);
         ImageButton ibLeft = parentView.findViewById(R.id.ib_left);
         ImageButton ibRight = parentView.findViewById(R.id.ib_right);
@@ -109,9 +112,7 @@ public class ClientAppointmentFragment extends Fragment {
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface != null) {
-                    mMediatorInterface.onBackPressed();
-                }
+                navController.popBackStack();
 
             }
         });
