@@ -236,7 +236,7 @@ public class AddServiceAppointmentFragment extends Fragment {
                             startCalendar.add(Calendar.MINUTE, Integer.parseInt(dur));
                             String timeslots = slotTime.format(startCalendar.getTime());
                             Log.w("timeArray",timeslots);
-                            //addTimeAppointment(dur,start,end, timeslots);
+                            addTimeAppointment(dur,start,end, timeslots);
 
                         }
                     } catch (ParseException e) {

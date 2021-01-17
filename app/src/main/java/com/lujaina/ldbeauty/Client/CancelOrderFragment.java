@@ -34,6 +34,7 @@ public class CancelOrderFragment extends Fragment {
             public void onClick(View v) {
                 Intent i = new Intent(getContext(), HomeActivity.class);
                 startActivity(i);
+                getActivity().finish();
             }
         });
         return parentView;

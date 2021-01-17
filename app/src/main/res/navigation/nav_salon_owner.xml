@@ -79,12 +79,6 @@
             android:id="@+id/action_salonsHomeFragment2_to_SPProfileFragment2"
             app:destination="@id/SPProfileFragment" />
         <action
-            android:id="@+id/action_salonsHomeFragment2_to_selectedSalonFragment"
-            app:destination="@id/selectedSalonFragment" />
-        <action
-            android:id="@+id/action_salonsHomeFragment2_to_clientProfileFragment"
-            app:destination="@id/clientProfileFragment" />
-        <action
             android:id="@+id/action_salonsHomeFragment2_to_cartFragment2"
             app:destination="@id/cartFragment2" />
         <action
@@ -136,42 +130,10 @@
         android:label="activity_home"
         tools:layout="@layout/activity_home" />
     <fragment
-        android:id="@+id/selectedSalonFragment"
-        android:name="com.lujaina.ldbeauty.User.SelectedSalonFragment"
-        android:label="fragment_selected_salon"
-        tools:layout="@layout/fragment_selected_salon" />
-    <fragment
         android:id="@+id/addServiceAppointmentFragment2"
         android:name="com.lujaina.ldbeauty.SP.AddServiceAppointmentFragment"
         android:label="fragment_service_appointment"
         tools:layout="@layout/fragment_service_appointment" />
-    <fragment
-        android:id="@+id/clientProfileFragment"
-        android:name="com.lujaina.ldbeauty.Client.ClientProfileFragment"
-        android:label="ClientProfileFragment" >
-        <action
-            android:id="@+id/action_clientProfileFragment_to_clientFeedbackFragment"
-            app:destination="@id/clientFeedbackFragment" />
-        <action
-            android:id="@+id/action_clientProfileFragment_to_clientAppointmentFragment"
-            app:destination="@id/clientAppointmentFragment" />
-        <action
-            android:id="@+id/action_clientProfileFragment_to_editClientProfileFragment"
-            app:destination="@id/editClientProfileFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/clientFeedbackFragment"
-        android:name="com.lujaina.ldbeauty.Client.ClientFeedbackFragment"
-        android:label="fragment_client_feedback"
-        tools:layout="@layout/fragment_client_feedback" />
-    <fragment
-        android:id="@+id/clientAppointmentFragment"
-        android:name="com.lujaina.ldbeauty.Client.ClientAppointmentFragment"
-        android:label="ClientAppointmentFragment" />
-    <fragment
-        android:id="@+id/editClientProfileFragment"
-        android:name="com.lujaina.ldbeauty.Client.EditClientProfileFragment"
-        android:label="EditClientProfileFragment" />
     <fragment
         android:id="@+id/appOwnerProfileFragment"
         android:name="com.lujaina.ldbeauty.AppOwner.AppOwnerProfileFragment"
@@ -184,4 +146,9 @@
         android:id="@+id/aboutAppFragment"
         android:name="com.lujaina.ldbeauty.User.AboutAppFragment"
         android:label="AboutAppFragment" />
+    <dialog
+        android:id="@+id/noLoginDialogFragment3"
+        android:name="com.lujaina.ldbeauty.Dialogs.NoLoginDialogFragment"
+        android:label="NoLoginDialogFragment" />
+
 </navigation>

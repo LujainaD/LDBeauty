@@ -92,7 +92,7 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     private Marker selectedLocation;
     private double mLat;
     private double mLng;
-
+    View parentView;
     public AddSalonLocationFragment() {
         // Required empty public constructor
     }
@@ -112,7 +112,9 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View parentView = inflater.inflate(R.layout.fragment_add_salon_location, container, false);
+         parentView = inflater.inflate(R.layout.fragment_add_salon_location, container, false);
+        mMapView = parentView.findViewById(R.id.map);
+        mMapView.onCreate(savedInstanceState);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
@@ -133,7 +135,7 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
         });
 
         btnGetLocationInfo = parentView.findViewById(R.id.btn_getCurrentLocation);
-
+        btnGetLocationInfo.setVisibility(View.GONE);
 
         if (isPermissionGranted()) {  // in order to display map in fragment
             mMapView = parentView.findViewById(R.id.map);
@@ -141,6 +143,7 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
             mMapView.onResume();// display map ASAP
             MapsInitializer.initialize(mContext);// initialize map
             mMapView.getMapAsync(AddSalonLocationFragment.this);// link map view with OnMapReadyCallback
+            btnGetLocationInfo.setVisibility(View.VISIBLE);
 
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext);
 
@@ -250,23 +253,63 @@ public class AddSalonLocationFragment extends Fragment implements OnMapReadyCall
     }
     private void requestRuntimePermission() {
         String permissions[] = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-        ActivityCompat.requestPermissions(getActivity(), permissions, KEY_PERMISSION_REQUEST_ID);
+        //  ActivityCompat.requestPermissions(getActivity(), permissions, KEY_PERMISSION_REQUEST_ID);
+        requestPermissions(permissions, KEY_PERMISSION_REQUEST_ID);
+
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == KEY_PERMISSION_REQUEST_ID) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //user granted the permission
-                Intent intent = new Intent(mContext, LocationActivity.class);
-                startActivity(intent);
+        switch (requestCode) {
+            case KEY_PERMISSION_REQUEST_ID: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-            } else {
-                // user didn't grant the permission
-                getActivity().finish(); // close the host activity.
+                    // permission was granted, yay!
+                    afterGrantedPermission();
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
             }
         }
+    }
+
+    private void afterGrantedPermission() {
+
+        mMapView = parentView.findViewById(R.id.map);
+        mMapView.onResume();// display map ASAP
+
+        MapsInitializer.initialize(mContext);// initialize map
+        mMapView.getMapAsync(AddSalonLocationFragment.this);// link map view with OnMapReadyCallback
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext);
+        btnGetLocationInfo.setVisibility(View.VISIBLE);
+
+        btnGetLocationInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getLastLocation();
+            }
+        });
+
+        final ConstraintLayout clInfo = parentView.findViewById(R.id.cl_info);
+        FloatingActionButton fabInfo = parentView.findViewById(R.id.fab_info);
+        fabInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (clInfo.getVisibility() == View.GONE) {
+                    clInfo.setVisibility(View.VISIBLE);
+                } else {
+                    clInfo.setVisibility(View.GONE);
+
+                }
+            }
+        });
     }
 
     private boolean isLocationEnabled() {

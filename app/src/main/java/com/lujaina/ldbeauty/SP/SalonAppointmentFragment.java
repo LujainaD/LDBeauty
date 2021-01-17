@@ -97,7 +97,7 @@ public class SalonAppointmentFragment extends Fragment implements ConfirmDialogF
             @Override
             public void onConfirm(ClientsAppointmentModel confirm) {
                 ConfirmDialogFragment dialogFragment = new ConfirmDialogFragment(SalonAppointmentFragment.this);
-                dialogFragment.sendInfo(confirm);
+                dialogFragment.sendInfo(confirm,1);
                 dialogFragment.show(getChildFragmentManager(),ConfirmDialogFragment.class.getSimpleName() );
                 //confirmAppointment(confirm);
             }
@@ -105,7 +105,7 @@ public class SalonAppointmentFragment extends Fragment implements ConfirmDialogF
             @Override
             public void onDecline(ClientsAppointmentModel decline) {
                 ConfirmDialogFragment dialogFragment = new ConfirmDialogFragment(SalonAppointmentFragment.this);
-                dialogFragment.sendInfo(decline);
+                dialogFragment.sendInfo(decline,2);
                 dialogFragment.show(getChildFragmentManager(),ConfirmDialogFragment.class.getSimpleName() );
             }
         });
@@ -321,8 +321,10 @@ public class SalonAppointmentFragment extends Fragment implements ConfirmDialogF
         if(confirmOrDecline == 1){
             confirmAppointment(information);
 
-        }else {
+        }else if(confirmOrDecline == 3){
             declineAppointment(information);
+        }else{
+
         }
     }
 }

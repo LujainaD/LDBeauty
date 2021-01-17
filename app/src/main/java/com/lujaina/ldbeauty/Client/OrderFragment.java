@@ -19,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.os.HandlerCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -63,6 +65,7 @@ public class OrderFragment extends Fragment  {
     private OrderAdapter serviceAdapter;
     ArrayList<ClientsAppointmentModel> serviceArray;
     private String ownerId;
+    NavController navController;
 
     private BroadcastReceiver broadcastReceiver;
     public OrderFragment() {
@@ -75,6 +78,10 @@ public class OrderFragment extends Fragment  {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
       View parentView = inflater.inflate(R.layout.order_confirm3, container, false);
+      NavHostFragment navHostFragment =
+              (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+      navController = navHostFragment.getNavController();
+      ownerId = getArguments().getString("ownerId");
 
       Button btn_dismiss = parentView.findViewById(R.id.btn_dismiss);
 
@@ -90,6 +97,7 @@ public class OrderFragment extends Fragment  {
               saveOrderInHistory();
               Intent i = new Intent(getContext(), HomeActivity.class);
               startActivity(i);
+              getActivity().finish();
           }
       });
 
@@ -398,7 +406,4 @@ public class OrderFragment extends Fragment  {
 
     }
 
-    public void setOwnerId(String ownerId) {
-        this.ownerId = ownerId;
-    }
 }

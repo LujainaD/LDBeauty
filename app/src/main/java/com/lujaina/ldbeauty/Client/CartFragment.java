@@ -1,6 +1,7 @@
 package com.lujaina.ldbeauty.Client;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -11,12 +12,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,9 +36,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Adapters.CartServicesAdapter;
 import com.lujaina.ldbeauty.Constants;
-import com.lujaina.ldbeauty.HomeActivity;
-import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.ClientsAppointmentModel;
+import com.lujaina.ldbeauty.PayActivity;
 import com.lujaina.ldbeauty.R;
 
 import java.util.ArrayList;
@@ -49,7 +49,6 @@ public class CartFragment extends Fragment {
     ProgressDialog progressDialog;
 
     private Context mContext;
-    private MediatorInterface mMediatorInterface;
 
     private CartServicesAdapter serviceAdapter;
     ArrayList<ClientsAppointmentModel> serviceArray;
@@ -57,6 +56,8 @@ public class CartFragment extends Fragment {
     TextView emptyservice;
     RecyclerView service_rv;
     String ownerId;
+    NavController navController;
+
     public CartFragment() {
         // Required empty public constructor
     }
@@ -65,11 +66,7 @@ public class CartFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
-            mMediatorInterface = (MediatorInterface) context;
-        } else {
-            throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+
     }
 
     @Override
@@ -78,8 +75,17 @@ public class CartFragment extends Fragment {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_cart, container, false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+
         BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
-        navBar.setVisibility(View.GONE);
+        if(navBar!= null){
+            navBar.setVisibility(View.GONE);
+
+        }
+
+
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setCancelable(true);
         progressDialog.setContentView(R.layout.progress_bar);
@@ -96,9 +102,7 @@ public class CartFragment extends Fragment {
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMediatorInterface != null) {
-                    mMediatorInterface.onBackPressed();
-                }
+                navController.popBackStack();
             }
         });
 
@@ -137,11 +141,21 @@ public class CartFragment extends Fragment {
                         alertDialog.show();
 
                     }else {
-                        if (mMediatorInterface != null) {
+                        /*if (mMediatorInterface != null) {
                             PaymentFragment paymentFragment = new PaymentFragment();
                             paymentFragment.setTotalPrice(tv_total.getText().toString(), serviceArray, ownerId);
                             mMediatorInterface.changeFragmentTo(paymentFragment, PayPalFragment.class.getSimpleName());
-                        }
+                        }*/
+
+                        Toast.makeText(mContext, "pay", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getContext(), PayActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("total", tv_total.getText().toString());
+                        bundle.putString("ownerId",ownerId);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        getActivity().finish();
+                        // navController.navigate(R.id.action_selectedSalonFragment2_to_categoriesFragment, bundle);
                     }
                 }
             });

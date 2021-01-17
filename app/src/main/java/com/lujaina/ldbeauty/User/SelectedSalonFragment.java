@@ -105,7 +105,7 @@ public class SelectedSalonFragment extends Fragment {
                 Intent intent = new Intent(getContext(), HomeActivity.class);
                 startActivity(intent);
                 getActivity().finish();
-                navController.popBackStack();
+                //navController.popBackStack();
             }
         });
 

@@ -124,7 +124,7 @@ public class SalonsHomeFragment extends Fragment {
                 b.putSerializable("SPRegistrationModel", salon);
                 intent.putExtras(b);
                 startActivity(intent);
-                getActivity().finish();
+                //getActivity().finish();
 
                /* Bundle bundle = new Bundle();
                 bundle.putSerializable("SPRegistrationModel", salon);

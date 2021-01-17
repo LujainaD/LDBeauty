@@ -77,9 +77,9 @@ public class ClientAppointmentFragment extends Fragment {
         ImageButton ibBack = parentView.findViewById(R.id.ib_back);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
-        /*BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+        BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
         navBar.setVisibility(View.GONE);
-        */emptyAppointment = parentView.findViewById(R.id.empty);
+        emptyAppointment = parentView.findViewById(R.id.empty);
         recyclerView = parentView.findViewById(R.id.tv_appointment);
         ImageButton ibLeft = parentView.findViewById(R.id.ib_left);
         ImageButton ibRight = parentView.findViewById(R.id.ib_right);

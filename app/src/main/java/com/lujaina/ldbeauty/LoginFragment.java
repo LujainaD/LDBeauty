@@ -79,16 +79,16 @@ public class LoginFragment extends Fragment {
         NavHostFragment navHostFragment =
                 (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
+        //userRole = getActivity().getIntent().getExtras().getString("userType");
 
         userRole = getArguments().getString("userType");
+
         final EditText ti_email = parentView.findViewById(R.id.ti_userEmail);
         final EditText ti_password = parentView.findViewById(R.id.ti_password);
         Button login = parentView.findViewById(R.id.btn_login);
         TextView signup = parentView.findViewById(R.id.tv_SignUp);
         TextView forget = parentView.findViewById(R.id.tv_forget);
         mAuth = FirebaseAuth.getInstance();
-
-        Log.w("userRole",userRole);
 
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +104,8 @@ public class LoginFragment extends Fragment {
 */
                 Intent intent = new Intent(getContext(), SignUpActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("userType","Client");
+                bundle.putString("userType",userRole);
+                intent.putExtras(bundle);
                 startActivity(intent);
                 getActivity().finish();
             }
@@ -264,6 +265,7 @@ public class LoginFragment extends Fragment {
                       progressDialog.dismiss();
                       Intent i = new Intent(getActivity(), HomeActivity.class);
                       startActivity(i);
+                      getActivity().finish();
                     }else {
                       Toast.makeText(getContext(), "Please verify your email address", Toast.LENGTH_SHORT).show();
 

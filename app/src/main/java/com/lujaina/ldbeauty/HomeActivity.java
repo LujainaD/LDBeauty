@@ -255,9 +255,7 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
         item.setCheckable(true);
         switch (item.getItemId()) {
             case R.id.nav_search: {
-
                 progressDialog.dismiss();
-                Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
               //  changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
                 Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
                 startActivity(intent);
@@ -276,7 +274,7 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
                               // changeFragmentTo(new ClientProfileFragment(), ClientProfileFragment.class.getSimpleName());
                                Intent intent = new Intent(getApplicationContext(),ClientActivity.class);
                                startActivity(intent);
-                               finish();;
+                               //finish();;
                            }else{
                                progressDialog.dismiss();
                                Toast.makeText(getApplicationContext(), "Please verify your email address", Toast.LENGTH_SHORT).show();
@@ -298,7 +296,7 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
 
                        }else {
                            progressDialog.dismiss();
-                           navController.navigate(R.id.action_clientProfileFragment_to_appOwnerProfileFragment);
+                           navController.navigate(R.id.action_salonsHomeFragment2_to_appOwnerProfileFragment);
                            // changeFragmentTo(new AppOwnerProfileFragment(), AppOwnerProfileFragment.class.getSimpleName());
                            return true;
                        }
@@ -317,12 +315,17 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
                         startActivity(intent);
                         finish();*/
 
-                        Intent intent = new Intent(getApplicationContext(),NoLoginActivity.class);
+                      /*  Intent intent = new Intent(getApplicationContext(),NoLoginActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putInt("num",1);
                         intent.putExtras(bundle);
                         startActivity(intent);
                         finish();
+                        */
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("num",1);
+                        //NavHostFragment.findNavController(new NoLoginDialogFragment());
+                        navController.navigate(R.id.noLoginDialogFragment3,bundle);
 
                     break;
                 }
@@ -334,13 +337,21 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
                     */
                    // Toast.makeText(this, "not user", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(getApplicationContext(),NoLoginActivity.class);
+                   /* Intent intent = new Intent(getApplicationContext(),NoLoginActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putInt("num",1);
                   //  bundle.putString("dialog","dialog");
                     intent.putExtras(bundle);
                     startActivity(intent);
                     finish();
+*/
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("num",1);
+                   /* NoLoginDialogFragment fragment = new NoLoginDialogFragment();
+                    fragment.setArguments(bundle);*/
+                    //NavHostFragment.findNavController(new NoLoginDialogFragment());
+                    navController.navigate(R.id.noLoginDialogFragment3,bundle);
+
                     break;
                 }
 
@@ -348,6 +359,8 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
             case R.id.nav_app: {
                 progressDialog.dismiss();
                // changeFragmentTo(new AboutAppFragment(), AboutAppFragment.class.getSimpleName());
+                navController.navigate(R.id.aboutAppFragment);
+
                 return true;
             }
         }
@@ -452,7 +465,6 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
             case R.id.my_cart: {
                // changeFragmentTo(new CartFragment(), CartFragment.class.getSimpleName());
                 navController.navigate(R.id.action_salonsHomeFragment2_to_cartFragment2);
-
                 break;
 
             }

@@ -127,9 +127,13 @@ public class OffersFragment extends Fragment {
             @Override
             public void onClick(OfferModel offerModel) {
                 if(mFirebaseUser == null || userRole.equals("Salon Owner")){
-                    NoLoginDialogFragment dialog = new NoLoginDialogFragment();
+                   /* NoLoginDialogFragment dialog = new NoLoginDialogFragment();
                     dialog.showText(2);
-                    dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
+                    dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());*/
+
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("num",2);
+                    navController.navigate(R.id.noLoginDialogFragment2, bundle);
                 }else{
                         if( mFirebaseUser.isEmailVerified()) {
                            /* OfferAppointmentFragment offerAppointmentFragment = new OfferAppointmentFragment();

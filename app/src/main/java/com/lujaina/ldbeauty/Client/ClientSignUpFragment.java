@@ -40,6 +40,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.HomeActivity;
+import com.lujaina.ldbeauty.MainActivity;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 import com.lujaina.ldbeauty.SignUpActivity;
@@ -186,7 +187,7 @@ public class ClientSignUpFragment extends Fragment {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), SignUpActivity.class);
+                Intent intent = new Intent(getContext(), MainActivity.class);
                 intent.putExtra("userRole","Client");
                 startActivity(intent);
                 getActivity().finish();

@@ -13,11 +13,13 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -82,6 +84,9 @@ public class CategoriesFragment extends Fragment {
         NavHostFragment navHostFragment =
                 (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
+
+       // info = (SPRegistrationModel) getActivity().getIntent().getExtras().getSerializable("info");
+
         info = (SPRegistrationModel) getArguments().getSerializable("info");
 
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
@@ -111,9 +116,15 @@ public class CategoriesFragment extends Fragment {
                     navController.navigate(R.id.action_categoriesFragment_to_cartFragment);
 
                 }else{
-                    NoLoginDialogFragment dialog = new NoLoginDialogFragment();
+
+                  /*  NoLoginDialogFragment dialog = new NoLoginDialogFragment();
                     dialog.showText(2);
                     dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
+*/
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("num",1);
+                    navController.navigate(R.id.noLoginDialogFragment2,bundle);
+
                 }
 
 

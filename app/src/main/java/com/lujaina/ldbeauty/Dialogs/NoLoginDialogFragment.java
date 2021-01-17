@@ -12,6 +12,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,17 +65,16 @@ public class NoLoginDialogFragment extends DialogFragment {
                 (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
 
-        Bundle b = getActivity().getIntent().getExtras();
-        int num = b.getInt("num");
-        String checkDirection = b.getString("dialog");
+       // Bundle b = getActivity().getIntent().getExtras();
+        int num = getArguments().getInt("num");
+        // String checkDirection = b.getString("dialog");
         Button login = parentView.findViewById(R.id.btn_login);
         Button signUp = parentView.findViewById(R.id.btn_signUp);
         TextView textView = parentView.findViewById(R.id.tv_text);
 
             if(num == 1){
                 textView.setText("Please login or signup for accessing your profile");
-            }else {
-
+            }else  {
             }
 
 

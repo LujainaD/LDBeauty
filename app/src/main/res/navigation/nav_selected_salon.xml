@@ -28,9 +28,6 @@
         <action
             android:id="@+id/action_selectedSalonFragment2_to_ratingFragment"
             app:destination="@id/ratingFragment" />
-        <action
-            android:id="@+id/action_selectedSalonFragment2_to_salonsHomeFragment"
-            app:destination="@id/salonsHomeFragment" />
     </fragment>
     <fragment
         android:id="@+id/infoFragment"
@@ -94,11 +91,15 @@
         android:label="fragment_rating"
         tools:layout="@layout/fragment_rating" />
     <fragment
-        android:id="@+id/salonsHomeFragment"
-        android:name="com.lujaina.ldbeauty.User.SalonsHomeFragment"
-        android:label="SalonsHomeFragment" />
-    <fragment
         android:id="@+id/offerAppointmentFragment"
         android:name="com.lujaina.ldbeauty.Client.OfferAppointmentFragment"
         android:label="OfferAppointmentFragment" />
+    <dialog
+        android:id="@+id/noLoginDialogFragment2"
+        android:name="com.lujaina.ldbeauty.Dialogs.NoLoginDialogFragment"
+        android:label="NoLoginDialogFragment" />
+    <dialog
+        android:id="@+id/bookingConfirmationDialog"
+        android:name="com.lujaina.ldbeauty.Dialogs.BookingConfirmationDialog"
+        android:label="BookingConfirmationDialog" />
 </navigation>

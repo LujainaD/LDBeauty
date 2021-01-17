@@ -110,9 +110,9 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_edit_client_profile, container, false);
-       /* BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+        BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
         navBar.setVisibility(View.GONE);
-        */NavHostFragment navHostFragment =
+        NavHostFragment navHostFragment =
                 (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
 

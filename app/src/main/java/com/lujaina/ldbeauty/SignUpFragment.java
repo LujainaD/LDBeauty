@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -52,11 +53,9 @@ public class SignUpFragment extends Fragment {
                 (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
 
-       String userRole = getActivity().getIntent().getStringExtra("userType");
+       String userRole = getActivity().getIntent().getExtras().getString("userType");
 
-        //bundle.getEcgetString("userType");
-
-        Toolbar toolbar = parentView.findViewById(R.id.toolbar);
+       Toolbar toolbar = parentView.findViewById(R.id.toolbar);
         ImageButton back = parentView.findViewById(R.id.ib_back);
         TabLayout tabs = parentView.findViewById(R.id.tab);
         ViewPager viewPager = parentView.findViewById(R.id.viewPager);
@@ -71,12 +70,14 @@ public class SignUpFragment extends Fragment {
         SignUpViewAdapter adapter = new SignUpViewAdapter(getChildFragmentManager());
         viewPager.setAdapter(adapter);
 
-      /*  if(userRole.equals("Client")){
+        Toast.makeText(mContext, userRole, Toast.LENGTH_SHORT).show();
+
+        if(userRole.equals("Client")){
             viewPager.setCurrentItem(0);
         }
         if(userRole.equals("Salon Owner")){
             viewPager.setCurrentItem(1);
-        }*/
+        }
 
         tabs.setupWithViewPager(viewPager);
 

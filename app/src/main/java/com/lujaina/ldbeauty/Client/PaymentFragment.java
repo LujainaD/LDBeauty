@@ -9,6 +9,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.ClientsAppointmentModel;
+import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
@@ -54,12 +57,13 @@ public class PaymentFragment extends Fragment {
      FirebaseDatabase database ;
     DatabaseReference myRef;
     FragmentTransaction transaction;
-    private String totalPrice;
+   private String totalPrice;
     private String clientId;
     String values;
 
     private ArrayList<ClientsAppointmentModel> serviceArray;
     private String ownerId;
+    NavController navController;
 
     public PaymentFragment() {
         // Required empty public constructor
@@ -69,7 +73,7 @@ public class PaymentFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        mMediatorCallback = (MediatorInterface) context;
+       // mMediatorCallback = (MediatorInterface) context;
     }
 
     @SuppressLint("ResourceType")
@@ -78,11 +82,17 @@ public class PaymentFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_payment, container, false);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+        totalPrice = getActivity().getIntent().getExtras().getString("total");
+        ownerId = getActivity().getIntent().getExtras().getString("ownerId");
+
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
         mFirebaseUser = mAuth.getCurrentUser();
-
+        Log.w("totalWithPrice",ownerId + totalPrice);
         myRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Client_Cart);
         TextView total = parentView.findViewById(R.id.tv_total);
         ImageButton paypal = parentView.findViewById(R.id.btn_paypal);
@@ -98,6 +108,7 @@ public class PaymentFragment extends Fragment {
             });
 
 
+/*
 
         visa.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,6 +121,7 @@ public class PaymentFragment extends Fragment {
 
             }
         });
+*/
 
 
 
@@ -117,11 +129,11 @@ public class PaymentFragment extends Fragment {
         return parentView;
     }
 
-    public void setTotalPrice(String price, ArrayList<ClientsAppointmentModel>serviceArray, String ownerId) {
+   /* public void setTotalPrice(String price, ArrayList<ClientsAppointmentModel>serviceArray, String ownerId) {
         this.totalPrice = price;
         this.ownerId= ownerId;
         this.serviceArray = this.serviceArray;
-    }
+    }*/
 
     public void beginPayment(){
         StringBuffer b = new StringBuffer(totalPrice);
@@ -154,25 +166,32 @@ public class PaymentFragment extends Fragment {
                     // TODO: send 'confirm' to your server for verification.
                     // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
                     // for more details.
-                    if(mMediatorCallback != null){
+                   /* if(mMediatorCallback != null){
                         OrderFragment fragment = new OrderFragment();
                         fragment.setOwnerId(ownerId);
                         mMediatorCallback.changeFragmentTo(fragment, OrderFragment.class.getSimpleName());
                     }
-
+*/
+                    Bundle bundle= new Bundle();
+                    bundle.putString("ownerId",ownerId);
+                    navController.navigate(R.id.action_paymentFragment_to_orderFragment,bundle);
                 } catch (JSONException e) {
                     Log.e("sampleapp", "an extremely unlikely failure occurred: ", e);
                 }
             }
         } else if (resultCode == Activity.RESULT_CANCELED) {
-            if(mMediatorCallback != null){
+            /*if(mMediatorCallback != null){
                 mMediatorCallback.changeFragmentTo(new CancelOrderFragment() , CancelOrderFragment.class.getSimpleName());
-            }
+            }*/
+            navController.navigate(R.id.action_paymentFragment_to_cancelOrderFragment);
+
             Log.i("sampleapp", "The user canceled.");
         } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
-            if(mMediatorCallback != null){
+            /*if(mMediatorCallback != null){
                 mMediatorCallback.changeFragmentTo(new CancelOrderFragment() , CancelOrderFragment.class.getSimpleName());
-            }
+            }*/
+            navController.navigate(R.id.action_paymentFragment_to_cancelOrderFragment);
+
             Log.i("sampleapp", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
         }
     }

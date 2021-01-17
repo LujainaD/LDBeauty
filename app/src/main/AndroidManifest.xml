@@ -22,8 +22,11 @@
         android:roundIcon="@drawable/logpict"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SignUpActivity"
-        android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".AboutAppActivity"></activity>
+        <activity android:name=".PayActivity"></activity>
+        <activity
+            android:name=".SignUpActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ClientActivity" />
         <activity
             android:name=".NoLoginActivity"
