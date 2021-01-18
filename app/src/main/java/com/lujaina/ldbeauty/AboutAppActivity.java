@@ -36,6 +36,16 @@ public class AboutAppActivity extends AppCompatActivity implements BottomNavigat
         bottomNav.setOnNavigationItemSelectedListener(this);
         bottomNav.setSelectedItemId(R.id.nav_app);
 
+        String forSelect = getIntent().getStringExtra("APP");
+
+        if (forSelect!=null) {
+            Toast.makeText(this, forSelect, Toast.LENGTH_SHORT).show();
+            if(forSelect.equals("APP")){
+                bottomNav.getMenu().findItem(R.id.nav_search).setChecked(true);
+
+            }
+        }
+
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
@@ -107,8 +117,10 @@ public class AboutAppActivity extends AppCompatActivity implements BottomNavigat
                         } else if (userRole.equals("Salon Owner")) {
                             if (user.isEmailVerified()) {
                                 progressDialog.dismiss();
-
-                                navController.navigate(R.id.action_salonsHomeFragment2_to_SPProfileFragment2);
+                                Intent intent = new Intent(getApplicationContext(),SalonOwnerActivity.class);
+                                startActivity(intent);
+                                finish();
+                               // navController.navigate(R.id.action_salonsHomeFragment2_to_SPProfileFragment2);
                             } else {
                                 progressDialog.dismiss();
                                 Toast.makeText(getApplicationContext(), "Please verify your email address", Toast.LENGTH_SHORT).show();

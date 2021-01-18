@@ -11,19 +11,20 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class ClientActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class SalonOwnerActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     BottomNavigationView bottomNav;
     ProgressDialog progressDialog;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_client);
+        setContentView(R.layout.activity_salon_owner);
         bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setOnNavigationItemSelectedListener(this);
         bottomNav.setSelectedItemId(R.id.nav_profile);
 
+
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -36,11 +37,9 @@ public class ClientActivity extends AppCompatActivity implements BottomNavigatio
         item.setCheckable(true);
         switch (item.getItemId()) {
             case R.id.nav_search: {
-
                 progressDialog.dismiss();
                 //  changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
                 Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
-                intent.putExtra("Home","Home");
                 startActivity(intent);
                 finish();
                 return true;
@@ -55,10 +54,12 @@ public class ClientActivity extends AppCompatActivity implements BottomNavigatio
                 progressDialog.dismiss();
                 Intent intent = new Intent(getApplicationContext(),AboutAppActivity.class);
                 startActivity(intent);
+                finish();
                 return true;
             }
         }
         return false;
 
     }
+
 }

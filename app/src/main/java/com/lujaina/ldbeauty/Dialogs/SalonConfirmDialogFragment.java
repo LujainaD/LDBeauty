@@ -1,56 +1,21 @@
 package com.lujaina.ldbeauty.Dialogs;
 
 import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.lujaina.ldbeauty.AppOwner.AoConfirmSalonsFragment;
-import com.lujaina.ldbeauty.Constants;
-import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
+import com.lujaina.ldbeauty.AppOwner.AOConfirmSalonsFragment;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.UUID;
-
-import static android.content.ContentValues.TAG;
 
 public class SalonConfirmDialogFragment extends DialogFragment {
 
@@ -59,7 +24,7 @@ public class SalonConfirmDialogFragment extends DialogFragment {
     private SPRegistrationModel sprModelObj;
 
 
-    public SalonConfirmDialogFragment(AoConfirmSalonsFragment aoConfirmContext, SPRegistrationModel salonsDetails) {
+    public SalonConfirmDialogFragment(AOConfirmSalonsFragment aoConfirmContext, SPRegistrationModel salonsDetails) {
         mListener = (statusConfirmed) aoConfirmContext;
 		sprModelObj = salonsDetails;
     }

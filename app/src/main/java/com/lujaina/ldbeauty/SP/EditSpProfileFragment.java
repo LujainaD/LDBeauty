@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -92,6 +93,8 @@ public class EditSpProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_edit_sp_profile, container, false);
+        BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+        navBar.setVisibility(View.GONE);
         mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mAuth.getUid());
@@ -161,14 +164,6 @@ public class EditSpProfileFragment extends Fragment {
                 model.setUpdatedDate(getCurrentDate());
 
 
-                progressDialog = new ProgressDialog(getContext());
-                progressDialog.setCancelable(false);
-                //progressDialog.show();
-                progressDialog.setContentView(R.layout.custom_progress_dialog);
-                final TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
-                final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
-                progressText.setText("Updating ...");
-                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
                 if (name.isEmpty()) {
                     ownerName.setError("Enter User Name");
@@ -181,115 +176,90 @@ public class EditSpProfileFragment extends Fragment {
                 }
                 else{
                     if (ownerImageUri == null) {
+                        progressDialog = new ProgressDialog(getContext());
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
+                        progressDialog.setContentView(R.layout.custom_progress_dialog);
+                        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        final TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
+                        final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
+                        progressText.setText("Updating ...");
                         progressDialog.show();
                         updatOwnerInfo(model,newPassword);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                while (status < 100) {
+
+                                    status += 1;
+
+                                    try {
+                                        Thread.sleep(200);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            progressDialog.setProgress(status);
+                                            progressPercentage.setText(String.valueOf(status)+"%");
+
+                                            if (status == 100) {
+                                                progressDialog.dismiss();
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }).start();
+
                     } else {
+                        progressDialog = new ProgressDialog(getContext());
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
+                        progressDialog.setContentView(R.layout.custom_progress_dialog);
+                        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        final TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
+                        final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
+                        progressText.setText("Updating ...");
                         progressDialog.show();
                         uploadOwnerImageToStorage(model,newPassword);
-                    }
-                }
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                while (status < 100) {
 
+                                    status += 1;
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (status < 100) {
-
-                            status += 1;
-
-                            try {
-                                Thread.sleep(200);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-
-                                    progressDialog.setProgress(status);
-                                    progressPercentage.setText(String.valueOf(status)+"%");
-
-                                    if (status == 100) {
-                                        progressDialog.dismiss();
+                                    try {
+                                        Thread.sleep(200);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
                                     }
-                                }
-                            });
-                        }
-                    }
-                }).start();
-            }
-        });
 
-/*
-        editPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mFirebaseUser = mAuth.getCurrentUser();
-                final String newPassword = password.getText().toString();
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
 
-                if (newPassword.isEmpty()) {
-                    password.setError("write your new password");
-                } else if (!PASSWORD_PATTERN.matcher(newPassword).matches()) {
-                    password.setError("weak password(must contain a digit ,uppercase characters and at least 6 characters)");
-                } else {
+                                            progressDialog.setProgress(status);
+                                            progressPercentage.setText(String.valueOf(status)+"%");
 
-                    progressDialog = new ProgressDialog(getContext());
-                    progressDialog.setCancelable(false);
-                    progressDialog.show();
-                    progressDialog.setContentView(R.layout.custom_progress_dialog);
-                    final TextView progressText = progressDialog.findViewById(R.id.tv_bar);
-                    final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
-                    progressText.setText("Updating ...");
-                    progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            while (status < 100) {
-
-                                status += 1;
-
-                                try {
-                                    Thread.sleep(200);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-
-                                handler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-
-                                        progressDialog.setProgress(status);
-                                        progressPercentage.setText(String.valueOf(status)+"%");
-
-                                        if (status == 100) {
-                                            progressDialog.dismiss();
+                                            if (status == 100) {
+                                                progressDialog.dismiss();
+                                            }
                                         }
-                                    }
-                                });
-                            }
-                        }
-                    }).start();
-
-                    mFirebaseUser.updatePassword(newPassword)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        progressDialog.dismiss();
-                                        showGreetingPasswordDialog();
-                                    } else {
-                                        progressDialog.dismiss();
-                                        Toast.makeText(getContext(),"Failed", Toast.LENGTH_SHORT).show();
-                                        Log.d("password-error", task.getException().toString());
-                                    }
+                                    });
                                 }
-                            });
+                            }
+                        }).start();
+
+                    }
                 }
             }
         });
-*/
+
         return parentView;
     }
 

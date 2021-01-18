@@ -186,7 +186,7 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
                 model.setPhoneNumber(phone);
                 model.setUpdatedDate(getCurrentDate());
 
-                progressDialog = new ProgressDialog(getContext());
+                /*progressDialog = new ProgressDialog(getContext());
                 progressDialog.setCancelable(false);
                // progressDialog.show();
                 progressDialog.setContentView(R.layout.custom_progress_dialog);
@@ -194,7 +194,7 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
                 final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
                 progressText.setText("Updating ...");
                 progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
+*/
                 if (name.isEmpty()) {
                     userName.setError("Enter User Name");
                 } else if (phone.isEmpty()) {
@@ -206,43 +206,90 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
                 }
                 else{
                     if (userImageUri == null) {
+                        progressDialog = new ProgressDialog(getContext());
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
+                        progressDialog.setContentView(R.layout.custom_progress_dialog);
+                        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        final TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
+                        final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
+                        progressText.setText("Updating ...");
                         progressDialog.show();
                         updatUserInfo(model,newPassword);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                while (status < 100) {
+
+                                    status += 1;
+
+                                    try {
+                                        Thread.sleep(200);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            progressDialog.setProgress(status);
+                                            progressPercentage.setText(String.valueOf(status)+"%");
+
+                                            if (status == 100) {
+                                                progressDialog.dismiss();
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }).start();
                     } else {
+                        progressDialog = new ProgressDialog(getContext());
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
+                        progressDialog.setContentView(R.layout.custom_progress_dialog);
+                        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        final TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
+                        final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
+                        progressText.setText("Updating ...");
                         progressDialog.show();
                         uploadUserImageToStorage(model,newPassword);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                while (status < 100) {
+
+                                    status += 1;
+
+                                    try {
+                                        Thread.sleep(200);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            progressDialog.setProgress(status);
+                                            progressPercentage.setText(String.valueOf(status)+"%");
+
+                                            if (status == 100) {
+                                                progressDialog.dismiss();
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }).start();
                     }
+
+
 
                 }
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (status < 100) {
 
-                            status += 1;
-
-                            try {
-                                Thread.sleep(200);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-
-                                    progressDialog.setProgress(status);
-                                    progressPercentage.setText(String.valueOf(status)+"%");
-
-                                    if (status == 100) {
-                                        progressDialog.dismiss();
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }).start();
             }
         });
 

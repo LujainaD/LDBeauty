@@ -62,11 +62,13 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_service"
-        android:layout_width="340dp"
+        android:layout_width="0dp"
         android:layout_height="56dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        app:cardCornerRadius="14dp"
 
+        android:layout_marginEnd="10dp"
+        app:cardCornerRadius="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_selected">
@@ -138,11 +140,13 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_name"
-        android:layout_width="340dp"
+        android:layout_width="0dp"
         android:layout_height="56dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        app:cardCornerRadius="14dp"
 
+        android:layout_marginEnd="10dp"
+        app:cardCornerRadius="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_name">
@@ -176,11 +180,11 @@
         android:id="@+id/cardView10"
         android:layout_width="0dp"
         android:layout_height="56dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
         app:cardCornerRadius="14dp"
-        app:layout_constraintEnd_toStartOf="@+id/ib_calender"
-        app:layout_constraintStart_toStartOf="@+id/textView6"
+        app:layout_constraintEnd_toEndOf="@+id/cv_name"
+        app:layout_constraintStart_toEndOf="@+id/ib_calender"
         app:layout_constraintTop_toBottomOf="@+id/textView6">
 
         <TextView
@@ -198,13 +202,14 @@
 
     <ImageButton
         android:id="@+id/ib_calender"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
         style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="17dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="10dp"
         android:src="@drawable/calendar"
         app:layout_constraintBottom_toBottomOf="@+id/cardView10"
-        app:layout_constraintEnd_toEndOf="@+id/cv_name"
-        app:layout_constraintTop_toTopOf="@+id/cardView10" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <Button
         android:id="@+id/btn_confirm"
@@ -239,7 +244,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Select a time"
-        app:layout_constraintStart_toStartOf="@+id/cardView10"
+        app:layout_constraintStart_toStartOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/cardView10" />
 
     <androidx.cardview.widget.CardView
@@ -250,11 +255,11 @@
         android:layout_marginBottom="16dp"
         app:cardCornerRadius="14dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_confirm"
-        app:layout_constraintEnd_toEndOf="@+id/ib_calender"
+        app:layout_constraintEnd_toEndOf="@+id/cardView10"
         app:layout_constraintStart_toStartOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/textView7">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -280,20 +285,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_empty"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:text="Nothing Added Yet"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/btn_left"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_right" />
+            <TextView
+                android:id="@+id/tv_empty"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="Nothing Added Yet"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/btn_left"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.502"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_right" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_time"

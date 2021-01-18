@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.os.Handler;
 import android.util.Log;
@@ -54,20 +56,20 @@ public class EditAppOwnerProfileFragment extends Fragment {
                     ")+"
     );
     private FirebaseAuth mAuth;
-    private MediatorInterface mMediatorInterface;
     FirebaseUser mFirebaseUser;
     private SPRegistrationModel currentUserInfo;
 
     private ProgressDialog progressDialog;
     private int status = 0;
     Handler handler = new Handler();
+    NavController navController;
 
 
     public EditAppOwnerProfileFragment() {
         // Required empty public constructor
     }
 
-    @Override
+    /*@Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof MediatorInterface) {
@@ -75,13 +77,17 @@ public class EditAppOwnerProfileFragment extends Fragment {
         } else {
             throw new RuntimeException(context.toString() + "must implement MediatorInterface");
         }
-    }
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_edit_app_owner_profile, container, false);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+
         BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
         navBar.setVisibility(View.GONE);
         mAuth = FirebaseAuth.getInstance();
@@ -100,7 +106,7 @@ public class EditAppOwnerProfileFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMediatorInterface.onBackPressed();
+                navController.popBackStack();
             }
         });
 
@@ -211,13 +217,6 @@ public class EditAppOwnerProfileFragment extends Fragment {
                 model.setUpdatedDate(getCurrentDate());
                 model.setUserEmail(newEmail);
 
-                progressDialog = new ProgressDialog(getContext());
-                progressDialog.setCancelable(false);
-                progressDialog.setContentView(R.layout.custom_progress_dialog);
-                final TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
-                final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
-                progressText.setText("Updating ...");
-
                 if (name.isEmpty()) {
                     appOwnerName.setError("Enter User Name");
                 } else if (phone.isEmpty()) {
@@ -229,81 +228,54 @@ public class EditAppOwnerProfileFragment extends Fragment {
                 } else if (!EMAIL_ADDRESS_PATTERN.matcher(newEmail).matches()) {
                     appOwnerEmail.setError("Please enter a valid email address");
                 }else {
+                    progressDialog = new ProgressDialog(getContext());
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+                    progressDialog.setContentView(R.layout.custom_progress_dialog);
+                    progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                    final TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
+                    final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
+                    progressText.setText("Updating ...");
                     progressDialog.show();
                     updatInfoInDB(model,newPassword,newEmail);
 
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            while (status < 100) {
+
+                                status += 1;
+
+                                try {
+                                    Thread.sleep(200);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        progressDialog.setProgress(status);
+                                        progressPercentage.setText(String.valueOf(status)+"%");
+
+                                        if (status == 100) {
+                                            progressDialog.dismiss();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }).start();
+
                 }
 
-
-
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (status < 100) {
-
-                            status += 1;
-
-                            try {
-                                Thread.sleep(200);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-
-                                    progressDialog.setProgress(status);
-                                    progressPercentage.setText(String.valueOf(status)+"%");
-
-                                    if (status == 100) {
-                                        progressDialog.dismiss();
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }).start();
             }
         });
 
 
         return parentView;
     }
-
-
-/*
-    private void updatOwnerInfo(SPRegistrationModel update) {
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.All_Users).child(mAuth.getUid());
-
-        if (update.getUserEmail().equals(currentUserInfo.getUserEmail())) {
-            myRef.child("phoneNumber").setValue(update.getPhoneNumber());
-            myRef.child("userEmail").setValue(update.getUserEmail());
-            myRef.child("userId").setValue(currentUserInfo.getUserId());
-            myRef.child("userName").setValue(update.getUserName());
-            myRef.child("userType").setValue(currentUserInfo.getUserType());
-            myRef.child("updatedDate").setValue(getCurrentDate()).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        progressDialog.dismiss();
-                      //  changeEmail(update);
-                         showGreetingDialog();
-                    } else {
-                        progressDialog.dismiss();
-                        Toast.makeText(getContext(), "Failed updating your info", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }else {
-            changeEmail(update);
-        }
-
-    }
-*/
 
     private void changeEmail(SPRegistrationModel update, String newEmail, String newPassword) {
         mFirebaseUser = mAuth.getCurrentUser();
@@ -412,40 +384,7 @@ public class EditAppOwnerProfileFragment extends Fragment {
         return df.format(c);
     }
 
-    private void showGreetingPasswordDialog() {
-        GreetingDialogFragment dialogFragment = new GreetingDialogFragment();
-        dialogFragment.getDialogText(3);
-        dialogFragment.show(getChildFragmentManager(), GreetingDialogFragment.class.getSimpleName());
-        final int[] status = {0};
-        final Handler handler = new Handler();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (status[0] < 200) {
-
-                    status[0] += 1;
-
-                    try {
-                        Thread.sleep(23);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            if (status[0] == 100) {
-                                backToProfile();
-                            }
-                        }
-                    });
-                }
-            }
-        }).start();
-    }
-
     private void backToProfile() {
-        mMediatorInterface.changeFragmentTo(new AppOwnerProfileFragment(), AppOwnerProfileFragment.class.getSimpleName());
+        navController.popBackStack();
     }
 }

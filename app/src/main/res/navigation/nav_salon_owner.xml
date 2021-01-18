@@ -6,78 +6,9 @@
     app:startDestination="@id/salonsHomeFragment2">
 
     <fragment
-        android:id="@+id/addSalonOffersFragment"
-        android:name="com.lujaina.ldbeauty.SP.AddSalonOffersFragment"
-        android:label="AddSalonOffersFragment">
-        <action
-            android:id="@+id/action_addSalonOffersFragment_to_addOffersAppointmentFragment2"
-            app:destination="@id/addOffersAppointmentFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/addCategoriesFragment"
-        android:name="com.lujaina.ldbeauty.SP.AddCategoriesFragment"
-        android:label="fragment_add_categories"
-        tools:layout="@layout/fragment_add_categories">
-        <action
-            android:id="@+id/action_addCategoriesFragment_to_addServicesFragment2"
-            app:destination="@id/addServicesFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/addOffersAppointmentFragment"
-        android:name="com.lujaina.ldbeauty.SP.AddOffersAppointmentFragment"
-        android:label="AddOffersAppointmentFragment" />
-    <fragment
-        android:id="@+id/addSalonLocationFragment"
-        android:name="com.lujaina.ldbeauty.SP.AddSalonLocationFragment"
-        android:label="AddSalonLocationFragment" />
-    <fragment
-        android:id="@+id/addGalleryFragment"
-        android:name="com.lujaina.ldbeauty.SP.AddGalleryFragment"
-        android:label="AddGalleryFragment" />
-    <fragment
-        android:id="@+id/addInfoFragment"
-        android:name="com.lujaina.ldbeauty.SP.AddInfoFragment"
-        android:label="fragment_add_info"
-        tools:layout="@layout/fragment_add_info" />
-    <fragment
-        android:id="@+id/addServicesFragment"
-        android:name="com.lujaina.ldbeauty.SP.AddServicesFragment"
-        android:label="AddServicesFragment">
-        <action
-            android:id="@+id/action_addServicesFragment_to_addServiceAppointmentFragment22"
-            app:destination="@id/addServiceAppointmentFragment2" />
-    </fragment>
-    <fragment
-        android:id="@+id/salonProfileFragment"
-        android:name="com.lujaina.ldbeauty.SP.SalonProfileFragment"
-        android:label="SalonProfileFragment">
-        <action
-            android:id="@+id/action_salonProfileFragment_to_addCategoriesFragment2"
-            app:destination="@id/addCategoriesFragment" />
-        <action
-            android:id="@+id/action_salonProfileFragment_to_addInfoFragment2"
-            app:destination="@id/addInfoFragment" />
-        <action
-            android:id="@+id/action_salonProfileFragment_to_addSalonOffersFragment2"
-            app:destination="@id/addSalonOffersFragment" />
-        <action
-            android:id="@+id/action_salonProfileFragment_to_addSalonLocationFragment2"
-            app:destination="@id/addSalonLocationFragment" />
-        <action
-            android:id="@+id/action_salonProfileFragment_to_addGalleryFragment2"
-            app:destination="@id/addGalleryFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/salonAppointmentFragment"
-        android:name="com.lujaina.ldbeauty.SP.SalonAppointmentFragment"
-        android:label="SalonAppointmentFragment" />
-    <fragment
         android:id="@+id/salonsHomeFragment2"
         android:name="com.lujaina.ldbeauty.User.SalonsHomeFragment"
         android:label="SalonsHomeFragment">
-        <action
-            android:id="@+id/action_salonsHomeFragment2_to_SPProfileFragment2"
-            app:destination="@id/SPProfileFragment" />
         <action
             android:id="@+id/action_salonsHomeFragment2_to_cartFragment2"
             app:destination="@id/cartFragment2" />
@@ -85,59 +16,22 @@
             android:id="@+id/action_salonsHomeFragment2_to_appOwnerProfileFragment"
             app:destination="@id/appOwnerProfileFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/editSalonProfileFragment"
-        android:name="com.lujaina.ldbeauty.SP.EditSalonProfileFragment"
-        android:label="EditSalonProfileFragment" />
-    <fragment
-        android:id="@+id/spCalenderFragment"
-        android:name="com.lujaina.ldbeauty.SP.SpCalenderFragment"
-        android:label="SpCalenderFragment" />
-    <fragment
-        android:id="@+id/SPProfileFragment"
-        android:name="com.lujaina.ldbeauty.SP.SPProfileFragment"
-        android:label="SPProfileFragment">
-        <action
-            android:id="@+id/action_SPProfileFragment_to_salonAppointmentFragment"
-            app:destination="@id/salonAppointmentFragment" />
-        <action
-            android:id="@+id/action_SPProfileFragment_to_spCalenderFragment"
-            app:destination="@id/spCalenderFragment" />
-        <action
-            android:id="@+id/action_SPProfileFragment_to_editSpProfileFragment3"
-            app:destination="@id/editSpProfileFragment" />
-        <action
-            android:id="@+id/action_SPProfileFragment_to_editSalonProfileFragment"
-            app:destination="@id/editSalonProfileFragment" />
-        <action
-            android:id="@+id/action_SPProfileFragment_to_salonFeedbackFragment"
-            app:destination="@id/salonFeedbackFragment" />
-        <action
-            android:id="@+id/action_SPProfileFragment_to_salonProfileFragment"
-            app:destination="@id/salonProfileFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/salonFeedbackFragment"
-        android:name="com.lujaina.ldbeauty.SP.SalonFeedbackFragment"
-        android:label="SalonFeedbackFragment" />
-    <fragment
-        android:id="@+id/editSpProfileFragment"
-        android:name="com.lujaina.ldbeauty.SP.EditSpProfileFragment"
-        android:label="EditSpProfileFragment" />
     <activity
         android:id="@+id/homeActivity2"
         android:name="com.lujaina.ldbeauty.HomeActivity"
         android:label="activity_home"
         tools:layout="@layout/activity_home" />
     <fragment
-        android:id="@+id/addServiceAppointmentFragment2"
-        android:name="com.lujaina.ldbeauty.SP.AddServiceAppointmentFragment"
-        android:label="fragment_service_appointment"
-        tools:layout="@layout/fragment_service_appointment" />
-    <fragment
         android:id="@+id/appOwnerProfileFragment"
         android:name="com.lujaina.ldbeauty.AppOwner.AppOwnerProfileFragment"
-        android:label="AppOwnerProfileFragment" />
+        android:label="AppOwnerProfileFragment" >
+        <action
+            android:id="@+id/action_appOwnerProfileFragment_to_editAppOwnerProfileFragment"
+            app:destination="@id/editAppOwnerProfileFragment" />
+        <action
+            android:id="@+id/action_appOwnerProfileFragment_to_AOConfirmSalonsFragment"
+            app:destination="@id/AOConfirmSalonsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/cartFragment2"
         android:name="com.lujaina.ldbeauty.Client.CartFragment"
@@ -150,5 +44,14 @@
         android:id="@+id/noLoginDialogFragment3"
         android:name="com.lujaina.ldbeauty.Dialogs.NoLoginDialogFragment"
         android:label="NoLoginDialogFragment" />
+    <fragment
+        android:id="@+id/editAppOwnerProfileFragment"
+        android:name="com.lujaina.ldbeauty.AppOwner.EditAppOwnerProfileFragment"
+        android:label="EditAppOwnerProfileFragment" />
+    <fragment
+        android:id="@+id/AOConfirmSalonsFragment"
+        android:name="com.lujaina.ldbeauty.AppOwner.AOConfirmSalonsFragment"
+        android:label="fragment_ao_confirm_salons"
+        tools:layout="@layout/fragment_ao_confirm_salons" />
 
 </navigation>

@@ -263,7 +263,7 @@ public class LoginFragment extends Fragment {
 
                   if(mAuth.getCurrentUser().isEmailVerified()) {
                       progressDialog.dismiss();
-                      Intent i = new Intent(getActivity(), HomeActivity.class);
+                      Intent i = new Intent(mContext, HomeActivity.class);
                       startActivity(i);
                       getActivity().finish();
                     }else {

@@ -6,8 +6,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,7 +16,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,13 +40,12 @@ import com.lujaina.ldbeauty.R;
 import java.util.ArrayList;
 
 
-public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDialogFragment.statusConfirmed {
+public class AOConfirmSalonsFragment extends Fragment implements SalonConfirmDialogFragment.statusConfirmed {
     FirebaseAuth mAuth;
     FirebaseUser mFirebaseUser;
     private FirebaseDatabase mDatabase;
 
     private Context mContext;
-    private MediatorInterface mMediatorInterface;
     ProgressDialog progressDialog;
 
     RecyclerView recyclerView;
@@ -54,19 +53,21 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
 
     private ConfirmAdapter mAdapter;
     ArrayList<SPRegistrationModel> salonNamesArray;
-    public AoConfirmSalonsFragment() {
+    NavController navController;
+
+    public AOConfirmSalonsFragment() {
         // Required empty public constructor
     }
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if(context instanceof MediatorInterface) {
+       /* if(context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         }
         else{
             throw new RuntimeException(context.toString()+ "must implement MediatorInterface");
-        }
+        }*/
     }
 
     @Override
@@ -74,6 +75,11 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView= inflater.inflate(R.layout.fragment_ao_confirm_salons, container, false);
+
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+
         empty = parentView.findViewById(R.id.tv_empty);
         BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
         navBar.setVisibility(View.GONE);
@@ -92,12 +98,11 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
             @Override
             public void onItemClick(SPRegistrationModel
                                             salonsDetails) {
-                if (mMediatorInterface != null) {
-                    SalonConfirmDialogFragment details = new SalonConfirmDialogFragment(AoConfirmSalonsFragment.this ,salonsDetails);
+                    SalonConfirmDialogFragment details = new SalonConfirmDialogFragment(AOConfirmSalonsFragment.this ,salonsDetails);
                     Log.d("serviceId", "onItemClick-SalonNamesFragment : " + salonsDetails.getUserId());
                     details.setSalonObj(salonsDetails);
                     details.show(getChildFragmentManager(), SalonConfirmDialogFragment.class.getSimpleName());
-                }
+
 
             }
         });
@@ -105,9 +110,7 @@ public class AoConfirmSalonsFragment extends Fragment implements SalonConfirmDia
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediatorInterface != null){
-                    mMediatorInterface.onBackPressed();
-                }
+                navController.popBackStack();
             }
         });
 

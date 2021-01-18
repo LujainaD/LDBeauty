@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,7 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -190,53 +192,52 @@ public class AddOffersAppointmentFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                String dur= duration.getText().toString().trim();
-                String start= startTime.getText().toString().trim();
-                String end= endTime.getText().toString().trim();
-                if(dur.isEmpty()){
+                String dur = duration.getText().toString().trim();
+                String start = startTime.getText().toString().trim();
+                String end = endTime.getText().toString().trim();
+                if (dur.isEmpty()) {
                     duration.setError("you need to add duration in minutes");
-                }else if(end.isEmpty()){
+                } else if (end.isEmpty()) {
                     endTime.setError("you need to add end time of services");
-                }else{
-                    int gapInMinutes =  Integer.parseInt(dur) ;  // Define your span-of-time.
-                    int loops = ( (int) Duration.ofHours( 12 ).toMinutes() / gapInMinutes ) ;
-                    List<LocalTime> times = new ArrayList<>( loops ) ;
+                } else {
+               SimpleDateFormat inFormat = new SimpleDateFormat("hh:mm aa");
+               SimpleDateFormat outFormat = new SimpleDateFormat("HH:mm");
 
-                    LocalTime time = LocalTime.MIN ;  // '00:00'
-                    for( int i = 1 ; i <= loops ; i ++ ) {
-                        times.add( time ) ;
-                        // Set up next loop.
-                        time = time.plusMinutes( gapInMinutes ) ;
-                    }
+               String beginTime24 = null;
+               String endTime24= null;
+               try {
+                   beginTime24 = outFormat.format(inFormat.parse(start));
+                   endTime24 = outFormat.format(inFormat.parse(end));
 
-                    int endTimeIn24hoursFormat = 22;
-                    SimpleDateFormat sdf = new SimpleDateFormat("HH:MM a");
-                    try {
-                        Calendar startCalendar = Calendar.getInstance();
-                        startCalendar.setTime(sdf.parse(start));
-                        Calendar endCalendar = Calendar.getInstance();
-                        endCalendar.setTime(startCalendar.getTime());
-                        endCalendar.add(Calendar.HOUR_OF_DAY, endTimeIn24hoursFormat - startCalendar.get(Calendar.HOUR_OF_DAY));
-                        endCalendar.clear(Calendar.MINUTE);
-                        endCalendar.clear(Calendar.SECOND);
-                        endCalendar.clear(Calendar.MILLISECOND);
-                        SimpleDateFormat slotTime = new SimpleDateFormat("hh:mm a");
-                        while (endCalendar.after(startCalendar)) {
-                            startCalendar.add(Calendar.MINUTE, Integer.parseInt(dur));
-                            String timeslots = slotTime.format(startCalendar.getTime());
-                            addTimeAppointment(dur,start,end, timeslots);
+               } catch (ParseException e) {
+                   e.printStackTrace();
+               }
+               String endtimeHours = endTime24.substring(0, 2);
+               int endTimeIn24hoursFormat = Integer.parseInt(endtimeHours);
+               SimpleDateFormat sdf = new SimpleDateFormat("HH:MM");
+               try {
+                   Calendar startCalendar = Calendar.getInstance();
+                   startCalendar.setTime(sdf.parse(beginTime24));
+                   Calendar endCalendar = Calendar.getInstance();
+                   endCalendar.setTime(startCalendar.getTime());
+                   endCalendar.add(Calendar.HOUR_OF_DAY, endTimeIn24hoursFormat - startCalendar.get(Calendar.HOUR_OF_DAY));
+                   endCalendar.clear(Calendar.MINUTE);
+                   endCalendar.clear(Calendar.SECOND);
+                   endCalendar.clear(Calendar.MILLISECOND);
+                   SimpleDateFormat slotTime = new SimpleDateFormat("hh:mm a");
+                   while (endCalendar.after(startCalendar)) {
+                       startCalendar.add(Calendar.MINUTE, Integer.parseInt(dur));
+                       String Timeslots = slotTime.format(startCalendar.getTime());
+                       addTimeAppointment(dur, start, end, Timeslots);
 
+                       // System.err.println(Timeslots);
+                   }
+               } catch (ParseException e) {
+                   // date in wrong format
+               }
+           }
                         }
-                    } catch (ParseException e) {
-                        // date in wrong format
-                    }
-
-
-                }
-            }
-
         });
-
 
 
         if(mOffer != null ){
@@ -394,11 +395,6 @@ public class AddOffersAppointmentFragment extends Fragment {
 
     }
 
-    /*public void setAddAppointmentFragment(OfferModel service, String salonName) {
-        mOffer = service;
-        this.salonName = salonName;
-    }*/
-
     private void showDateDialog() {
 
         DatePickerDialog.OnDateSetListener selectListener = new DatePickerDialog.OnDateSetListener() {
@@ -516,7 +512,6 @@ public class AddOffersAppointmentFragment extends Fragment {
 
 
     private void setupRecyclerView(RecyclerView recyclerView) {
-
         lineralayoutManager = new GridLayoutManager(mContext, 2);
         recyclerView.setLayoutManager(lineralayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

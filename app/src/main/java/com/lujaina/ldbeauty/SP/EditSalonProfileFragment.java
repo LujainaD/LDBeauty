@@ -29,6 +29,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -89,6 +90,8 @@ public class EditSalonProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_edit_salon_profile, container, false);
+        BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+        navBar.setVisibility(View.GONE);
         mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mAuth.getUid());
@@ -157,15 +160,6 @@ public class EditSalonProfileFragment extends Fragment {
                 model.setSalonPhoneNumber(phone);
                 model.setUpdatedDateSalon(getCurrentDate());
 
-                progressDialog = new ProgressDialog(getContext());
-                progressDialog.setCancelable(false);
-                progressDialog.setContentView(R.layout.custom_progress_dialog);
-                final TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
-                final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
-                progressText.setText("Updating ...");
-                progressText.setVisibility(View.VISIBLE);
-                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
                 if (nameSalon.isEmpty()) {
                     salonName.setError("Enter Salon Name");
                 } else if (phone.isEmpty()) {
@@ -176,44 +170,87 @@ public class EditSalonProfileFragment extends Fragment {
                     salonCity.setError("Enter Salon city");
                 }else{
                     if (salonImageUri == null) {
+                        progressDialog = new ProgressDialog(getContext());
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
+                        progressDialog.setContentView(R.layout.custom_progress_dialog);
+                        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        final TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
+                        final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
+                        progressText.setText("Updating ...");
                         progressDialog.show();
                         updatSalonInfo(model);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                while (status < 100) {
+
+                                    status += 1;
+
+                                    try {
+                                        Thread.sleep(200);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            progressDialog.setProgress(status);
+                                            progressPercentage.setText(String.valueOf(status)+"%");
+
+                                            if (status == 100) {
+                                                progressDialog.dismiss();
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }).start();
+
                     } else {
+                        progressDialog = new ProgressDialog(getContext());
+                        progressDialog.setCancelable(false);
                         progressDialog.show();
-                        uploadSalonImageToStorage(model);
+                        progressDialog.setContentView(R.layout.custom_progress_dialog);
+                        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        final TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
+                        final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
+                        progressText.setText("Updating ...");
+                        progressDialog.show();                        uploadSalonImageToStorage(model);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                while (status < 100) {
+
+                                    status += 1;
+
+                                    try {
+                                        Thread.sleep(200);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            progressDialog.setProgress(status);
+                                            progressPercentage.setText(String.valueOf(status)+"%");
+
+                                            if (status == 100) {
+                                                progressDialog.dismiss();
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }).start();
+
                     }
                 }
 
-
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (status < 100) {
-
-                            status += 1;
-
-                            try {
-                                Thread.sleep(200);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-
-                                    progressDialog.setProgress(status);
-                                    progressPercentage.setText(String.valueOf(status)+"%");
-
-                                    if (status == 100) {
-                                        progressDialog.dismiss();
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }).start();
             }
         });
 

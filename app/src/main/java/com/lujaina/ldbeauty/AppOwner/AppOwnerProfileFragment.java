@@ -8,13 +8,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,10 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
-import com.lujaina.ldbeauty.LoginChoicesFragment;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
-import com.lujaina.ldbeauty.SP.SalonProfileFragment;
 
 
 public class AppOwnerProfileFragment extends Fragment {
@@ -37,7 +36,7 @@ public class AppOwnerProfileFragment extends Fragment {
     ProgressDialog progressDialog;
 
     private Context mContext;
-    private MediatorInterface mMediatorInterface;
+    NavController navController;
 
 
 
@@ -61,6 +60,10 @@ public class AppOwnerProfileFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
         navBar.setVisibility(View.VISIBLE);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+
         TextView confirmPage = parentView.findViewById(R.id.tv_confirm);
         TextView editProfile = parentView.findViewById(R.id.tv_edit);
         FirebaseAuth mAuth= FirebaseAuth.getInstance();
@@ -94,9 +97,11 @@ public class AppOwnerProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if (mMediatorInterface !=null){
+                /*if (mMediatorInterface !=null){
                     mMediatorInterface.changeFragmentTo(new EditAppOwnerProfileFragment(), EditAppOwnerProfileFragment.class.getSimpleName());
-                }
+                }*/
+
+                navController.navigate(R.id.action_appOwnerProfileFragment_to_editAppOwnerProfileFragment);
 
             }
         });
@@ -105,9 +110,12 @@ public class AppOwnerProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if (mMediatorInterface !=null){
-                    mMediatorInterface.changeFragmentTo(new AoConfirmSalonsFragment(), AoConfirmSalonsFragment.class.getSimpleName());
-                }
+               /* if (mMediatorInterface !=null){
+                    mMediatorInterface.changeFragmentTo(new AOConfirmSalonsFragment(), AOConfirmSalonsFragment.class.getSimpleName());
+                }*/
+
+                navController.navigate(R.id.action_appOwnerProfileFragment_to_AOConfirmSalonsFragment);
+
 
             }
         });

@@ -28,6 +28,7 @@
     <string name="showmore">Show more</string>
     <string name="showless">show less</string>
     <string name="appointment_details"><u>Appointment_Details</u></string>
+    <string name="service_duration_min">Service duration\n in (min)</string>
 
 
 </resources>

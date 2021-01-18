@@ -13,6 +13,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
@@ -75,16 +76,13 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         bottomNav = findViewById(R.id.bottom_nav);
-        // changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
-        // createNotificationChannel();
+
         bottomNav.setOnNavigationItemSelectedListener(this);
+        bottomNav.getMenu().findItem(R.id.nav_search).setChecked(true);
 
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
-
-        //NavigationUI.setupWithNavController(bottomNav, navController);
-        //setupActionBarWithNavController(HomeActivity.this, navController);
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -113,106 +111,6 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
                         }
                     }
                 });
-/*
-        bottomNav.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
-            @Override
-            public void onNavigationItemReselected(@NonNull MenuItem item) {
-
-                progressDialog = new ProgressDialog(HomeActivity.this);
-                progressDialog.setCancelable(false);
-                progressDialog.show();
-                progressDialog.setContentView(R.layout.progress_bar);
-                progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-                switch (item.getItemId()) {
-                    case R.id.nav_search: {
-                        progressDialog.dismiss();
-                        //  changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
-                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                        startActivity(intent);
-                        break;
-
-                    }
-
-                    case R.id.nav_profile: {
-                        if (user != null) {
-                            if (userRole != null) {
-                                if (userRole.equals("Client")) {
-                                    if (user.isEmailVerified()) {
-                                        progressDialog.dismiss();
-                                        // changeFragmentTo(new ClientProfileFragment(), ClientProfileFragment.class.getSimpleName());
-                                        Intent intent = new Intent(getApplicationContext(), ClientActivity.class);
-                                        startActivity(intent);
-                                        finish();
-                                        ;
-                                    } else {
-                                        progressDialog.dismiss();
-                                        Toast.makeText(getApplicationContext(), "Please verify your email address", Toast.LENGTH_SHORT).show();
-                                    }
-
-
-                                    break;
-
-                                } else if (userRole.equals("Salon Owner")) {
-                                    if (user.isEmailVerified()) {
-                                        progressDialog.dismiss();
-
-                                        navController.navigate(R.id.action_salonsHomeFragment2_to_SPProfileFragment2);
-                                    } else {
-                                        progressDialog.dismiss();
-                                        Toast.makeText(getApplicationContext(), "Please verify your email address", Toast.LENGTH_SHORT).show();
-                                    }
-                                    break;
-
-                                } else {
-                                    progressDialog.dismiss();
-                                    navController.navigate(R.id.action_clientProfileFragment_to_appOwnerProfileFragment);
-                                    // changeFragmentTo(new AppOwnerProfileFragment(), AppOwnerProfileFragment.class.getSimpleName());
-                                    break;
-                                }
-
-                            } else {
-                                progressDialog.dismiss();
-                               */
-/* NoLoginDialogFragment dialog = new NoLoginDialogFragment();
-                                dialog.showText(1);
-                                dialog.show(getSupportFragmentManager(), NoLoginDialogFragment.class.getSimpleName());
-*//*
-
-                                Intent intent = new Intent(getApplicationContext(), NoLoginActivity.class);
-                                intent.putExtra("num", 1);
-                                startActivity(intent);
-                                finish();
-                                break;
-                            }
-                        } else {
-                            progressDialog.dismiss();
-                            NoLoginDialogFragment dialog = new NoLoginDialogFragment();
-                            dialog.showText(1);
-                            dialog.show(getSupportFragmentManager(), NoLoginDialogFragment.class.getSimpleName());
-
-
-                            Intent intent = new Intent(getApplicationContext(), NoLoginActivity.class);
-                                intent.putExtra("num", 1);
-                                startActivity(intent);
-                                finish();
-                                break;
-                        }
-
-                    }
-                    case R.id.nav_app: {
-                        progressDialog.dismiss();
-                        // changeFragmentTo(new AboutAppFragment(), AboutAppFragment.class.getSimpleName());
-                       break;
-                    }
-
-
-
-                }
-
-            }
-        });
-*/
 
     }
 
@@ -257,15 +155,14 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
             case R.id.nav_search: {
                 progressDialog.dismiss();
               //  changeFragmentTo(new SalonsHomeFragment(), SalonsHomeFragment.class.getSimpleName());
-                Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
-                startActivity(intent);
+                /*Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+                startActivity(intent);*/
                 return true;
 
             }
 
             case R.id.nav_profile: {
                 //Toast.makeText(this, "profile", Toast.LENGTH_SHORT).show();
-
                 if (user != null) {
                     if (userRole != null) {
                        if (userRole.equals("Client")) {
@@ -286,8 +183,9 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
                        } else if(userRole.equals("Salon Owner")){
                            if(user.isEmailVerified()){
                                progressDialog.dismiss();
-
-                               navController.navigate(R.id.action_salonsHomeFragment2_to_SPProfileFragment2);
+                              // navController.navigate(R.id.action_salonsHomeFragment2_to_SPProfileFragment2);
+                               Intent intent = new Intent(getApplicationContext(),SalonOwnerActivity.class);
+                               startActivity(intent);
                            }else{
                                progressDialog.dismiss();
                                Toast.makeText(getApplicationContext(), "Please verify your email address", Toast.LENGTH_SHORT).show();
@@ -314,7 +212,6 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
                         intent.putExtras(bundle);
                         startActivity(intent);
                         finish();*/
-
                       /*  Intent intent = new Intent(getApplicationContext(),NoLoginActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putInt("num",1);
@@ -322,11 +219,13 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
                         startActivity(intent);
                         finish();
                         */
-                        Bundle bundle = new Bundle();
+                      /*  Bundle bundle = new Bundle();
                         bundle.putInt("num",1);
                         //NavHostFragment.findNavController(new NoLoginDialogFragment());
                         navController.navigate(R.id.noLoginDialogFragment3,bundle);
-
+*/
+                        Intent intent = new Intent(getApplicationContext(),AboutAppActivity.class);
+                        startActivity(intent);
                     break;
                 }
             }else {
@@ -359,26 +258,16 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
             case R.id.nav_app: {
                 progressDialog.dismiss();
                // changeFragmentTo(new AboutAppFragment(), AboutAppFragment.class.getSimpleName());
-                navController.navigate(R.id.aboutAppFragment);
-
+               // navController.navigate(R.id.aboutAppFragment);
+                Intent intent = new Intent(getApplicationContext(),AboutAppActivity.class);
+                startActivity(intent);
                 return true;
             }
         }
         return false;
 
     }
-   /* @Override
-    public void changeFragmentTo(Fragment fragmentToDisplay, String fragmentTag) {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.fl_host, fragmentToDisplay, fragmentTag);
-        ft.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        if (fm.findFragmentByTag(fragmentTag) == null) {
-            ft.addToBackStack(fragmentTag);
-        }
-        ft.commit();
-    }*//*
-*/
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         FirebaseUser user = mAuth.getCurrentUser();

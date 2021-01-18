@@ -61,11 +61,13 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_service"
-        android:layout_width="340dp"
+        android:layout_width="0dp"
         android:layout_height="56dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        app:cardCornerRadius="14dp"
 
+        android:layout_marginEnd="10dp"
+        app:cardCornerRadius="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_selected">
@@ -137,11 +139,13 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_name"
-        android:layout_width="340dp"
+        android:layout_width="0dp"
         android:layout_height="56dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        app:cardCornerRadius="14dp"
 
+        android:layout_marginEnd="10dp"
+        app:cardCornerRadius="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_name">
@@ -175,8 +179,8 @@
         android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         app:cardCornerRadius="14dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/cv_End"
@@ -244,7 +248,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView10"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="56dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
@@ -254,14 +258,14 @@
 
         <TextView
             android:id="@+id/et_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center|start"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
             android:background="@android:color/transparent"
-            android:hint="Please Pick a Date"
             android:gravity="center"
+            android:hint="Please Pick a Date"
             android:textColor="#000000"
             android:textSize="15sp"
             app:layout_constraintTop_toBottomOf="@+id/textView9" />
@@ -280,7 +284,7 @@
 
     <Button
         android:id="@+id/btn_addTime"
-        android:layout_width="127dp"
+        android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/btn_rectangle"
@@ -295,7 +299,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_dur"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="56dp"
         android:layout_marginTop="20dp"
         app:cardCornerRadius="14dp"
@@ -307,11 +311,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
-            android:hint="Service duration (min)"
-            android:inputType="number"
-            android:textSize="14sp"
-            android:textColor="#000000"
             android:gravity="center"
+            android:inputType="number"
+            android:hint="@string/service_duration_min"
+            android:textColor="#000000"
+            android:textSize="13sp"
             app:layout_constraintStart_toStartOf="@+id/cardView10"
             app:layout_constraintTop_toBottomOf="@+id/cardView10" />
 
@@ -320,22 +324,22 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_start"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="56dp"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         app:cardCornerRadius="14dp"
-        app:layout_constraintStart_toEndOf="@+id/ib_srartTime"
+        app:layout_constraintEnd_toEndOf="@+id/cardView10"
+        app:layout_constraintStart_toStartOf="@+id/cardView10"
         app:layout_constraintTop_toBottomOf="@+id/cardView10">
 
         <TextView
             android:id="@+id/tv_start"
-            android:layout_width="130dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
+            android:gravity="center"
             android:hint="Time start"
             android:inputType="number"
-            android:gravity="center"
             android:textColor="#000000"
             android:textSize="15sp"
             app:layout_constraintStart_toEndOf="@+id/cv_dur"
@@ -347,26 +351,24 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_End"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="56dp"
-        android:layout_marginStart="10dp"
         app:cardCornerRadius="14dp"
-        app:layout_constraintBottom_toBottomOf="@+id/ib_endTime"
+        app:layout_constraintBottom_toBottomOf="@+id/cv_start"
         app:layout_constraintEnd_toEndOf="@+id/cv_dur"
-        app:layout_constraintStart_toEndOf="@+id/ib_endTime"
-        app:layout_constraintTop_toTopOf="@+id/ib_endTime">
+        app:layout_constraintStart_toStartOf="@+id/cv_dur"
+        app:layout_constraintTop_toTopOf="@+id/cv_start">
 
         <TextView
             android:id="@+id/tv_endTime"
-            android:layout_width="130dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
+            android:gravity="center"
             android:hint="Time End"
             android:inputType="number"
-            android:textSize="15sp"
-            android:gravity="center"
             android:textColor="#000000"
-            />
+            android:textSize="15sp" />
 
 
     </androidx.cardview.widget.CardView>
@@ -386,11 +388,11 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:src="@drawable/time"
-        app:layout_constraintBottom_toBottomOf="@+id/cv_start"
-        app:layout_constraintStart_toEndOf="@+id/cv_start"
-        app:layout_constraintTop_toTopOf="@+id/cv_start" />
+        app:layout_constraintBottom_toBottomOf="@+id/cv_End"
+        app:layout_constraintEnd_toStartOf="@+id/cv_End"
+        app:layout_constraintTop_toTopOf="@+id/cv_End" />
 
 
 

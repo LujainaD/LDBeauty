@@ -208,36 +208,37 @@ public class AddServiceAppointmentFragment extends Fragment {
                 }else if(end.isEmpty()){
                     endTime.setError("you need to add end time of services");
                 }else{
-                    int gapInMinutes =  Integer.parseInt(dur) ;  // Define your span-of-time.
-                    int loops = ( (int) Duration.ofHours( 12 ).toMinutes() / gapInMinutes ) ;
-                    List<LocalTime> times = new ArrayList<>( loops ) ;
+                    SimpleDateFormat inFormat = new SimpleDateFormat("hh:mm aa");
+                    SimpleDateFormat outFormat = new SimpleDateFormat("HH:mm");
 
-                    LocalTime time = LocalTime.MIN ;  // '00:00'
-                    for( int i = 1 ; i <= loops ; i ++ ) {
-                        times.add( time ) ;
-                        // Set up next loop.
-                        time = time.plusMinutes( gapInMinutes ) ;
+                    String beginTime24 = null;
+                    String endTime24= null;
+                    try {
+                        beginTime24 = outFormat.format(inFormat.parse(start));
+                        endTime24 = outFormat.format(inFormat.parse(end));
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
-
-                    int endTimeIn24hoursFormat = 22;
-                    SimpleDateFormat sdf = new SimpleDateFormat("HH:MM a");
+                    String endtimeHours = endTime24.substring(0, 2);
+                    int endTimeIn24hoursFormat = Integer.parseInt(endtimeHours);
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH:MM");
                     try {
                         Calendar startCalendar = Calendar.getInstance();
-                        startCalendar.setTime(sdf.parse(start));
-
+                        startCalendar.setTime(sdf.parse(beginTime24));
                         Calendar endCalendar = Calendar.getInstance();
-                        endCalendar.setTime(sdf.parse(end));
-                        endCalendar.add(Calendar.HOUR_OF_DAY, endTimeIn24hoursFormat - endCalendar.get(Calendar.HOUR_OF_DAY));
+                        endCalendar.setTime(startCalendar.getTime());
+                        endCalendar.add(Calendar.HOUR_OF_DAY, endTimeIn24hoursFormat - startCalendar.get(Calendar.HOUR_OF_DAY));
                         endCalendar.clear(Calendar.MINUTE);
                         endCalendar.clear(Calendar.SECOND);
                         endCalendar.clear(Calendar.MILLISECOND);
                         SimpleDateFormat slotTime = new SimpleDateFormat("hh:mm a");
                         while (endCalendar.after(startCalendar)) {
                             startCalendar.add(Calendar.MINUTE, Integer.parseInt(dur));
-                            String timeslots = slotTime.format(startCalendar.getTime());
-                            Log.w("timeArray",timeslots);
-                            addTimeAppointment(dur,start,end, timeslots);
+                            String Timeslots = slotTime.format(startCalendar.getTime());
+                            addTimeAppointment(dur, start, end, Timeslots);
 
+                            // System.err.println(Timeslots);
                         }
                     } catch (ParseException e) {
                         // date in wrong format
