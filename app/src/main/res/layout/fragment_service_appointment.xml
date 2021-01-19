@@ -310,11 +310,13 @@
     <ImageButton
         android:id="@+id/ib_calender"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="17dp"
+        android:layout_height="16dp"
         android:src="@drawable/calendar"
-        app:layout_constraintStart_toStartOf="@+id/textView6"
-        tools:layout_editor_absoluteY="308dp" />
+        app:layout_constraintBottom_toBottomOf="@+id/cardView10"
+        app:layout_constraintEnd_toStartOf="@+id/cardView10"
+        app:layout_constraintStart_toStartOf="@+id/cv_name"
+        app:layout_constraintTop_toTopOf="@+id/cardView10" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
