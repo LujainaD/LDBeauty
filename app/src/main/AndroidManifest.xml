@@ -22,7 +22,8 @@
         android:roundIcon="@drawable/logpict"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SalonOwnerActivity"></activity>
+        <activity android:name=".AppOwnerActivity"></activity>
+        <activity android:name=".SalonOwnerActivity" />
         <activity android:name=".AboutAppActivity" />
         <activity android:name=".PayActivity" />
         <activity

@@ -112,6 +112,9 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
                     }
                 });
 
+
+
+
     }
 
     private void saveTokenToDB(String token) {
@@ -171,7 +174,7 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
                               // changeFragmentTo(new ClientProfileFragment(), ClientProfileFragment.class.getSimpleName());
                                Intent intent = new Intent(getApplicationContext(),ClientActivity.class);
                                startActivity(intent);
-                               //finish();;
+                               finish();
                            }else{
                                progressDialog.dismiss();
                                Toast.makeText(getApplicationContext(), "Please verify your email address", Toast.LENGTH_SHORT).show();
@@ -186,6 +189,7 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
                               // navController.navigate(R.id.action_salonsHomeFragment2_to_SPProfileFragment2);
                                Intent intent = new Intent(getApplicationContext(),SalonOwnerActivity.class);
                                startActivity(intent);
+                               finish();
                            }else{
                                progressDialog.dismiss();
                                Toast.makeText(getApplicationContext(), "Please verify your email address", Toast.LENGTH_SHORT).show();
@@ -194,56 +198,22 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
 
                        }else {
                            progressDialog.dismiss();
-                           navController.navigate(R.id.action_salonsHomeFragment2_to_appOwnerProfileFragment);
+                           Intent intent = new Intent(getApplicationContext(),AppOwnerActivity.class);
+                           startActivity(intent);
+                           finish();
                            // changeFragmentTo(new AppOwnerProfileFragment(), AppOwnerProfileFragment.class.getSimpleName());
                            return true;
                        }
 
                 } else {
-                       /* progressDialog.dismiss();
-                    *//*    NoLoginDialogFragment dialog = new NoLoginDialogFragment();
-                        dialog.showText(1);
-                        dialog.show(getSupportFragmentManager(),NoLoginDialogFragment.class.getSimpleName());*//*
-                        Toast.makeText(this, "no role", Toast.LENGTH_SHORT).show();
-
-                        Intent intent = new Intent(getApplicationContext(),NoLoginActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("num",1);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                        finish();*/
-                      /*  Intent intent = new Intent(getApplicationContext(),NoLoginActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("num",1);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                        finish();
-                        */
-                      /*  Bundle bundle = new Bundle();
-                        bundle.putInt("num",1);
-                        //NavHostFragment.findNavController(new NoLoginDialogFragment());
-                        navController.navigate(R.id.noLoginDialogFragment3,bundle);
-*/
-                        Intent intent = new Intent(getApplicationContext(),AboutAppActivity.class);
-                        startActivity(intent);
-                    break;
+                  Bundle bundle = new Bundle();
+                  bundle.putInt("num",1);
+                  navController.navigate(R.id.noLoginDialogFragment3,bundle);
+                  break;
                 }
             }else {
                     progressDialog.dismiss();
-                   /* NoLoginDialogFragment dialog = new NoLoginDialogFragment();
-                    dialog.showText(1);
-                    dialog.show(getSupportFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
-                    */
-                   // Toast.makeText(this, "not user", Toast.LENGTH_SHORT).show();
 
-                   /* Intent intent = new Intent(getApplicationContext(),NoLoginActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("num",1);
-                  //  bundle.putString("dialog","dialog");
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                    finish();
-*/
                     Bundle bundle = new Bundle();
                     bundle.putInt("num",1);
                    /* NoLoginDialogFragment fragment = new NoLoginDialogFragment();
@@ -261,12 +231,14 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
                // navController.navigate(R.id.aboutAppFragment);
                 Intent intent = new Intent(getApplicationContext(),AboutAppActivity.class);
                 startActivity(intent);
+                finish();
                 return true;
             }
         }
         return false;
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -363,15 +335,6 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
         return NavigationUI.onNavDestinationSelected(item, navController)
                 || super.onOptionsItemSelected(item);
     }
-   /* @Override
-    public void onBackPressed() {
-
-        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-            finish();
-        } else {
-            super.onBackPressed();
-        }
-    }*/
 
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because

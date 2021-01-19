@@ -293,78 +293,6 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
             }
         });
 
-/*
-        editPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mFirebaseUser = mAuth.getCurrentUser();
-                final String newPassword = password.getText().toString();
-
-                if (newPassword.isEmpty()) {
-                    password.setError("write your new password");
-                } else if (!PASSWORD_PATTERN.matcher(newPassword).matches()) {
-                    password.setError("weak password(must contain a digit ,uppercase characters and at least 6 characters)");
-                } else {
-
-                    progressDialog = new ProgressDialog(getContext());
-                    progressDialog.setCancelable(false);
-                    progressDialog.show();
-                    progressDialog.setContentView(R.layout.custom_progress_dialog);
-                    final TextView progressText = progressDialog.findViewById(R.id.tv_bar);
-                    final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
-                    progressText.setText("Updating ...");
-                    progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-
-
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            while (status < 100) {
-
-                                status += 1;
-
-                                try {
-                                    Thread.sleep(200);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-
-                                handler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-
-                                        progressDialog.setProgress(status);
-                                        progressPercentage.setText(String.valueOf(status)+"%");
-
-                                        if (status == 100) {
-                                            progressDialog.dismiss();
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                    }).start();
-
-                    mFirebaseUser.updatePassword(newPassword)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        progressDialog.dismiss();
-                                        showGreetingPasswordDialog();
-                                    } else {
-                                        progressDialog.dismiss();
-                                        Toast.makeText(getContext(),"Failed", Toast.LENGTH_SHORT).show();
-                                        Log.d("password-error", task.getException().toString());
-                                    }
-                                }
-                            });
-                }
-            }
-        });
-*/
-
         return parentView;
     }
 
@@ -457,14 +385,13 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
         GreetingDialogFragment dialogFragment = new GreetingDialogFragment();
         dialogFragment.getDialogText(2);
         dialogFragment.show(getChildFragmentManager(), GreetingDialogFragment.class.getSimpleName());
-        final int[] status = {0};
         final Handler handler = new Handler();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while (status[0] < 200) {
+                while (status < 200) {
 
-                    status[0] += 1;
+                    status += 1;
 
                     try {
                         Thread.sleep(23);
@@ -476,7 +403,7 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
                         @Override
                         public void run() {
 
-                            if (status[0] == 100) {
+                            if (status == 100) {
                                 backToProfile();
                             }
                         }
@@ -578,10 +505,6 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
             showRunTimePermission();
         }
     }
-
-    /*private void Camera() {
-        dispatchTakePictureIntent();
-    }*/
 
     String currentPhotoPath;
 

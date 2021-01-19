@@ -354,14 +354,13 @@ public class EditSpProfileFragment extends Fragment {
         GreetingDialogFragment dialogFragment = new GreetingDialogFragment();
         dialogFragment.getDialogText(2);
         dialogFragment.show(getChildFragmentManager(), GreetingDialogFragment.class.getSimpleName());
-        final int[] status = {0};
         final Handler handler = new Handler();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while (status[0] < 200) {
+                while (status< 200) {
 
-                    status[0] += 1;
+                    status += 1;
 
                     try {
                         Thread.sleep(23);
@@ -373,7 +372,7 @@ public class EditSpProfileFragment extends Fragment {
                         @Override
                         public void run() {
 
-                            if (status[0] == 100) {
+                            if (status == 100) {
                                 backToProfile();
                             }
                         }

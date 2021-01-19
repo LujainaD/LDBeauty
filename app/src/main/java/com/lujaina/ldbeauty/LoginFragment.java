@@ -1,5 +1,6 @@
 package com.lujaina.ldbeauty;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -263,8 +264,14 @@ public class LoginFragment extends Fragment {
 
                   if(mAuth.getCurrentUser().isEmailVerified()) {
                       progressDialog.dismiss();
-                      Intent i = new Intent(mContext, HomeActivity.class);
+                      Intent i = new Intent(getActivity(), HomeActivity.class);
                       startActivity(i);
+                      Activity activity = getActivity();
+                      if(activity != null){
+
+                          // etc ...
+
+                      }
                       getActivity().finish();
                     }else {
                       Toast.makeText(getContext(), "Please verify your email address", Toast.LENGTH_SHORT).show();
@@ -290,5 +297,6 @@ public class LoginFragment extends Fragment {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+
 
 }

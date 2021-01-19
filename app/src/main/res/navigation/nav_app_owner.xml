@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_app_owner"
+    app:startDestination="@id/appOwnerProfileFragment">
+
+    <fragment
+        android:id="@+id/AOConfirmSalonsFragment"
+        android:name="com.lujaina.ldbeauty.AppOwner.AOConfirmSalonsFragment"
+        tools:layout="@layout/fragment_ao_confirm_salons"
+        android:label="fragment_ao_confirm_salons" />
+    <fragment
+        android:id="@+id/appOwnerProfileFragment"
+        android:name="com.lujaina.ldbeauty.AppOwner.AppOwnerProfileFragment"
+        android:label="AppOwnerProfileFragment">
+        <action
+            android:id="@+id/action_appOwnerProfileFragment_to_editAppOwnerProfileFragment"
+            app:destination="@id/editAppOwnerProfileFragment" />
+        <action
+            android:id="@+id/action_appOwnerProfileFragment_to_AOConfirmSalonsFragment"
+            app:destination="@id/AOConfirmSalonsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editAppOwnerProfileFragment"
+        android:name="com.lujaina.ldbeauty.AppOwner.EditAppOwnerProfileFragment"
+        android:label="EditAppOwnerProfileFragment" />
+    <activity
+        android:id="@+id/appOwnerActivity"
+        android:name="com.lujaina.ldbeauty.AppOwnerActivity"
+        android:label="activity_app_owner"
+        tools:layout="@layout/activity_app_owner" />
+</navigation>
