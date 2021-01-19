@@ -493,7 +493,7 @@ public class AddServiceAppointmentFragment extends Fragment {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef;
 
-        myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.History_Order);
+        myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.History_Order_service);
 
         myRef.orderByChild("appointmentDate").equalTo(datePicked).addValueEventListener(new ValueEventListener() {
 

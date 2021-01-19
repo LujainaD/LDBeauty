@@ -147,7 +147,6 @@ public class CartFragment extends Fragment {
                             mMediatorInterface.changeFragmentTo(paymentFragment, PayPalFragment.class.getSimpleName());
                         }*/
 
-                        Toast.makeText(mContext, "pay", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getContext(), PayActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("total", tv_total.getText().toString());

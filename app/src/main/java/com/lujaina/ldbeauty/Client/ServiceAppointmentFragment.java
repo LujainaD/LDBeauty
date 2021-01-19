@@ -275,7 +275,7 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef;
         myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(serviceInfo.getOwnerId())
-                .child(Constants.History_Order);
+                .child(Constants.History_Order_service);
 
         myRef.orderByChild("appointmentDate").equalTo(datePicked).addValueEventListener(new ValueEventListener() {
             @Override

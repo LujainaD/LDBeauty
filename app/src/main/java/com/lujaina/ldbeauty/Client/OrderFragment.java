@@ -54,6 +54,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -109,12 +110,21 @@ public class OrderFragment extends Fragment  {
         DatabaseReference clientOrderRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.History_Order);
         DatabaseReference salonOrderRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(ownerId).child(Constants.History_Order);
 
+        DatabaseReference clientOrderRefService = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.History_Order_service);
+        DatabaseReference salonOrderRefService = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(ownerId).child(Constants.History_Order_service);
+
         for(ClientsAppointmentModel model : serviceArray){
 
             String id = clientOrderRef.push().getKey();
             model.setAppointmentID(id);
-            clientOrderRef.child(id).setValue(model);
-            salonOrderRef.child(id).setValue(model);
+            if(model.getServiceType().equals("Service")){
+                clientOrderRefService.child(id).setValue(model);
+                salonOrderRefService.child(id).setValue(model);
+            }else{
+                clientOrderRef.child(id).setValue(model);
+                salonOrderRef.child(id).setValue(model);
+            }
+
 
         }
         DatabaseReference cartRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Client_Cart);
@@ -123,6 +133,18 @@ public class OrderFragment extends Fragment  {
         //readSalonOwnerToken(ownerId);
         readClientToken(ownerId);
     }
+
+    private String currentDate() {
+        //Get current date of device
+        Calendar c = Calendar.getInstance();
+
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        return mDay + "/" + (mMonth + 1) + "/" + mYear;
+    }
+
 
     private void readClientToken(final String ownerId) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
