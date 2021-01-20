@@ -1,5 +1,6 @@
 package com.lujaina.ldbeauty.SP;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -178,8 +179,11 @@ public class SalonProfileFragment extends Fragment {
 
                 if (mFirebaseUser != null && u != null) {
                     salonName.setText(u.getSalonName());
-                    Glide.with(mContext).load(u.getSalonImageURL()).into(profileImag);
-                    progressDialog.dismiss();
+                    if (isValidContextForGlide(mContext)){
+                        // Load image via Glide lib using context
+                        progressDialog.dismiss();
+                        Glide.with(mContext).load(u.getSalonImageURL()).into(profileImag);
+                    }
 
                 } else {
                     progressDialog.dismiss();
@@ -193,5 +197,18 @@ public class SalonProfileFragment extends Fragment {
             }
         });
         return parentView;
+    }
+
+    public static boolean isValidContextForGlide(final Context context) {
+        if (context == null) {
+            return false;
+        }
+        if (context instanceof Activity) {
+            final Activity activity = (Activity) context;
+            if (activity.isDestroyed() || activity.isFinishing()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

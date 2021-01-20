@@ -460,6 +460,8 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
         userImageUri = contentUri;
         mediaScanIntent.setData(userImageUri);
         //sendBroadcast(mediaScanIntent);
+        //startActivityForResult(Intent.createChooser(mediaScanIntent, "tack Picture"),requestCode);
+
         setPic();
     }
 
@@ -577,7 +579,9 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
         }
     }
 
+/*
     public void setInfo(SPRegistrationModel u) {
         info = u;
     }
+*/
 }

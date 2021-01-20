@@ -493,14 +493,17 @@ public class AddOffersAppointmentFragment extends Fragment {
                     String time = snapshot.child("appointmentTime").getValue(String.class);
                     //checkFromSalonServiceAppointment(time);
                     String service = snapshot.child("serviceType").getValue(String.class);
+                    String serviceId = snapshot.child("offerId").getValue(String.class);
 
                     if (service.equals("Offer")) {
                         for (AppointmentModel model : timeList) {
-                            if (model.getPickedTime().equals(time)) {
-                                int positon = timeList.indexOf(model);
-                                model.setBooked(true);
-                                timeList.set(positon, model);
+                            if(model.getOfferId().equals(serviceId)){
 
+                                if (model.getPickedTime().equals(time)) {
+                                    int positon = timeList.indexOf(model);
+                                    model.setBooked(true);
+                                    timeList.set(positon, model);
+                                }
                             }
 
                         }

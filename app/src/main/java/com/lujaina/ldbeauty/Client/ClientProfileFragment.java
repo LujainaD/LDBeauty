@@ -1,6 +1,7 @@
 package com.lujaina.ldbeauty.Client;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -33,6 +34,8 @@ import com.lujaina.ldbeauty.R;
 import com.lujaina.ldbeauty.User.RatingFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.lujaina.ldbeauty.SP.SPProfileFragment.isValidContextForGlide;
 
 
 public class ClientProfileFragment extends Fragment {
@@ -134,8 +137,11 @@ public class ClientProfileFragment extends Fragment {
                         progressDialog.dismiss();
 
                     }else {
-                        Glide.with(mContext).load(u.getOwnerImageURL()).into(profileImag);
-                        progressDialog.dismiss();
+                        if (isValidContextForGlide(mContext)){
+                            // Load image via Glide lib using context
+                            progressDialog.dismiss();
+                            Glide.with(mContext).load(u.getOwnerImageURL()).into(profileImag);
+                        }
                     }
                 } else {
                     progressDialog.dismiss();
@@ -151,5 +157,17 @@ public class ClientProfileFragment extends Fragment {
             }
         });
         return parentView;
+    }
+    public static boolean isValidContextForGlide(final Context context) {
+        if (context == null) {
+            return false;
+        }
+        if (context instanceof Activity) {
+            final Activity activity = (Activity) context;
+            if (activity.isDestroyed() || activity.isFinishing()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

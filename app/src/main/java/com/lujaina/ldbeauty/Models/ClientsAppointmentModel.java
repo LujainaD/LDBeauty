@@ -27,6 +27,8 @@ public class ClientsAppointmentModel {
 
     private String orderDate;
     private String appointmentID;
+    private String recordId;
+
 
     public String getUserId() {
         return userId;
@@ -170,5 +172,13 @@ public class ClientsAppointmentModel {
 
     public void setOfferTitle(String offerTitle) {
         this.offerTitle = offerTitle;
+    }
+
+    public String getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(String recordId) {
+        this.recordId = recordId;
     }
 }

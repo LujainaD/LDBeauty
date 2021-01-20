@@ -228,6 +228,7 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
         clientsAppointment.setAppointmentStatus("not confirmed yet");
         clientsAppointment.setPrice(offerID.getCurrentPrice());
         clientsAppointment.setClientPhone(userPhone);
+        clientsAppointment.setRecordId(model.getRecordId());
 
         //salonRef.child(appointmentId).setValue(clientsAppointment);
         clientRef.child(appointmentId).setValue(clientsAppointment);
@@ -319,14 +320,17 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
                     String time = snapshot.child("appointmentTime").getValue(String.class);
                     //checkFromSalonServiceAppointment(time);
                     String service = snapshot.child("serviceType").getValue(String.class);
+                    String serviceId = snapshot.child("offerId").getValue(String.class);
 
                     if (service.equals("Offer")) {
                         for (AppointmentModel model : timeList) {
-                            if (model.getPickedTime().equals(time)) {
-                                int positon = timeList.indexOf(model);
-                                model.setBooked(true);
-                                timeList.set(positon, model);
+                            if(model.getOfferId().equals(serviceId)){
 
+                                if (model.getPickedTime().equals(time)) {
+                                    int positon = timeList.indexOf(model);
+                                    model.setBooked(true);
+                                    timeList.set(positon, model);
+                                }
                             }
                         }
                     }

@@ -213,6 +213,7 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
         clientsAppointment.setServiceType("Service");
         clientsAppointment.setPrice(serviceInfo.getServicePrice());
         clientsAppointment.setClientPhone(userPhone);
+        clientsAppointment.setRecordId(model.getRecordId());
         clientRef.child(appointmentId).setValue(clientsAppointment);
 
         showConfirmationDialog();
@@ -283,15 +284,18 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String time = snapshot.child("appointmentTime").getValue(String.class);
                     String service = snapshot.child("serviceType").getValue(String.class);
-                    //checkFromSalonServiceAppointment(time);
+                    String serviceId = snapshot.child("serviceId").getValue(String.class);
+
                     if (service.equals("Service")) {
                         for (AppointmentModel model : timeList) {
-                            if (model.getPickedTime().equals(time)) {
-                                int positon = timeList.indexOf(model);
-                                model.setBooked(true);
-                                timeList.set(positon, model);
-
+                            if(model.getServiceId().equals(serviceId)){
+                                if (model.getPickedTime().equals(time)) {
+                                    int positon = timeList.indexOf(model);
+                                    model.setBooked(true);
+                                    timeList.set(positon, model);
+                                }
                             }
+
 
                         }
                     }

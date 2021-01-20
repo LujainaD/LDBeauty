@@ -85,6 +85,7 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
         FloatingActionButton instruction = parentView.findViewById(R.id.instruction_button);
 
+        instruction.setVisibility(View.GONE);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         recyclerView = parentView.findViewById(R.id.add_rv);
