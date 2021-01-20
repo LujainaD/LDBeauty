@@ -159,8 +159,11 @@ public class SPProfileFragment extends Fragment {
                 SPRegistrationModel u = dataSnapshot.getValue(SPRegistrationModel.class);// this will convert json to java
 
                 if (mFirebaseUser != null && u != null) {
+                    if (isValidContextForGlide(mContext)){
+                        // Load image via Glide lib using context
+                        Glide.with(getContext()).load(u.getOwnerImageURL()).into(profileImag);
+                    }
                     ownerName.setText(u.getUserName());
-                    Glide.with(mActivity).load(u.getOwnerImageURL()).into(profileImag);
                     progressDialog.dismiss();
 
                 } else {
@@ -176,6 +179,19 @@ public class SPProfileFragment extends Fragment {
         });
 
         return parentView;
+    }
+
+    public static boolean isValidContextForGlide(final Context context) {
+        if (context == null) {
+            return false;
+        }
+        if (context instanceof Activity) {
+            final Activity activity = (Activity) context;
+            if (activity.isDestroyed() || activity.isFinishing()) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
