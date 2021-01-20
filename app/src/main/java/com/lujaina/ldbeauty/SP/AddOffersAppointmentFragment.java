@@ -382,6 +382,7 @@ public class AddOffersAppointmentFragment extends Fragment {
         appointmentModel.setPickedTime(timeslots);
         appointmentModel.setAppointmentStartTime(start);
         appointmentModel.setAppointmentEndTime(end);
+        appointmentModel.setServiceType("Offer");
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Offers)
                 .child(mOffer.getOfferId()).child(Constants.Service_Appointment);
@@ -462,7 +463,8 @@ public class AddOffersAppointmentFragment extends Fragment {
 
                 }
                // mAdapter.update(timeList);
-                checkIfTimeAlreadyPicked();
+                //checkIfTimeAlreadyPicked();
+                checkIfItsOffer();
 
             }
 
@@ -474,7 +476,9 @@ public class AddOffersAppointmentFragment extends Fragment {
 
     }
 
-    private void checkIfTimeAlreadyPicked() {
+
+
+    private void checkIfItsOffer() {
         final String datePicked = pickedDate.getText().toString().trim();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef;
@@ -488,12 +492,17 @@ public class AddOffersAppointmentFragment extends Fragment {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String time = snapshot.child("appointmentTime").getValue(String.class);
                     //checkFromSalonServiceAppointment(time);
-                    for(AppointmentModel model: timeList){
-                        if(model.getPickedTime().equals(time)){
-                            int positon = timeList.indexOf(model);
-                            model.setBooked(true);
-                            timeList.set(positon,model);
-                            // checkFromSalonServiceAppointment(time);
+                    String service = snapshot.child("serviceType").getValue(String.class);
+
+                    if (service.equals("Offer")) {
+                        for (AppointmentModel model : timeList) {
+                            if (model.getPickedTime().equals(time)) {
+                                int positon = timeList.indexOf(model);
+                                model.setBooked(true);
+                                timeList.set(positon, model);
+
+                            }
+
                         }
                     }
                 }

@@ -132,6 +132,7 @@ public class SpCalenderFragment extends Fragment {
         });
 
         events = new ArrayList();
+        showEvents(getCurrentDate());
 
        calendarView.setOnDayClickListener(new OnDayClickListener() {
            @Override
@@ -209,5 +210,16 @@ public class SpCalenderFragment extends Fragment {
                 // Failed to read value
             }
         });
+    }
+    private String getCurrentDate() {
+
+        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+        String currentDate = sdf.format(calendar.getTime());
+        return currentDate;
+
+
+//		returnDate = Calendar.getInstance();
+//		returnDate.set(returnYear, returnMonth, returnDay);
     }
 }

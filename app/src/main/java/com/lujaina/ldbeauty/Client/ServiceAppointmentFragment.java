@@ -275,19 +275,24 @@ public class ServiceAppointmentFragment extends Fragment implements SAppointment
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef;
         myRef = (DatabaseReference) database.getReference(Constants.Users).child(Constants.Salon_Owner).child(serviceInfo.getOwnerId())
-                .child(Constants.History_Order_service);
+                .child(Constants.History_Order);
 
         myRef.orderByChild("appointmentDate").equalTo(datePicked).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String time = snapshot.child("appointmentTime").getValue(String.class);
+                    String service = snapshot.child("serviceType").getValue(String.class);
                     //checkFromSalonServiceAppointment(time);
-                    for(AppointmentModel model: timeList){
-                        if(model.getPickedTime().equals(time)){
-                            int positon = timeList.indexOf(model);
-                            model.setBooked(true);
-                            timeList.set(positon,model);
+                    if (service.equals("Service")) {
+                        for (AppointmentModel model : timeList) {
+                            if (model.getPickedTime().equals(time)) {
+                                int positon = timeList.indexOf(model);
+                                model.setBooked(true);
+                                timeList.set(positon, model);
+
+                            }
+
                         }
                     }
                 }

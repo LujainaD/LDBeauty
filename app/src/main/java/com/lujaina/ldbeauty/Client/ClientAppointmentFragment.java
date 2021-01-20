@@ -90,7 +90,6 @@ public class ClientAppointmentFragment extends Fragment {
         setupRecyclerView(recyclerView);
 
         readAppointmentFromDB();
-
         ibLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,6 +137,39 @@ public class ClientAppointmentFragment extends Fragment {
                         emptyAppointment.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.VISIBLE);
                         appointmentArray.add(appointment);
+
+
+                }
+                mAdapter.update(appointmentArray);
+                //readAppointmentServiceFromDB();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
+    }
+
+    private void readAppointmentServiceFromDB() {
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        myRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.History_Order_service);
+        // Read from the mDatabase
+        recyclerView.setVisibility(View.GONE);
+        emptyAppointment.setVisibility(View.VISIBLE);
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                appointmentArray.clear();
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
+                    ClientsAppointmentModel appointment = d.getValue(ClientsAppointmentModel.class);
+
+
+                    emptyAppointment.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    appointmentArray.add(appointment);
 
 
                 }

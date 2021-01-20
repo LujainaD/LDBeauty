@@ -1,5 +1,6 @@
 package com.lujaina.ldbeauty.SP;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ public class SPProfileFragment extends Fragment {
 
     private ProgressDialog progressDialog;
     NavController navController;
+    private Activity mActivity;
 
     public SPProfileFragment() {
         // Required empty public constructor
@@ -48,6 +50,8 @@ public class SPProfileFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
+        mActivity = getActivity();
+
         /*if(context instanceof MediatorInterface) {
             mMediatorInterface = (MediatorInterface) context;
         }
@@ -148,11 +152,15 @@ public class SPProfileFragment extends Fragment {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (mActivity == null) {
+                    return;
+                }
                 SPRegistrationModel u = dataSnapshot.getValue(SPRegistrationModel.class);// this will convert json to java
 
                 if (mFirebaseUser != null && u != null) {
                     ownerName.setText(u.getUserName());
-                    Glide.with(mContext).load(u.getOwnerImageURL()).into(profileImag);
+                    Glide.with(mActivity).load(u.getOwnerImageURL()).into(profileImag);
                     progressDialog.dismiss();
 
                 } else {

@@ -117,13 +117,13 @@ public class OrderFragment extends Fragment  {
 
             String id = clientOrderRef.push().getKey();
             model.setAppointmentID(id);
-            if(model.getServiceType().equals("Service")){
+            /*if(model.getServiceType().equals("Service")){
                 clientOrderRefService.child(id).setValue(model);
                 salonOrderRefService.child(id).setValue(model);
-            }else{
+            }else{*/
                 clientOrderRef.child(id).setValue(model);
                 salonOrderRef.child(id).setValue(model);
-            }
+           // }
 
 
         }

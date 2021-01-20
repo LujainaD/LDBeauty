@@ -18,6 +18,7 @@ public class AppointmentModel {
 
 	private boolean isSelected;
 	private CharSequence time;
+	private String serviceType;
 
 	public boolean isSelected() {
 		return isSelected;
@@ -138,5 +139,13 @@ public class AppointmentModel {
 
 	public void setTime(CharSequence time) {
 		this.time = time;
+	}
+
+	public String getServiceType() {
+		return serviceType;
+	}
+
+	public void setServiceType(String serviceType) {
+		this.serviceType = serviceType;
 	}
 }

@@ -476,7 +476,8 @@ public class AddServiceAppointmentFragment extends Fragment {
 
                 }
                // mAdapter.update(timeList);
-                checkIfTimeAlreadyPicked();
+                checkIfItsService();
+               // checkIfTimeAlreadyPicked();
             }
 
             @Override
@@ -487,13 +488,51 @@ public class AddServiceAppointmentFragment extends Fragment {
 
     }
 
+    private void checkIfItsService() {
+        final String datePicked = pickedDate.getText().toString().trim();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef;
+
+        myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.History_Order);
+
+        myRef.orderByChild("appointmentDate").equalTo(datePicked).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String service = snapshot.child("serviceType").getValue(String.class);
+                    String time = snapshot.child("appointmentTime").getValue(String.class);
+
+                    if (service.equals("Service")) {
+                        for (AppointmentModel model : timeList) {
+                            if (model.getPickedTime().equals(time)) {
+                                int positon = timeList.indexOf(model);
+                                model.setBooked(true);
+                                timeList.set(positon, model);
+
+                            }
+
+                        }
+
+                    }
+                }
+               mAdapter.update(timeList);
+            }
+
+        @Override
+        public void onCancelled(DatabaseError error) {
+            // Failed to read value
+        }
+    });
+    }
+
 
     private void checkIfTimeAlreadyPicked() {
         final String datePicked = pickedDate.getText().toString().trim();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef;
 
-        myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.History_Order_service);
+        myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.History_Order);
 
         myRef.orderByChild("appointmentDate").equalTo(datePicked).addValueEventListener(new ValueEventListener() {
 
@@ -504,9 +543,9 @@ public class AddServiceAppointmentFragment extends Fragment {
                     //checkFromSalonServiceAppointment(time);
                     for(AppointmentModel model: timeList){
                         if(model.getPickedTime().equals(time)){
-                            int positon = timeList.indexOf(model);
-                            model.setBooked(true);
-                            timeList.set(positon,model);
+                                int positon = timeList.indexOf(model);
+                                model.setBooked(true);
+                                timeList.set(positon, model);
 
                         }
                     }

@@ -318,12 +318,16 @@ public class OfferAppointmentFragment extends Fragment implements AppointmentAda
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String time = snapshot.child("appointmentTime").getValue(String.class);
                     //checkFromSalonServiceAppointment(time);
-                    for(AppointmentModel model: timeList){
-                        if(model.getPickedTime().equals(time)){
-                            int positon = timeList.indexOf(model);
-                            model.setBooked(true);
-                            timeList.set(positon,model);
-                            // checkFromSalonServiceAppointment(time);
+                    String service = snapshot.child("serviceType").getValue(String.class);
+
+                    if (service.equals("Offer")) {
+                        for (AppointmentModel model : timeList) {
+                            if (model.getPickedTime().equals(time)) {
+                                int positon = timeList.indexOf(model);
+                                model.setBooked(true);
+                                timeList.set(positon, model);
+
+                            }
                         }
                     }
                 }
