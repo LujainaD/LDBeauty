@@ -72,7 +72,6 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient mFusedLocationClient;
     private GoogleMap mMap;
     private MapView mMapView;
-    private MediatorInterface mMediatorCallback;
 
     private FloatingActionButton btnGetUserLocation;
     private Marker selectedLocation;

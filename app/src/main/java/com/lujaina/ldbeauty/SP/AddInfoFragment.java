@@ -83,9 +83,9 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
         empty = parentView.findViewById(R.id.tv_empty);
 
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
-        FloatingActionButton instruction = parentView.findViewById(R.id.instruction_button);
+       // FloatingActionButton instruction = parentView.findViewById(R.id.instruction_button);
 
-        instruction.setVisibility(View.GONE);
+       // instruction.setVisibility(View.GONE);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         recyclerView = parentView.findViewById(R.id.add_rv);
@@ -125,16 +125,16 @@ public class AddInfoFragment extends Fragment implements  RecyclerItemTouchHelpe
             }
         });
 
-        instruction.setOnClickListener(new View.OnClickListener() {
+       /* instruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                   /* InsAddInfoFragment dialog = new InsAddInfoFragment();
-                    dialog.show(getChildFragmentManager(), AddInfoDialogFragment.class.getSimpleName());*/
+                   *//* InsAddInfoFragment dialog = new InsAddInfoFragment();
+                    dialog.show(getChildFragmentManager(), AddInfoDialogFragment.class.getSimpleName());*//*
 
                       TestInstructionFragment dialog = new TestInstructionFragment();
                     dialog.show(getChildFragmentManager(), TestInstructionFragment.class.getSimpleName());
             }
-        });
+        });*/
         return parentView;
     }
 

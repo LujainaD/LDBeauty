@@ -74,7 +74,9 @@ public class NoLoginDialogFragment extends DialogFragment {
 
             if(num == 1){
                 textView.setText("Please login or signup for accessing your profile");
-            }else  {
+            }else if(num==2)  {
+                textView.setText("you are not a Client,Signup or Signin please");
+
             }
 
 

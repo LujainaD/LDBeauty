@@ -425,7 +425,8 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_SALON_IMAGE){
             if (data == null) {
@@ -474,7 +475,7 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
 
-        BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+        BitmapFactory.decodeFile(currentPhotoPath);
 
         int photoW = bmOptions.outWidth;
         int photoH = bmOptions.outHeight;
@@ -487,8 +488,8 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
         bmOptions.inSampleSize = scaleFactor;
        // bmOptions.inPurgeable = true;
 
-        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
-        profileImg.setLayerType(View.LAYER_TYPE_SOFTWARE , null);
+        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath);
+        //profileImg.setLayerType(View.LAYER_TYPE_SOFTWARE , null);
         profileImg.setImageBitmap(bitmap);
     }
 
@@ -572,16 +573,10 @@ public class EditClientProfileFragment extends Fragment implements ImageDialogFr
         switch (requestCode) {
             case MY_CAMERA_REQUEST_CODE :
 
-                onCameraButtonClick();
+                dispatchTakePictureIntent();
                 break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
-
-/*
-    public void setInfo(SPRegistrationModel u) {
-        info = u;
-    }
-*/
 }

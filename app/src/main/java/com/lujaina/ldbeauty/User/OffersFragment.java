@@ -115,7 +115,9 @@ public class OffersFragment extends Fragment {
 
                 }else{
                     NoLoginDialogFragment dialog = new NoLoginDialogFragment();
-                    dialog.showText(2);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("num",2);
+                    dialog.setArguments(bundle);;
                     dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
                 }
 

@@ -122,7 +122,7 @@ public class CategoriesFragment extends Fragment {
                     dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
 */
                     Bundle bundle = new Bundle();
-                    bundle.putInt("num",1);
+                    bundle.putInt("num",2);
                     navController.navigate(R.id.noLoginDialogFragment2,bundle);
 
                 }

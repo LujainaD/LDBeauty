@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -104,7 +105,9 @@ public class RatingFragment extends Fragment  {
 
              if(mFirebaseUser == null || userRole.equals("Salon Owner")){
                     NoLoginDialogFragment dialog = new NoLoginDialogFragment();
-                    dialog.showText(2);
+                 Bundle bundle = new Bundle();
+                 bundle.putInt("num",2);
+                    dialog.setArguments(bundle);
                     dialog.show(getChildFragmentManager(),NoLoginDialogFragment.class.getSimpleName());
                 }else {
                         if( mFirebaseUser.isEmailVerified()) {
@@ -139,7 +142,7 @@ public class RatingFragment extends Fragment  {
                     snapshot.getChildrenCount();
                     String countedOrder = String.valueOf(snapshot.getChildrenCount());
                     if (Integer.parseInt(countedOrder) == 0) {
-                        Toast.makeText(mContext, "you need to book appointment to add feedback", Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(mContext, "you need to book appointment to add feedback", Toast.LENGTH_SHORT).show();
 
                     } else {
                        // Log.w("countedFeedback", countedOrder);
@@ -166,11 +169,17 @@ public class RatingFragment extends Fragment  {
                     String  numberofFeedback = String.valueOf(snapshot.getChildrenCount());
                     int countFeedback = Integer.parseInt(numberofFeedback);
                     if(Integer.parseInt(counted)==countFeedback){
-                        Toast.makeText(mContext, "equal you need to book appointment to add feedback", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(mContext, "equal you need to book appointment to add feedback", Toast.LENGTH_SHORT).show();
                     }else if(Integer.parseInt(counted)>Integer.parseInt(numberofFeedback)){
                         RatingDialogFragment dialogFragment = new RatingDialogFragment();
-                        dialogFragment.setSalonInfo(salonInfo);
-                        dialogFragment.show(getChildFragmentManager(), RatingDialogFragment.class.getSimpleName());
+                        //dialogFragment.setSalonInfo(salonInfo);
+                        Bundle bundle =new Bundle();
+                        bundle.putSerializable("info",salonInfo);
+                        dialogFragment.setDialog(bundle);
+                        if(getActivity()!=null && isAdded()){
+                            dialogFragment.show(getChildFragmentManager(), RatingDialogFragment.class.getSimpleName());
+
+                        }
                        //Toast.makeText(mContext, "appointment more than feedback", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -257,7 +266,4 @@ public class RatingFragment extends Fragment  {
         });
     }
 
-    public void setSalonFeedback(SPRegistrationModel salonInfo) {
-       this.salonInfo = salonInfo;
-    }
 }

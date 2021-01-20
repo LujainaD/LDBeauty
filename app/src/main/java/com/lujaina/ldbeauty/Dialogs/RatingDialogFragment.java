@@ -39,10 +39,10 @@ public class RatingDialogFragment extends DialogFragment {
     FirebaseUser mFirebaseUser;
     private DatabaseReference myRef;
 
-    private MediatorInterface mMediatorInterface;
     private Context mContext;
 
     private SPRegistrationModel salonInfo;
+    private Bundle bundle;
 
     public RatingDialogFragment() {
         // Required empty public constructor
@@ -63,11 +63,7 @@ public class RatingDialogFragment extends DialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof MediatorInterface) {
-            mMediatorInterface = (MediatorInterface) context;
-        } else {
-            throw new RuntimeException(context.toString() + "must implement MediatorInterface");
-        }
+
     }
 
     @Override
@@ -81,6 +77,7 @@ public class RatingDialogFragment extends DialogFragment {
         final RatingBar ratingbar = parentView.findViewById(R.id.ratingBar);
          Button add = parentView.findViewById(R.id.btn_add);
         Button cancel = parentView.findViewById(R.id.btn_cancel);
+        salonInfo = (SPRegistrationModel) bundle.getSerializable("info");
 
 
         add.setOnClickListener(new View.OnClickListener() {
@@ -171,9 +168,13 @@ public class RatingDialogFragment extends DialogFragment {
         return df.format(c);
     }
 
-    public void setSalonInfo(SPRegistrationModel salonInfo) {
-        this.salonInfo = salonInfo;
+    public void setDialog(Bundle bundle) {
+        this.bundle=bundle;
     }
 
+    /*public void setSalonInfo(SPRegistrationModel salonInfo) {
+        this.salonInfo = salonInfo;
+    }
+*/
 
 }
