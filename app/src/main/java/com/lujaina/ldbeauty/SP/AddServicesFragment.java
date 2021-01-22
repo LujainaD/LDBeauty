@@ -37,6 +37,7 @@ import com.lujaina.ldbeauty.Models.CategoryModel;
 import com.lujaina.ldbeauty.Models.ServiceModel;
 import com.lujaina.ldbeauty.R;
 import com.lujaina.ldbeauty.Interfaces.RecyclerItemTouchHelperListener;
+import com.lujaina.ldbeauty.SP.Instruction.TestInstructionFragment;
 
 import java.util.ArrayList;
 
@@ -75,13 +76,13 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_add_services, container, false);
+        ImageButton instruction = parentView.findViewById(R.id.instruction_button);
 
         NavHostFragment navHostFragment =
                 (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
         String salonName = getArguments().getString("salonName");
         category = (CategoryModel) getArguments().getSerializable("CategoryModel");
-
         empty = parentView.findViewById(R.id.tv_empty);
 
         FloatingActionButton add = parentView.findViewById(R.id.add_button);
@@ -110,6 +111,17 @@ public class AddServicesFragment extends Fragment implements RecyclerItemTouchHe
                 AddServiceDialogFragment dialogFragment = new AddServiceDialogFragment();
                 dialogFragment.setService(category, salonName);
                 dialogFragment.show(getChildFragmentManager(), AddServiceDialogFragment.class.getSimpleName());
+            }
+        });
+        instruction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    /*InsAddInfoFragment dialog = new InsAddInfoFragment();
+                    dialog.show(getChildFragmentManager(), AddInfoDialogFragment.class.getSimpleName());
+*/
+                TestInstructionFragment dialog = new TestInstructionFragment();
+                dialog.setInstructionPage("service");
+                dialog.show(getChildFragmentManager(), TestInstructionFragment.class.getSimpleName());
             }
         });
 

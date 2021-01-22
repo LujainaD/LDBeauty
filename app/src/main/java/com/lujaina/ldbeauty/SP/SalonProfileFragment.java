@@ -120,8 +120,9 @@ public class SalonProfileFragment extends Fragment {
                 /*if (mMediatorInterface !=null){
                     mMediatorInterface.changeFragmentTo(new AddInfoFragment(), AddInfoFragment.class.getSimpleName());
                 }*/
-
-                navController.navigate(R.id.action_salonProfileFragment_to_addInfoFragment2);
+                Bundle bundle= new Bundle();
+                bundle.putInt("num",2);
+                navController.navigate(R.id.action_salonProfileFragment_to_addInfoFragment2, bundle);
 
             }
         });

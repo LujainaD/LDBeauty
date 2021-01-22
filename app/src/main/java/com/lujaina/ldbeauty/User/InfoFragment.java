@@ -75,8 +75,11 @@ public class InfoFragment extends Fragment {
 
         NavHostFragment navHostFragment =
                 (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        ImageButton instruction = parentView.findViewById(R.id.instruction_button);
+
         navController = navHostFragment.getNavController();
         info = (SPRegistrationModel) getArguments().getSerializable("info");
+        int num = getArguments().getInt("num");
 
         TextView salonName = parentView.findViewById(R.id.tv_toolbar);
         empty = parentView.findViewById(R.id.tv_empty);
@@ -92,6 +95,9 @@ public class InfoFragment extends Fragment {
 
         if (info != null) {
             salonName.setText(info.getSalonName()+ " Info");
+        }
+        if(num ==1){
+            instruction.setVisibility(View.GONE);
         }
         back.setOnClickListener(new View.OnClickListener() {
             @Override

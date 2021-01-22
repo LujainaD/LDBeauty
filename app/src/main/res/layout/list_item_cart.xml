@@ -192,6 +192,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:srcCompat="@drawable/outline_offer" />
 
+            <TextView
+                android:id="@+id/soldStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_marginBottom="18dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/iv_offer" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

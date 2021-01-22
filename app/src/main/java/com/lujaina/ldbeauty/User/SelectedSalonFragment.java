@@ -120,6 +120,7 @@ public class SelectedSalonFragment extends Fragment {
                         mMediatorCallback.changeFragmentTo(infoFragment, InfoFragment.class.getSimpleName());
 */
                         bundle.putSerializable("info", section);
+                        bundle.putInt("num",1);
                         navController.navigate(R.id.action_selectedSalonFragment2_to_infoFragment, bundle);
 
                         break;
