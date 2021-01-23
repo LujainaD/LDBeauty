@@ -14,6 +14,7 @@
         android:src="@drawable/halfrose"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="0dp"
@@ -36,335 +37,332 @@
                 android:layout_marginTop="10dp"
                 android:text="Add Salon Owner Info"
                 android:textColor="#000000"
-                app:layout_constraintTop_toBottomOf="@id/iv_salon"
                 android:textSize="16dp"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                app:layout_constraintTop_toBottomOf="@id/iv_salon" />
 
-    <View
-        android:id="@+id/view2"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        style="@style/Divider.Horizontal"
-        android:layout_width="155dp"
-        android:layout_marginStart="10dp"
-        android:background="#000000" />
-                    <androidx.constraintlayout.widget.ConstraintLayout
+            <View
+                android:id="@+id/view2"
+                style="@style/Divider.Horizontal"
+                android:layout_width="155dp"
+                android:layout_marginStart="10dp"
+                android:background="#000000"
+                app:layout_constraintStart_toStartOf="@+id/textView" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView3"
+                    android:layout_width="226dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="#F3F3F3"
+                    app:cardCornerRadius="20dp"
+                    app:layout_constraintEnd_toEndOf="@+id/cv_name"
+                    app:layout_constraintStart_toStartOf="@+id/cv_name"
+                    app:layout_constraintTop_toBottomOf="@+id/cv_name">
+
+                    <EditText
+                        android:id="@+id/ti_userEmail"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:hint="User Email"
+                        android:inputType="textEmailAddress"
 
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/cardView3"
-                            android:layout_width="226dp"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="10dp"
-                            android:backgroundTint="#F3F3F3"
-                            app:cardCornerRadius="20dp"
-                            app:layout_constraintEnd_toEndOf="@+id/cv_name"
-                            app:layout_constraintStart_toStartOf="@+id/cv_name"
-                            app:layout_constraintTop_toBottomOf="@+id/cv_name">
+                        android:textColor="#000000"
+                        android:textColorHint="#000000"
+                        android:textSize="16sp" />
 
-                            <EditText
-                                android:id="@+id/ti_userEmail"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:background="@android:color/transparent"
-                                android:gravity="center"
-                                android:hint="User Email"
-                                android:textColorHint="#000000"
+                </androidx.cardview.widget.CardView>
 
-                                android:inputType="textEmailAddress"
-                                android:textColor="#000000"
-                                android:textSize="16sp" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_user"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/outline_camera"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                        </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_name"
+                    android:layout_width="226dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="#F3F3F3"
+                    app:cardCornerRadius="20dp"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_user"
+                    app:layout_constraintStart_toStartOf="@+id/iv_user"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_user">
 
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/iv_user"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
-                            android:src="@drawable/outline_camera"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                    <EditText
+                        android:id="@+id/ti_userName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:hint="User Name"
+                        android:inputType="textPersonName"
+                        android:textColor="#000000"
+                        android:textColorHint="#000000"
+                        android:textSize="16sp" />
+                </androidx.cardview.widget.CardView>
 
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/cv_name"
-                            android:layout_width="226dp"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="10dp"
-                            android:backgroundTint="#F3F3F3"
-                            app:cardCornerRadius="20dp"
-                            app:layout_constraintEnd_toEndOf="@+id/iv_user"
-                            app:layout_constraintStart_toStartOf="@+id/iv_user"
-                            app:layout_constraintTop_toBottomOf="@+id/iv_user">
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView4"
+                    android:layout_width="226dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
 
-                            <EditText
-                                android:id="@+id/ti_userName"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:background="@android:color/transparent"
-                                android:gravity="center"
-                                android:hint="User Name"
-                                android:textColorHint="#000000"
-                                android:inputType="textPersonName"
-                                android:textColor="#000000"
-                                android:textSize="16sp" />
-                        </androidx.cardview.widget.CardView>
+                    android:backgroundTint="#F3F3F3"
+                    app:cardCornerRadius="20dp"
+                    app:layout_constraintEnd_toEndOf="@+id/cardView3"
+                    app:layout_constraintStart_toStartOf="@+id/cardView3"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView3">
 
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/cardView4"
-                            android:layout_width="226dp"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="10dp"
+                    <EditText
+                        android:id="@+id/ti_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:hint="Phone Number"
+                        android:inputType="phone"
+                        android:textColor="#000000"
+                        android:textColorHint="#000000"
+                        android:textSize="16sp" />
 
-                            android:backgroundTint="#F3F3F3"
-                            app:cardCornerRadius="20dp"
-                            app:layout_constraintEnd_toEndOf="@+id/cardView3"
-                            app:layout_constraintStart_toStartOf="@+id/cardView3"
-                            app:layout_constraintTop_toBottomOf="@+id/cardView3">
+                </androidx.cardview.widget.CardView>
 
-                            <EditText
-                                android:id="@+id/ti_phone"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:background="@android:color/transparent"
-                                android:gravity="center"
-                                android:hint="Phone Number"
-                                android:textColorHint="#000000"
-                                android:inputType="phone"
-                                android:textColor="#000000"
-                                android:textSize="16sp" />
-
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/cardView5"
-                            android:layout_width="226dp"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="10dp"
-                            android:backgroundTint="#F3F3F3"
-                            app:cardCornerRadius="20dp"
-                            app:layout_constraintEnd_toEndOf="@+id/cardView4"
-                            app:layout_constraintStart_toStartOf="@+id/cardView4"
-                            app:layout_constraintTop_toBottomOf="@+id/cardView4">
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView5"
+                    android:layout_width="226dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="#F3F3F3"
+                    app:cardCornerRadius="20dp"
+                    app:layout_constraintEnd_toEndOf="@+id/cardView4"
+                    app:layout_constraintStart_toStartOf="@+id/cardView4"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView4">
 
 
-                            <EditText
-                                android:id="@+id/ti_password"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:background="@android:color/transparent"
-                                android:gravity="center"
-                                android:hint="Password"
-                                android:inputType="textPassword"
-                                android:textColor="#000000"
-                                android:textColorHint="#000000"
-                                android:textSize="16sp" />
+                    <EditText
+                        android:id="@+id/ti_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:hint="Password"
+                        android:inputType="textPassword"
+                        android:textColor="#000000"
+                        android:textColorHint="#000000"
+                        android:textSize="16sp" />
 
-                        </androidx.cardview.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/cv_verPass"
-                            android:layout_width="226dp"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="10dp"
-                            android:backgroundTint="#F3F3F3"
-                            app:cardCornerRadius="20dp"
-                            app:layout_constraintEnd_toEndOf="@+id/cardView5"
-                            app:layout_constraintHorizontal_bias="0.4"
-                            app:layout_constraintStart_toStartOf="@+id/cardView5"
-                            app:layout_constraintTop_toBottomOf="@+id/cardView5">
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_verPass"
+                    android:layout_width="226dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="#F3F3F3"
+                    app:cardCornerRadius="20dp"
+                    app:layout_constraintEnd_toEndOf="@+id/cardView5"
+                    app:layout_constraintHorizontal_bias="0.4"
+                    app:layout_constraintStart_toStartOf="@+id/cardView5"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView5">
 
-                            <EditText
-                                android:id="@+id/ti_verify"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:background="@android:color/transparent"
-                                android:gravity="center"
-                                android:hint="Verify Password"
-                                android:inputType="textVisiblePassword"
-                                android:textColor="#000000"
-                                android:textColorHint="#000000"
-                                android:textSize="16sp" />
+                    <EditText
+                        android:id="@+id/ti_verify"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:hint="Verify Password"
+                        android:inputType="textVisiblePassword"
+                        android:textColor="#000000"
+                        android:textColorHint="#000000"
+                        android:textSize="16sp" />
 
-                        </androidx.cardview.widget.CardView>
-
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/iv_salon"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
-                            android:src="@drawable/outline_camera"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_addSalonInfo" />
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/cardView8"
-                            android:layout_width="226dp"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="10dp"
-                            android:backgroundTint="#F3F3F3"
-                            app:cardCornerRadius="20dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/iv_salon">
-
-                            <EditText
-                                android:id="@+id/ti_salonName"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:background="@android:color/transparent"
-                                android:gravity="center"
-                                android:hint="Salon Name"
-                                android:textColorHint="#000000"
-                                android:textColor="#000000"
-                                android:textSize="16sp" />
-
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/cardView6"
-                            android:layout_width="226dp"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="10dp"
-                            android:backgroundTint="#F3F3F3"
-                            app:cardCornerRadius="20dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/cardView8">
-
-                            <EditText
-                                android:id="@+id/ti_city"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:background="@android:color/transparent"
-                                android:gravity="center"
-                                android:hint="City"
-                                android:textColorHint="#000000"
-                                android:inputType="text"
-                                android:textColor="#000000"
-                                android:textSize="16sp" />
+                </androidx.cardview.widget.CardView>
 
 
-                        </androidx.cardview.widget.CardView>
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_salon"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/outline_camera"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_addSalonInfo" />
 
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/cardView7"
-                            android:layout_width="226dp"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:backgroundTint="#F3F3F3"
-                            app:cardCornerRadius="20dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/cardView6">
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView8"
+                    android:layout_width="226dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="#F3F3F3"
+                    app:cardCornerRadius="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_salon">
 
-                            <EditText
-                                android:id="@+id/ti_salonNumber"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:background="@android:color/transparent"
-                                android:gravity="center"
-                                android:hint="Salon Phone Number"
-                                android:textColorHint="#000000"
-                                android:inputType="phone"
-                                android:textColor="#000000"
-                                android:textSize="16sp" />
+                    <EditText
+                        android:id="@+id/ti_salonName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:hint="Salon Name"
+                        android:textColor="#000000"
+                        android:textColorHint="#000000"
+                        android:textSize="16sp" />
 
-                        </androidx.cardview.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
-                        <Button
-                            android:id="@+id/btn_signUp"
-                            android:layout_width="127dp"
-                            android:layout_height="32dp"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/btn_rectangle"
-                            android:backgroundTint="#DA6EA4"
-                            android:gravity="center"
-                            android:text="Sign Up"
-                            android:textColor="@color/white"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/cardView7">
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView6"
+                    android:layout_width="226dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="#F3F3F3"
+                    app:cardCornerRadius="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView8">
 
-                        </Button>
-
-                        <TextView
-                            android:id="@+id/tv_dont"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="40dp"
-                            android:text="Already have an account?"
-                            android:textColor="#000000"
-                            android:textSize="16sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/tv_login"
-                            app:layout_constraintStart_toStartOf="@+id/btn_signUp"
-                            app:layout_constraintTop_toBottomOf="@+id/btn_signUp">
-
-                        </TextView>
-
-                        <TextView
-                            android:id="@+id/tv_login"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:clickable="true"
-                            android:text="@string/login_underline"
-                            android:textColor="@color/pink_text"
-                            android:textSize="16sp"
-                            app:layout_constraintEnd_toEndOf="@+id/btn_signUp"
-                            app:layout_constraintStart_toEndOf="@+id/tv_dont"
-                            app:layout_constraintTop_toTopOf="@+id/tv_dont">
-
-                        </TextView>
-
-                        <View
-                            style="@style/Divider.Horizontal"
-                            android:layout_width="104dp"
-                            android:background="#000000"
-                            app:layout_constraintStart_toStartOf="@+id/tv_addSalonInfo"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_addSalonInfo" />
-
-                        <TextView
-                            android:id="@+id/tv_addSalonInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:text="Add Salon Info"
-                            android:textColor="#000000"
-                            android:textSize="16dp"
-                            android:textStyle="normal"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/cv_verPass" />-->
+                    <EditText
+                        android:id="@+id/ti_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:hint="City"
+                        android:inputType="text"
+                        android:textColor="#000000"
+                        android:textColorHint="#000000"
+                        android:textSize="16sp" />
 
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView7"
+                    android:layout_width="226dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="#F3F3F3"
+                    app:cardCornerRadius="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView6">
+
+                    <EditText
+                        android:id="@+id/ti_salonNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:hint="Salon Phone Number"
+                        android:inputType="phone"
+                        android:textColor="#000000"
+                        android:textColorHint="#000000"
+                        android:textSize="16sp" />
+
+                </androidx.cardview.widget.CardView>
+
+                <Button
+                    android:id="@+id/btn_signUp"
+                    android:layout_width="127dp"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/btn_rectangle"
+                    android:backgroundTint="#DA6EA4"
+                    android:gravity="center"
+                    android:text="Sign Up"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView7">
+
+                </Button>
+
+                <TextView
+                    android:id="@+id/tv_dont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="40dp"
+                    android:text="Already have an account?"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_login"
+                    app:layout_constraintStart_toStartOf="@+id/btn_signUp"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_signUp">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/tv_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:clickable="true"
+                    android:text="@string/login_underline"
+                    android:textColor="@color/pink_text"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@+id/btn_signUp"
+                    app:layout_constraintStart_toEndOf="@+id/tv_dont"
+                    app:layout_constraintTop_toTopOf="@+id/tv_dont">
+
+                </TextView>
+
+                <View
+                    style="@style/Divider.Horizontal"
+                    android:layout_width="104dp"
+                    android:background="#000000"
+                    app:layout_constraintStart_toStartOf="@+id/tv_addSalonInfo"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_addSalonInfo" />
+
+                <TextView
+                    android:id="@+id/tv_addSalonInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Add Salon Info"
+                    android:textColor="#000000"
+                    android:textSize="16dp"
+                    android:textStyle="normal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cv_verPass" />-->
 
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </LinearLayout>
 
 
     </ScrollView>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

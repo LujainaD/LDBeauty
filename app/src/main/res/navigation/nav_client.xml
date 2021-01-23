@@ -8,7 +8,6 @@
     <fragment
         android:id="@+id/clientFeedbackFragment"
         android:name="com.lujaina.ldbeauty.Client.ClientFeedbackFragment"
-        tools:layout="@layout/fragment_client_feedback"
         android:label="fragment_client_feedback" />
     <fragment
         android:id="@+id/editClientProfileFragment"

@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#FFF"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:background="#FFF">
+
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="wrap_content"
@@ -51,15 +51,15 @@
 
 
     <de.hdodenhof.circleimageview.CircleImageView
-    android:id="@+id/civ_profile"
-    android:layout_width="104dp"
-    android:layout_height="104dp"
-    android:layout_marginTop="10dp"
-    android:src="@drawable/profile"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.498"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+        android:id="@+id/civ_profile"
+        android:layout_width="104dp"
+        android:layout_height="104dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
 
     <TextView
@@ -104,11 +104,11 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="@color/colorAccent"
-        android:textColor="@color/white"
         android:paddingStart="45dp"
         android:paddingTop="15dp"
         android:text="Salon's Gallery"
         android:textAlignment="textStart"
+        android:textColor="@color/white"
         android:textSize="16sp"
 
         app:layout_constraintEnd_toEndOf="parent"
@@ -138,16 +138,15 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="@color/colorAccent"
-        android:textColor="@color/white"
         android:paddingStart="45dp"
         android:paddingTop="15dp"
         android:text="Salon's Offers"
         android:textAlignment="textStart"
+        android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_services" />
-
 
 
     <ImageView
@@ -170,6 +169,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_AboutPage"
         app:srcCompat="@drawable/ic_arrow" />
+
     <ImageView
         android:id="@+id/iv_offer"
         android:layout_width="wrap_content"
@@ -254,12 +254,10 @@
         app:srcCompat="@drawable/info" />
 
 
-
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:src="@drawable/halfrose"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

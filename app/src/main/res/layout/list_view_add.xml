@@ -1,41 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@android:color/transparent"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
 
     <RelativeLayout
         android:id="@+id/view_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="10dp"
+
         android:layout_marginBottom="10dp"
         android:background="@drawable/inset_rectangle_bg"
+        android:backgroundTint="#F00000">
 
-        android:backgroundTint="#F00000"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
         <androidx.cardview.widget.CardView
-            android:background="#F00000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#F00000"
 
-            app:cardCornerRadius="20dp"
-            >
+            app:cardCornerRadius="20dp">
 
         </androidx.cardview.widget.CardView>
 
-<ImageView
-    android:layout_width="30dp"
-    android:layout_height="30dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
-    android:layout_centerVertical="true"
-    android:layout_alignParentEnd="true"
-    android:layout_marginEnd="10dp"
-    android:src="@drawable/outline_delete">
-</ImageView>
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/outline_delete"></ImageView>
 
     </RelativeLayout>
 
@@ -43,17 +41,18 @@
         android:id="@+id/view_forground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="10dp"
+            app:cardCornerRadius="14dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:cardCornerRadius="14dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -81,16 +80,16 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingBottom="10dp"
                     app:etv_animationTime="20"
                     app:etv_expandLines="3"
                     app:etv_showLine="true"
-                    android:paddingBottom="10dp"
+                    app:etv_textContentColor="#8A000000"
                     app:etv_textContentSize="14sp"
                     app:etv_textExpand="Show more"
                     app:etv_textShrink="Show less"
-                    app:etv_textContentColor="#8A000000"
                     app:etv_textStateColor="@color/colorPrimaryDark"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -99,18 +98,18 @@
                     app:layout_constraintTop_toBottomOf="@+id/title_tv"
                     app:layout_constraintVertical_bias="0.21" />
 
-               <!-- <TextView
-                    android:id="@+id/tv_expandable"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="show more"
-                    android:textColor="@color/colorPrimaryDark"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/body_tv"
-                    app:layout_constraintTop_toBottomOf="@+id/body_tv"
-                    />-->
+                <!-- <TextView
+                     android:id="@+id/tv_expandable"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginBottom="10dp"
+                     android:layout_marginTop="10dp"
+                     android:text="show more"
+                     android:textColor="@color/colorPrimaryDark"
+                     app:layout_constraintBottom_toBottomOf="parent"
+                     app:layout_constraintStart_toStartOf="@+id/body_tv"
+                     app:layout_constraintTop_toBottomOf="@+id/body_tv"
+                     />-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

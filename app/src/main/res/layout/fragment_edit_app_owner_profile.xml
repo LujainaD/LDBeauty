@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout17"
-    android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/imageView4"
@@ -25,6 +25,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@color/white"
         tools:ignore="MissingConstraints" />
+
     <TextView
         android:id="@+id/tv_toolbar"
         android:layout_width="wrap_content"
@@ -55,8 +56,8 @@
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:layout_marginTop="10dp"
-        android:src="@drawable/logo"
         android:scaleType="center"
+        android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
@@ -102,10 +103,10 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginEnd="17dp"
+                android:background="@android:color/transparent"
                 android:ems="10"
                 android:text="Name"
                 android:textColor="@color/pink_text"
-                android:background="@android:color/transparent"
                 app:layout_constraintBottom_toBottomOf="@+id/email"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.184"
@@ -118,11 +119,11 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginEnd="17dp"
+                android:background="@android:color/transparent"
                 android:ems="10"
                 android:inputType="phone"
                 android:text="Name"
                 android:textColor="@color/pink_text"
-                android:background="@android:color/transparent"
                 app:layout_constraintBottom_toBottomOf="@+id/number"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/et_email"
@@ -210,10 +211,10 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="70dp"
                 android:layout_marginEnd="17dp"
+                android:background="@android:color/transparent"
                 android:ems="10"
                 android:text="Name"
                 android:textColor="@color/pink_text"
-                android:background="@android:color/transparent"
                 app:layout_constraintBottom_toBottomOf="@+id/Name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/Name"
@@ -231,6 +232,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/view3"
                 app:layout_constraintStart_toStartOf="@+id/et_phone"
                 app:layout_constraintTop_toTopOf="@+id/password" />
+
             <View
                 android:id="@+id/vi"
                 style="@style/Divider.Horizontal"

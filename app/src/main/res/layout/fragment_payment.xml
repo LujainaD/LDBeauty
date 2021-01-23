@@ -52,50 +52,5 @@
         app:layout_constraintEnd_toEndOf="@+id/btn_paypal"
         app:layout_constraintStart_toStartOf="@+id/btn_paypal"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
-    <!-- <RadioGroup
-         android:id="@+id/radioGroup"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginTop="15dp"
-         android:orientation="horizontal"
-         app:layout_constraintStart_toStartOf="@+id/textView13"
-         app:layout_constraintTop_toBottomOf="@+id/textView13">
-
-
-         <RadioButton
-             android:id="@+id/rb_visa"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:drawableRight="@drawable/visa"
-             app:layout_constraintStart_toStartOf="parent"
-             app:layout_constraintTop_toTopOf="parent" />
-
-         <RadioButton
-             android:id="@+id/rb_paypal"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:drawableRight="@drawable/paypal"
-             app:layout_constraintBottom_toBottomOf="parent"
-             app:layout_constraintStart_toEndOf="@+id/rb_visa"
-             app:layout_constraintTop_toTopOf="parent" />
-
-
-     </RadioGroup>
-
-     <FrameLayout
-         android:id="@+id/fl_payment"
-         android:layout_width="0dp"
-         android:layout_height="0dp"
-         android:layout_marginStart="1dp"
-         android:layout_marginTop="1dp"
-         android:layout_marginEnd="1dp"
-         android:background="@color/pink_text"
-         app:layout_constraintBottom_toBottomOf="parent"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toBottomOf="@+id/radioGroup">
-
-     </FrameLayout>-->
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

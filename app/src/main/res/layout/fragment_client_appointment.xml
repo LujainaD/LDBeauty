@@ -22,8 +22,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@color/white"
-        tools:ignore="MissingConstraints" />
+        app:titleTextColor="@color/white" />
 
     <TextView
         android:id="@+id/tv_toolbar"
@@ -57,18 +56,6 @@
         android:src="@drawable/halfrose"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-<!--
-    <View
-        android:id="@+id/view3"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/inset_rectangle_bg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />-->
-
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv"
