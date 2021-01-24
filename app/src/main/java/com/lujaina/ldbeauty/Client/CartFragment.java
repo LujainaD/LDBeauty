@@ -1,7 +1,6 @@
 package com.lujaina.ldbeauty.Client;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -80,7 +79,7 @@ public class CartFragment extends Fragment {
         navController = navHostFragment.getNavController();
 
         BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
-        if(navBar!= null){
+        if (navBar != null) {
             navBar.setVisibility(View.GONE);
 
         }
@@ -121,45 +120,50 @@ public class CartFragment extends Fragment {
             }
         });
 
-            pay.setOnClickListener(new View.OnClickListener() {
-                @SuppressLint("ResourceAsColor")
-                @Override
-                public void onClick(View v) {
-                    if (tv_total.getText().toString().equals("0")) {
+        pay.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View v) {
+                if (tv_total.getText().toString().equals("0")) {
 
-                        TextView title = new TextView(mContext);
-                        title.setText("Cart Warning");
-                        title.setBackgroundColor(Color.parseColor("#DA6EA4"));
-                       // title.setPadding(10, 15, 15, 10);
-                        title.setGravity(Gravity.CENTER);
-                        title.setTextColor(Color.WHITE);
-                        title.setTextSize(22);
+                    TextView title = new TextView(mContext);
+                    title.setText("Cart Warning");
+                    title.setBackgroundColor(Color.parseColor("#DA6EA4"));
+                    // title.setPadding(10, 15, 15, 10);
+                    title.setGravity(Gravity.CENTER);
+                    title.setTextColor(Color.WHITE);
+                    title.setTextSize(22);
 
-                        AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
-                        alertDialog.setCustomTitle(title);
-                        alertDialog.setMessage("Your cart is empty");
-                        alertDialog.show();
-
-                    }else {
-                        /*if (mMediatorInterface != null) {
-                            PaymentFragment paymentFragment = new PaymentFragment();
-                            paymentFragment.setTotalPrice(tv_total.getText().toString(), serviceArray, ownerId);
-                            mMediatorInterface.changeFragmentTo(paymentFragment, PayPalFragment.class.getSimpleName());
-                        }*/
-
+                    AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
+                    alertDialog.setCustomTitle(title);
+                    alertDialog.setMessage("Your cart is empty");
+                    alertDialog.show();
+                } else {
+                    if (isAllSlotsAreAvailable()) {
                         Intent intent = new Intent(getContext(), PayActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("total", tv_total.getText().toString());
-                        bundle.putString("ownerId",ownerId);
+                        bundle.putString("ownerId", ownerId);
                         intent.putExtras(bundle);
                         startActivity(intent);
                         getActivity().finish();
-                        // navController.navigate(R.id.action_selectedSalonFragment2_to_categoriesFragment, bundle);
+                    } else {
+                        Toast.makeText(getContext(), "Remodnaflkdnlkasnflkas", Toast.LENGTH_LONG).show();
                     }
                 }
-            });
+            }
+        });
 
         return parentView;
+    }
+
+    private boolean isAllSlotsAreAvailable() {
+        for (ClientsAppointmentModel model : serviceArray) {
+            if (model.getSoldStatus()!=null && model.getSoldStatus().equals("Sold out")) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -176,10 +180,10 @@ public class CartFragment extends Fragment {
         // Read from the mDatabase
 
         progressDialog.show();
-            emptyservice.setVisibility(View.VISIBLE);
-            service_rv.setVisibility(View.GONE);
+        emptyservice.setVisibility(View.VISIBLE);
+        service_rv.setVisibility(View.GONE);
 
-            myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 serviceArray.clear();
@@ -190,17 +194,21 @@ public class CartFragment extends Fragment {
                     int price = Integer.parseInt(appointment.getPrice());
                     sum += price;
                     String sumOfService = String.valueOf(sum);
-                     ownerId = appointment.getOwnerId();
+                    ownerId = appointment.getOwnerId();
 
-                        service_rv.setVisibility(View.VISIBLE);
-                        emptyservice.setVisibility(View.GONE);
+                    service_rv.setVisibility(View.VISIBLE);
+                    emptyservice.setVisibility(View.GONE);
 
                     tv_total.setText("Total: " + sumOfService + " R.O");
 
 
                 }
                 progressDialog.dismiss();
-                serviceAdapter.update(serviceArray);
+                if (ownerId != null) {
+                    checkServiceAlreadybooked();
+
+                }
+                //serviceAdapter.update(serviceArray);
 
             }
 
@@ -210,6 +218,75 @@ public class CartFragment extends Fragment {
                 progressDialog.dismiss();
             }
         });
+    }
+
+    private void checkServiceAlreadybooked() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(ownerId).child(Constants.History_Order);
+
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
+                    ClientsAppointmentModel appointment = d.getValue(ClientsAppointmentModel.class);
+                    ArrayList<ClientsAppointmentModel> models = new ArrayList<>();
+                    models.add(appointment);
+                    // serviceArray.add(appointment);
+
+                    String time = d.child("appointmentTime").getValue(String.class);
+                    String date = d.child("appointmentDate").getValue(String.class);
+
+                    for (ClientsAppointmentModel cartArray : serviceArray) {
+                        for (ClientsAppointmentModel model : models) {
+                            if (cartArray.getOfferId() != null) {
+                                if (model.getOfferId() != null) {
+                                    if (model.getOfferId().equals(cartArray.getOfferId())) {
+                                        if (cartArray.getAppointmentDate().equals(date)) {
+                                            if (cartArray.getAppointmentTime().equals(time)) {
+                                                int positon = serviceArray.indexOf(cartArray);
+                                                cartArray.setSoldStatus("Sold out");
+                                                serviceArray.set(positon, cartArray);
+                                            }
+                                        }
+                                    }
+                                }
+
+                            } else if (cartArray.getServiceId() != null) {
+                                if (model.getServiceId() != null) {
+                                    if (model.getServiceId().equals(cartArray.getServiceId())) {
+                                        if (cartArray.getAppointmentDate().equals(date)) {
+                                            if (cartArray.getAppointmentTime().equals(time)) {
+                                                int positon = serviceArray.indexOf(cartArray);
+                                                cartArray.setSoldStatus("Sold out");
+                                                serviceArray.set(positon, cartArray);
+                                            }
+                                        }
+                                    }
+                                }
+
+
+                            } else {
+
+                            }
+                        }
+                    }
+                    progressDialog.dismiss();
+                    serviceAdapter.update(serviceArray);
+                }
+
+
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                progressDialog.dismiss();
+            }
+        });
+
+
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {

@@ -56,16 +56,8 @@ public class SignUpFragment extends Fragment {
        String userRole = getActivity().getIntent().getExtras().getString("userType");
 
        Toolbar toolbar = parentView.findViewById(R.id.toolbar);
-        ImageButton back = parentView.findViewById(R.id.ib_back);
         TabLayout tabs = parentView.findViewById(R.id.tab);
         ViewPager viewPager = parentView.findViewById(R.id.viewPager);
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navController.popBackStack();
-            }
-        });
 
         SignUpViewAdapter adapter = new SignUpViewAdapter(getChildFragmentManager());
         viewPager.setAdapter(adapter);

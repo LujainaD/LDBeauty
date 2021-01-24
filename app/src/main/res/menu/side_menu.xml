@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/log_out_menu"
-        android:title="Log Out"
-
-        />
+        android:title="@string/log_out"
+        app:showAsAction="never"/>
     <item
         android:id="@+id/not_login"
-        android:title="Log in/Sign up"
-        />
+        android:title="@string/log_in_sign_up"
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/my_cart"
-        android:title="My Cart"
-        />
+        android:title="@string/my_cart"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/arabic"
+        android:title="عربي"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/english"
+        android:title="EN"
+        app:showAsAction="ifRoom"/>
 </menu>
+

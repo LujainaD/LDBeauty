@@ -7,11 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".Client.ClientProfileFragment"
     >
+
+
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/upcorener"
+        android:layoutDirection="ltr"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,129 +53,175 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
-
-    <TextView
-        android:id="@+id/tv_editProfile"
-        android:layout_width="0dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_profile"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:background="#FFFFFF"
-        android:drawablePadding="5dp"
-        android:paddingStart="45dp"
-        android:paddingTop="15dp"
-        android:text="Edit My Profile"
-        android:textAlignment="textStart"
-        android:textColor="@color/pink_text"
-        android:textSize="16sp"
+        android:layout_marginTop="30dp"
+        app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/civ_profile" />
+        app:layout_constraintTop_toBottomOf="@+id/civ_profile">
 
-    <TextView
-        android:id="@+id/tv_appointment"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:background="#FFFFFF"
-        android:drawablePadding="5dp"
-        android:paddingStart="45dp"
-        android:paddingTop="15dp"
-        android:text="My Appointments"
-        android:textAlignment="textStart"
-        android:textColor="@color/pink_text"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_feedback" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_feedback"
-        android:layout_width="0dp"
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/outline_person" />
+
+            <TextView
+                android:id="@+id/tv_profile"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="3dp"
+                android:padding="10dp"
+                android:text="@string/edit_my_profile"
+                android:textColor="@color/pink_text"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/iv2"
+                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintTop_toTopOf="@+id/imageView2" />
+
+            <ImageView
+                android:id="@+id/iv2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_arrow"
+                tools:layout_editor_absoluteY="0dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_feedback"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
+        app:cardElevation="0dp"
         android:background="@color/colorAccent"
-        android:drawablePadding="5dp"
-        android:paddingStart="45dp"
-        android:paddingTop="15dp"
-        android:text="My Feedback"
-        android:textAlignment="textStart"
-        android:textColor="@color/white"
-        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_editProfile" />
+        app:layout_constraintTop_toBottomOf="@+id/cv_profile">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:background="@color/colorAccent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageView23"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                app:tint="@color/white"
+
+                android:background="@android:color/transparent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/outline_feedback"
+                />
+
+            <TextView
+                android:id="@+id/tv_feedback"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="4dp"
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:text="@string/my_feedback"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/iv23"
+                app:layout_constraintStart_toEndOf="@+id/imageView23"
+                app:layout_constraintTop_toTopOf="@+id/imageView23" />
+
+            <ImageView
+                android:id="@+id/iv23"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                app:tint="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_arrow"
+                tools:layout_editor_absoluteY="0dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_appointment"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cv_feedback">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageView22"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/outline_event"
+                app:tint="?attr/colorControlNormal"
+                />
+
+            <TextView
+                android:id="@+id/tv_appointment"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="3dp"
+                android:padding="10dp"
+                android:text="@string/my_appointments"
+                android:textColor="@color/pink_text"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/iv22"
+                app:layout_constraintStart_toEndOf="@+id/imageView22"
+                app:layout_constraintTop_toTopOf="@+id/imageView22" />
+
+            <ImageView
+                android:id="@+id/iv22"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_arrow"
+                tools:layout_editor_absoluteY="0dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/halfrose"
+        android:layoutDirection="ltr"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="14dp"
-        app:layout_constraintStart_toStartOf="@+id/tv_editProfile"
-        app:layout_constraintTop_toTopOf="@+id/tv_editProfile"
-        app:srcCompat="@drawable/outline_person" />
-
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="14dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_appointment"
-        app:srcCompat="@drawable/outline_event"
-        app:tint="?attr/colorControlNormal" />
-
-    <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="14dp"
-        app:layout_constraintStart_toStartOf="@+id/tv_feedback"
-        app:layout_constraintTop_toTopOf="@+id/tv_feedback"
-        app:srcCompat="@drawable/outline_feedback"
-        app:tint="@color/white" />
-
-    <ImageView
-        android:id="@+id/imageView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/tv_editProfile"
-        app:layout_constraintTop_toTopOf="@+id/tv_editProfile"
-        app:srcCompat="@drawable/ic_arrow" />
-
-    <ImageView
-        android:id="@+id/imageView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_editProfile"
-        app:srcCompat="@drawable/ic_arrow"
-        app:tint="#FFFFFF" />
-
-    <ImageView
-        android:id="@+id/imageView11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_appointment"
-        app:srcCompat="@drawable/ic_arrow" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

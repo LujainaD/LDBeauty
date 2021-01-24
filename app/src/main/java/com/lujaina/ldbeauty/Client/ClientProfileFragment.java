@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -27,15 +28,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Constants;
-import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
-import com.lujaina.ldbeauty.LoginChoicesFragment;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
-import com.lujaina.ldbeauty.User.RatingFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.lujaina.ldbeauty.SP.SPProfileFragment.isValidContextForGlide;
 
 
 public class ClientProfileFragment extends Fragment {
@@ -80,9 +76,9 @@ public class ClientProfileFragment extends Fragment {
         myRef = FirebaseDatabase.getInstance().getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid());
 
         final TextView userName = parentView.findViewById(R.id.tv_title);
-        TextView editProfile = parentView.findViewById(R.id.tv_editProfile);
-        TextView appointment = parentView.findViewById(R.id.tv_appointment);
-        TextView feedback = parentView.findViewById(R.id.tv_feedback);
+        CardView editProfile = parentView.findViewById(R.id.cv_profile);
+        CardView appointment = parentView.findViewById(R.id.cv_appointment);
+        CardView feedback = parentView.findViewById(R.id.cv_feedback);
         final CircleImageView profileImag = parentView.findViewById(R.id.civ_profile);
 
         editProfile.setOnClickListener(new View.OnClickListener() {

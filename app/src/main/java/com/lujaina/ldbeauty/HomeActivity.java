@@ -18,8 +18,10 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -56,6 +58,9 @@ import com.lujaina.ldbeauty.SP.SPProfileFragment;
 import com.lujaina.ldbeauty.User.AboutAppFragment;
 import com.lujaina.ldbeauty.User.SalonsHomeFragment;
 import com.lujaina.ldbeauty.User.SelectedSalonFragment;
+
+import java.text.Bidi;
+import java.util.Locale;
 
 import static androidx.navigation.ui.NavigationUI.setupActionBarWithNavController;
 
@@ -239,7 +244,6 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         FirebaseUser user = mAuth.getCurrentUser();
@@ -329,12 +333,65 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
                 break;
 
             }
+            
+            case R.id.arabic:{
+                changeToArabicLanguage();
+            }
+            case R.id.english:{
+               changeToEnglishLanguage();
+            }
 
         }
 
         return NavigationUI.onNavDestinationSelected(item, navController)
                 || super.onOptionsItemSelected(item);
     }
+
+    private void changeToEnglishLanguage() {
+
+        Configuration configuration = getResources().getConfiguration();
+        configuration.setLayoutDirection(new Locale("en"));
+        getResources().updateConfiguration(configuration, getResources().getDisplayMetrics());
+
+        Intent i = getIntent();
+        startActivity(i);
+        finish();
+    }
+
+
+    private void changeToArabicLanguage() {
+
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                String app_locale = "ar";
+                Locale locale = new Locale(app_locale);
+                Locale.setDefault(locale);
+
+                //Configuration to query the current layout direction.
+                Configuration config = new Configuration();
+                config.locale = locale;
+                getResources().updateConfiguration(config,
+                        getResources().getDisplayMetrics());
+                Bidi bidi = new Bidi(app_locale,
+                        Bidi.DIRECTION_DEFAULT_RIGHT_TO_LEFT);
+                bidi.isRightToLeft();
+                YourGlobalClass.updateLanguage(getApplicationContext(), "ar");
+
+                //Refreshing current fragment
+
+                Intent i = getIntent();
+                startActivity(i);
+                finish();
+                return null;
+            }
+
+        }.execute();
+    }
+
+
+
 
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because

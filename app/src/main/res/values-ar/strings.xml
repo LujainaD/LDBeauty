@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="name">الإسم</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="phone_number">رقم الهاتف</string>
+    <string name="password">كلمة السر</string>
+    <string name="change_my_picture">تغيير صورة الملف الشخصي</string>
+    <string name="edit_my_profile">تعدييل الملف الشخصي</string>
+    <string name="save">حفظ</string>
+    <string name="registration_date">تاريخ التسجيل:</string>
+    <string name="last_update">تاريخ اخر تحديث:</string>
+    <string name="my_feedback">تعليقاتي</string>
+    <string name="my_appointments">مواعيدي</string>
+    <string name="nothing_added_yet">لم يتم الاضافه بعد</string>
+    <string name="no_appointment_yet">لاتوجد مواعيد</string>
+    <string name="show_more">المزيد</string>
+    <string name="show_less">اظهار اقل</string>
+    <string name="log_out">تسجيل الخروج</string>
+    <string name="log_in_sign_up">تسجيل الدخول</string>
+    <string name="my_cart">السله</string>
+    <string name="home">الرئيسيه</string>
+    <string name="my_profile">ملفي</string>
+    <string name="about_app">التطبيق</string>
+</resources>

@@ -27,6 +27,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
@@ -67,7 +68,8 @@ public class SalonsHomeFragment extends Fragment {
     private HomeAdapter mAdapter;
     ArrayList<SPRegistrationModel> salonNamesArray;
     NavController navController;
-
+    View parentView;
+    EditText ti_search;
     public SalonsHomeFragment() {
         // Required empty public constructor
     }
@@ -87,7 +89,8 @@ public class SalonsHomeFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View parentView = inflater.inflate(R.layout.fragment_salons_home, container, false);
+         parentView = inflater.inflate(R.layout.fragment_salons_home, container, false);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
         navBar.setVisibility(View.VISIBLE);
@@ -101,7 +104,8 @@ public class SalonsHomeFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance();
         myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner);
 
-        EditText ti_search = parentView.findViewById(R.id.tv_search);
+         ti_search = parentView.findViewById(R.id.tv_search);
+         ti_search.clearFocus();
         RecyclerView recyclerView = parentView.findViewById(R.id.rv_salons);
         salonNamesArray = new ArrayList<>();
         mAdapter = new HomeAdapter(mContext);
@@ -215,6 +219,5 @@ public class SalonsHomeFragment extends Fragment {
             }
         });
     }
-
 
 }

@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -104,6 +105,8 @@ public class ClientSignUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_client_sign_up, container, false);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         NavHostFragment navHostFragment =
                 (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
@@ -119,7 +122,8 @@ public class ClientSignUpFragment extends Fragment {
         final EditText userPass = parentView.findViewById(R.id.ti_password);
         final EditText userVerify = parentView.findViewById(R.id.ti_verify);
         final EditText userPhone = parentView.findViewById(R.id.ti_phone);
-      
+
+
         Button signUp = parentView.findViewById(R.id.btn_signUp);
         TextView login = parentView.findViewById(R.id.tv_login);
 

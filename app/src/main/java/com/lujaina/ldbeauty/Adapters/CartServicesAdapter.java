@@ -85,7 +85,7 @@ public class CartServicesAdapter extends RecyclerView.Adapter<CartServicesAdapte
         }
 
 
-
+        holder.soldStatus.setText(clientAppointment.getSoldStatus());
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +114,8 @@ public class CartServicesAdapter extends RecyclerView.Adapter<CartServicesAdapte
         TextView specialist;
         TextView date;
         TextView time;
+        TextView soldStatus;
+
         CardView cardView;
         ImageView offerImg;
         ImageView iconSpecialist;
@@ -129,7 +131,7 @@ public class CartServicesAdapter extends RecyclerView.Adapter<CartServicesAdapte
             time         = itemView.findViewById(R.id.tv_time);
             offerImg     = itemView.findViewById(R.id.iv_offer);
             iconSpecialist     = itemView.findViewById(R.id.imageView22);
-
+            soldStatus = itemView.findViewById(R.id.soldStatus);
             cardView = itemView.findViewById(R.id.card);
 
         }
