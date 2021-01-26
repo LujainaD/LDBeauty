@@ -127,67 +127,6 @@ public class ClientSignUpFragment extends Fragment {
         Button signUp = parentView.findViewById(R.id.btn_signUp);
         TextView login = parentView.findViewById(R.id.tv_login);
 
-        userName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    userName.setHint("");
-                }else{
-                    userName.setHint(R.string.username);
-                }
-
-            }
-        });
-        userEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    userEmail.setHint("");
-                }else{
-                    userEmail.setHint(R.string.userEmail);
-                }
-
-            }
-        });
-        userPass.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    userPass.setHint("");
-                }else{
-                    userPass.setHint(R.string.password);
-                }
-
-            }
-        });
-        userVerify.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    userVerify.setHint("");
-                }else{
-                    userVerify.setHint(R.string.verify);
-                }
-
-            }
-        });
-        userPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    userPhone.setHint("");
-                }else{
-                    userPhone.setHint(R.string.userPhone);
-                }
-
-            }
-        });
-
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

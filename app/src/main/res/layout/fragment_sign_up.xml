@@ -34,7 +34,7 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="16dp"
         android:gravity="start"
-        android:text="Sign up"
+        android:text="@string/sign_up2"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"

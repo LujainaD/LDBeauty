@@ -95,7 +95,6 @@ public class OrderFragment extends Fragment  {
       btn_dismiss.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-              saveOrderInHistory();
               Intent i = new Intent(getContext(), HomeActivity.class);
               startActivity(i);
               getActivity().finish();
@@ -108,15 +107,14 @@ public class OrderFragment extends Fragment  {
     private void saveOrderInHistory() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference clientOrderRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.History_Order);
-        DatabaseReference salonOrderRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(ownerId).child(Constants.History_Order);
-
-        DatabaseReference clientOrderRefService = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.History_Order_service);
-        DatabaseReference salonOrderRefService = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(ownerId).child(Constants.History_Order_service);
 
         for(ClientsAppointmentModel model : serviceArray){
 
             String id = clientOrderRef.push().getKey();
             model.setAppointmentID(id);
+
+            DatabaseReference salonOrderRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(model.getOwnerId()).child(Constants.History_Order);
+
             /*if(model.getServiceType().equals("Service")){
                 clientOrderRefService.child(id).setValue(model);
                 salonOrderRefService.child(id).setValue(model);
@@ -124,14 +122,15 @@ public class OrderFragment extends Fragment  {
                 clientOrderRef.child(id).setValue(model);
                 salonOrderRef.child(id).setValue(model);
            // }
+            DatabaseReference cartRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Client_Cart);
 
-
+            cartRef.setValue(null);
+            //readSalonOwnerToken(ownerId);
+            //readClientToken(model.getOwnerId());
+            readSalonOwnerToken(model.getOwnerId());
         }
-        DatabaseReference cartRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Client_Cart);
 
-        cartRef.setValue(null);
-        //readSalonOwnerToken(ownerId);
-        readClientToken(ownerId);
+
     }
 
     private String currentDate() {
@@ -154,7 +153,7 @@ public class OrderFragment extends Fragment  {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String tokenId = snapshot.child("tokenId").getValue(String.class);
-                readSalonOwnerToken(ownerId,tokenId);
+                //readSalonOwnerToken(ownerId,tokenId);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -163,16 +162,16 @@ public class OrderFragment extends Fragment  {
         });
     }
 
-    private void readSalonOwnerToken(String ownerId, final String clientToken) {
+    private void readSalonOwnerToken(String ownerId/*, final String clientToken*/) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference(Constants.Users).child("UsersToken").child(ownerId);
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String tokenId = snapshot.child("tokenId").getValue(String.class);
+                String salonOwnerToken = snapshot.child("tokenId").getValue(String.class);
                 try {
-                    sendTokenToServer(tokenId, clientToken);
+                    sendTokenToServer(salonOwnerToken/*, clientToken*/);
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
@@ -184,42 +183,14 @@ public class OrderFragment extends Fragment  {
         });
     }
 
-    private void sendTokenToServer(final String salonOwnerToken, String clientToken) throws IOException, JSONException {
-     /*   String firebaseURL = "https://fcm.googleapis.com/fcm/send";
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, firebaseURL, new
-                Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject obj = new JSONObject(response);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("token", salonOwnerToken);
-                return params;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        requestQueue.add(stringRequest);*/
+    private void sendTokenToServer(final String salonOwnerToken/*, String clientToken*/) throws IOException, JSONException {
 
         String server_key = "AAAA2PC7CGg:APA91bG7S-cAxwrBJRingUxNiveAooaNiA09O7HRCMQRf-1AGEh6A-GCPgr7j_4nSbkmUdVAXXnCuEqlnjtSh5AM2AOklqRxVMh3rG0lcHQviaRNBF7zWr-91CAWuuXOdgR92nZPEzLM";
 
         final HttpURLConnection httpcon = (HttpURLConnection) ((new URL("https://fcm.googleapis.com/fcm/send").openConnection()));
         httpcon.setDoOutput(true);
         httpcon.setRequestProperty("Content-Type", "application/json");
-        httpcon.setRequestProperty("Authorization", server_key);
+        httpcon.setRequestProperty("Authorization", "key="+server_key);
         httpcon.setRequestMethod("POST");
 
         //httpcon.connect();
@@ -230,12 +201,12 @@ public class OrderFragment extends Fragment  {
         notification.put("title", "LD Beauty");
 
         JSONObject data = new JSONObject();
-        data.put("senderToken", clientToken);
+        data.put("senderToken", salonOwnerToken);
         data.put("messageId", "messageId");
 
         root.put("notification", notification);
         root.put("data", data);
-        root.put("to", clientToken);
+        root.put("to", salonOwnerToken);
 
         new Thread(new Runnable(){
             @Override
@@ -243,20 +214,20 @@ public class OrderFragment extends Fragment  {
                 try {
                     // Your implementation
                     httpcon.connect();
-                    String postData = root.toString();
-
+                    byte[] postData = (root.toString()).getBytes();
+/*
                     byte[] outputBytes = ("{\"to\":" + salonOwnerToken + "," +
                             "\"data\":{\"some\":\"thing\"}," +
                             "\"notification\":{\"LD Beauty\":\"Help\",\"a new Client booked an appointment\":\"me\",\"icon\":\"me\",\"sound\":\"default\",\"badge\":\"18\"}," +
                             "\"priority\":\"high\"," +
-                            "\"content_available\":true}").getBytes("UTF-8");
+                            "\"content_available\":true}").getBytes("UTF-8");*/
                     OutputStream os = httpcon.getOutputStream();
-                    os.write(Integer.parseInt(postData));
+                    os.write(postData);
                     os.close();
                     InputStream input = httpcon.getInputStream();
                     try (BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
                         for (String line; (line = reader.readLine()) != null;) {
-                            System.out.println(line);
+                           // System.out.println(line);
                         }
                     }
                 }
@@ -266,142 +237,8 @@ public class OrderFragment extends Fragment  {
             }
         }).start();
 
-/*
-        String server_key = "AAAA2PC7CGg:APA91bG7S-cAxwrBJRingUxNiveAooaNiA09O7HRCMQRf-1AGEh6A-GCPgr7j_4nSbkmUdVAXXnCuEqlnjtSh5AM2AOklqRxVMh3rG0lcHQviaRNBF7zWr-91CAWuuXOdgR92nZPEzLM";
-
-        try{
-// Create URL instance.
-            URL url = new URL("https://fcm.googleapis.com/fcm/send");
-// create connection.
-            HttpURLConnection conn;
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setUseCaches(false);
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-//set method as POST or GET
-            conn.setRequestMethod("POST");
-//pass FCM server key
-            conn.setRequestProperty("Authorization","key="+server_key);
-//Specify Message Format
-            conn.setRequestProperty("Content-Type","application/json");
-//Create JSON Object & pass value
-            JSONObject infoJson = new JSONObject();
-
-            infoJson.put("title","Alankit");
-            infoJson.put("body", "a new clinet booke an appointment");
-
-            JSONObject json = new JSONObject();
-            json.put("to",salonOwnerToken.trim());
-            json.put("notification", infoJson);
-
-            System.out.println("json :" +json.toString());
-            System.out.println("infoJson :" +infoJson.toString());
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            wr.write(json.toString());
-            wr.flush();
-            int status = 0;
-            if( null != conn ){
-                status = conn.getResponseCode();
-            }
-            if( status != 0){
-
-                if( status == 200 ){
-//SUCCESS message
-                    BufferedReader reader = new BufferedReader(new
-                            InputStreamReader(conn.getInputStream()));
-                    System.out.println("Android Notification Response : " + reader.readLine());
-                }else if(status == 401){
-//client side error
-                    System.out.println("Notification Response : TokenId : " + salonOwnerToken + " Error occurred :");
-                }else if(status == 501){
-//server side error
-                    System.out.println("Notification Response : [ errorCode=ServerError ] TokenId : " + salonOwnerToken);
-                }else if( status == 503){
-//server side error
-                    System.out.println("Notification Response : FCM Service is Unavailable TokenId : " + salonOwnerToken);
-                }
-            }
-        }catch(MalformedURLException mlfexception){
-// Prototcal Error
-            System.out.println("Error occurred while sending push Notification!.." + mlfexception.getMessage());
-        }catch(Exception mlfexception){
-//URL problem
-            System.out.println("Reading URL, Error occurred while sending push Notification!.." + mlfexception.getMessage());
-        }
-*/
-
-
 
     }
-
-   /* static void send_FCM_Notification(String tokenId, String server_key, String
-
-            message){
-
-         server_key = "AAAA2PC7CGg:APA91bG7S-cAxwrBJRingUxNiveAooaNiA09O7HRCMQRf-1AGEh6A-GCPgr7j_4nSbkmUdVAXXnCuEqlnjtSh5AM2AOklqRxVMh3rG0lcHQviaRNBF7zWr-91CAWuuXOdgR92nZPEzLM";
-
-        try{
-// Create URL instance.
-            URL url = new URL("https://fcm.googleapis.com/fcm/send");
-// create connection.
-            HttpURLConnection conn;
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setUseCaches(false);
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-//set method as POST or GET
-            conn.setRequestMethod("POST");
-//pass FCM server key
-            conn.setRequestProperty("Authorization","key="+server_key);
-//Specify Message Format
-            conn.setRequestProperty("Content-Type","application/json");
-//Create JSON Object & pass value
-            JSONObject infoJson = new JSONObject();
-
-            infoJson.put("title","Alankit");
-            infoJson.put("body", message);
-
-            JSONObject json = new JSONObject();
-            json.put("to",tokenId.trim());
-            json.put("notification", infoJson);
-
-            System.out.println("json :" +json.toString());
-            System.out.println("infoJson :" +infoJson.toString());
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            wr.write(json.toString());
-            wr.flush();
-            int status = 0;
-            if( null != conn ){
-                status = conn.getResponseCode();
-            }
-            if( status != 0){
-
-                if( status == 200 ){
-//SUCCESS message
-                    BufferedReader reader = new BufferedReader(new
-                            InputStreamReader(conn.getInputStream()));
-                    System.out.println("Android Notification Response : " + reader.readLine());
-                }else if(status == 401){
-//client side error
-                    System.out.println("Notification Response : TokenId : " + tokenId + " Error occurred :");
-                }else if(status == 501){
-//server side error
-                    System.out.println("Notification Response : [ errorCode=ServerError ] TokenId : " + tokenId);
-                }else if( status == 503){
-//server side error
-                    System.out.println("Notification Response : FCM Service is Unavailable TokenId : " + tokenId);
-                }
-            }
-        }catch(MalformedURLException mlfexception){
-// Prototcal Error
-            System.out.println("Error occurred while sending push Notification!.." + mlfexception.getMessage());
-        }catch(Exception mlfexception){
-//URL problem
-            System.out.println("Reading URL, Error occurred while sending push Notification!.." + mlfexception.getMessage());
-        }
-
-    }
-*/
 
     private void readClientOrderFromFirebaseDB() {
 
@@ -417,6 +254,7 @@ public class OrderFragment extends Fragment  {
                     serviceArray.add(appointment);
                 }
                 serviceAdapter.update(serviceArray);
+                saveOrderInHistory();
 
             }
 

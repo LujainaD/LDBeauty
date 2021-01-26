@@ -6,11 +6,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -148,7 +150,17 @@ public class CartFragment extends Fragment {
                         startActivity(intent);
                         getActivity().finish();
                     } else {
-                        Toast.makeText(getContext(), "Remodnaflkdnlkasnflkas", Toast.LENGTH_LONG).show();
+                        TextView textView = new TextView(mContext);
+                        textView.setText("Sold Out Items");
+                        textView.setBackgroundColor(Color.parseColor("#DA6EA4"));
+                        // title.setPadding(10, 15, 15, 10);
+                        textView.setGravity(Gravity.CENTER);
+                        textView.setTextColor(Color.WHITE);
+                        textView.setTextSize(22);
+                        AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
+                        alertDialog.setCustomTitle(textView);
+                        alertDialog.setMessage("You need to delete sold out items");
+                        alertDialog.show();
                     }
                 }
             }
@@ -172,6 +184,12 @@ public class CartFragment extends Fragment {
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid())
                 .child(Constants.Client_Cart).child(model.getAppointmentID());
         myRef.removeValue();
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        if (Build.VERSION.SDK_INT >= 26) {
+            ft.setReorderingAllowed(false);
+        }
+        ft.detach(this).attach(this).commit();
     }
 
     private void readClientServiceAppointmentDB() {
@@ -201,16 +219,17 @@ public class CartFragment extends Fragment {
 
                     tv_total.setText("Total: " + sumOfService + " R.O");
 
+                    progressDialog.dismiss();
+                    if (appointment.getOwnerId() != null) {
+                        checkServiceAlreadybooked(appointment.getOwnerId());
 
+                    }
                 }
-                progressDialog.dismiss();
-                if (ownerId != null) {
-                    checkServiceAlreadybooked();
 
-                }
                 //serviceAdapter.update(serviceArray);
 
             }
+
 
             @Override
             public void onCancelled(DatabaseError error) {
@@ -220,9 +239,9 @@ public class CartFragment extends Fragment {
         });
     }
 
-    private void checkServiceAlreadybooked() {
+    private void checkServiceAlreadybooked(String allOwnerId) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(ownerId).child(Constants.History_Order);
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(allOwnerId).child(Constants.History_Order);
 
 
         myRef.addValueEventListener(new ValueEventListener() {
@@ -271,11 +290,11 @@ public class CartFragment extends Fragment {
                             }
                         }
                     }
-                    progressDialog.dismiss();
-                    serviceAdapter.update(serviceArray);
+
                 }
 
-
+                progressDialog.dismiss();
+                serviceAdapter.update(serviceArray);
             }
 
 

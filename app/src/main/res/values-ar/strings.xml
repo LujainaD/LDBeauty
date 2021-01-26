@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="username">اسم المستخدم</string>
     <string name="name">الإسم</string>
     <string name="email">البريد الإلكتروني</string>
     <string name="phone_number">رقم الهاتف</string>
@@ -21,4 +22,21 @@
     <string name="home">الرئيسيه</string>
     <string name="my_profile">ملفي</string>
     <string name="about_app">التطبيق</string>
+    <string name="don_t_have_an_account">ليس لديك حساب؟</string>
+    <string name="sign_up_underline"><u>التسجيل</u></string>
+    <string name="client">زبون</string>
+    <string name="salon_owner">مسوُول الصالون</string>
+    <string name="app_owner">مسوُول التطبيق</string>
+    <string name="log_in_as">التسجيل كــ:</string>
+    <string name="hello_gorgeous">أهلاً يا جميله</string>
+    <string name="user_email">البريد الاِلكتروني</string>
+    <string name="password2">كلمة السر</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="forget_password">نسيت كلمة السر؟</string>
+    <string name="verify_password">تأكيد كلمة السر</string>
+    <string name="sign_up2">التسجيل</string>
+    <string name="already_have_an_account">لديك حساب؟</string>
+    <string name="login_underline"><u>تسجيل الدخول</u></string>
+
+
 </resources>

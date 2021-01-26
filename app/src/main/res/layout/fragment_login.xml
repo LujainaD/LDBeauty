@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="cursive"
         android:text="LD"
+        android:layoutDirection="ltr"
         android:textColor="#000000"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="@+id/beauty"
@@ -29,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="108dp"
         android:fontFamily="cursive"
+        android:layoutDirection="ltr"
         android:text="Beauty"
         android:textColor="#B61F7F"
         android:textSize="30sp"
@@ -52,12 +54,12 @@
         android:layout_marginTop="11dp"
         android:fontFamily="cursive"
         android:gravity="center"
-        android:text="Hello gorgeous"
+        android:text="@string/hello_gorgeous"
         android:textSize="28sp"
         app:layout_constraintBottom_toTopOf="@+id/cv_email"
-        app:layout_constraintEnd_toEndOf="@+id/beauty"
+        app:layout_constraintEnd_toEndOf="@+id/cv_email"
         app:layout_constraintHorizontal_bias="0.476"
-        app:layout_constraintStart_toStartOf="@+id/ld"
+        app:layout_constraintStart_toStartOf="@+id/cv_email"
         app:layout_constraintTop_toBottomOf="@+id/beauty" />
 
     <androidx.cardview.widget.CardView
@@ -79,11 +81,10 @@
             android:layout_gravity="center"
             android:background="@android:color/transparent"
             android:gravity="center"
-            android:hint="User Email"
+            android:hint="@string/user_email"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:inputType="textEmailAddress"
-            android:text="Sara@hotmail.com"
             android:textColor="#000000"
             android:textColorHint="#000000"
             android:textSize="16sp" />
@@ -108,9 +109,8 @@
             android:layout_gravity="center"
             android:background="@android:color/transparent"
             android:gravity="center"
-            android:hint="Password"
+            android:hint="@string/password2"
             android:inputType="textPassword"
-            android:text="Lujaina95"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:textColor="#000000"
@@ -126,7 +126,7 @@
         android:background="@drawable/btn_rectangle"
         android:backgroundTint="#DA6EA4"
         android:gravity="center"
-        android:text="Login"
+        android:text="@string/login"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@id/cv_email"
         app:layout_constraintStart_toStartOf="@id/cv_email"
@@ -138,8 +138,7 @@
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-
+        android:layoutDirection="ltr"
         android:src="@drawable/rose1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -149,61 +148,78 @@
         android:id="@+id/imageView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:layoutDirection="ltr"
         android:src="@drawable/rose2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
-        android:id="@+id/tv_SignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:clickable="true"
-        android:gravity="center"
-        android:text="@string/sign_up_underline"
-        android:textColor="@color/pink_text"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/tv_forget"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/tv_dont"
-        app:layout_constraintTop_toTopOf="@+id/tv_dont">
-
-    </TextView>
-
-    <TextView
         android:id="@+id/tv_forget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="18dp"
+        android:layout_marginBottom="15dp"
         android:clickable="true"
         android:gravity="center"
-        android:text="Forget Password?"
+        android:text="@string/forget_password"
         android:textColor="#000000"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_dont"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.519"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintBottom_toTopOf="@+id/cardView23"
+        app:layout_constraintEnd_toEndOf="@+id/btn_login"
+        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintStart_toStartOf="@+id/btn_login">
 
     </TextView>
 
-    <TextView
-        android:id="@+id/tv_dont"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView23"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="92dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="24dp"
-        android:text="Don't have an account?"
-        android:textColor="#000000"
-        android:textSize="14sp"
+        app:cardElevation="0dp"
+        android:backgroundTint="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/tv_forget"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/tv_forget">
 
-    </TextView>
+        <LinearLayout
+            android:backgroundTint="@android:color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_dont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:text="@string/don_t_have_an_account"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/tv_forget"
+                app:layout_constraintStart_toStartOf="@+id/btn_login">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/tv_SignUp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="@string/sign_up_underline"
+                android:textColor="@color/pink_text"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="@+id/tv_forget"
+                app:layout_constraintStart_toEndOf="@+id/tv_dont"
+                app:layout_constraintTop_toTopOf="@+id/tv_dont">
+
+            </TextView>
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -59,10 +59,8 @@ public class SignUpFragment extends Fragment {
         TabLayout tabs = parentView.findViewById(R.id.tab);
         ViewPager viewPager = parentView.findViewById(R.id.viewPager);
 
-        SignUpViewAdapter adapter = new SignUpViewAdapter(getChildFragmentManager());
+        SignUpViewAdapter adapter = new SignUpViewAdapter(getChildFragmentManager(),mContext);
         viewPager.setAdapter(adapter);
-
-        Toast.makeText(mContext, userRole, Toast.LENGTH_SHORT).show();
 
         if(userRole.equals("Client")){
             viewPager.setCurrentItem(0);
