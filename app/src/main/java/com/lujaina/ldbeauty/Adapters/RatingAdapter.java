@@ -17,12 +17,15 @@ import com.lujaina.ldbeauty.Models.CommentModel;
 import com.lujaina.ldbeauty.R;
 
 import java.util.ArrayList;
+import java.util.List;
+
 @SuppressWarnings("unchecked")
 
 public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.MyViewHolder>  {
 
     private final Context mContext;
     private ArrayList<CommentModel> commentArray;
+    private RatingAdapter.onClickListener mListener;
 
     public RatingAdapter(Context context) {
         mContext = context;
@@ -69,9 +72,26 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.MyViewHold
 
             }
         });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mListener!= null){
+                    mListener.onClick(commentModel);
+                }
+
+            }
+        });
     }
 
 
+    public void setonClickListener(RatingAdapter.onClickListener listener){
+        mListener = listener;
+    }
+
+    public interface onClickListener {
+        void onClick(CommentModel commentModel);
+    }
 
     @Override
     public int getItemCount() {

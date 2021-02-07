@@ -18,13 +18,19 @@ public class SignUpViewAdapter extends FragmentPagerAdapter {
 
 
     private Context mContext ;
-    private CharSequence [] tabTitles = {mContext.getString(R.string.client),mContext.getString(R.string.salon_owner)};
 
-
+    CharSequence [] tabTitles;
     //private CharSequence [] tabTitles = {"Client ", "Salon Owner"};
     public SignUpViewAdapter(@NonNull FragmentManager fm, Context mContext) {
         super(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         this.mContext=mContext;
+
+        writeUsers();
+    }
+
+    private void writeUsers() {
+        tabTitles= new CharSequence[]{mContext.getString(R.string.client), mContext.getString(R.string.salon_owner)};
+
     }
 
 

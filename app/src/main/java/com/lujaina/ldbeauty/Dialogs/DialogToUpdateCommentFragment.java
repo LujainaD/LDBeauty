@@ -6,30 +6,29 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.lujaina.ldbeauty.Constants;
 import com.lujaina.ldbeauty.Models.GalleryModel;
 import com.lujaina.ldbeauty.R;
-import com.lujaina.ldbeauty.SP.FullScreenPictureFragment;
+import com.lujaina.ldbeauty.User.RatingFragment;
 
 
-public class DeleteDialogFragment extends DialogFragment {
+public class DialogToUpdateCommentFragment extends DialogFragment {
 
     private GalleryModel mGallery;
     private GalleryModel picture;
+    private DialogToUpdateCommentFragment.setUpdateDialog mListener;
 
-    public DeleteDialogFragment() {
+    public DialogToUpdateCommentFragment(RatingFragment ratingFragment) {
         // Required empty public constructor
+        mListener = (setUpdateDialog)ratingFragment;
     }
     @Override
     public void onStart() {
@@ -46,35 +45,42 @@ public class DeleteDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View parentView = inflater.inflate(R.layout.fragment_delete_dialog, container, false);
+        View parentView = inflater.inflate(R.layout.fragment_chose_update_dialog, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        Button delete = parentView.findViewById(R.id.btn_delete);
-        Button cancel = parentView.findViewById(R.id.btn_cancel);
+        Button update = parentView.findViewById(R.id.btn_update);
+        ImageButton dissmissDialog = parentView.findViewById(R.id.ib_cancel);
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         final FirebaseUser mFirebaseUser = mAuth.getCurrentUser();
 
-        delete.setOnClickListener(new View.OnClickListener() {
+        update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference myRef;
-                myRef = mDatabase.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Salon_Gallery).child(mGallery.getPictureId());
-                myRef.removeValue();
-                dismiss();
-
+                if(mListener != null){
+                    dismiss();
+                    mListener.onUpdateClickDialog();
+                }
 
             }
         });
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
 
-        dismiss();
-    }
-});
+        dissmissDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dismiss();
+            }
+
+
+        });
         return parentView;
+    }
+
+
+
+    public interface setUpdateDialog{
+        void onUpdateClickDialog();
     }
 
 }

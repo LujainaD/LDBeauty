@@ -2,7 +2,9 @@ package com.lujaina.ldbeauty.Models;
 
 import android.widget.RatingBar;
 
-public class CommentModel {
+import java.io.Serializable;
+
+public class CommentModel implements Serializable {
     private float numStars;
     private String comment;
     private String commentId;

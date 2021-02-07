@@ -18,7 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,16 +34,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lujaina.ldbeauty.Adapters.RatingAdapter;
 import com.lujaina.ldbeauty.Constants;
+import com.lujaina.ldbeauty.Dialogs.RatingDialogFragment;
 import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Interfaces.RecyclerItemTouchHelperListener;
 import com.lujaina.ldbeauty.Models.CommentModel;
 import com.lujaina.ldbeauty.R;
 import com.lujaina.ldbeauty.RecyclerItemTouchHelperFeedback;
+import com.lujaina.ldbeauty.User.RatingFragment;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 
-public class ClientFeedbackFragment extends Fragment implements RecyclerItemTouchHelperListener {
+public class ClientFeedbackFragment extends Fragment implements RecyclerItemTouchHelperListener, UpdateCommentFragment.setFeedback {
     FirebaseAuth mAuth;
     FirebaseUser mFirebaseUser;
     private DatabaseReference myRef;
@@ -74,6 +83,7 @@ public class ClientFeedbackFragment extends Fragment implements RecyclerItemTouc
                 (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
         BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+
         navBar.setVisibility(View.GONE);
 
         empty = parentView.findViewById(R.id.tv_empty);
@@ -96,10 +106,52 @@ public class ClientFeedbackFragment extends Fragment implements RecyclerItemTouc
                 navController.popBackStack();
             }
         });
+
+        mAdapter.setonClickListener(new RatingAdapter.onClickListener() {
+            @Override
+            public void onClick(CommentModel commentModel) {
+                UpdateCommentFragment dialogFragment = new UpdateCommentFragment(ClientFeedbackFragment.this,commentModel);
+                Bundle bundle =new Bundle();
+                bundle.putSerializable("comment",commentModel);
+                dialogFragment.setDialog(bundle);
+                if(getActivity()!=null && isAdded()){
+                    dialogFragment.show(getChildFragmentManager(), UpdateCommentFragment.class.getSimpleName());
+                }
+               // updateComment(commentModel);
+            }
+        });
+
         ItemTouchHelper.SimpleCallback item = new RecyclerItemTouchHelperFeedback(0, ItemTouchHelper.LEFT, this) ;
         new ItemTouchHelper(item).attachToRecyclerView(recyclerView);
 
         return parentView;
+    }
+
+    private void updateComment(CommentModel commentModel) {
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(mFirebaseUser.getUid()).child(Constants.Comments).child(commentModel.getCommentId());
+        CommentModel model = new CommentModel();
+        model.setComment(commentModel.getComment());
+        commentModel.setCommentId(commentModel.getCommentId());
+        model.setComment(commentModel.getComment());
+        commentModel.setNumStars(commentModel.getNumStars());
+        commentModel.setCommentDate(getCurrentDate());
+        commentModel.setOwnerId(commentModel.getOwnerId());
+        commentModel.setClientId(mFirebaseUser.getUid());
+        myRef.setValue(commentModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+            }
+        });
+
+    }
+
+    private String getCurrentDate() {
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd/MMM/yyyy");
+        return df.format(c);
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {
@@ -163,5 +215,29 @@ public class ClientFeedbackFragment extends Fragment implements RecyclerItemTouc
             salonRef.removeValue();
 
         }
+    }
+
+
+    @Override
+    public void onUpdate(CommentModel commentModel,String userComment, float rating) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Comments).child(commentModel.getCommentId());
+        DatabaseReference salonOwnerRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(commentModel.getOwnerId()).child(Constants.Comments).child(commentModel.getCommentId());
+
+        CommentModel model = new CommentModel();
+        model.setComment(userComment);
+        model.setCommentId(commentModel.getCommentId());
+        model.setNumStars(rating);
+        model.setCommentDate(getCurrentDate());
+        model.setOwnerId(commentModel.getOwnerId());
+        model.setClientId(mFirebaseUser.getUid());
+        myRef.setValue(model);
+
+        salonOwnerRef.setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(mContext, "updated comment", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

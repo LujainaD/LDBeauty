@@ -8,7 +8,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.RatingBar;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,10 +22,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.lujaina.ldbeauty.Constants;
-import com.lujaina.ldbeauty.Interfaces.MediatorInterface;
 import com.lujaina.ldbeauty.Models.CommentModel;
 import com.lujaina.ldbeauty.Models.SPRegistrationModel;
 import com.lujaina.ldbeauty.R;
+import com.lujaina.ldbeauty.User.RatingFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -42,10 +40,18 @@ public class RatingDialogFragment extends DialogFragment {
     private Context mContext;
 
     private SPRegistrationModel salonInfo;
+
     private Bundle bundle;
+    private int status = 0;
+    private setFeedback mListener;
 
     public RatingDialogFragment() {
         // Required empty public constructor
+    }
+
+    public RatingDialogFragment(RatingFragment ratingFragment, SPRegistrationModel salonInfo) {
+        mListener= (setFeedback) ratingFragment;
+        this.salonInfo= salonInfo;
     }
 
     public void onStart() {
@@ -88,8 +94,15 @@ public class RatingDialogFragment extends DialogFragment {
                 if(userComment.isEmpty()){
                     comment.setError("you need to write a comment");
                 }else {
-                        addCommentToFB(userComment, rating);
+                      //  addCommentToFB(userComment, rating);
+
+                    if(mListener!= null){
+                        dismiss();
+                        mListener.onAdd(salonInfo,userComment,rating);
+                    }
+
                 }
+
             }
         });
 
@@ -125,7 +138,7 @@ public class RatingDialogFragment extends DialogFragment {
         clientRef.child(commentId).setValue(commentModel);
         ownertRef.child(commentId).setValue(commentModel);
         showGreetingDialog();
-
+        dismiss();
 
     }
 
@@ -133,14 +146,13 @@ public class RatingDialogFragment extends DialogFragment {
         GreetingDialogFragment dialogFragment = new GreetingDialogFragment();
         dialogFragment.getDialogText(1);
         dialogFragment.show(getChildFragmentManager(), GreetingDialogFragment.class.getSimpleName());
-        final int[] status = {0};
         final Handler handler = new Handler();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while (status[0] < 200) {
+                while (status < 200) {
 
-                    status[0] += 1;
+                    status += 1;
 
                     try {
                         Thread.sleep(10);
@@ -152,8 +164,8 @@ public class RatingDialogFragment extends DialogFragment {
                         @Override
                         public void run() {
 
-                            if (status[0] == 100) {
-                                dismiss();
+                            if (status == 100) {
+                              //  dismiss();
                             }
                         }
                     });
@@ -176,5 +188,13 @@ public class RatingDialogFragment extends DialogFragment {
         this.salonInfo = salonInfo;
     }
 */
+
+
+    public void setFeedbackAndRating(setFeedback listener){
+        mListener=listener;
+    }
+    public interface setFeedback {
+        void onAdd(SPRegistrationModel salonInfo, String userComment, float rating);
+    }
 
 }

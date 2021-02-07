@@ -6,114 +6,117 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:id="@+id/view_background"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
 
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/inset_rectangle_bg"
-        android:backgroundTint="#F00000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:src="@drawable/outline_delete" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/view_forground"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card"
+        <RelativeLayout
+            android:id="@+id/view_background"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
+            android:layout_height="0dp"
+
             android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="4dp"
-            app:cardCornerRadius="14dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/inset_rectangle_bg"
+            android:backgroundTint="#F00000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/outline_delete" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/view_forground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <RatingBar
-                    android:id="@+id/ratingBar"
-                    style="@style/Widget.AppCompat.RatingBar.Indicator"
-                    android:layout_width="178dp"
-                    android:layout_height="36dp"
-                    android:layout_marginStart="13dp"
-                    android:layout_marginTop="10dp"
-                    android:isIndicator="true"
-                    android:numStars="5"
-                    android:stepSize="0.5"
-                    android:outlineAmbientShadowColor="@color/colorPrimary"
-                    android:outlineSpotShadowColor="@color/lightGray"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ru.embersoft.expandabletextview.ExpandableTextView
-                    android:id="@+id/et_comment"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginBottom="10dp"
-                    android:inputType="textMultiLine"
-                    android:text="comment"
-                    android:textColor="@color/pink_text"
-                    android:textSize="16sp"
-                    app:etv_animationTime="20"
-                    app:etv_expandLines="3"
-                    app:etv_showLine="true"
-                    app:etv_textContentColor="@color/pink_text"
-                    app:etv_textContentSize="14sp"
-                    app:etv_textExpand="Show more"
-                    app:etv_textShrink="Show less"
-                    app:etv_textStateColor="#6B000000"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/ratingBar"
-                    app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
-
-                <TextView
-                    android:id="@+id/tv_date"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
-                    android:text="TextView"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/ratingBar" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="4dp"
+                app:cardCornerRadius="14dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-    </RelativeLayout>
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        style="@style/Widget.AppCompat.RatingBar.Indicator"
+                        android:layout_width="178dp"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="13dp"
+                        android:layout_marginTop="10dp"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:outlineAmbientShadowColor="@color/colorPrimary"
+                        android:outlineSpotShadowColor="@color/lightGray"
+                        android:stepSize="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ru.embersoft.expandabletextview.ExpandableTextView
+                        android:id="@+id/et_comment"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginBottom="10dp"
+                        android:inputType="textMultiLine"
+                        android:text="comment"
+                        android:textColor="@color/pink_text"
+                        android:textSize="16sp"
+                        app:etv_animationTime="20"
+                        app:etv_expandLines="3"
+                        app:etv_showLine="true"
+                        app:etv_textContentColor="@color/pink_text"
+                        app:etv_textContentSize="14sp"
+                        app:etv_textExpand="Show more"
+                        app:etv_textShrink="Show less"
+                        app:etv_textStateColor="#6B000000"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/ratingBar"
+                        app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+
+                    <TextView
+                        android:id="@+id/tv_date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:text="TextView"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/ratingBar" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
