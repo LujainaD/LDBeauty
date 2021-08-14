@@ -61,6 +61,20 @@
     <string name="verify_password">Verify Password</string>
     <string name="sign_up2">Sign Up</string>
     <string name="already_have_an_account">Already have an account?</string>
+    <string name="Enter_User_Name">Enter User Name</string>
+    <string name="Enter_your_phone_number">Enter your phone number</string>
+    <string name="phone_error">Your phone number must contain at least 8 digit</string>
+    <string name="password_Error">weak password(must contain a digit ,uppercase characters and at least 6 characters)</string>
+    <string name="valid_email">Please enter a valid email address</string>
+    <string name="Updating">Updating ...</string>
+    <string name="Failed">Failed</string>
+    <string name="Cart_Warning">Cart Warning</string>
+    <string name="empty_cart">Your cart is empty</string>
+    <string name="booked">booked</string>
+    <string name="booked_appointment">You need to delete booked items</string>
+    <string name="Total">\Total: \</string>
+    <string name="R.O">\ R.O\</string>
+    <string name="updated_comment">updated comment</string>
     <string-array name="signup_options">
         <item>Client</item>
         <item>Salon Owner</item>

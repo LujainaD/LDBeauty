@@ -37,6 +37,19 @@
     <string name="sign_up2">التسجيل</string>
     <string name="already_have_an_account">لديك حساب؟</string>
     <string name="login_underline"><u>تسجيل الدخول</u></string>
+    <string name="Enter_User_Name">إدخل إسم المستخدم</string>
+    <string name="Enter_your_phone_number">إدخل رقم الهاتف</string>
+    <string name="phone_error">يجب ان لا يقل رقم الهاتف عن 8 ارقام</string>
+    <string name="password_Error">كلمة السر ضعيفة(يجب أن تحتوي على رقم, حروف كبيره وع الاقل 6 أحرف)</string>
+    <string name="valid_email">بريد إلكتروني غير صحيح</string>
+    <string name="Updating">تحديث البيانات ...</string>
+    <string name="Failed">حدث خطأ</string>
+    <string name="Cart_Warning">تنبيه</string>
+    <string name="empty_cart">قائمة مواعيدك فارغة</string>
+    <string name="booked">محجوز</string>
+    <string name="booked_appointment">يجب ان تحذف المواعيد المحجوزه</string>
+    <string name="Total"> ر.ع</string>
+    <string name="updated_comment">تم تحديث تعليقك</string>
 
 
 </resources>

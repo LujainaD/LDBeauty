@@ -56,6 +56,7 @@ public class DialogToUpdateCommentFragment extends DialogFragment {
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dismiss();
                 if(mListener != null){
                     dismiss();
                     mListener.onUpdateClickDialog();
@@ -82,5 +83,6 @@ public class DialogToUpdateCommentFragment extends DialogFragment {
     public interface setUpdateDialog{
         void onUpdateClickDialog();
     }
+
 
 }

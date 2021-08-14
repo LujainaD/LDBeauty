@@ -236,7 +236,7 @@ public class ClientFeedbackFragment extends Fragment implements RecyclerItemTouc
         salonOwnerRef.setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(mContext, "updated comment", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.updated_comment, Toast.LENGTH_SHORT).show();
             }
         });
     }

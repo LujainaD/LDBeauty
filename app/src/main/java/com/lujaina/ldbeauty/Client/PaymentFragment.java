@@ -142,11 +142,14 @@ public class PaymentFragment extends Fragment {
         b.delete(0,4);
         b.reverse();
         String total = b.toString();
+              int totalin =   Integer.parseInt(total.trim());
+              //
+
         Intent serviceConfig = new Intent(getContext(), PayPalService.class);
         serviceConfig.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         getActivity().startService(serviceConfig);
 
-        PayPalPayment payment = new PayPalPayment(new BigDecimal(total), "USD", "Total:", PayPalPayment.PAYMENT_INTENT_SALE);
+        PayPalPayment payment = new PayPalPayment(new BigDecimal(totalin), "USD", "Total:", PayPalPayment.PAYMENT_INTENT_SALE);
 
         Intent paymentConfig = new Intent(getContext(), PaymentActivity.class);
         paymentConfig.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config); //send the same configuration for restart resiliency

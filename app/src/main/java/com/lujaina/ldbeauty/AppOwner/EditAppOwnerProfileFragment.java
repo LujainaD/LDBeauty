@@ -218,15 +218,15 @@ public class EditAppOwnerProfileFragment extends Fragment {
                 model.setUserEmail(newEmail);
 
                 if (name.isEmpty()) {
-                    appOwnerName.setError("Enter User Name");
+                    appOwnerName.setError(getString(R.string.Enter_User_Name));
                 } else if (phone.isEmpty()) {
-                    appOwnerPhone.setError("Enter your phone number");
+                    appOwnerPhone.setError(getString(R.string.Enter_your_phone_number));
                 } else if (!PHONENUMBER_PATTERN.matcher(phone).matches()) {
-                    appOwnerPhone.setError("Your phone number must contain at least 8 digit");
+                    appOwnerPhone.setError(getString(R.string.phone_error));
                 }else if(!newPassword.isEmpty() &&!PASSWORD_PATTERN.matcher(newPassword).matches()) {
-                    password.setError("weak password(must contain a digit ,uppercase characters and at least 6 characters)");
+                    password.setError(getString(R.string.password_Error));
                 } else if (!EMAIL_ADDRESS_PATTERN.matcher(newEmail).matches()) {
-                    appOwnerEmail.setError("Please enter a valid email address");
+                    appOwnerEmail.setError(getString(R.string.valid_email));
                 }else {
                     progressDialog = new ProgressDialog(getContext());
                     progressDialog.setCancelable(false);
@@ -235,7 +235,7 @@ public class EditAppOwnerProfileFragment extends Fragment {
                     progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                     final TextView progressText = (TextView) progressDialog.findViewById(R.id.tv_bar);
                     final TextView progressPercentage = progressDialog.findViewById(R.id.tv_progress);
-                    progressText.setText("Updating ...");
+                    progressText.setText(R.string.Updating);
                     progressDialog.show();
                     updatInfoInDB(model,newPassword,newEmail);
 
@@ -289,7 +289,7 @@ public class EditAppOwnerProfileFragment extends Fragment {
                             changePassword(newPassword);
                         } else {
                             progressDialog.dismiss();
-                            Toast.makeText(getContext(),"Failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), R.string.Failed, Toast.LENGTH_SHORT).show();
                             Log.d("password-error", task.getException().toString());
                         }
                     }
@@ -307,7 +307,7 @@ public class EditAppOwnerProfileFragment extends Fragment {
                                 showGreetingDialog();
                             } else {
                                 progressDialog.dismiss();
-                                Toast.makeText(getContext(),"Failed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(),R.string.Failed, Toast.LENGTH_SHORT).show();
                                 Log.d("password-error", task.getException().toString());
                             }
                         }
@@ -338,7 +338,7 @@ public class EditAppOwnerProfileFragment extends Fragment {
                        changeEmail(update,newEmail,newPassword);
                     } else {
                         progressDialog.dismiss();
-                        Toast.makeText(getContext(), "Failed updating your info", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.Failed, Toast.LENGTH_SHORT).show();
                     }
                 }
             });

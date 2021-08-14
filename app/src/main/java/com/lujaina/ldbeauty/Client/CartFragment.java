@@ -129,7 +129,7 @@ public class CartFragment extends Fragment {
                 if (tv_total.getText().toString().equals("0")) {
 
                     TextView title = new TextView(mContext);
-                    title.setText("Cart Warning");
+                    title.setText(R.string.Cart_Warning);
                     title.setBackgroundColor(Color.parseColor("#DA6EA4"));
                     // title.setPadding(10, 15, 15, 10);
                     title.setGravity(Gravity.CENTER);
@@ -138,7 +138,7 @@ public class CartFragment extends Fragment {
 
                     AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
                     alertDialog.setCustomTitle(title);
-                    alertDialog.setMessage("Your cart is empty");
+                    alertDialog.setMessage(getString(R.string.empty_cart));
                     alertDialog.show();
                 } else {
                     if (isAllSlotsAreAvailable()) {
@@ -151,7 +151,7 @@ public class CartFragment extends Fragment {
                         getActivity().finish();
                     } else {
                         TextView textView = new TextView(mContext);
-                        textView.setText("Sold Out Items");
+                        textView.setText(R.string.booked);
                         textView.setBackgroundColor(Color.parseColor("#DA6EA4"));
                         // title.setPadding(10, 15, 15, 10);
                         textView.setGravity(Gravity.CENTER);
@@ -159,7 +159,7 @@ public class CartFragment extends Fragment {
                         textView.setTextSize(22);
                         AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
                         alertDialog.setCustomTitle(textView);
-                        alertDialog.setMessage("You need to delete sold out items");
+                        alertDialog.setMessage(getString(R.string.booked_appointment));
                         alertDialog.show();
                     }
                 }
@@ -171,7 +171,7 @@ public class CartFragment extends Fragment {
 
     private boolean isAllSlotsAreAvailable() {
         for (ClientsAppointmentModel model : serviceArray) {
-            if (model.getSoldStatus()!=null && model.getSoldStatus().equals("Sold out")) {
+            if (model.getSoldStatus()!=null && model.getSoldStatus().equals("booked")) {
                 return false;
             }
         }
@@ -202,6 +202,7 @@ public class CartFragment extends Fragment {
         service_rv.setVisibility(View.GONE);
 
         myRef.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 serviceArray.clear();
@@ -217,7 +218,7 @@ public class CartFragment extends Fragment {
                     service_rv.setVisibility(View.VISIBLE);
                     emptyservice.setVisibility(View.GONE);
 
-                    tv_total.setText("Total: " + sumOfService + " R.O");
+                    tv_total.setText(getString(R.string.Total) + sumOfService + getString(R.string.R_O));
 
                     progressDialog.dismiss();
                     if (appointment.getOwnerId() != null) {
@@ -264,7 +265,7 @@ public class CartFragment extends Fragment {
                                         if (cartArray.getAppointmentDate().equals(date)) {
                                             if (cartArray.getAppointmentTime().equals(time)) {
                                                 int positon = serviceArray.indexOf(cartArray);
-                                                cartArray.setSoldStatus("Sold out");
+                                                cartArray.setSoldStatus("booked");
                                                 serviceArray.set(positon, cartArray);
                                             }
                                         }
@@ -277,7 +278,7 @@ public class CartFragment extends Fragment {
                                         if (cartArray.getAppointmentDate().equals(date)) {
                                             if (cartArray.getAppointmentTime().equals(time)) {
                                                 int positon = serviceArray.indexOf(cartArray);
-                                                cartArray.setSoldStatus("Sold out");
+                                                cartArray.setSoldStatus("booked");
                                                 serviceArray.set(positon, cartArray);
                                             }
                                         }

@@ -103,11 +103,11 @@ public class UpdateCommentFragment extends DialogFragment {
                 if(userComment.isEmpty()){
                     comment.setError("you need to write a comment");
                 }else {
+                    dismiss();
                     //  addCommentToFB(userComment, rating);
                     if(mListener!= null){
                         dismiss();
                         mListener.onUpdate(commentInfo,userComment,rating);
-
                     }
 
                 }

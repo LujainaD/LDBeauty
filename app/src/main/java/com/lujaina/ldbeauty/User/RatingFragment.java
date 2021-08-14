@@ -65,6 +65,8 @@ public class RatingFragment extends Fragment implements RatingDialogFragment.set
     NavController navController;
     private int status = 0;
     FloatingActionButton add;
+    DialogToUpdateCommentFragment fragment;
+    UpdateCommentFragment dialogFragment;
     public RatingFragment() {
         // Required empty public constructor
     }
@@ -150,14 +152,15 @@ public class RatingFragment extends Fragment implements RatingDialogFragment.set
                 if(snapshot.getValue() !=null){
                     Toast.makeText(mContext, "not null", Toast.LENGTH_SHORT).show();
 
-                    DialogToUpdateCommentFragment fragment = new DialogToUpdateCommentFragment(RatingFragment.this);
+                     fragment = new DialogToUpdateCommentFragment(RatingFragment.this);
                     if(getActivity()!=null && isAdded()) {
 
                         fragment.show(getChildFragmentManager(), DialogToUpdateCommentFragment.class.getSimpleName());
+
                     }
                    // add.setVisibility(View.INVISIBLE);
                    // readCommentFromUser();
-                }else {
+                }if(snapshot.getValue()== null) {
                     Toast.makeText(mContext, "null", Toast.LENGTH_SHORT).show();
                         showDialog();
                 }
@@ -172,6 +175,7 @@ public class RatingFragment extends Fragment implements RatingDialogFragment.set
     }
 
     private void readCommentFromUser() {
+
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef  = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Comments);
@@ -194,13 +198,17 @@ public class RatingFragment extends Fragment implements RatingDialogFragment.set
     }
 
     private void showCommentDialogToUpdate(CommentModel commentModels) {
-        UpdateCommentFragment dialogFragment = new UpdateCommentFragment(RatingFragment.this);
+
+         dialogFragment = new UpdateCommentFragment(RatingFragment.this);
         Bundle bundle =new Bundle();
         bundle.putSerializable("comment",commentModels);
         dialogFragment.setDialog(bundle);
         if(getActivity()!=null && isAdded()){
             dialogFragment.show(getChildFragmentManager(), UpdateCommentFragment.class.getSimpleName());
+
         }
+
+      //  fragment.dismiss();
 
     }
 /*
@@ -354,6 +362,7 @@ public class RatingFragment extends Fragment implements RatingDialogFragment.set
 
     @Override
     public void onAdd(SPRegistrationModel salonInformation, String userComment, float rating){
+        dialogFragment.dismiss();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference clientRef;
         DatabaseReference ownertRef;
@@ -413,6 +422,8 @@ public class RatingFragment extends Fragment implements RatingDialogFragment.set
     }
     @Override
     public void onUpdate(CommentModel commentModel, String userComment, float rating) {
+        dialogFragment.dismiss();
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.Users).child(Constants.Client).child(mFirebaseUser.getUid()).child(Constants.Comments).child(commentModel.getCommentId());
         DatabaseReference salonOwnerRef = database.getReference(Constants.Users).child(Constants.Salon_Owner).child(commentModel.getOwnerId()).child(Constants.Comments).child(commentModel.getCommentId());
@@ -426,12 +437,16 @@ public class RatingFragment extends Fragment implements RatingDialogFragment.set
         model.setClientId(mFirebaseUser.getUid());
         myRef.setValue(model);
 
+
         salonOwnerRef.setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                dialogFragment.dismiss();
                 Toast.makeText(mContext, "updated comment", Toast.LENGTH_SHORT).show();
             }
+
         });
+
 
      /*   UpdateCommentFragment dialogFragment = new UpdateCommentFragment(RatingFragment.this);
         Bundle bundle =new Bundle();
